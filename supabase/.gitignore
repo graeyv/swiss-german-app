@@ -1,0 +1,19 @@
+# Dependencies
+/node_modules/
+
+# Next.js
+/.next/
+/out/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# dotenvx
+.env.keys
+
+# Supabase
+.branches
+.temp
