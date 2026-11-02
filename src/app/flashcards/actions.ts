@@ -3,6 +3,7 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
 import {
   type CardRow,
   FSRS_MODEL,
@@ -52,4 +53,30 @@ export async function submitReview(
     reviewId: randomUUID(),
     intervals: await previewIntervals(card, vocabularyId, now),
   };
+}
+
+export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?: string }> {
+  if (
+    !Number.isInteger(newCardsPerDay) ||
+    newCardsPerDay < NEW_CARDS_RANGE.min ||
+    newCardsPerDay > NEW_CARDS_RANGE.max
+  ) {
+    return { error: "Invalid number of new cards" };
+  }
+
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  // An update that matches no row isn't an error, so check that the profile was found.
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ new_cards_per_day: newCardsPerDay })
+    .eq("id", claims.claims.sub)
+    .select("id");
+  if (error) return { error: error.message };
+  if (data.length === 0) return { error: "Your profile is missing" };
+
+  revalidatePath("/flashcards");
+  return {};
 }

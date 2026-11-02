@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { NEW_CARDS_PER_DAY } from "@/lib/flashcards/scheduling";
+import { todaysQueue } from "@/lib/flashcards/daily-plan";
 import { createClient } from "@/lib/supabase/server";
+import { getDailyPlan } from "../../daily-plan-data";
 import { ReviewSession } from "../../review-session";
 import { toFlashcard } from "../../to-flashcard";
 
@@ -19,14 +20,11 @@ async function NewCards({ params }: Pick<PageProps<"/flashcards/learn/[code]">, 
   const { code } = await params;
   const supabase = await createClient();
 
-  const { data: summary, error: summaryError } = await supabase
-    .rpc("flashcard_summary")
-    .single<{ introduced_today: number }>();
-  if (summaryError) throw new Error(summaryError.message);
+  const { newCardsPerDay, summary } = await getDailyPlan(supabase);
 
   const { data, error } = await supabase.rpc("new_flashcards", {
     p_deck_code: code,
-    p_limit: Math.max(0, NEW_CARDS_PER_DAY - summary.introduced_today),
+    p_limit: todaysQueue(newCardsPerDay, summary).newLeft,
   });
   if (error) throw new Error(error.message);
 

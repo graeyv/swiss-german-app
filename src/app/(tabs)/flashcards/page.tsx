@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { getDailyPlan } from "@/app/flashcards/daily-plan-data";
+import { todaysQueue } from "@/lib/flashcards/daily-plan";
 import { buildDeckTree, type DeckNode, type DeckRow } from "@/lib/flashcards/decks";
-import { NEW_CARDS_PER_DAY } from "@/lib/flashcards/scheduling";
 import { createClient } from "@/lib/supabase/server";
+import { DailyPlanForm } from "./daily-plan-form";
 
 export const metadata: Metadata = { title: "Flashcards – Grüezi" };
 
@@ -18,17 +20,15 @@ export default function FlashcardsPage() {
 async function Decks() {
   const supabase = await createClient();
 
-  const [decks, summary] = await Promise.all([
+  const [decks, { newCardsPerDay, summary }] = await Promise.all([
     supabase.rpc("flashcard_decks"),
-    supabase.rpc("flashcard_summary").single<{ due_count: number; introduced_today: number }>(),
+    getDailyPlan(supabase),
   ]);
 
   if (decks.error) throw new Error(decks.error.message);
-  if (summary.error) throw new Error(summary.error.message);
 
   const tree = buildDeckTree(decks.data as DeckRow[]);
-  const { due_count: dueCount, introduced_today: introducedToday } = summary.data;
-  const newLeft = Math.max(0, NEW_CARDS_PER_DAY - introducedToday);
+  const { dueNow, waiting, newLeft } = todaysQueue(newCardsPerDay, summary);
 
   if (tree.length === 0) {
     return (
@@ -40,24 +40,33 @@ async function Decks() {
 
   return (
     <>
-      <section className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            {dueCount === 0 ? "Nothing to review" : `${dueCount} to review`}
-          </h1>
-          <p className="mt-1 text-muted">{newLeft} new cards left today</p>
-        </div>
-        {dueCount > 0 && (
+      <h1 className="sr-only">Flashcards</h1>
+
+      <section className="flex flex-col gap-3">
+        {dueNow > 0 && (
           <Link
             href="/flashcards/review"
             className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
           >
-            Start review
+            Review {dueNow} {dueNow === 1 ? "card" : "cards"}
           </Link>
         )}
+        {dueNow === 0 && waiting > 0 && (
+          <p className="text-muted">
+            Daily review goal reached.{" "}
+            <Link
+              href="/flashcards/review?all=1"
+              className="font-semibold text-accent underline-offset-4 hover:underline"
+            >
+              Keep going ({waiting} more)
+            </Link>
+          </p>
+        )}
+        <DailyPlanForm newCardsPerDay={newCardsPerDay} />
       </section>
 
       <section className="flex flex-col gap-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">Decks</h2>
         {tree.map((deck) => (
           <Deck key={deck.id} deck={deck} newLeft={newLeft} />
         ))}

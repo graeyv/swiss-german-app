@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
+import { estimateMinutes, PRESETS, presetName, reviewLimit, todaysQueue } from "./daily-plan";
 import { buildDeckTree, type DeckRow } from "./decks";
 import { advanceQueue } from "./queue";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
@@ -115,5 +116,47 @@ describe("buildSeed", () => {
     expect(() =>
       buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\nFC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`),
     ).toThrow(/Duplicate/);
+  });
+});
+
+describe("todaysQueue", () => {
+  const summary = { due_learning_count: 3, due_review_count: 40, introduced_today: 4, reviewed_today: 80 };
+
+  it("caps reviews of known words, but never words still being learned", () => {
+    expect(todaysQueue(10, summary)).toEqual({ dueNow: 23, waiting: 20, reviewsLeft: 20, newLeft: 6 });
+  });
+
+  it("keeps learning words due once the limit is reached", () => {
+    expect(todaysQueue(2, summary)).toMatchObject({ dueNow: 3, waiting: 40, newLeft: 0 });
+  });
+
+  it("lets learners without new cards catch up on everything", () => {
+    expect(todaysQueue(0, summary)).toMatchObject({ dueNow: 43, waiting: 0, newLeft: 0 });
+  });
+});
+
+describe("reviewLimit", () => {
+  it("follows new cards, with a floor and no limit at zero", () => {
+    expect(reviewLimit(0)).toBeNull();
+    expect(reviewLimit(1)).toBe(20);
+    expect(reviewLimit(12)).toBe(120);
+    expect(reviewLimit(50)).toBe(500);
+  });
+});
+
+describe("estimateMinutes", () => {
+  it("splits each preset's time between new cards and reviews", () => {
+    expect(PRESETS.map(({ newCardsPerDay }) => estimateMinutes(newCardsPerDay))).toEqual([
+      { newCards: 2, reviews: 6, total: 8 },
+      { newCards: 3, reviews: 12, total: 15 },
+      { newCards: 7, reviews: 23, total: 30 },
+    ]);
+  });
+});
+
+describe("presetName", () => {
+  it("names presets only", () => {
+    expect(presetName(10)).toBe("Steady");
+    expect(presetName(12)).toBeUndefined();
   });
 });
