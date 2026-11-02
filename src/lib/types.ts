@@ -32,6 +32,19 @@ export type Lesson = {
   description: string;
 };
 
+export type Flashcard = {
+  vocabulary_id: string;
+  swiss_german: string;
+  high_german: string;
+  english: string;
+  notes: string | null;
+  audio_url: string | null;
+  // Identifies this attempt, so retrying a failed save can't record the review twice.
+  review_id: string;
+  // How long until the card returns for each FSRS grade, keyed 1 (Again) to 4 (Easy).
+  intervals: Record<1 | 2 | 3 | 4, string>;
+};
+
 export type Course = {
   id: string;
   title: string;

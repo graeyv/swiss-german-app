@@ -3,26 +3,14 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { Course } from "@/lib/types";
-import { signOut } from "./actions";
 
 export const metadata: Metadata = { title: "Your lessons – Grüezi" };
 
 export default function LearnPage() {
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-6 py-10">
-      <header className="flex items-center justify-between gap-4">
-        <p className="font-semibold text-accent">Grüezi</p>
-        <form action={signOut}>
-          <button className="text-sm text-muted underline-offset-4 hover:underline">
-            Log out
-          </button>
-        </form>
-      </header>
-
-      <Suspense fallback={<p className="text-muted">Loading your lessons…</p>}>
-        <Courses />
-      </Suspense>
-    </main>
+    <Suspense fallback={<p className="text-muted">Loading your lessons…</p>}>
+      <Courses />
+    </Suspense>
   );
 }
 

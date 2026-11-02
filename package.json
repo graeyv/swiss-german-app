@@ -7,14 +7,21 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:push": "supabase db push --include-seed"
+    "test": "vitest run",
+    "db:push": "supabase db push --include-seed",
+    "content:build": "node scripts/build-flashcard-seed.mjs",
+    "db:content": "npm run content:build && supabase db query --linked -f supabase/seeds/flashcards.sql"
+  },
+  "engines": {
+    "node": "24.x"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
     "next": "16.4.3",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "ts-fsrs": "6.0.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
@@ -25,6 +32,7 @@
     "eslint-config-next": "16.4.3",
     "supabase": "^2.122.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.12"
   }
 }

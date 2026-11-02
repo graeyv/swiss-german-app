@@ -25,12 +25,16 @@ Docker isn't required: these steps use a hosted Supabase project.
 
 | Path | Purpose |
 | --- | --- |
-| `src/proxy.ts` | Refreshes the session and protects `/learn` and `/lessons` |
-| `src/app/learn` | Course and lesson overview |
+| `src/proxy.ts` | Refreshes the session and protects `/learn`, `/lessons` and `/flashcards` |
+| `src/app/(tabs)` | Lessons and Flashcards tabs, with their shared header |
 | `src/app/lessons/[slug]` | Lesson player |
-| `src/lib/types.ts` | Exercise payload types |
+| `src/app/flashcards` | Full-screen review sessions and saving reviews |
+| `src/lib/flashcards` | FSRS scheduling, the session queue and the deck tree |
+| `src/lib/types.ts` | Exercise payload and flashcard types |
+| `content` | Flashcard decks and cards, as tab-separated files |
 | `supabase/migrations` | Database schema and access policies |
 | `supabase/seed.sql` | Starter course in Zürich German |
+| `supabase/seeds/flashcards.sql` | Generated from `content` |
 
 ## Adding content
 
@@ -39,7 +43,23 @@ Content belongs to a dialect, because Swiss German has no standard form. Add les
 types: `vocab_card`, `multiple_choice` and `word_order`. Their payloads are described in
 `src/lib/types.ts`.
 
-Clients can't write course content. Only migrations, the seed file and the service role can.
+Clients can't write course content. Only migrations, the seed files and the service role can.
+
+### Flashcards
+
+Edit `content/decks.tsv` and `content/cards.tsv`, then run `npm run db:content`. It checks the files,
+regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project.
+
+- **Decks** form a tree through `parent_code`, to any depth. Only the lowest level holds cards.
+  Decks without cards stay hidden.
+- **Cards** can sit in several decks: separate `deck_codes` with commas. Learners' progress belongs
+  to the word, so a shared word is only learned once.
+- **Codes are permanent.** A card's `code` is what keeps learners' history, so fix a spelling by
+  editing the row, not by adding a new code.
+- `audio_path` is an object path in the `lesson-audio` bucket. The `type` column isn't used by the
+  app yet.
+
+Scheduling uses FSRS-6 through `ts-fsrs`, which needs Node 24 or later.
 
 ## Database changes
 

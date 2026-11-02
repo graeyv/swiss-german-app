@@ -1,0 +1,51 @@
+code	deck_codes	dialect	swiss_german	high_german	english	notes	audio_path	type
+FC0001	C01-T01	zh	Hoi	Hallo	Hi	Informal: use it with friends and people you know.		Verb
+FC0002	C01-T01	zh	Sali	Hallo	Hi			Word
+FC0003	C01-T01	zh	Hoi zäme	Hallo zusammen	Hi everyone			Sentence
+FC0004	C01-T01	zh	Grüezi	Guten Tag	Hello (formal)	Polite: use it with strangers. For several people, say "Grüezi mitenand".
+FC0005	C01-T01	zh	Guete Morge	Guten Morgen	Good morning
+FC0006	C01-T01	zh	Guete Tag	Guten Tag	Good day
+FC0007	C01-T01	zh	Guete Abig	Guten Abend	Good evening
+FC0008	C01-T01	zh	Guet Nacht	Gute Nacht	Good night
+FC0009	C01-T01	zh	Wie gaats?	Wie geht's?	How are you?
+FC0010	C01-T01	zh	Wie gaht's dir?	Wie geht es dir?	How are you (informal)?
+FC0011	C01-T01	zh	Mir gaats guet	Mir geht's gut	I'm doing well
+FC0012	C01-T01	zh	Danke guet	Danke gut	Fine thanks
+FC0013	C01-T01	zh	Und dir?	Und dir?	And you?
+FC0014	C01-T01	zh	Ich heisse …	Ich heisse …	My name is …
+FC0015	C01-T01	zh	Ich bi …	Ich bin …	I am …
+FC0016	C01-T01	zh	Wie heissisch?	Wie heisst du?	What's your name?
+FC0017	C01-T01	zh	Woher chunsch?	Woher kommst du?	Where are you from?
+FC0018	C01-T01	zh	Ich chum us …	Ich komme aus …	I'm from …
+FC0019	C01-T01	zh	Freut mi	Freut mich	Nice to meet you
+FC0020	C01-T01	zh	Bis spöter	Bis später	See you later
+FC0021	C01-T02	zh	eis	eins	one
+FC0022	C01-T02	zh	zwei	zwei	two
+FC0023	C01-T02	zh	drü	drei	three
+FC0024	C01-T02	zh	vier	vier	four
+FC0025	C01-T02	zh	füf	fünf	five
+FC0026	C01-T02	zh	sächs	sechs	six
+FC0027	C01-T02	zh	sibe	sieben	seven
+FC0028	C01-T02	zh	acht	acht	eight
+FC0029	C01-T02	zh	nüün	neun	nine
+FC0030	C01-T02	zh	zäh	zehn	ten
+FC0031	C01-T02	zh	elf	elf	eleven
+FC0032	C01-T02	zh	zwölf	zwölf	twelve
+FC0033	C01-T02	zh	drizäh	dreizehn	thirteen
+FC0034	C01-T02	zh	vierzäh	vierzehn	fourteen
+FC0035	C01-T02	zh	füfzäh	fünfzehn	fifteen
+FC0036	C01-T02	zh	sächzäh	sechzehn	sixteen
+FC0037	C01-T02	zh	sibezäh	siebzehn	seventeen
+FC0038	C01-T02	zh	achtzäh	achtzehn	eighteen
+FC0039	C01-T02	zh	nüünzäh	neunzehn	nineteen
+FC0040	C01-T02	zh	zwänzg	zwanzig	twenty
+FC0041	C01-T02	zh	drissg	dreissig	thirty
+FC0042	C01-T02	zh	vierzg	vierzig	forty
+FC0043	C01-T02	zh	füfzg	fünfzig	fifty
+FC0044	C01-T02	zh	hundert	hundert	one hundred
+FC0045	C01-T02	zh	tuusig	tausend	one thousand
+FC0046	C01-T02	zh	viel	viel	much / many
+FC0047	C01-T02	zh	wänig	wenig	little / few
+FC0048	C01-T02	zh	meh	mehr	more
+FC0049	C01-T02	zh	weniger	weniger	less
+FC0050	C01-T02	zh	gnueg	genug	enough
