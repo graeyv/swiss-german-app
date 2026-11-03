@@ -6,7 +6,7 @@ import { findDeck } from "@/lib/flashcards/decks";
 import type { CardRow } from "@/lib/flashcards/scheduling";
 import { composeSession } from "@/lib/flashcards/session";
 import { createClient } from "@/lib/supabase/server";
-import { getDailyPlan } from "../../daily-plan-data";
+import { getCardFront, getDailyPlan } from "../../daily-plan-data";
 import { ReviewSession } from "../../review-session";
 import { toFlashcard } from "../../to-flashcard";
 
@@ -25,9 +25,10 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   const [{ code }, { shuffle }] = await Promise.all([params, searchParams]);
   const supabase = await createClient();
 
-  const [tree, { newCardsPerDay, summary }] = await Promise.all([
+  const [tree, { newCardsPerDay, summary }, cardFront] = await Promise.all([
     getDeckTree(supabase),
     getDailyPlan(supabase),
+    getCardFront(supabase),
   ]);
   const found = findDeck(tree, code);
   if (!found) notFound();
@@ -64,6 +65,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
       <title>{`${found.deck.title} – Grüezi`}</title>
       <ReviewSession
         cards={cards}
+        cardFront={cardFront}
         emptyMessage="Nothing left here for today: you've reached your daily goal, or nothing is due yet."
         backHref={`/flashcards/decks/${back.code}`}
         backLabel={back.title}

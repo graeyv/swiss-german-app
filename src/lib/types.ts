@@ -32,6 +32,9 @@ export type Lesson = {
   description: string;
 };
 
+// Which side of a flashcard is shown first. Mirrors public.profiles.card_front.
+export type CardFront = "swiss_german" | "english";
+
 export type Flashcard = {
   vocabulary_id: string;
   swiss_german: string;
@@ -39,6 +42,8 @@ export type Flashcard = {
   english: string;
   notes: string | null;
   audio_url: string | null;
+  // New words haven't been rated yet, learning words are in their same-day steps.
+  kind: "new" | "learning" | "review";
   // Identifies this attempt, so retrying a failed save can't record the review twice.
   review_id: string;
   // How long until the card returns for each FSRS grade, keyed 1 (Again) to 4 (Easy).

@@ -27,6 +27,7 @@ export async function toFlashcard(
     audio_url: word.audio_path
       ? supabase.storage.from("lesson-audio").getPublicUrl(word.audio_path).data.publicUrl
       : null,
+    kind: !card || card.state === 0 ? "new" : card.state === 2 ? "review" : "learning",
     review_id: randomUUID(),
     intervals: await previewIntervals(card, word.vocabulary_id, now),
   };

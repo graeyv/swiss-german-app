@@ -10,7 +10,7 @@ import {
   previewIntervals,
   scheduleReview,
 } from "@/lib/flashcards/scheduling";
-import type { Flashcard } from "@/lib/types";
+import type { CardFront, Flashcard } from "@/lib/types";
 
 type ReviewResult =
   | { error: string }
@@ -85,5 +85,25 @@ export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?:
   if (data.length === 0) return { error: "Your profile is missing" };
 
   revalidateFlashcardPages();
+  return {};
+}
+
+export async function updateCardFront(cardFront: CardFront): Promise<{ error?: string }> {
+  if (cardFront !== "swiss_german" && cardFront !== "english") {
+    return { error: "Unknown card side" };
+  }
+
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  // An update that matches no row isn't an error, so check that the profile was found.
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ card_front: cardFront })
+    .eq("id", claims.claims.sub)
+    .select("id");
+  if (error) return { error: error.message };
+  if (data.length === 0) return { error: "Your profile is missing" };
   return {};
 }

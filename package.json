@@ -10,7 +10,9 @@
     "test": "vitest run",
     "db:push": "supabase db push --include-seed",
     "content:build": "node scripts/build-flashcard-seed.mjs",
-    "db:content": "npm run content:build && supabase db query --linked -f supabase/seeds/flashcards.sql"
+    "db:content": "npm run content:build && supabase db query --linked -f supabase/seeds/flashcards.sql",
+    "dev:reset-progress": "node scripts/reset-progress.mjs",
+    "dev:time-travel": "node scripts/time-travel.mjs"
   },
   "engines": {
     "node": "24.x"

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { todaysQueue } from "@/lib/flashcards/daily-plan";
 import type { CardRow } from "@/lib/flashcards/scheduling";
 import { createClient } from "@/lib/supabase/server";
-import { getDailyPlan } from "../daily-plan-data";
+import { getCardFront, getDailyPlan } from "../daily-plan-data";
 import { ReviewSession } from "../review-session";
 import { toFlashcard } from "../to-flashcard";
 
@@ -24,9 +24,10 @@ async function DueCards({ searchParams }: Pick<PageProps<"/flashcards/review">, 
   const { all } = await searchParams;
   const supabase = await createClient();
 
-  const [due, { newCardsPerDay, summary }] = await Promise.all([
+  const [due, { newCardsPerDay, summary }, cardFront] = await Promise.all([
     supabase.rpc("due_flashcards", { p_limit: SESSION_SIZE }),
     getDailyPlan(supabase),
+    getCardFront(supabase),
   ]);
   if (due.error) throw new Error(due.error.message);
 
@@ -42,6 +43,7 @@ async function DueCards({ searchParams }: Pick<PageProps<"/flashcards/review">, 
   return (
     <ReviewSession
       cards={cards}
+      cardFront={cardFront}
       emptyMessage="You're all caught up. Nothing is due."
       backHref="/flashcards"
       backLabel="flashcards"
