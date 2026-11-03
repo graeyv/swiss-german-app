@@ -1,23 +1,23 @@
-code	parent_code	title
-C01		Everyday Life
-C01-T01	C01	Greetings & Introductions
-C01-T02	C01	Numbers & Quantities
-C01-T03	C01	Time & Dates
-C01-T04	C01	Days & Months
-C01-T05	C01	Daily Routines
-C01-T06	C01	Household
-C01-T07	C01	Clothing
-C01-T08	C01	Weather & Seasons
-C01-T09	C01	Colours & Shapes
-C01-T10	C01	Money & Payments
-C02		Food & Drinks
-C02-T01	C02	Fruits & Vegetables
-C02-T02	C02	Food & Ingredients
-C02-T03	C02	Swiss Specialities
-C02-T04	C02	Breakfast
-C02-T05	C02	Meals
-C02-T06	C02	Drinks
-C02-T07	C02	Restaurant & Café
-C02-T08	C02	Cooking
-C02-T09	C02	Taste & Texture
-C02-T10	C02	Dietary Preferences
+code	parent_code	title	emoji	description	color
+C01		Everyday Life	🏙️	Daily conversations & routines	pink
+C01-T01	C01	Greetings & Introductions	👋
+C01-T02	C01	Numbers & Quantities	🔢
+C01-T03	C01	Time & Dates	🕒
+C01-T04	C01	Days & Months	📅
+C01-T05	C01	Daily Routines	⏰
+C01-T06	C01	Household	🏠
+C01-T07	C01	Clothing	👕
+C01-T08	C01	Weather & Seasons	🌦️
+C01-T09	C01	Colours & Shapes	🎨
+C01-T10	C01	Money & Payments	💰
+C02		Food & Drinks	🥑	Meals, ingredients & ordering	blue
+C02-T01	C02	Fruits & Vegetables	🍎
+C02-T02	C02	Food & Ingredients	🧂
+C02-T03	C02	Swiss Specialities	🧀
+C02-T04	C02	Breakfast	🥐
+C02-T05	C02	Meals	🍽️
+C02-T06	C02	Drinks	🥤
+C02-T07	C02	Restaurant & Café	☕
+C02-T08	C02	Cooking	🍳
+C02-T09	C02	Taste & Texture	👅
+C02-T10	C02	Dietary Preferences	🥗

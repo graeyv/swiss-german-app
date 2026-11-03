@@ -1,7 +1,6 @@
 import { DefaultScheduler, type Grade } from "ts-fsrs";
 
 export const FSRS_MODEL = "FSRS-6";
-export const NEW_CARDS_PER_DAY = 10;
 
 const schedulerPromise = DefaultScheduler({
   version: FSRS_MODEL,

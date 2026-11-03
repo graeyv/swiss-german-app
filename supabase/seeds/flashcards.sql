@@ -3,36 +3,43 @@
 -- because deleting them would delete learners' review history.
 begin;
 
-create temporary table seed_decks (code text, parent_code text, title text, position integer) on commit drop;
+create temporary table seed_decks (
+  code text, parent_code text, title text, emoji text, description text, color text, position integer
+) on commit drop;
 
-insert into seed_decks (code, parent_code, title, position) values
-  ('C01', null, 'Everyday Life', 1),
-  ('C01-T01', 'C01', 'Greetings & Introductions', 1),
-  ('C01-T02', 'C01', 'Numbers & Quantities', 2),
-  ('C01-T03', 'C01', 'Time & Dates', 3),
-  ('C01-T04', 'C01', 'Days & Months', 4),
-  ('C01-T05', 'C01', 'Daily Routines', 5),
-  ('C01-T06', 'C01', 'Household', 6),
-  ('C01-T07', 'C01', 'Clothing', 7),
-  ('C01-T08', 'C01', 'Weather & Seasons', 8),
-  ('C01-T09', 'C01', 'Colours & Shapes', 9),
-  ('C01-T10', 'C01', 'Money & Payments', 10),
-  ('C02', null, 'Food & Drinks', 2),
-  ('C02-T01', 'C02', 'Fruits & Vegetables', 1),
-  ('C02-T02', 'C02', 'Food & Ingredients', 2),
-  ('C02-T03', 'C02', 'Swiss Specialities', 3),
-  ('C02-T04', 'C02', 'Breakfast', 4),
-  ('C02-T05', 'C02', 'Meals', 5),
-  ('C02-T06', 'C02', 'Drinks', 6),
-  ('C02-T07', 'C02', 'Restaurant & Café', 7),
-  ('C02-T08', 'C02', 'Cooking', 8),
-  ('C02-T09', 'C02', 'Taste & Texture', 9),
-  ('C02-T10', 'C02', 'Dietary Preferences', 10);
+insert into seed_decks (code, parent_code, title, emoji, description, color, position) values
+  ('C01', null, 'Everyday Life', '🏙️', 'Daily conversations & routines', 'pink', 1),
+  ('C01-T01', 'C01', 'Greetings & Introductions', '👋', null, null, 1),
+  ('C01-T02', 'C01', 'Numbers & Quantities', '🔢', null, null, 2),
+  ('C01-T03', 'C01', 'Time & Dates', '🕒', null, null, 3),
+  ('C01-T04', 'C01', 'Days & Months', '📅', null, null, 4),
+  ('C01-T05', 'C01', 'Daily Routines', '⏰', null, null, 5),
+  ('C01-T06', 'C01', 'Household', '🏠', null, null, 6),
+  ('C01-T07', 'C01', 'Clothing', '👕', null, null, 7),
+  ('C01-T08', 'C01', 'Weather & Seasons', '🌦️', null, null, 8),
+  ('C01-T09', 'C01', 'Colours & Shapes', '🎨', null, null, 9),
+  ('C01-T10', 'C01', 'Money & Payments', '💰', null, null, 10),
+  ('C02', null, 'Food & Drinks', '🥑', 'Meals, ingredients & ordering', 'blue', 2),
+  ('C02-T01', 'C02', 'Fruits & Vegetables', '🍎', null, null, 1),
+  ('C02-T02', 'C02', 'Food & Ingredients', '🧂', null, null, 2),
+  ('C02-T03', 'C02', 'Swiss Specialities', '🧀', null, null, 3),
+  ('C02-T04', 'C02', 'Breakfast', '🥐', null, null, 4),
+  ('C02-T05', 'C02', 'Meals', '🍽️', null, null, 5),
+  ('C02-T06', 'C02', 'Drinks', '🥤', null, null, 6),
+  ('C02-T07', 'C02', 'Restaurant & Café', '☕', null, null, 7),
+  ('C02-T08', 'C02', 'Cooking', '🍳', null, null, 8),
+  ('C02-T09', 'C02', 'Taste & Texture', '👅', null, null, 9),
+  ('C02-T10', 'C02', 'Dietary Preferences', '🥗', null, null, 10);
 
-insert into public.decks (code, title, position, published)
-select code, title, position, true from seed_decks
+insert into public.decks (code, title, emoji, description, color, position, published)
+select code, title, emoji, description, color, position, true from seed_decks
 on conflict (code) do update
-  set title = excluded.title, position = excluded.position, published = excluded.published;
+  set title = excluded.title,
+      emoji = excluded.emoji,
+      description = excluded.description,
+      color = excluded.color,
+      position = excluded.position,
+      published = excluded.published;
 
 update public.decks d
 set parent_id = p.id
@@ -92,7 +99,17 @@ insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german
   ('FC0047', 'zh', 'wänig', 'wenig', 'little / few', null, null),
   ('FC0048', 'zh', 'meh', 'mehr', 'more', null, null),
   ('FC0049', 'zh', 'weniger', 'weniger', 'less', null, null),
-  ('FC0050', 'zh', 'gnueg', 'genug', 'enough', null, null)
+  ('FC0050', 'zh', 'gnueg', 'genug', 'enough', null, null),
+  ('FC0051', 'zh', 'Obscht', 'Obst', 'fruit', null, null),
+  ('FC0052', 'zh', 'Gmües', 'Gemüse', 'vegetables', null, null),
+  ('FC0053', 'zh', 'Öpfel', 'Apfel', 'apple', null, null),
+  ('FC0054', 'zh', 'Bire', 'Birne', 'pear', null, null),
+  ('FC0055', 'zh', 'Chriesi', 'Kirsche', 'cherry', null, null),
+  ('FC0056', 'zh', 'Zwetschge', 'Pflaume', 'plum', null, null),
+  ('FC0057', 'zh', 'Rüebli', 'Karotte', 'carrot', 'Used in Swiss Standard German too.', null),
+  ('FC0058', 'zh', 'Härdöpfel', 'Kartoffel', 'potato', 'Literally "earth apple".', null),
+  ('FC0059', 'zh', 'Bölle', 'Zwiebel', 'onion', 'Zürich word. In Bern and Basel it''s "Zibele".', null),
+  ('FC0060', 'zh', 'Peperoni', 'Paprika', 'bell pepper', 'False friend: in Germany, "Peperoni" is a hot chili.', null)
 on conflict (code) do update
   set dialect_id = excluded.dialect_id,
       swiss_german = excluded.swiss_german,
@@ -155,7 +172,17 @@ from (values
   ('C01-T02', 'FC0047', 27),
   ('C01-T02', 'FC0048', 28),
   ('C01-T02', 'FC0049', 29),
-  ('C01-T02', 'FC0050', 30)
+  ('C01-T02', 'FC0050', 30),
+  ('C02-T01', 'FC0051', 1),
+  ('C02-T01', 'FC0052', 2),
+  ('C02-T01', 'FC0053', 3),
+  ('C02-T01', 'FC0054', 4),
+  ('C02-T01', 'FC0055', 5),
+  ('C02-T01', 'FC0056', 6),
+  ('C02-T01', 'FC0057', 7),
+  ('C02-T01', 'FC0058', 8),
+  ('C02-T01', 'FC0059', 9),
+  ('C02-T01', 'FC0060', 10)
 ) as i (deck_code, card_code, position)
 join public.decks d on d.code = i.deck_code
 join public.vocabulary_items v on v.code = i.card_code;

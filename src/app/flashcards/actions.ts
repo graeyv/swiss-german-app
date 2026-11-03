@@ -3,17 +3,21 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import {
-  type CardRow,
-  FSRS_MODEL,
-  previewIntervals,
-  scheduleReview,
-} from "@/lib/flashcards/scheduling";
-import type { Flashcard } from "@/lib/types";
+import { getToday } from "@/lib/flashcards/data";
+import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
+import { FSRS_MODEL, previewIntervals, scheduleReview } from "@/lib/flashcards/scheduling";
+import type { CardFront, Flashcard } from "@/lib/types";
 
 type ReviewResult =
   | { error: string }
   | { dueAt: string; reviewId: string; intervals: Flashcard["intervals"] };
+
+// The overview and deck pages show today's counts. Running sessions aren't refreshed: they keep
+// their own queue, and reloading them would redo every card's interval previews.
+function revalidateFlashcardPages() {
+  revalidatePath("/flashcards");
+  revalidatePath("/flashcards/decks/[code]", "page");
+}
 
 const CARD_COLUMNS =
   "state, schedule_status, stability, difficulty, due_at, last_review_at, reps, lapses, learning_step, scheduled_days";
@@ -30,7 +34,7 @@ export async function submitReview(
     .from("review_items")
     .select(CARD_COLUMNS)
     .eq("vocabulary_id", vocabularyId)
-    .maybeSingle<CardRow>();
+    .maybeSingle();
   if (readError) return { error: readError.message };
 
   const now = new Date();
@@ -46,10 +50,62 @@ export async function submitReview(
   });
   if (error) return { error: error.message };
 
-  revalidatePath("/flashcards");
+  revalidateFlashcardPages();
   return {
     dueAt: card.due_at,
     reviewId: randomUUID(),
     intervals: await previewIntervals(card, vocabularyId, now),
   };
+}
+
+export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?: string }> {
+  if (
+    !Number.isInteger(newCardsPerDay) ||
+    newCardsPerDay < NEW_CARDS_RANGE.min ||
+    newCardsPerDay > NEW_CARDS_RANGE.max
+  ) {
+    return { error: "Invalid number of new cards" };
+  }
+
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  // An update that matches no row isn't an error, so check that the profile was found.
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ new_cards_per_day: newCardsPerDay })
+    .eq("id", claims.claims.sub)
+    .select("id");
+  if (error) return { error: error.message };
+  if (data.length === 0) return { error: "Your profile is missing" };
+
+  revalidateFlashcardPages();
+  return {};
+}
+
+export async function updateCardFront(cardFront: CardFront): Promise<{ error?: string }> {
+  if (cardFront !== "swiss_german" && cardFront !== "english") {
+    return { error: "Unknown card side" };
+  }
+
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  // An update that matches no row isn't an error, so check that the profile was found.
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ card_front: cardFront })
+    .eq("id", claims.claims.sub)
+    .select("id");
+  if (error) return { error: error.message };
+  if (data.length === 0) return { error: "Your profile is missing" };
+  return {};
+}
+
+// Asked when a session ends, to celebrate if that session completed today's goal.
+export async function isTodaysGoalReached(): Promise<boolean> {
+  const supabase = await createClient();
+  return (await getToday(supabase)).goalReached;
 }

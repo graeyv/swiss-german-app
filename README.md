@@ -29,7 +29,8 @@ Docker isn't required: these steps use a hosted Supabase project.
 | `src/app/(tabs)` | Lessons and Flashcards tabs, with their shared header |
 | `src/app/lessons/[slug]` | Lesson player |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
-| `src/lib/flashcards` | FSRS scheduling, the session queue and the deck tree |
+| `src/lib/flashcards` | FSRS scheduling, sessions, daily limits, the deck tree, and loading it all (`data.ts`) |
+| `src/lib/supabase/database.types.ts` | Database types, generated with `npm run db:types` |
 | `src/lib/types.ts` | Exercise payload and flashcard types |
 | `content` | Flashcard decks and cards, as tab-separated files |
 | `supabase/migrations` | Database schema and access policies |
@@ -52,6 +53,9 @@ regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project
 
 - **Decks** form a tree through `parent_code`, to any depth. Only the lowest level holds cards.
   Decks without cards stay hidden.
+- **Deck cards** show `emoji`, `description` and `color` (pink, blue, green, yellow, purple or
+  orange). A deck without a colour takes its parent's, and one without a description shows its
+  word count instead.
 - **Cards** can sit in several decks: separate `deck_codes` with commas. Learners' progress belongs
   to the word, so a shared word is only learned once.
 - **Codes are permanent.** A card's `code` is what keeps learners' history, so fix a spelling by
@@ -66,4 +70,10 @@ Scheduling uses FSRS-6 through `ts-fsrs`, which needs Node 24 or later.
 ```sh
 npx supabase migration new <name>   # then edit the new file
 npm run db:push
+npm run db:types                    # regenerate the database types
 ```
+
+The type check then flags code that uses a renamed table, column or function. It doesn't catch a
+misspelled argument name in `supabase.rpc(...)` calls. The generated types also mark every column
+a database function returns as never empty, so read function results into the row types in
+`src/lib/flashcards`, which say which columns can be empty.
