@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
+import { getLocale } from "@/lib/i18n/server";
+import { DocumentLanguage } from "./document-language";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,7 +28,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       // Browser extensions such as LanguageTool add attributes to this tag before React loads.
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Suspense fallback={null}>
+          <CurrentLanguage />
+        </Suspense>
+      </body>
     </html>
   );
+}
+
+async function CurrentLanguage() {
+  return <DocumentLanguage locale={await getLocale()} />;
 }

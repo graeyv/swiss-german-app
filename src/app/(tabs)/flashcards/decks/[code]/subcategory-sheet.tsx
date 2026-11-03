@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { BottomSheet } from "../../bottom-sheet";
+import { dictionary, type Locale } from "@/lib/i18n";
 import { Counts } from "../../counts";
 
 type SubcategorySheetProps = {
@@ -12,10 +13,20 @@ type SubcategorySheetProps = {
   tint: string;
   newWords: number;
   due: number;
+  locale: Locale;
 };
 
 // A lowest-level subcategory. Tapping it slides up a sheet to start flashcards or see the words.
-export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: SubcategorySheetProps) {
+export function SubcategorySheet({
+  code,
+  title,
+  emoji,
+  tint,
+  newWords,
+  due,
+  locale,
+}: SubcategorySheetProps) {
+  const t = dictionary(locale).flashcards;
   const dialog = useRef<HTMLDialogElement>(null);
   const done = newWords + due === 0;
   const close = () => dialog.current?.close();
@@ -30,7 +41,7 @@ export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: Su
           {emoji}
         </span>
         <span className="min-w-0 flex-1 font-semibold leading-snug">{title}</span>
-        <Counts newWords={newWords} due={due} />
+        <Counts newWords={newWords} due={due} locale={locale} />
         <span aria-hidden className="text-muted">
           ›
         </span>
@@ -44,9 +55,9 @@ export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: Su
           <div className="flex min-w-0 flex-col gap-1">
             <h2 className="text-xl font-bold tracking-tight">{title}</h2>
             {done ? (
-              <span className="text-sm text-muted">Done for today</span>
+              <span className="text-sm text-muted">{t.doneForToday}</span>
             ) : (
-              <Counts newWords={newWords} due={due} />
+              <Counts newWords={newWords} due={due} locale={locale} />
             )}
           </div>
         </div>
@@ -54,7 +65,7 @@ export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: Su
         <div className="flex flex-col gap-2">
           {done ? (
             <span className="w-full rounded-full bg-line px-6 py-3 text-center font-semibold text-muted">
-              Nothing left for today
+              {t.nothingLeft}
             </span>
           ) : (
             <Link
@@ -62,7 +73,7 @@ export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: Su
               onClick={close}
               className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
             >
-              Start flashcards
+              {t.startFlashcards}
             </Link>
           )}
           <Link
@@ -70,7 +81,7 @@ export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: Su
             onClick={close}
             className="w-full rounded-full border border-line px-6 py-3 text-center font-semibold transition-colors hover:border-accent"
           >
-            See word list
+            {t.seeWordList}
           </Link>
         </div>
       </BottomSheet>

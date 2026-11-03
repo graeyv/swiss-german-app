@@ -3,6 +3,9 @@ import { Suspense } from "react";
 import { getCardFront, getToday, toFlashcard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
 import { composeSession } from "@/lib/flashcards/session";
+import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { dictionary } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { ReviewSession } from "../../review-session";
 
@@ -11,7 +14,13 @@ const MAX_DUE_CARDS = 100;
 
 export default function SessionPage({ params, searchParams }: PageProps<"/flashcards/session/[code]">) {
   return (
-    <Suspense fallback={<p className="m-auto text-muted">Loading your cards…</p>}>
+    <Suspense
+      fallback={
+        <div className="mx-auto w-full max-w-xl px-6 py-6">
+          <LoadingPlaceholder />
+        </div>
+      }
+    >
       <Session params={params} searchParams={searchParams} />
     </Suspense>
   );
@@ -19,7 +28,8 @@ export default function SessionPage({ params, searchParams }: PageProps<"/flashc
 
 async function Session({ params, searchParams }: PageProps<"/flashcards/session/[code]">) {
   const [{ code }, { shuffle }] = await Promise.all([params, searchParams]);
-  const supabase = await createClient();
+  const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
+  const t = dictionary(locale);
 
   const [today, cardFront] = await Promise.all([getToday(supabase), getCardFront(supabase)]);
   const { tree, limits } = today;
@@ -45,8 +55,8 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   const cards = await Promise.all(
     entries.map((entry) =>
       "due" in entry
-        ? toFlashcard(supabase, entry.due, entry.due, now)
-        : toFlashcard(supabase, entry.fresh, null, now),
+        ? toFlashcard(supabase, entry.due, entry.due, now, t)
+        : toFlashcard(supabase, entry.fresh, null, now, t),
     ),
   );
 
@@ -55,12 +65,13 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
 
   return (
     <>
-      <title>{`${found.deck.title} – Grüezi`}</title>
+      <title>{t.title(found.deck.title)}</title>
       <ReviewSession
         cards={cards}
         cardFront={cardFront}
+        locale={locale}
         goalReachedBefore={today.goalReached}
-        emptyMessage="Nothing left here for today: you've reached your daily goal, or nothing to review yet."
+        emptyMessage={t.session.empty}
         backHref={`/flashcards/decks/${back.code}`}
         backLabel={back.title}
       />

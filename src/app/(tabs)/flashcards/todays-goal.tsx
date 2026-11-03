@@ -2,7 +2,8 @@
 
 import { useRef, useState, useTransition } from "react";
 import { updateDailyPlan } from "@/app/flashcards/actions";
-import { PRESETS, presetName, reviewLimit } from "@/lib/flashcards/daily-plan";
+import { PRESETS, presetId, reviewLimit } from "@/lib/flashcards/daily-plan";
+import { dictionary, type Locale } from "@/lib/i18n";
 import { BottomSheet } from "./bottom-sheet";
 
 type TodaysGoalProps = {
@@ -12,6 +13,7 @@ type TodaysGoalProps = {
   // Words reviewed plus those still due today, counting only words learned before today.
   reviewsTotal: number;
   reached: boolean;
+  locale: Locale;
 };
 
 export function TodaysGoal({
@@ -20,7 +22,9 @@ export function TodaysGoal({
   reviewsDone,
   reviewsTotal,
   reached,
+  locale,
 }: TodaysGoalProps) {
+  const t = dictionary(locale).goal;
   const sheet = useRef<HTMLDialogElement>(null);
   // The goal as last saved, so the card updates without waiting for the page to refresh.
   const [saved, setSaved] = useState(newCardsPerDay);
@@ -37,7 +41,7 @@ export function TodaysGoal({
   }
 
   function open() {
-    setSelected(presetName(saved) ? saved : null);
+    setSelected(presetId(saved) ? saved : null);
     setError(null);
     sheet.current?.showModal();
   }
@@ -64,46 +68,56 @@ export function TodaysGoal({
     >
       <div className="flex items-center justify-between gap-4">
         <h2 className="flex items-center gap-2 text-lg font-bold tracking-tight">
-          Today&rsquo;s goal
+          {t.heading}
           {reached && (
             <span className="rounded-full bg-success px-2.5 py-0.5 text-xs font-semibold text-surface motion-safe:animate-pop">
-              🎉 Reached
+              🎉 {t.reached}
             </span>
           )}
         </h2>
         <button
           onClick={open}
-          aria-label="Edit daily goal"
+          aria-label={t.editLabel}
           className="-mr-2 flex min-h-11 items-center gap-1.5 rounded-full px-2 text-sm font-semibold text-muted transition-colors hover:text-foreground"
         >
           <GearIcon />
-          Edit
+          {t.edit}
         </button>
       </div>
 
       <div className="flex flex-col gap-3">
         {saved > 0 && (
-          <Progress label="New words" done={Math.min(introducedToday, saved)} total={saved} />
+          <Progress
+            label={t.newWords}
+            done={Math.min(introducedToday, saved)}
+            total={saved}
+            empty={t.nothingToReview}
+          />
         )}
-        <Progress label="Cards reviewed" done={reviewsDone} total={reviewsTotal} />
+        <Progress
+          label={t.cardsReviewed}
+          done={reviewsDone}
+          total={reviewsTotal}
+          empty={t.nothingToReview}
+        />
       </div>
 
-      <BottomSheet ref={sheet} label="Choose your daily learning pace">
+      <BottomSheet ref={sheet} label={t.sheetTitle}>
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-xl font-bold tracking-tight">Choose your daily learning pace</h2>
+          <h2 className="text-xl font-bold tracking-tight">{t.sheetTitle}</h2>
           <button
             onClick={() => sheet.current?.close()}
-            aria-label="Close"
+            aria-label={t.close}
             className="-mt-2 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-xl text-muted transition-colors hover:text-foreground"
           >
             ✕
           </button>
         </div>
 
-        <div role="group" aria-label="Daily learning pace" className="grid grid-cols-3 gap-2">
-          {PRESETS.map(({ name, newCardsPerDay: value }) => (
+        <div role="group" aria-label={t.paceLabel} className="grid grid-cols-3 gap-2">
+          {PRESETS.map(({ id, newCardsPerDay: value }) => (
             <button
-              key={name}
+              key={id}
               aria-pressed={selected === value}
               onClick={() => setSelected(value)}
               className={`flex min-h-24 flex-col items-center justify-center gap-0.5 rounded-2xl border-2 px-2 py-3 text-center transition-colors ${
@@ -112,22 +126,18 @@ export function TodaysGoal({
                   : "border-line hover:border-accent/50"
               }`}
             >
-              <strong className="font-semibold">{name}</strong>
-              <span className="text-xs font-semibold">{value} new cards</span>
-              <span className="text-xs text-muted">up to {reviewLimit(value)} reviews</span>
+              <strong className="font-semibold">{t.presets[id]}</strong>
+              <span className="text-xs font-semibold">{t.newCards(value)}</span>
+              <span className="text-xs text-muted">{t.upToReviews(reviewLimit(value) ?? 0)}</span>
             </button>
           ))}
         </div>
 
-        <p className="text-sm text-muted">
-          Your review schedule is calculated automatically from the number of new cards you
-          choose. How many reviews you get varies with your progress: it&rsquo;s a daily maximum,
-          not an amount you have to complete.
-        </p>
+        <p className="text-sm text-muted">{t.note}</p>
 
         {error && (
           <p aria-live="polite" className="text-sm text-danger">
-            Not saved: {error}
+            {t.notSaved(error)}
           </p>
         )}
 
@@ -136,21 +146,23 @@ export function TodaysGoal({
           disabled={selected === null || saving}
           className="w-full rounded-full bg-accent px-6 py-4 text-lg font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
         >
-          {saving ? "Saving…" : "Save changes"}
+          {saving ? t.saving : t.save}
         </button>
       </BottomSheet>
     </section>
   );
 }
 
-function Progress({ label, done, total }: { label: string; done: number; total: number }) {
+type ProgressProps = { label: string; done: number; total: number; empty: string };
+
+function Progress({ label, done, total, empty }: ProgressProps) {
   const percent = total === 0 ? 0 : Math.min(100, (done / total) * 100);
 
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-4 text-sm">
         <span className="text-muted">{label}</span>
-        <strong className="tabular-nums">{total === 0 ? "Nothing due" : `${done} / ${total}`}</strong>
+        <strong className="tabular-nums">{total === 0 ? empty : `${done} / ${total}`}</strong>
       </div>
       <div
         role="progressbar"

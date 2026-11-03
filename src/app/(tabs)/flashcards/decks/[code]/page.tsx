@@ -4,6 +4,9 @@ import { Suspense } from "react";
 import { getToday } from "@/lib/flashcards/data";
 import { type DeckNode, findDeck } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
+import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { dictionary, type Locale } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { TINTS } from "../../deck-card";
 import { Counts } from "../../counts";
@@ -13,7 +16,7 @@ type Availability = ReturnType<typeof deckAvailability>;
 
 export default function DeckPage({ params }: PageProps<"/flashcards/decks/[code]">) {
   return (
-    <Suspense fallback={<p className="text-muted">Loading…</p>}>
+    <Suspense fallback={<LoadingPlaceholder />}>
       <Deck params={params} />
     </Suspense>
   );
@@ -21,8 +24,9 @@ export default function DeckPage({ params }: PageProps<"/flashcards/decks/[code]
 
 async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "params">) {
   const { code } = await params;
-  const supabase = await createClient();
+  const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const { tree, limits } = await getToday(supabase);
+  const t = dictionary(locale);
 
   const found = findDeck(tree, code);
   if (!found) notFound();
@@ -31,14 +35,14 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
 
   return (
     <>
-      <title>{`${deck.title} – Grüezi`}</title>
+      <title>{t.title(deck.title)}</title>
 
       <div className="flex flex-col gap-4">
         <Link
           href={parent ? `/flashcards/decks/${parent.code}` : "/flashcards"}
           className="-ml-1 flex min-h-11 w-fit items-center gap-1 text-sm font-semibold text-muted hover:text-foreground"
         >
-          ‹ {parent?.title ?? "Flashcards"}
+          ‹ {parent?.title ?? t.flashcards.title}
         </Link>
 
         <div className="flex items-center gap-4">
@@ -55,15 +59,21 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
         </div>
       </div>
 
-      <ShuffleButton deck={deck} availability={deckAvailability(deck, limits)} />
+      <ShuffleButton deck={deck} availability={deckAvailability(deck, limits)} locale={locale} />
 
       {deck.children.length > 0 && (
         <section className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">Subcategories</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+            {t.flashcards.subcategories}
+          </h2>
           <ul className="flex flex-col gap-2">
             {deck.children.map((child) => (
               <li key={child.id}>
-                <Subcategory deck={child} availability={deckAvailability(child, limits)} />
+                <Subcategory
+                  deck={child}
+                  availability={deckAvailability(child, limits)}
+                  locale={locale}
+                />
               </li>
             ))}
           </ul>
@@ -73,8 +83,11 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
   );
 }
 
-function ShuffleButton({ deck, availability }: { deck: DeckNode; availability: Availability }) {
+type DeckProps = { deck: DeckNode; availability: Availability; locale: Locale };
+
+function ShuffleButton({ deck, availability, locale }: DeckProps) {
   const { newWords, due } = availability;
+  const t = dictionary(locale).flashcards;
 
   // Takes the shuffle card's place and shape, so finishing reads as an achievement.
   if (newWords + due === 0) {
@@ -84,8 +97,8 @@ function ShuffleButton({ deck, availability }: { deck: DeckNode; availability: A
           ✅
         </span>
         <span className="flex flex-col">
-          <strong className="text-lg text-success">All done for today</strong>
-          <span className="text-sm text-muted">Come back tomorrow for more {deck.title}.</span>
+          <strong className="text-lg text-success">{t.allDone}</strong>
+          <span className="text-sm text-muted">{t.comeBackTomorrow(deck.title)}</span>
         </span>
       </div>
     );
@@ -100,9 +113,9 @@ function ShuffleButton({ deck, availability }: { deck: DeckNode; availability: A
         🔀
       </span>
       <span className="flex flex-1 flex-col">
-        <strong className="text-lg">Shuffle learning in this category</strong>
+        <strong className="text-lg">{t.shuffle}</strong>
         <span className="text-sm opacity-90">
-          {newWords} new · {due} {due === 1 ? "review" : "reviews"}
+          {t.newCount(newWords)} · {t.reviewCount(due)}
         </span>
       </span>
       <span aria-hidden className="text-2xl">
@@ -114,7 +127,7 @@ function ShuffleButton({ deck, availability }: { deck: DeckNode; availability: A
 
 // Only the lowest level holds cards, so it offers flashcards and its word list. A subcategory
 // with its own subcategories opens its page instead, whatever its depth.
-function Subcategory({ deck, availability }: { deck: DeckNode; availability: Availability }) {
+function Subcategory({ deck, availability, locale }: DeckProps) {
   const { newWords, due } = availability;
 
   if (deck.children.length === 0) {
@@ -126,6 +139,7 @@ function Subcategory({ deck, availability }: { deck: DeckNode; availability: Ava
         tint={TINTS[deck.color]}
         newWords={newWords}
         due={due}
+        locale={locale}
       />
     );
   }
@@ -142,7 +156,7 @@ function Subcategory({ deck, availability }: { deck: DeckNode; availability: Ava
         {deck.emoji ?? "📚"}
       </span>
       <span className="min-w-0 flex-1 font-semibold leading-snug">{deck.title}</span>
-      <Counts newWords={newWords} due={due} />
+      <Counts newWords={newWords} due={due} locale={locale} />
       <span aria-hidden className="text-muted">
         ›
       </span>

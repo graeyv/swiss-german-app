@@ -1,14 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { getDictionary } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import type { Course } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Your lessons – Grüezi" };
-
 export default function LearnPage() {
   return (
-    <Suspense fallback={<p className="text-muted">Loading your lessons…</p>}>
+    <Suspense fallback={<LoadingPlaceholder />}>
       <Courses />
     </Suspense>
   );
@@ -16,6 +15,7 @@ export default function LearnPage() {
 
 async function Courses() {
   const supabase = await createClient();
+  const t = await getDictionary();
 
   const [courses, progress] = await Promise.all([
     supabase
@@ -39,12 +39,12 @@ async function Courses() {
   if (courseList.length === 0) {
     return (
       <p className="text-muted">
-        No courses yet. Add the starter content with <code>npm run db:push</code>.
+        {t.learn.noCourses} <code>npm run db:push</code>.
       </p>
     );
   }
 
-  return courseList.map((course) => (
+  const sections = courseList.map((course) => (
     <section key={course.id} className="flex flex-col gap-4">
       <div>
         <p className="text-sm text-muted">
@@ -78,4 +78,11 @@ async function Courses() {
       </ol>
     </section>
   ));
+
+  return (
+    <>
+      <title>{t.title(t.learn.title)}</title>
+      {sections}
+    </>
+  );
 }

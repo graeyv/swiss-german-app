@@ -1,18 +1,20 @@
 "use client";
 
 import { useActionState } from "react";
+import { dictionary, type Locale } from "@/lib/i18n";
 import { authenticate, type AuthState } from "./actions";
 
 const inputClass =
   "rounded-lg border border-line bg-surface px-3 py-2 outline-offset-2 focus:outline-2 focus:outline-accent";
 
-export function LoginForm() {
+export function LoginForm({ locale }: { locale: Locale }) {
   const [state, action, pending] = useActionState<AuthState, FormData>(authenticate, {});
+  const t = dictionary(locale).login;
 
   return (
     <form action={action} className="flex flex-col gap-4">
       <label className="flex flex-col gap-1 text-sm font-medium">
-        Email
+        {t.email}
         <input
           name="email"
           type="email"
@@ -23,7 +25,7 @@ export function LoginForm() {
         />
       </label>
       <label className="flex flex-col gap-1 text-sm font-medium">
-        Password
+        {t.password}
         <input
           name="password"
           type="password"
@@ -45,7 +47,7 @@ export function LoginForm() {
         disabled={pending}
         className="rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
       >
-        Log in
+        {t.logIn}
       </button>
       <button
         name="intent"
@@ -53,7 +55,7 @@ export function LoginForm() {
         disabled={pending}
         className="rounded-full border border-line px-6 py-3 font-semibold transition-colors hover:bg-surface disabled:opacity-50"
       >
-        Create account
+        {t.createAccount}
       </button>
     </form>
   );

@@ -113,39 +113,69 @@ export type Database = {
           },
         ]
       }
+      deck_translations: {
+        Row: {
+          deck_id: string
+          description: string | null
+          locale: string
+          title: string
+        }
+        Insert: {
+          deck_id: string
+          description?: string | null
+          locale: string
+          title: string
+        }
+        Update: {
+          deck_id?: string
+          description?: string | null
+          locale?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deck_translations_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deck_translations_locale_fkey"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "locales"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       decks: {
         Row: {
           code: string
           color: string | null
-          description: string | null
           emoji: string | null
           id: string
           parent_id: string | null
           position: number
           published: boolean
-          title: string
         }
         Insert: {
           code: string
           color?: string | null
-          description?: string | null
           emoji?: string | null
           id?: string
           parent_id?: string | null
           position: number
           published?: boolean
-          title: string
         }
         Update: {
           code?: string
           color?: string | null
-          description?: string | null
           emoji?: string | null
           id?: string
           parent_id?: string | null
           position?: number
           published?: boolean
-          title?: string
         }
         Relationships: [
           {
@@ -281,6 +311,21 @@ export type Database = {
           },
         ]
       }
+      locales: {
+        Row: {
+          code: string
+          name: string
+        }
+        Insert: {
+          code: string
+          name: string
+        }
+        Update: {
+          code?: string
+          name?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           card_front: string
@@ -288,6 +333,7 @@ export type Database = {
           dialect_id: string | null
           display_name: string | null
           id: string
+          locale: string
           new_cards_per_day: number
         }
         Insert: {
@@ -296,6 +342,7 @@ export type Database = {
           dialect_id?: string | null
           display_name?: string | null
           id: string
+          locale?: string
           new_cards_per_day?: number
         }
         Update: {
@@ -304,6 +351,7 @@ export type Database = {
           dialect_id?: string | null
           display_name?: string | null
           id?: string
+          locale?: string
           new_cards_per_day?: number
         }
         Relationships: [
@@ -313,6 +361,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "dialects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_locale_fkey"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "locales"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -436,30 +491,24 @@ export type Database = {
           audio_path: string | null
           code: string
           dialect_id: string
-          english: string
           high_german: string
           id: string
-          notes: string | null
           swiss_german: string
         }
         Insert: {
           audio_path?: string | null
           code: string
           dialect_id: string
-          english: string
           high_german: string
           id?: string
-          notes?: string | null
           swiss_german: string
         }
         Update: {
           audio_path?: string | null
           code?: string
           dialect_id?: string
-          english?: string
           high_german?: string
           id?: string
-          notes?: string | null
           swiss_german?: string
         }
         Relationships: [
@@ -468,6 +517,42 @@ export type Database = {
             columns: ["dialect_id"]
             isOneToOne: false
             referencedRelation: "dialects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocabulary_translations: {
+        Row: {
+          locale: string
+          meaning: string | null
+          notes: string | null
+          vocabulary_id: string
+        }
+        Insert: {
+          locale: string
+          meaning?: string | null
+          notes?: string | null
+          vocabulary_id: string
+        }
+        Update: {
+          locale?: string
+          meaning?: string | null
+          notes?: string | null
+          vocabulary_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocabulary_translations_locale_fkey"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "locales"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "vocabulary_translations_vocabulary_id_fkey"
+            columns: ["vocabulary_id"]
+            isOneToOne: false
+            referencedRelation: "vocabulary_items"
             referencedColumns: ["id"]
           },
         ]
@@ -481,12 +566,19 @@ export type Database = {
         Args: { p_lesson_id: string; p_score: number }
         Returns: undefined
       }
+      deck_text: {
+        Args: { p_deck_id: string }
+        Returns: {
+          description: string
+          title: string
+        }[]
+      }
       deck_words: {
         Args: { p_deck_code: string }
         Returns: {
           due_at: string
-          english: string
           high_german: string
+          meaning: string
           notes: string
           state: number
           swiss_german: string
@@ -499,11 +591,11 @@ export type Database = {
           audio_path: string
           difficulty: number
           due_at: string
-          english: string
           high_german: string
           lapses: number
           last_review_at: string
           learning_step: number
+          meaning: string
           notes: string
           reps: number
           schedule_status: string
@@ -542,12 +634,13 @@ export type Database = {
           reviews_today: number
         }[]
       }
+      learner_locale: { Args: never; Returns: string }
       new_flashcards: {
         Args: { p_deck_code: string; p_limit: number }
         Returns: {
           audio_path: string
-          english: string
           high_german: string
+          meaning: string
           notes: string
           swiss_german: string
           vocabulary_id: string
@@ -563,6 +656,13 @@ export type Database = {
           p_vocabulary_id: string
         }
         Returns: undefined
+      }
+      vocabulary_text: {
+        Args: { p_vocabulary_id: string }
+        Returns: {
+          meaning: string
+          notes: string
+        }[]
       }
     }
     Enums: {

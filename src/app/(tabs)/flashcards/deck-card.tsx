@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { DeckColor, DeckNode } from "@/lib/flashcards/decks";
+import { dictionary, type Locale } from "@/lib/i18n";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { Counts } from "./counts";
 
@@ -14,19 +15,21 @@ export const TINTS: Record<DeckColor, string> = {
 };
 
 type TodaysLimits = Parameters<typeof deckAvailability>[1];
+type DeckGridProps = { decks: DeckNode[]; limits: TodaysLimits; locale: Locale };
 
-export function DeckGrid({ decks, limits }: { decks: DeckNode[]; limits: TodaysLimits }) {
+export function DeckGrid({ decks, limits, locale }: DeckGridProps) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {decks.map((deck) => (
-        <DeckCard key={deck.id} deck={deck} limits={limits} />
+        <DeckCard key={deck.id} deck={deck} limits={limits} locale={locale} />
       ))}
     </div>
   );
 }
 
-function DeckCard({ deck, limits }: { deck: DeckNode; limits: TodaysLimits }) {
+function DeckCard({ deck, limits, locale }: { deck: DeckNode; limits: TodaysLimits; locale: Locale }) {
   const { newWords, due } = deckAvailability(deck, limits);
+  const t = dictionary(locale).flashcards;
 
   return (
     <Link
@@ -44,15 +47,15 @@ function DeckCard({ deck, limits }: { deck: DeckNode; limits: TodaysLimits }) {
           {deck.title} <span aria-hidden className="text-muted">›</span>
         </strong>
         <small className="truncate text-sm leading-snug text-muted">
-          {deck.description ?? `${deck.card_count} ${deck.card_count === 1 ? "word" : "words"}`}
+          {deck.description ?? t.words(deck.card_count)}
         </small>
       </span>
       {/* Pushed to the bottom, so chips line up across cards whose titles wrap differently. */}
       <span className="mt-auto">
         {newWords + due === 0 ? (
-          <span className="text-sm font-semibold text-success">✓ Done for today</span>
+          <span className="text-sm font-semibold text-success">✓ {t.doneForToday}</span>
         ) : (
-          <Counts newWords={newWords} due={due} />
+          <Counts newWords={newWords} due={due} locale={locale} />
         )}
       </span>
     </Link>

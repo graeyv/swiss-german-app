@@ -19,20 +19,32 @@ join public.courses c on c.slug = 'zh-first-steps'
 on conflict (slug) do nothing;
 
 -- Words shared with the flashcard decks (FC codes) are kept up to date by content/cards.tsv.
-insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german, english, notes) values
-  ('FC0004', 'zh', 'Grüezi', 'Guten Tag', 'Hello', 'Polite: use it with strangers. For several people, say "Grüezi mitenand".'),
-  ('FC0001', 'zh', 'Hoi', 'Hallo', 'Hi', 'Informal: use it with friends and people you know.'),
-  ('L0001', 'zh', 'Wie gaht''s?', 'Wie geht''s?', 'How are you?', null),
-  ('L0002', 'zh', 'Mir gaht''s guet', 'Mir geht es gut', 'I''m doing well', null),
-  ('L0003', 'zh', 'Merci vilmal', 'Vielen Dank', 'Thank you very much', null),
-  ('L0004', 'zh', 'Uf Widerluege', 'Auf Wiedersehen', 'Goodbye', 'Polite: the counterpart to "Grüezi".'),
-  ('L0005', 'zh', 'Tschüss', 'Tschüss', 'Bye', 'Informal: the counterpart to "Hoi".'),
-  ('L0006', 'zh', 'en Kafi', 'ein Kaffee', 'a coffee', null),
-  ('L0007', 'zh', 'es Gipfeli', 'ein Croissant', 'a croissant', null),
-  ('L0008', 'zh', 'Ich hett gern ...', 'Ich hätte gern ...', 'I would like ...', null),
-  ('L0009', 'zh', 'Zale, bitte!', 'Zahlen, bitte!', 'The bill, please!', null),
-  ('L0010', 'zh', 'En Guete!', 'Guten Appetit!', 'Enjoy your meal!', 'Said to everyone at the table before eating.')
-on conflict (code) do nothing;
+-- English meanings and notes go into vocabulary_translations, which other languages fall back to.
+with words (code, swiss_german, high_german, meaning, notes) as (values
+  ('FC0004', 'Grüezi', 'Guten Tag', 'Hello', 'Polite: use it with strangers. For several people, say "Grüezi mitenand".'),
+  ('FC0001', 'Hoi', 'Hallo', 'Hi', 'Informal: use it with friends and people you know.'),
+  ('L0001', 'Wie gaht''s?', 'Wie geht''s?', 'How are you?', null),
+  ('L0002', 'Mir gaht''s guet', 'Mir geht es gut', 'I''m doing well', null),
+  ('L0003', 'Merci vilmal', 'Vielen Dank', 'Thank you very much', null),
+  ('L0004', 'Uf Widerluege', 'Auf Wiedersehen', 'Goodbye', 'Polite: the counterpart to "Grüezi".'),
+  ('L0005', 'Tschüss', 'Tschüss', 'Bye', 'Informal: the counterpart to "Hoi".'),
+  ('L0006', 'en Kafi', 'ein Kaffee', 'a coffee', null),
+  ('L0007', 'es Gipfeli', 'ein Croissant', 'a croissant', null),
+  ('L0008', 'Ich hett gern ...', 'Ich hätte gern ...', 'I would like ...', null),
+  ('L0009', 'Zale, bitte!', 'Zahlen, bitte!', 'The bill, please!', null),
+  ('L0010', 'En Guete!', 'Guten Appetit!', 'Enjoy your meal!', 'Said to everyone at the table before eating.')
+),
+inserted as (
+  insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german)
+  select code, 'zh', swiss_german, high_german from words
+  on conflict (code) do nothing
+  returning id, code
+)
+insert into public.vocabulary_translations (vocabulary_id, locale, meaning, notes)
+select i.id, 'en', w.meaning, w.notes
+from inserted i
+join words w on w.code = i.code
+on conflict (vocabulary_id, locale) do nothing;
 
 insert into public.exercises (lesson_id, position, type, vocabulary_id, payload)
 select l.id, e.position, e.type::public.exercise_type, v.id, e.payload::jsonb

@@ -1,4 +1,4 @@
-code	deck_codes	dialect	swiss_german	high_german	english	notes	audio_path	type
+code	deck_codes	dialect	swiss_german	high_german	meaning_en	notes_en	audio_path	type
 FC0001	C01-T01	zh	Hoi	Hallo	Hi	Informal: use it with friends and people you know.		Verb
 FC0002	C01-T01	zh	Sali	Hallo	Hi			Word
 FC0003	C01-T01	zh	Hoi zäme	Hallo zusammen	Hi everyone			Sentence
