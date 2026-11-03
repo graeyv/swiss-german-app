@@ -81,11 +81,18 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
 function ShuffleButton({ deck, availability }: { deck: DeckNode; availability: Availability }) {
   const { newWords, due } = availability;
 
+  // Takes the shuffle card's place and shape, so finishing reads as an achievement.
   if (newWords + due === 0) {
     return (
-      <p className="rounded-2xl border border-line p-5 text-center text-muted">
-        All done in {deck.title} for today. Come back tomorrow.
-      </p>
+      <div className="flex items-center gap-4 rounded-2xl bg-tint-green p-5">
+        <span aria-hidden className="text-3xl">
+          ✅
+        </span>
+        <span className="flex flex-col">
+          <strong className="text-lg text-success">All done for today</strong>
+          <span className="text-sm text-muted">Come back tomorrow for more {deck.title}.</span>
+        </span>
+      </div>
     );
   }
 
