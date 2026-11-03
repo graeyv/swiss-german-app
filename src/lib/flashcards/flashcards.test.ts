@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
 import { estimateMinutes, PRESETS, presetName, reviewLimit, todaysQueue } from "./daily-plan";
-import { buildDeckTree, type DeckRow, findDeck, subcategoryHref } from "./decks";
+import { buildDeckTree, type DeckRow, findDeck } from "./decks";
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
@@ -126,13 +126,7 @@ describe("buildDeckTree", () => {
     expect(found?.deck.id).toBe("past");
     expect(found?.ancestors.map((deck) => deck.id)).toEqual(["verbs"]);
     expect(findDeck(tree, "empty")).toBeNull();
-  });
-
-  it("opens a deck with subcategories, and starts a session on the lowest level", () => {
-    expect(subcategoryHref(tree[1])).toBe("/flashcards/decks/verbs");
-    expect(subcategoryHref(tree[1].children[1])).toBe("/flashcards/session/past");
-  });
-});
+  });});
 
 describe("buildSeed", () => {
   const decks = "code\tparent_code\ttitle\nC01\t\tLife\nC01-T01\tC01\tGreetings\n";

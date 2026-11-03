@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getDailyPlan } from "@/app/flashcards/daily-plan-data";
 import { todaysQueue } from "@/lib/flashcards/daily-plan";
-import { type DeckNode, findDeck, subcategoryHref } from "@/lib/flashcards/decks";
+import { type DeckNode, findDeck } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { createClient } from "@/lib/supabase/server";
 import { TINTS } from "../../deck-card";
 import { getDeckTree } from "../../deck-data";
+import { Counts, SubcategorySheet } from "./subcategory-sheet";
 
 type Availability = ReturnType<typeof deckAvailability>;
 
@@ -109,14 +110,29 @@ function ShuffleButton({ deck, availability }: { deck: DeckNode; availability: A
   );
 }
 
+// Only the lowest level holds cards, so it offers flashcards and its word list. A subcategory
+// with its own subcategories opens its page instead, whatever its depth.
 function Subcategory({ deck, availability }: { deck: DeckNode; availability: Availability }) {
   const { newWords, due } = availability;
-  const done = newWords + due === 0;
-  // A subcategory with its own subcategories stays browsable even when today's work is done.
-  const browsable = deck.children.length > 0;
 
-  const content = (
-    <>
+  if (deck.children.length === 0) {
+    return (
+      <SubcategorySheet
+        code={deck.code}
+        title={deck.title}
+        emoji={deck.emoji ?? "📚"}
+        tint={TINTS[deck.color]}
+        newWords={newWords}
+        due={due}
+      />
+    );
+  }
+
+  return (
+    <Link
+      href={`/flashcards/decks/${deck.code}`}
+      className="flex min-h-16 items-center gap-3 rounded-2xl border border-line bg-surface p-3 transition-colors hover:border-accent active:scale-[0.99]"
+    >
       <span
         aria-hidden
         className={`flex size-11 shrink-0 items-center justify-center rounded-xl text-2xl ${TINTS[deck.color]}`}
@@ -124,34 +140,10 @@ function Subcategory({ deck, availability }: { deck: DeckNode; availability: Ava
         {deck.emoji ?? "📚"}
       </span>
       <span className="min-w-0 flex-1 font-semibold leading-snug">{deck.title}</span>
-      {done ? (
-        <span className="flex shrink-0 gap-1.5 text-sm text-muted">
-          Done for today
-          {browsable && <span aria-hidden>›</span>}
-        </span>
-      ) : (
-        <span className="flex shrink-0 gap-1.5 text-xs font-semibold">
-          {newWords > 0 && (
-            <span className="rounded-full bg-accent/10 px-2 py-1 text-accent">{newWords} new</span>
-          )}
-          {due > 0 && <span className="rounded-full bg-line px-2 py-1">{due} due</span>}
-          <span aria-hidden className="self-center text-base text-muted">
-            ›
-          </span>
-        </span>
-      )}
-    </>
-  );
-
-  const row = "flex min-h-16 items-center gap-3 rounded-2xl border border-line bg-surface p-3";
-  if (done && !browsable) return <div className={`${row} opacity-60`}>{content}</div>;
-
-  return (
-    <Link
-      href={subcategoryHref(deck)}
-      className={`${row} transition-colors hover:border-accent active:scale-[0.99]`}
-    >
-      {content}
+      <Counts newWords={newWords} due={due} />
+      <span aria-hidden className="text-muted">
+        ›
+      </span>
     </Link>
   );
 }

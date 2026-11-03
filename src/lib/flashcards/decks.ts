@@ -34,14 +34,6 @@ export function buildDeckTree(rows: readonly DeckRow[]): DeckNode[] {
   return build(null, "yellow");
 }
 
-// Only the lowest level holds cards, so it starts a session. A deck with subcategories opens its
-// own page, whatever its depth, where its subcategories can be chosen or shuffled together.
-export function subcategoryHref(deck: Pick<DeckNode, "code" | "children">) {
-  return deck.children.length > 0
-    ? `/flashcards/decks/${deck.code}`
-    : `/flashcards/session/${deck.code}`;
-}
-
 // The deck with this code, and the decks above it from the top level down.
 export function findDeck(
   tree: readonly DeckNode[],
