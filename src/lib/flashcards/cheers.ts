@@ -2,9 +2,10 @@
 // a native speaker review these before launch, like the cards.
 export const CHEERS = [
   "Super gmacht!", // Well done!
-  "Tipptopp!", // Perfect!
+  "Tiptop!", // Perfect!
   "Mega guet!", // Really good!
   "Bravo!",
+  "Juhui!"
 ] as const;
 
 export type Cheer = (typeof CHEERS)[number];
