@@ -52,6 +52,9 @@ regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project
 
 - **Decks** form a tree through `parent_code`, to any depth. Only the lowest level holds cards.
   Decks without cards stay hidden.
+- **Deck cards** show `emoji`, `description` and `color` (pink, blue, green, yellow, purple or
+  orange). A deck without a colour takes its parent's, and one without a description shows its
+  word count instead.
 - **Cards** can sit in several decks: separate `deck_codes` with commas. Learners' progress belongs
   to the word, so a shared word is only learned once.
 - **Codes are permanent.** A card's `code` is what keeps learners' history, so fix a spelling by

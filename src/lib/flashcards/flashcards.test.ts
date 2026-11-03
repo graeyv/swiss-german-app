@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
 import { estimateMinutes, PRESETS, presetName, reviewLimit, todaysQueue } from "./daily-plan";
-import { buildDeckTree, type DeckRow } from "./decks";
+import { buildDeckTree, type DeckRow, findDeck } from "./decks";
 import { advanceQueue } from "./queue";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
 
@@ -80,20 +80,50 @@ describe("advanceQueue", () => {
 });
 
 describe("buildDeckTree", () => {
-  const row = (id: string, parent_id: string | null, deck_position: number, card_count: number) =>
-    ({ id, parent_id, code: id, title: id, deck_position, card_count, due_count: 0, new_count: 0 }) satisfies DeckRow;
+  const row = (
+    id: string,
+    parent_id: string | null,
+    deck_position: number,
+    card_count: number,
+    color: DeckRow["color"] = null,
+  ) =>
+    ({
+      id,
+      parent_id,
+      code: id,
+      title: id,
+      emoji: null,
+      description: null,
+      color,
+      deck_position,
+      card_count,
+      due_count: 0,
+      new_count: 0,
+    }) satisfies DeckRow;
+
+  const tree = buildDeckTree([
+    row("empty", null, 1, 0),
+    row("verbs", null, 3, 2, "green"),
+    row("life", null, 2, 1),
+    row("past", "verbs", 2, 1),
+    row("present", "verbs", 1, 1, "blue"),
+    row("hidden", "verbs", 3, 0),
+  ]);
 
   it("nests decks in order and hides empty ones", () => {
-    const tree = buildDeckTree([
-      row("empty", null, 1, 0),
-      row("verbs", null, 3, 2),
-      row("life", null, 2, 1),
-      row("past", "verbs", 2, 1),
-      row("present", "verbs", 1, 1),
-      row("hidden", "verbs", 3, 0),
-    ]);
     expect(tree.map((deck) => deck.id)).toEqual(["life", "verbs"]);
     expect(tree[1].children.map((deck) => deck.id)).toEqual(["present", "past"]);
+  });
+
+  it("gives topics their parent's colour unless they have their own", () => {
+    expect(tree[1].children.map((deck) => deck.color)).toEqual(["blue", "green"]);
+  });
+
+  it("finds a deck at any depth, with the decks above it", () => {
+    const found = findDeck(tree, "past");
+    expect(found?.deck.id).toBe("past");
+    expect(found?.ancestors.map((deck) => deck.id)).toEqual(["verbs"]);
+    expect(findDeck(tree, "empty")).toBeNull();
   });
 });
 
@@ -105,6 +135,11 @@ describe("buildSeed", () => {
     const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\tWie gaht's?\tWie geht's?\tHow?\t\t\t\n`);
     expect(seed).toContain("'Wie gaht''s?'");
     expect(seed).toContain("('C01-T01', 'FC1', 1)");
+  });
+
+  it("rejects unknown deck colours", () => {
+    const pink = "code\tparent_code\ttitle\temoji\tdescription\tcolor\nC01\t\tLife\t🏙️\t\tteal\n";
+    expect(() => buildSeed(pink, header)).toThrow(/unknown color/);
   });
 
   it("rejects cards on a level with children", () => {
@@ -120,7 +155,13 @@ describe("buildSeed", () => {
 });
 
 describe("todaysQueue", () => {
-  const summary = { due_learning_count: 3, due_review_count: 40, introduced_today: 4, reviewed_today: 80 };
+  const summary = {
+    due_learning_count: 3,
+    due_review_count: 40,
+    introduced_today: 4,
+    reviewed_today: 80,
+    reviews_today: 95,
+  };
 
   it("caps reviews of known words, but never words still being learned", () => {
     expect(todaysQueue(10, summary)).toEqual({ dueNow: 23, waiting: 20, reviewsLeft: 20, newLeft: 6 });

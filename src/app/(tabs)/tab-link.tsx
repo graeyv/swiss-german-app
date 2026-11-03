@@ -2,11 +2,31 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 
-export function TabLink({ href, children }: { href: string; children: ReactNode }) {
-  const active = usePathname() === href;
+type TabLinkProps = { href: string; children: ReactNode };
 
+// Pages below a tab with a dynamic segment only know their URL at request time, so the tab
+// renders unhighlighted until it does.
+export function TabLink(props: TabLinkProps) {
+  return (
+    <Suspense fallback={<TabLinkView {...props} active={false} />}>
+      <ActiveTabLink {...props} />
+    </Suspense>
+  );
+}
+
+function ActiveTabLink({ href, children }: TabLinkProps) {
+  const pathname = usePathname();
+  const active = pathname === href || pathname.startsWith(`${href}/`);
+  return (
+    <TabLinkView href={href} active={active}>
+      {children}
+    </TabLinkView>
+  );
+}
+
+function TabLinkView({ href, children, active }: TabLinkProps & { active: boolean }) {
   return (
     <Link
       href={href}

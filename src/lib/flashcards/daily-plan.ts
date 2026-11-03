@@ -5,7 +5,10 @@ export type FlashcardSummary = {
   due_learning_count: number;
   due_review_count: number;
   introduced_today: number;
+  // Reviews of words the learner already knew, which the daily review limit counts.
   reviewed_today: number;
+  // Every review except a new word's first showing, for today's progress.
+  reviews_today: number;
 };
 
 // Matches the column default and check on public.profiles.

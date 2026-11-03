@@ -2,6 +2,9 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
+// Matches the check on public.decks.color.
+const DECK_COLORS = ["pink", "blue", "green", "yellow", "purple", "orange"];
+
 function parseTsv(text, name) {
   const [header, ...lines] = text.replace(/^﻿/, "").split(/\r?\n/).filter((line) => line.trim());
   const columns = header.split("\t");
@@ -39,6 +42,9 @@ export function buildSeed(decksTsv, cardsTsv) {
 
   for (const deck of decks) {
     if (!deck.code || !deck.title) throw new Error(`Deck is missing a code or title: ${deck.code}`);
+    if (deck.color && !DECK_COLORS.includes(deck.color)) {
+      throw new Error(`Deck ${deck.code} has an unknown color: ${deck.color}`);
+    }
     if (deck.parent_code && !deckCodes.has(deck.parent_code)) {
       throw new Error(`Deck ${deck.code} has an unknown parent: ${deck.parent_code}`);
     }
@@ -67,7 +73,7 @@ export function buildSeed(decksTsv, cardsTsv) {
 
   const deckRows = decks.map(
     (deck) =>
-      `  (${quote(deck.code)}, ${quote(deck.parent_code)}, ${quote(deck.title)}, ${nextPosition(`deck:${deck.parent_code}`)})`,
+      `  (${[deck.code, deck.parent_code, deck.title, deck.emoji, deck.description, deck.color].map(quote).join(", ")}, ${nextPosition(`deck:${deck.parent_code}`)})`,
   );
   const cardRows = cards.map(
     (card) =>
@@ -84,15 +90,22 @@ export function buildSeed(decksTsv, cardsTsv) {
 -- because deleting them would delete learners' review history.
 begin;
 
-create temporary table seed_decks (code text, parent_code text, title text, position integer) on commit drop;
+create temporary table seed_decks (
+  code text, parent_code text, title text, emoji text, description text, color text, position integer
+) on commit drop;
 
-insert into seed_decks (code, parent_code, title, position) values
+insert into seed_decks (code, parent_code, title, emoji, description, color, position) values
 ${deckRows.join(",\n")};
 
-insert into public.decks (code, title, position, published)
-select code, title, position, true from seed_decks
+insert into public.decks (code, title, emoji, description, color, position, published)
+select code, title, emoji, description, color, position, true from seed_decks
 on conflict (code) do update
-  set title = excluded.title, position = excluded.position, published = excluded.published;
+  set title = excluded.title,
+      emoji = excluded.emoji,
+      description = excluded.description,
+      color = excluded.color,
+      position = excluded.position,
+      published = excluded.published;
 
 update public.decks d
 set parent_id = p.id
