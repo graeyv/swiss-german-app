@@ -3,16 +3,10 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { getDeckTree } from "@/app/(tabs)/flashcards/deck-data";
-import { goalReached, NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
-import {
-  type CardRow,
-  FSRS_MODEL,
-  previewIntervals,
-  scheduleReview,
-} from "@/lib/flashcards/scheduling";
+import { getToday } from "@/lib/flashcards/data";
+import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
+import { FSRS_MODEL, previewIntervals, scheduleReview } from "@/lib/flashcards/scheduling";
 import type { CardFront, Flashcard } from "@/lib/types";
-import { getDailyPlan } from "./daily-plan-data";
 
 type ReviewResult =
   | { error: string }
@@ -40,7 +34,7 @@ export async function submitReview(
     .from("review_items")
     .select(CARD_COLUMNS)
     .eq("vocabulary_id", vocabularyId)
-    .maybeSingle<CardRow>();
+    .maybeSingle();
   if (readError) return { error: readError.message };
 
   const now = new Date();
@@ -113,9 +107,5 @@ export async function updateCardFront(cardFront: CardFront): Promise<{ error?: s
 // Asked when a session ends, to celebrate if that session completed today's goal.
 export async function isTodaysGoalReached(): Promise<boolean> {
   const supabase = await createClient();
-  const [tree, { newCardsPerDay, summary }] = await Promise.all([
-    getDeckTree(supabase),
-    getDailyPlan(supabase),
-  ]);
-  return goalReached(newCardsPerDay, summary, tree.some((deck) => deck.new_count > 0));
+  return (await getToday(supabase)).goalReached;
 }

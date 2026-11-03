@@ -1,4 +1,6 @@
-export type DeckColor = "pink" | "blue" | "green" | "yellow" | "purple" | "orange";
+// Matches the check on public.decks.color.
+export const DECK_COLORS = ["pink", "blue", "green", "yellow", "purple", "orange"] as const;
+export type DeckColor = (typeof DECK_COLORS)[number];
 
 // A row of the flashcard_decks database function.
 export type DeckRow = {

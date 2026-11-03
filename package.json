@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "db:push": "supabase db push --include-seed",
+    "db:types": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
     "content:build": "node scripts/build-flashcard-seed.mjs",
     "db:content": "npm run content:build && supabase db query --linked -f supabase/seeds/flashcards.sql",
     "dev:reset-progress": "node scripts/reset-progress.mjs",

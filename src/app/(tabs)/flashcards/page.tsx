@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { getDailyPlan } from "@/app/flashcards/daily-plan-data";
-import { goalReached, reviewProgress, todaysQueue } from "@/lib/flashcards/daily-plan";
+import { getToday } from "@/lib/flashcards/data";
+import { reviewProgress } from "@/lib/flashcards/daily-plan";
 import { createClient } from "@/lib/supabase/server";
 import { DeckGrid } from "./deck-card";
-import { getDeckTree } from "./deck-data";
 import { TodaysGoal } from "./todays-goal";
 
 export const metadata: Metadata = { title: "Flashcards – Grüezi" };
@@ -19,10 +18,7 @@ export default function FlashcardsPage() {
 
 async function Decks() {
   const supabase = await createClient();
-  const [tree, { newCardsPerDay, summary }] = await Promise.all([
-    getDeckTree(supabase),
-    getDailyPlan(supabase),
-  ]);
+  const { tree, newCardsPerDay, summary, limits, goalReached } = await getToday(supabase);
 
   if (tree.length === 0) {
     return (
@@ -33,7 +29,6 @@ async function Decks() {
   }
 
   const reviews = reviewProgress(newCardsPerDay, summary);
-  const limits = todaysQueue(newCardsPerDay, summary);
 
   return (
     <>
@@ -44,7 +39,7 @@ async function Decks() {
         introducedToday={summary.introduced_today}
         reviewsDone={reviews.done}
         reviewsTotal={reviews.total}
-        reached={goalReached(newCardsPerDay, summary, tree.some((deck) => deck.new_count > 0))}
+        reached={goalReached}
       />
 
       <section className="flex flex-col gap-3">

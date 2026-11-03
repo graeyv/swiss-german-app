@@ -1,14 +1,10 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getDeckTree } from "@/app/(tabs)/flashcards/deck-data";
-import { goalReached, todaysQueue } from "@/lib/flashcards/daily-plan";
+import { getCardFront, getToday, toFlashcard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
-import type { CardRow } from "@/lib/flashcards/scheduling";
 import { composeSession } from "@/lib/flashcards/session";
 import { createClient } from "@/lib/supabase/server";
-import { getCardFront, getDailyPlan } from "../../daily-plan-data";
 import { ReviewSession } from "../../review-session";
-import { toFlashcard } from "../../to-flashcard";
 
 // Enough for a long session. Due cards beyond it wait for the next one.
 const MAX_DUE_CARDS = 100;
@@ -25,15 +21,12 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   const [{ code }, { shuffle }] = await Promise.all([params, searchParams]);
   const supabase = await createClient();
 
-  const [tree, { newCardsPerDay, summary }, cardFront] = await Promise.all([
-    getDeckTree(supabase),
-    getDailyPlan(supabase),
-    getCardFront(supabase),
-  ]);
+  const [today, cardFront] = await Promise.all([getToday(supabase), getCardFront(supabase)]);
+  const { tree, limits } = today;
   const found = findDeck(tree, code);
   if (!found) notFound();
 
-  const { newLeft, reviewsLeft } = todaysQueue(newCardsPerDay, summary);
+  const { newLeft, reviewsLeft } = limits;
   const [due, fresh] = await Promise.all([
     supabase.rpc("due_flashcards", { p_limit: MAX_DUE_CARDS, p_deck_code: code }),
     supabase.rpc("new_flashcards", { p_deck_code: code, p_limit: newLeft }),
@@ -42,8 +35,8 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   if (fresh.error) throw new Error(fresh.error.message);
 
   const entries = composeSession(
-    due.data as (Parameters<typeof toFlashcard>[1] & CardRow)[],
-    fresh.data as Parameters<typeof toFlashcard>[1][],
+    due.data,
+    fresh.data,
     reviewsLeft,
     { shuffle: shuffle === "1" },
   );
@@ -66,11 +59,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
       <ReviewSession
         cards={cards}
         cardFront={cardFront}
-        goalReachedBefore={goalReached(
-          newCardsPerDay,
-          summary,
-          tree.some((deck) => deck.new_count > 0),
-        )}
+        goalReachedBefore={today.goalReached}
         emptyMessage="Nothing left here for today: you've reached your daily goal, or nothing to review yet."
         backHref={`/flashcards/decks/${back.code}`}
         backLabel={back.title}

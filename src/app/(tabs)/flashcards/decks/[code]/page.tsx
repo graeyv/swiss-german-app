@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getDailyPlan } from "@/app/flashcards/daily-plan-data";
-import { todaysQueue } from "@/lib/flashcards/daily-plan";
+import { getToday } from "@/lib/flashcards/data";
 import { type DeckNode, findDeck } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { createClient } from "@/lib/supabase/server";
 import { TINTS } from "../../deck-card";
-import { getDeckTree } from "../../deck-data";
 import { Counts } from "../../counts";
 import { SubcategorySheet } from "./subcategory-sheet";
 
@@ -24,16 +22,12 @@ export default function DeckPage({ params }: PageProps<"/flashcards/decks/[code]
 async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "params">) {
   const { code } = await params;
   const supabase = await createClient();
-  const [tree, { newCardsPerDay, summary }] = await Promise.all([
-    getDeckTree(supabase),
-    getDailyPlan(supabase),
-  ]);
+  const { tree, limits } = await getToday(supabase);
 
   const found = findDeck(tree, code);
   if (!found) notFound();
   const { deck, ancestors } = found;
   const parent = ancestors.at(-1);
-  const limits = todaysQueue(newCardsPerDay, summary);
 
   return (
     <>

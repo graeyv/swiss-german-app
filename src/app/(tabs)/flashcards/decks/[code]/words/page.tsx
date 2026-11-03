@@ -1,21 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getDailyPlan } from "@/app/flashcards/daily-plan-data";
-import { todaysQueue } from "@/lib/flashcards/daily-plan";
+import { getToday } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { createClient } from "@/lib/supabase/server";
 import { TINTS } from "../../../deck-card";
-import { getDeckTree } from "../../../deck-data";
-
-// The columns of the deck_words database function that the list shows.
-type DeckWord = {
-  vocabulary_id: string;
-  swiss_german: string;
-  high_german: string;
-  english: string;
-};
 
 export default function WordListPage({ params }: PageProps<"/flashcards/decks/[code]/words">) {
   return (
@@ -28,10 +18,9 @@ export default function WordListPage({ params }: PageProps<"/flashcards/decks/[c
 async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/words">, "params">) {
   const { code } = await params;
   const supabase = await createClient();
-  const [tree, words, { newCardsPerDay, summary }] = await Promise.all([
-    getDeckTree(supabase),
+  const [{ tree, limits }, words] = await Promise.all([
+    getToday(supabase),
     supabase.rpc("deck_words", { p_deck_code: code }),
-    getDailyPlan(supabase),
   ]);
   if (words.error) throw new Error(words.error.message);
 
@@ -39,7 +28,7 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
   if (!found) notFound();
   const { deck, ancestors } = found;
   const parent = ancestors.at(-1);
-  const { newWords, due } = deckAvailability(deck, todaysQueue(newCardsPerDay, summary));
+  const { newWords, due } = deckAvailability(deck, limits);
 
   return (
     <>
@@ -80,7 +69,7 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
-            {(words.data as DeckWord[]).map((word) => (
+            {words.data.map((word) => (
               <tr key={word.vocabulary_id} className="align-top">
                 <td lang="gsw" className="px-4 py-3 font-semibold break-words">
                   {word.swiss_german}
