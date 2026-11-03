@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
+import { BottomSheet } from "../../bottom-sheet";
 
 type SubcategorySheetProps = {
   code: string;
@@ -16,14 +17,6 @@ type SubcategorySheetProps = {
 export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: SubcategorySheetProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const done = newWords + due === 0;
-
-  // While a modal dialog is open, the browser blocks everything else on the page. Next.js keeps
-  // pages we leave alive in the background, so the sheet must close when we leave, or it would
-  // block the next page, such as its back link.
-  useLayoutEffect(() => {
-    const sheet = dialog.current;
-    return () => sheet?.close();
-  }, []);
   const close = () => dialog.current?.close();
 
   return (
@@ -42,56 +35,44 @@ export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: Su
         </span>
       </button>
 
-      {/* A tap on the dimmed backdrop lands on the dialog itself, and closes it. */}
-      <dialog
-        ref={dialog}
-        aria-label={title}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) event.currentTarget.close();
-        }}
-        className="mx-auto mt-auto mb-0 w-full max-w-xl rounded-t-3xl bg-surface p-0 text-foreground transition-transform duration-300 backdrop:bg-black/40 starting:open:translate-y-full motion-reduce:transition-none"
-      >
-        <div className="flex flex-col gap-5 px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-          <span aria-hidden className="mx-auto h-1.5 w-10 rounded-full bg-line" />
-
-          <div className="flex items-center gap-4">
-            <span aria-hidden className={`flex size-14 shrink-0 items-center justify-center rounded-2xl text-3xl ${tint}`}>
-              {emoji}
-            </span>
-            <div className="flex min-w-0 flex-col gap-1">
-              <h2 className="text-xl font-bold tracking-tight">{title}</h2>
-              {done ? (
-                <span className="text-sm text-muted">Done for today</span>
-              ) : (
-                <Counts newWords={newWords} due={due} />
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
+      <BottomSheet ref={dialog} label={title}>
+        <div className="flex items-center gap-4">
+          <span aria-hidden className={`flex size-14 shrink-0 items-center justify-center rounded-2xl text-3xl ${tint}`}>
+            {emoji}
+          </span>
+          <div className="flex min-w-0 flex-col gap-1">
+            <h2 className="text-xl font-bold tracking-tight">{title}</h2>
             {done ? (
-              <span className="w-full rounded-full bg-line px-6 py-3 text-center font-semibold text-muted">
-                Nothing left for today
-              </span>
+              <span className="text-sm text-muted">Done for today</span>
             ) : (
-              <Link
-                href={`/flashcards/session/${code}`}
-                onClick={close}
-                className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
-              >
-                Start flashcards
-              </Link>
+              <Counts newWords={newWords} due={due} />
             )}
-            <Link
-              href={`/flashcards/decks/${code}/words`}
-              onClick={close}
-              className="w-full rounded-full border border-line px-6 py-3 text-center font-semibold transition-colors hover:border-accent"
-            >
-              See word list
-            </Link>
           </div>
         </div>
-      </dialog>
+
+        <div className="flex flex-col gap-2">
+          {done ? (
+            <span className="w-full rounded-full bg-line px-6 py-3 text-center font-semibold text-muted">
+              Nothing left for today
+            </span>
+          ) : (
+            <Link
+              href={`/flashcards/session/${code}`}
+              onClick={close}
+              className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
+            >
+              Start flashcards
+            </Link>
+          )}
+          <Link
+            href={`/flashcards/decks/${code}/words`}
+            onClick={close}
+            className="w-full rounded-full border border-line px-6 py-3 text-center font-semibold transition-colors hover:border-accent"
+          >
+            See word list
+          </Link>
+        </div>
+      </BottomSheet>
     </>
   );
 }

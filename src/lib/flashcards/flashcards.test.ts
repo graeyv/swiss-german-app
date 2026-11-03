@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
-import { estimateMinutes, PRESETS, presetName, reviewLimit, todaysQueue } from "./daily-plan";
+import { presetName, reviewLimit, todaysQueue } from "./daily-plan";
 import { buildDeckTree, type DeckRow, findDeck } from "./decks";
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
@@ -186,15 +186,6 @@ describe("reviewLimit", () => {
   });
 });
 
-describe("estimateMinutes", () => {
-  it("splits each preset's time between new cards and reviews", () => {
-    expect(PRESETS.map(({ newCardsPerDay }) => estimateMinutes(newCardsPerDay))).toEqual([
-      { newCards: 2, reviews: 6, total: 8 },
-      { newCards: 3, reviews: 12, total: 15 },
-      { newCards: 7, reviews: 23, total: 30 },
-    ]);
-  });
-});
 
 describe("presetName", () => {
   it("names presets only", () => {

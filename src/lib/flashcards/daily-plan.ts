@@ -24,23 +24,11 @@ export const PRESETS = [
 // Rule of thumb: once a pace settles, each new card a day brings up to about 10 reviews a day.
 const REVIEWS_PER_NEW_CARD = 10;
 const MIN_REVIEW_LIMIT = 20;
-// A new card takes about 20 seconds including its same-session repeats, a review about 7.
-const SECONDS_PER_NEW_CARD = 20;
-const SECONDS_PER_REVIEW = 7;
 
 // Learners only choose new cards. Without new cards, they can catch up on everything.
 export function reviewLimit(newCardsPerDay: number) {
   if (newCardsPerDay === 0) return null;
   return Math.max(MIN_REVIEW_LIMIT, newCardsPerDay * REVIEWS_PER_NEW_CARD);
-}
-
-// The daily time once a pace has settled, split between new cards and reviews.
-export function estimateMinutes(newCardsPerDay: number) {
-  const newCards = Math.round((newCardsPerDay * SECONDS_PER_NEW_CARD) / 60);
-  const reviews = Math.round(
-    ((reviewLimit(newCardsPerDay) ?? 0) * SECONDS_PER_REVIEW) / 60,
-  );
-  return { newCards, reviews, total: newCards + reviews };
 }
 
 export function presetName(newCardsPerDay: number) {
