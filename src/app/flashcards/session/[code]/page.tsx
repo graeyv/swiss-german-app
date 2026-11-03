@@ -71,7 +71,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
           summary,
           tree.some((deck) => deck.new_count > 0),
         )}
-        emptyMessage="Nothing left here for today: you've reached your daily goal, or nothing is due yet."
+        emptyMessage="Nothing left here for today: you've reached your daily goal, or nothing to review yet."
         backHref={`/flashcards/decks/${back.code}`}
         backLabel={back.title}
       />

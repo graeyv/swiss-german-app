@@ -51,7 +51,7 @@ async function DueCards({ searchParams }: Pick<PageProps<"/flashcards/review">, 
         summary,
         tree.some((deck) => deck.new_count > 0),
       )}
-      emptyMessage="You're all caught up. Nothing is due."
+      emptyMessage="You're all caught up. Nothing to review."
       backHref="/flashcards"
       backLabel="flashcards"
     />

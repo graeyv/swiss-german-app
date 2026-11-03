@@ -8,7 +8,8 @@ import { deckAvailability } from "@/lib/flashcards/session";
 import { createClient } from "@/lib/supabase/server";
 import { TINTS } from "../../deck-card";
 import { getDeckTree } from "../../deck-data";
-import { Counts, SubcategorySheet } from "./subcategory-sheet";
+import { Counts } from "../../counts";
+import { SubcategorySheet } from "./subcategory-sheet";
 
 type Availability = ReturnType<typeof deckAvailability>;
 
@@ -107,7 +108,7 @@ function ShuffleButton({ deck, availability }: { deck: DeckNode; availability: A
       <span className="flex flex-1 flex-col">
         <strong className="text-lg">Shuffle learning in this category</strong>
         <span className="text-sm opacity-90">
-          {newWords} new · {due} due
+          {newWords} new · {due} {due === 1 ? "review" : "reviews"}
         </span>
       </span>
       <span aria-hidden className="text-2xl">

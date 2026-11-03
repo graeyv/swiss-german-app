@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { BottomSheet } from "../../bottom-sheet";
+import { Counts } from "../../counts";
 
 type SubcategorySheetProps = {
   code: string;
@@ -74,18 +75,5 @@ export function SubcategorySheet({ code, title, emoji, tint, newWords, due }: Su
         </div>
       </BottomSheet>
     </>
-  );
-}
-
-export function Counts({ newWords, due }: { newWords: number; due: number }) {
-  if (newWords + due === 0) return <span className="shrink-0 text-sm text-muted">Done for today</span>;
-
-  return (
-    <span className="flex shrink-0 gap-1.5 text-xs font-semibold">
-      {newWords > 0 && (
-        <span className="rounded-full bg-accent/10 px-2 py-1 text-accent">{newWords} new</span>
-      )}
-      {due > 0 && <span className="rounded-full bg-line px-2 py-1">{due} due</span>}
-    </span>
   );
 }
