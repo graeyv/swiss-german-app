@@ -12,6 +12,8 @@ export type DeckRow = {
   deck_position: number;
   card_count: number;
   due_count: number;
+  // The part of due_count that are words the learner already knows, which the daily limit caps.
+  due_review_count: number;
   new_count: number;
 };
 
@@ -30,6 +32,14 @@ export function buildDeckTree(rows: readonly DeckRow[]): DeckNode[] {
       });
 
   return build(null, "yellow");
+}
+
+// Only the lowest level holds cards, so it starts a session. A deck with subcategories opens its
+// own page, whatever its depth, where its subcategories can be chosen or shuffled together.
+export function subcategoryHref(deck: Pick<DeckNode, "code" | "children">) {
+  return deck.children.length > 0
+    ? `/flashcards/decks/${deck.code}`
+    : `/flashcards/session/${deck.code}`;
 }
 
 // The deck with this code, and the decks above it from the top level down.

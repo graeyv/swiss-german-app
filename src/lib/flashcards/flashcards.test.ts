@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
 import { estimateMinutes, PRESETS, presetName, reviewLimit, todaysQueue } from "./daily-plan";
-import { buildDeckTree, type DeckRow, findDeck } from "./decks";
+import { buildDeckTree, type DeckRow, findDeck, subcategoryHref } from "./decks";
 import { advanceQueue } from "./queue";
+import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
 
 const WORD = "5b0c2b8e-6d0e-4c1e-9a55-0d1f6f2f7a11";
@@ -98,6 +99,7 @@ describe("buildDeckTree", () => {
       deck_position,
       card_count,
       due_count: 0,
+      due_review_count: 0,
       new_count: 0,
     }) satisfies DeckRow;
 
@@ -124,6 +126,11 @@ describe("buildDeckTree", () => {
     expect(found?.deck.id).toBe("past");
     expect(found?.ancestors.map((deck) => deck.id)).toEqual(["verbs"]);
     expect(findDeck(tree, "empty")).toBeNull();
+  });
+
+  it("opens a deck with subcategories, and starts a session on the lowest level", () => {
+    expect(subcategoryHref(tree[1])).toBe("/flashcards/decks/verbs");
+    expect(subcategoryHref(tree[1].children[1])).toBe("/flashcards/session/past");
   });
 });
 
@@ -199,5 +206,47 @@ describe("presetName", () => {
   it("names presets only", () => {
     expect(presetName(10)).toBe("Steady");
     expect(presetName(12)).toBeUndefined();
+  });
+});
+
+describe("deckAvailability", () => {
+  const deck = { new_count: 12, due_count: 30, due_review_count: 26 };
+
+  it("caps new words and known-word reviews by what's left today", () => {
+    expect(deckAvailability(deck, { newLeft: 5, reviewsLeft: 10 })).toEqual({ newWords: 5, due: 14 });
+  });
+
+  it("keeps words in their learning steps once the limits are reached", () => {
+    expect(deckAvailability(deck, { newLeft: 0, reviewsLeft: 0 })).toEqual({ newWords: 0, due: 4 });
+  });
+});
+
+describe("composeSession", () => {
+  const due = [
+    { id: "learning", state: 1 },
+    { id: "review-1", state: 2 },
+    { id: "review-2", state: 2 },
+    { id: "relearning", state: 3 },
+  ];
+  const fresh = [{ id: "new-1" }, { id: "new-2" }];
+  const ids = (entries: ReturnType<typeof composeSession<(typeof due)[number], (typeof fresh)[number]>>) =>
+    entries.map((entry) => ("due" in entry ? entry.due.id : entry.fresh.id));
+
+  it("puts due cards first, most overdue first, then new words, within the review limit", () => {
+    expect(ids(composeSession(due, fresh, 1, { shuffle: false }))).toEqual([
+      "learning",
+      "review-1",
+      "relearning",
+      "new-1",
+      "new-2",
+    ]);
+  });
+
+  it("shuffles the same cards when asked", () => {
+    let seed = 0.3;
+    const random = () => (seed = (seed * 9301 + 0.49297) % 1);
+    const shuffled = ids(composeSession(due, fresh, 1, { shuffle: true, random }));
+    expect(shuffled).not.toEqual(["learning", "review-1", "relearning", "new-1", "new-2"]);
+    expect([...shuffled].sort()).toEqual(["learning", "new-1", "new-2", "relearning", "review-1"]);
   });
 });

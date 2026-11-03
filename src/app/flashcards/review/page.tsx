@@ -39,5 +39,12 @@ async function DueCards({ searchParams }: Pick<PageProps<"/flashcards/review">, 
   const now = new Date();
   const cards = await Promise.all(rows.map((row) => toFlashcard(supabase, row, row, now)));
 
-  return <ReviewSession cards={cards} emptyMessage="You're all caught up. Nothing is due." />;
+  return (
+    <ReviewSession
+      cards={cards}
+      emptyMessage="You're all caught up. Nothing is due."
+      backHref="/flashcards"
+      backLabel="flashcards"
+    />
+  );
 }

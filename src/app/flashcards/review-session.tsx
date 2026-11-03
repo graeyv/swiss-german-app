@@ -9,6 +9,9 @@ import { submitReview } from "./actions";
 type ReviewSessionProps = {
   cards: Flashcard[];
   emptyMessage: string;
+  // Where the learner returns to, such as the category the session started from.
+  backHref: string;
+  backLabel: string;
 };
 
 const GRADES = [
@@ -21,7 +24,7 @@ const GRADES = [
 const primaryButton =
   "w-full rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50";
 
-export function ReviewSession({ cards, emptyMessage }: ReviewSessionProps) {
+export function ReviewSession({ cards, emptyMessage, backHref, backLabel }: ReviewSessionProps) {
   // Null until the first grade, so a session that hasn't started shows the latest cards.
   const [queue, setQueue] = useState<Flashcard[] | null>(null);
   const [revealed, setRevealed] = useState(false);
@@ -51,8 +54,8 @@ export function ReviewSession({ cards, emptyMessage }: ReviewSessionProps) {
         <h1 className="text-4xl font-bold tracking-tight">
           {reviewedCount} {reviewedCount === 1 ? "review" : "reviews"}
         </h1>
-        <Link href="/flashcards" className={`${primaryButton} text-center`}>
-          Back to flashcards
+        <Link href={backHref} className={`${primaryButton} text-center`}>
+          Back to {backLabel}
         </Link>
       </main>
     );
@@ -63,8 +66,8 @@ export function ReviewSession({ cards, emptyMessage }: ReviewSessionProps) {
     return (
       <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-6 px-6 py-10">
         <p className="text-muted">{emptyMessage}</p>
-        <Link href="/flashcards" className="underline underline-offset-4">
-          Back to flashcards
+        <Link href={backHref} className="underline underline-offset-4">
+          Back to {backLabel}
         </Link>
       </main>
     );
@@ -88,7 +91,11 @@ export function ReviewSession({ cards, emptyMessage }: ReviewSessionProps) {
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-8 px-6 py-6">
       <header className="flex items-center gap-4">
-        <Link href="/flashcards" aria-label="Leave session" className="text-xl text-muted">
+        <Link
+          href={backHref}
+          aria-label="Leave session"
+          className="-ml-2 flex size-11 items-center justify-center text-xl text-muted"
+        >
           ×
         </Link>
         <p className="flex-1 text-right text-sm text-muted">{activeQueue.length} left</p>

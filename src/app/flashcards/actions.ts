@@ -16,6 +16,13 @@ type ReviewResult =
   | { error: string }
   | { dueAt: string; reviewId: string; intervals: Flashcard["intervals"] };
 
+// The overview and deck pages show today's counts. Running sessions aren't refreshed: they keep
+// their own queue, and reloading them would redo every card's interval previews.
+function revalidateFlashcardPages() {
+  revalidatePath("/flashcards");
+  revalidatePath("/flashcards/decks/[code]", "page");
+}
+
 const CARD_COLUMNS =
   "state, schedule_status, stability, difficulty, due_at, last_review_at, reps, lapses, learning_step, scheduled_days";
 
@@ -47,7 +54,7 @@ export async function submitReview(
   });
   if (error) return { error: error.message };
 
-  revalidatePath("/flashcards");
+  revalidateFlashcardPages();
   return {
     dueAt: card.due_at,
     reviewId: randomUUID(),
@@ -77,6 +84,6 @@ export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?:
   if (error) return { error: error.message };
   if (data.length === 0) return { error: "Your profile is missing" };
 
-  revalidatePath("/flashcards");
+  revalidateFlashcardPages();
   return {};
 }

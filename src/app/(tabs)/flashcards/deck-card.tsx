@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { DeckColor, DeckNode } from "@/lib/flashcards/decks";
 
 // Full class names, so Tailwind finds them in the source.
-const TINTS: Record<DeckColor, string> = {
+export const TINTS: Record<DeckColor, string> = {
   pink: "bg-tint-pink",
   blue: "bg-tint-blue",
   green: "bg-tint-green",
