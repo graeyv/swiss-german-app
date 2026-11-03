@@ -3,11 +3,13 @@
 // A row of the flashcard_summary database function.
 export type FlashcardSummary = {
   due_learning_count: number;
+  // The part of due_learning_count that are words learned before today.
+  due_learning_known_count: number;
   due_review_count: number;
   introduced_today: number;
-  // Reviews of words the learner already knew, which the daily review limit counts.
+  // Answers on words the learner already knew, which the daily review limit counts.
   reviewed_today: number;
-  // Every review except a new word's first showing, for today's progress.
+  // Words learned before today that were reviewed today, each counted once.
   reviews_today: number;
 };
 
@@ -33,6 +35,27 @@ export function reviewLimit(newCardsPerDay: number) {
 
 export function presetName(newCardsPerDay: number) {
   return PRESETS.find((preset) => preset.newCardsPerDay === newCardsPerDay)?.name;
+}
+
+// Whether today's goal is met: something was practised, the new words are learned (or there are
+// none left to learn), and nothing is due within today's review limit.
+export function goalReached(
+  newCardsPerDay: number,
+  summary: FlashcardSummary,
+  newWordsLeft: boolean,
+) {
+  const practised = summary.introduced_today + summary.reviews_today > 0;
+  const newWordsDone = summary.introduced_today >= newCardsPerDay || !newWordsLeft;
+  return practised && newWordsDone && todaysQueue(newCardsPerDay, summary).dueNow === 0;
+}
+
+// Today's reviews, counted in words learned before today. Repeats of today's new words are
+// part of learning them, so they're in neither number.
+export function reviewProgress(newCardsPerDay: number, summary: FlashcardSummary) {
+  const { reviewsLeft } = todaysQueue(newCardsPerDay, summary);
+  const stillDue =
+    summary.due_learning_known_count + Math.min(summary.due_review_count, reviewsLeft);
+  return { done: summary.reviews_today, total: summary.reviews_today + stillDue };
 }
 
 // What today's limits leave. Words in their learning steps are never held back.

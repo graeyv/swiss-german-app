@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
-import { presetName, reviewLimit, todaysQueue } from "./daily-plan";
+import { CHEERS, pickCheer } from "./cheers";
+import { goalReached, presetName, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
 import { buildDeckTree, type DeckRow, findDeck } from "./decks";
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
@@ -158,10 +159,11 @@ describe("buildSeed", () => {
 describe("todaysQueue", () => {
   const summary = {
     due_learning_count: 3,
+    due_learning_known_count: 1,
     due_review_count: 40,
     introduced_today: 4,
     reviewed_today: 80,
-    reviews_today: 95,
+    reviews_today: 75,
   };
 
   it("caps reviews of known words, but never words still being learned", () => {
@@ -233,5 +235,56 @@ describe("composeSession", () => {
     const shuffled = ids(composeSession(due, fresh, 1, { shuffle: true, random }));
     expect(shuffled).not.toEqual(["learning", "review-1", "relearning", "new-1", "new-2"]);
     expect([...shuffled].sort()).toEqual(["learning", "new-1", "new-2", "relearning", "review-1"]);
+  });
+});
+
+describe("goalReached", () => {
+  const summary = (overrides: Partial<Parameters<typeof todaysQueue>[1]>) => ({
+    due_learning_count: 0,
+    due_learning_known_count: 0,
+    due_review_count: 0,
+    introduced_today: 10,
+    reviewed_today: 0,
+    reviews_today: 20,
+    ...overrides,
+  });
+
+  it("is reached once the new words are learned and nothing is due", () => {
+    expect(goalReached(10, summary({}), true)).toBe(true);
+  });
+
+  it("isn't reached while new words or due cards remain", () => {
+    expect(goalReached(10, summary({ introduced_today: 6 }), true)).toBe(false);
+    expect(goalReached(10, summary({ due_learning_count: 2 }), true)).toBe(false);
+  });
+
+  it("counts the new words as done when none are left to learn", () => {
+    expect(goalReached(10, summary({ introduced_today: 3 }), false)).toBe(true);
+  });
+
+  it("isn't reached on a day without practice, even with nothing to do", () => {
+    expect(goalReached(10, summary({ introduced_today: 0, reviews_today: 0 }), false)).toBe(false);
+  });
+});
+
+describe("pickCheer", () => {
+  it("picks every cheer across the range of random numbers", () => {
+    expect(pickCheer(() => 0)).toBe(CHEERS[0]);
+    expect(pickCheer(() => 0.999)).toBe(CHEERS.at(-1));
+  });
+});
+
+describe("reviewProgress", () => {
+  it("counts known words only, leaving out repeats of today's new words", () => {
+    const summary = {
+      due_learning_count: 5,
+      due_learning_known_count: 1,
+      due_review_count: 4,
+      introduced_today: 5,
+      reviewed_today: 3,
+      reviews_today: 3,
+    };
+    // 3 reviewed, plus 1 known word in its steps and 4 due reviews still to go.
+    expect(reviewProgress(10, summary)).toEqual({ done: 3, total: 8 });
   });
 });

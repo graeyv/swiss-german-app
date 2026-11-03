@@ -3,7 +3,8 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
+import { getDeckTree } from "@/app/(tabs)/flashcards/deck-data";
+import { goalReached, NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
 import {
   type CardRow,
   FSRS_MODEL,
@@ -11,6 +12,7 @@ import {
   scheduleReview,
 } from "@/lib/flashcards/scheduling";
 import type { CardFront, Flashcard } from "@/lib/types";
+import { getDailyPlan } from "./daily-plan-data";
 
 type ReviewResult =
   | { error: string }
@@ -106,4 +108,14 @@ export async function updateCardFront(cardFront: CardFront): Promise<{ error?: s
   if (error) return { error: error.message };
   if (data.length === 0) return { error: "Your profile is missing" };
   return {};
+}
+
+// Asked when a session ends, to celebrate if that session completed today's goal.
+export async function isTodaysGoalReached(): Promise<boolean> {
+  const supabase = await createClient();
+  const [tree, { newCardsPerDay, summary }] = await Promise.all([
+    getDeckTree(supabase),
+    getDailyPlan(supabase),
+  ]);
+  return goalReached(newCardsPerDay, summary, tree.some((deck) => deck.new_count > 0));
 }

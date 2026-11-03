@@ -9,8 +9,9 @@ type TodaysGoalProps = {
   newCardsPerDay: number;
   introducedToday: number;
   reviewsDone: number;
-  // Reviews done plus those still due today, so the remainder matches what sessions offer.
+  // Words reviewed plus those still due today, counting only words learned before today.
   reviewsTotal: number;
+  reached: boolean;
 };
 
 export function TodaysGoal({
@@ -18,6 +19,7 @@ export function TodaysGoal({
   introducedToday,
   reviewsDone,
   reviewsTotal,
+  reached,
 }: TodaysGoalProps) {
   const sheet = useRef<HTMLDialogElement>(null);
   // The goal as last saved, so the card updates without waiting for the page to refresh.
@@ -55,9 +57,20 @@ export function TodaysGoal({
   }
 
   return (
-    <section className="flex flex-col gap-4 rounded-2xl border border-line bg-linear-135 from-highlight to-surface to-75% p-5">
+    <section
+      className={`flex flex-col gap-4 rounded-2xl border border-line bg-linear-135 to-surface to-75% p-5 ${
+        reached ? "from-tint-green" : "from-highlight"
+      }`}
+    >
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-lg font-bold tracking-tight">Today&rsquo;s goal</h2>
+        <h2 className="flex items-center gap-2 text-lg font-bold tracking-tight">
+          Today&rsquo;s goal
+          {reached && (
+            <span className="rounded-full bg-success px-2.5 py-0.5 text-xs font-semibold text-surface motion-safe:animate-pop">
+              🎉 Reached
+            </span>
+          )}
+        </h2>
         <button
           onClick={open}
           aria-label="Edit daily goal"

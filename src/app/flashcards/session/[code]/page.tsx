@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getDeckTree } from "@/app/(tabs)/flashcards/deck-data";
-import { todaysQueue } from "@/lib/flashcards/daily-plan";
+import { goalReached, todaysQueue } from "@/lib/flashcards/daily-plan";
 import { findDeck } from "@/lib/flashcards/decks";
 import type { CardRow } from "@/lib/flashcards/scheduling";
 import { composeSession } from "@/lib/flashcards/session";
@@ -66,6 +66,11 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
       <ReviewSession
         cards={cards}
         cardFront={cardFront}
+        goalReachedBefore={goalReached(
+          newCardsPerDay,
+          summary,
+          tree.some((deck) => deck.new_count > 0),
+        )}
         emptyMessage="Nothing left here for today: you've reached your daily goal, or nothing is due yet."
         backHref={`/flashcards/decks/${back.code}`}
         backLabel={back.title}

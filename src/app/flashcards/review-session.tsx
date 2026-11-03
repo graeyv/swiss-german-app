@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useState, useTransition } from "react";
+import { type Cheer, pickCheer } from "@/lib/flashcards/cheers";
 import { advanceQueue } from "@/lib/flashcards/queue";
 import type { CardFront, Flashcard } from "@/lib/types";
-import { submitReview, updateCardFront } from "./actions";
+import { isTodaysGoalReached, submitReview, updateCardFront } from "./actions";
 
 type Grade = 1 | 2 | 3 | 4;
 
 type ReviewSessionProps = {
   cards: Flashcard[];
   cardFront: CardFront;
+  // Whether today's goal was already met when the session started, so only the session that
+  // completes it celebrates.
+  goalReachedBefore: boolean;
   emptyMessage: string;
   // Where the learner returns to, such as the category the session started from.
   backHref: string;
@@ -36,6 +40,7 @@ const primaryButton =
 export function ReviewSession({
   cards,
   cardFront,
+  goalReachedBefore,
   emptyMessage,
   backHref,
   backLabel,
@@ -44,9 +49,15 @@ export function ReviewSession({
   const [queue, setQueue] = useState<Flashcard[] | null>(null);
   // Cards finished for this session. A missed card goes back into the queue instead.
   const [completed, setCompleted] = useState(0);
-  const [reviewedCount, setReviewedCount] = useState(0);
+  // Words, not answers: each counts once, on its first answer this session. Repeats of a new
+  // word are part of learning it, and only words already known count as reviews.
+  const [answered, setAnswered] = useState<ReadonlySet<string>>(new Set());
   const [newLearned, setNewLearned] = useState(0);
+  const [reviewed, setReviewed] = useState(0);
   const [front, setFront] = useState(cardFront);
+  // Picked when the last card is answered, for the end screen.
+  const [cheer, setCheer] = useState<Cheer | null>(null);
+  const [goalJustReached, setGoalJustReached] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saving, startSaving] = useTransition();
 
@@ -61,29 +72,52 @@ export function ReviewSession({
     return () => {
       setQueue(null);
       setCompleted(0);
-      setReviewedCount(0);
+      setAnswered(new Set());
       setNewLearned(0);
+      setReviewed(0);
+      setCheer(null);
+      setGoalJustReached(false);
       setSaveError(null);
     };
   }, [finished]);
 
   if (finished) {
     return (
-      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-6 px-6 py-10">
-        <p className="text-5xl" aria-hidden>
-          🎉
-        </p>
-        <div>
-          <p className="font-semibold text-success">Session complete</p>
-          <h1 className="text-4xl font-bold tracking-tight">
-            {reviewedCount} {reviewedCount === 1 ? "card" : "cards"} practised
-          </h1>
-          {newLearned > 0 && (
-            <p className="mt-1 text-muted">
-              Including {newLearned} new {newLearned === 1 ? "word" : "words"}.
-            </p>
+      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-8 px-6 py-10">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <p aria-hidden className="text-6xl motion-safe:animate-pop">
+            {goalJustReached ? "🎯" : "🎉"}
+          </p>
+          {cheer && (
+            <h1 lang="gsw" className="text-4xl font-bold tracking-tight">
+              {cheer}
+            </h1>
           )}
         </div>
+
+        {newLearned + reviewed > 0 && (
+          <div className="flex divide-x divide-line rounded-2xl border border-line bg-surface">
+            {newLearned > 0 && (
+              <Stat value={newLearned} label={newLearned === 1 ? "new word learned" : "new words learned"} />
+            )}
+            {reviewed > 0 && (
+              <Stat value={reviewed} label={reviewed === 1 ? "word reviewed" : "words reviewed"} />
+            )}
+          </div>
+        )}
+
+        {goalJustReached && (
+          <div className="flex items-center gap-4 rounded-2xl bg-tint-green p-5 motion-safe:animate-pop">
+            <span aria-hidden className="text-3xl">
+              🎯
+            </span>
+            <span className="flex flex-col">
+              <strong className="text-lg text-success">Today&rsquo;s goal reached!</strong>
+              <span className="text-sm text-muted">That&rsquo;s it for today. See you tomorrow.</span>
+            </span>
+          </div>
+        )}
+
         <Link href={backHref} className={`${primaryButton} text-center`}>
           Back to {backLabel}
         </Link>
@@ -119,8 +153,17 @@ export function ReviewSession({
       };
       const next = advanceQueue(activeQueue, repeat, new Date(result.dueAt), new Date());
       if (next.length < activeQueue.length) setCompleted((count) => count + 1);
-      if (card.kind === "new") setNewLearned((count) => count + 1);
-      setReviewedCount((count) => count + 1);
+      if (!answered.has(card.vocabulary_id)) {
+        setAnswered(new Set(answered).add(card.vocabulary_id));
+        if (card.kind === "new") setNewLearned((count) => count + 1);
+        if (card.kind === "review") setReviewed((count) => count + 1);
+      }
+      if (next.length === 0) {
+        setCheer(pickCheer());
+        // A failed check only skips the celebration, so it doesn't hold up the end screen.
+        const reached = await isTodaysGoalReached().catch(() => false);
+        setGoalJustReached(reached && !goalReachedBefore);
+      }
       setQueue(next);
     });
   }
@@ -318,6 +361,16 @@ function CardStage({ card, front, stacked, saving, saveError, onGrade }: CardSta
         )}
       </footer>
     </>
+  );
+}
+
+// One half of the summary panel. Halves share the width equally, and one alone fills it.
+function Stat({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="flex flex-1 basis-0 flex-col items-center px-4 py-4 text-center">
+      <span className="text-3xl font-bold tabular-nums">{value}</span>
+      <span className="text-sm text-muted">{label}</span>
+    </div>
   );
 }
 

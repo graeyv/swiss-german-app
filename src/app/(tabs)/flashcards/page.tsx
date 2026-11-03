@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getDailyPlan } from "@/app/flashcards/daily-plan-data";
-import { todaysQueue } from "@/lib/flashcards/daily-plan";
+import { goalReached, reviewProgress } from "@/lib/flashcards/daily-plan";
 import { createClient } from "@/lib/supabase/server";
 import { DeckGrid } from "./deck-card";
 import { getDeckTree } from "./deck-data";
@@ -32,7 +32,7 @@ async function Decks() {
     );
   }
 
-  const { dueNow } = todaysQueue(newCardsPerDay, summary);
+  const reviews = reviewProgress(newCardsPerDay, summary);
 
   return (
     <>
@@ -41,8 +41,9 @@ async function Decks() {
       <TodaysGoal
         newCardsPerDay={newCardsPerDay}
         introducedToday={summary.introduced_today}
-        reviewsDone={summary.reviews_today}
-        reviewsTotal={summary.reviews_today + dueNow}
+        reviewsDone={reviews.done}
+        reviewsTotal={reviews.total}
+        reached={goalReached(newCardsPerDay, summary, tree.some((deck) => deck.new_count > 0))}
       />
 
       <section className="flex flex-col gap-3">
