@@ -38,7 +38,7 @@ export type Lesson = {
 export type CardFront = "swiss_german" | "translation";
 
 export type Flashcard = {
-  vocabulary_id: string;
+  card_id: string;
   swiss_german: string;
   high_german: string;
   // In the learner's language, falling back to English.

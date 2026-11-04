@@ -27,15 +27,15 @@ export type CardRow = {
 
 export type Previews = Record<Grade, string>;
 
-async function restoreCard(row: CardRow | null, vocabularyId: string, now: Date) {
+async function restoreCard(row: CardRow | null, cardId: string, now: Date) {
   const scheduler = await schedulerPromise;
   // A word queued by a lesson has a row, but no rating yet.
   if (!row || row.state === 0) {
-    return { ...scheduler.newCard({ now }), cardId: vocabularyId };
+    return { ...scheduler.newCard({ now }), cardId };
   }
   return {
     ...scheduler.newCard({ now }),
-    cardId: vocabularyId,
+    cardId,
     state: row.state,
     scheduleStatus: row.schedule_status,
     stability: row.stability,
@@ -64,12 +64,12 @@ export function formatInterval(milliseconds: number, units: IntervalUnits = en.i
 
 export async function previewIntervals(
   row: CardRow | null,
-  vocabularyId: string,
+  cardId: string,
   now: Date,
   units: IntervalUnits = en.intervals,
 ): Promise<Previews> {
   const scheduler = await schedulerPromise;
-  const card = await restoreCard(row, vocabularyId, now);
+  const card = await restoreCard(row, cardId, now);
   const previews = {} as Previews;
   for (const { grade, card: next } of scheduler.preview({ card, now })) {
     previews[grade] = formatInterval(next.dueAt.getTime() - now.getTime(), units);
@@ -80,13 +80,13 @@ export async function previewIntervals(
 // The next card state and the log entry, in the shape the save_review function takes.
 export async function scheduleReview(
   row: CardRow | null,
-  vocabularyId: string,
+  cardId: string,
   grade: Grade,
   now: Date,
 ) {
   const scheduler = await schedulerPromise;
   const { card, revlog } = scheduler.review({
-    card: await restoreCard(row, vocabularyId, now),
+    card: await restoreCard(row, cardId, now),
     grade,
     now,
   });

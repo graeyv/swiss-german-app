@@ -25,7 +25,7 @@ const CARD_COLUMNS =
 
 export async function submitReview(
   reviewId: string,
-  vocabularyId: string,
+  cardId: string,
   grade: 1 | 2 | 3 | 4,
 ): Promise<ReviewResult> {
   if (![1, 2, 3, 4].includes(grade)) return { error: "Unknown grade" };
@@ -34,16 +34,16 @@ export async function submitReview(
   const { data: row, error: readError } = await supabase
     .from("review_items")
     .select(CARD_COLUMNS)
-    .eq("vocabulary_id", vocabularyId)
+    .eq("card_id", cardId)
     .maybeSingle();
   if (readError) return { error: readError.message };
 
   const now = new Date();
-  const { card, log } = await scheduleReview(row, vocabularyId, grade, now);
+  const { card, log } = await scheduleReview(row, cardId, grade, now);
 
   const { error } = await supabase.rpc("save_review", {
     p_review_id: reviewId,
-    p_vocabulary_id: vocabularyId,
+    p_card_id: cardId,
     p_expected_reps: row?.reps ?? 0,
     p_model: FSRS_MODEL,
     p_card: card,
@@ -55,7 +55,7 @@ export async function submitReview(
   return {
     dueAt: card.due_at,
     reviewId: randomUUID(),
-    intervals: await previewIntervals(card, vocabularyId, now, (await getDictionary()).intervals),
+    intervals: await previewIntervals(card, cardId, now, (await getDictionary()).intervals),
   };
 }
 

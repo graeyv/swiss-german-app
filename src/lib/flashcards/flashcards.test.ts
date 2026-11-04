@@ -8,12 +8,12 @@ import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
 
-const WORD = "5b0c2b8e-6d0e-4c1e-9a55-0d1f6f2f7a11";
+const CARD = "5b0c2b8e-6d0e-4c1e-9a55-0d1f6f2f7a11";
 const NOW = new Date("2026-11-01T10:00:00Z");
 
 describe("scheduleReview", () => {
   it("keeps a missed new card in the same day's learning steps", async () => {
-    const { card, log } = await scheduleReview(null, WORD, 1, NOW);
+    const { card, log } = await scheduleReview(null, CARD, 1, NOW);
     expect(card.state).toBe(1);
     expect(card.reps).toBe(1);
     expect(new Date(card.due_at).getTime() - NOW.getTime()).toBe(60_000);
@@ -35,19 +35,19 @@ describe("scheduleReview", () => {
       learning_step: 0,
       scheduled_days: 0,
     };
-    const fromRow = await scheduleReview(lessonRow, WORD, 3, NOW);
-    const fromNothing = await scheduleReview(null, WORD, 3, NOW);
+    const fromRow = await scheduleReview(lessonRow, CARD, 3, NOW);
+    const fromNothing = await scheduleReview(null, CARD, 3, NOW);
     expect(fromRow.card).toEqual(fromNothing.card);
   });
 
   it("continues correctly from a card restored from database values", async () => {
-    const first = await scheduleReview(null, WORD, 3, NOW);
-    const second = await scheduleReview(first.card, WORD, 3, new Date(first.card.due_at));
+    const first = await scheduleReview(null, CARD, 3, NOW);
+    const second = await scheduleReview(first.card, CARD, 3, new Date(first.card.due_at));
     expect(second.card.state).toBe(2);
     expect(second.card.reps).toBe(2);
 
     const lastReview = new Date(second.card.due_at);
-    const third = await scheduleReview(second.card, WORD, 1, lastReview);
+    const third = await scheduleReview(second.card, CARD, 1, lastReview);
     expect(third.card.state).toBe(3);
     expect(third.card.lapses).toBe(1);
     expect(third.log.stability).toBe(second.card.stability);
@@ -55,7 +55,7 @@ describe("scheduleReview", () => {
   });
 
   it("previews every grade, with longer intervals for better grades", async () => {
-    const previews = await previewIntervals(null, WORD, NOW);
+    const previews = await previewIntervals(null, CARD, NOW);
     expect(previews).toEqual({ 1: "1 min", 2: "6 min", 3: "10 min", 4: expect.stringMatching(/ d$/) });
   });
 });
@@ -139,6 +139,12 @@ describe("buildSeed", () => {
     const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\tWie gaht's?\tWie geht's?\tHow?\t\t\t\n`);
     expect(seed).toContain("'Wie gaht''s?'");
     expect(seed).toContain("('C01-T01', 'FC1', 1)");
+  });
+
+  it("puts each word's card in its decks, not the word itself", () => {
+    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`);
+    expect(seed).toContain("insert into public.deck_items (deck_id, card_id, position)");
+    expect(seed).toContain("join public.cards c on c.vocabulary_id = v.id");
   });
 
   it("rejects unknown deck colours", () => {

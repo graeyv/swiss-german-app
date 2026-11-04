@@ -67,7 +67,7 @@ export async function getCardFront(supabase: Supabase): Promise<CardFront> {
 }
 
 type WordRow = {
-  vocabulary_id: string;
+  card_id: string;
   swiss_german: string;
   high_german: string;
   meaning: string;
@@ -85,7 +85,7 @@ export async function toFlashcard(
   t: Dictionary,
 ): Promise<Flashcard> {
   return {
-    vocabulary_id: word.vocabulary_id,
+    card_id: word.card_id,
     swiss_german: word.swiss_german,
     high_german: word.high_german,
     meaning: word.meaning,
@@ -95,6 +95,6 @@ export async function toFlashcard(
       : null,
     kind: !card || card.state === 0 ? "new" : card.state === 2 ? "review" : "learning",
     review_id: randomUUID(),
-    intervals: await previewIntervals(card, word.vocabulary_id, now, t.intervals),
+    intervals: await previewIntervals(card, word.card_id, now, t.intervals),
   };
 }

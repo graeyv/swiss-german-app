@@ -144,7 +144,7 @@ export function ReviewSession({
   function grade(value: Grade) {
     setSaveError(null);
     startSaving(async () => {
-      const result = await submitReview(card.review_id, card.vocabulary_id, value);
+      const result = await submitReview(card.review_id, card.card_id, value);
       if ("error" in result) {
         setSaveError(result.error);
         return;
@@ -157,8 +157,8 @@ export function ReviewSession({
       };
       const next = advanceQueue(activeQueue, repeat, new Date(result.dueAt), new Date());
       if (next.length < activeQueue.length) setCompleted((count) => count + 1);
-      if (!answered.has(card.vocabulary_id)) {
-        setAnswered(new Set(answered).add(card.vocabulary_id));
+      if (!answered.has(card.card_id)) {
+        setAnswered(new Set(answered).add(card.card_id));
         if (card.kind === "new") setNewLearned((count) => count + 1);
         if (card.kind === "review") setReviewed((count) => count + 1);
       }

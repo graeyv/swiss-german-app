@@ -39,6 +39,32 @@ export type Database = {
   }
   public: {
     Tables: {
+      cards: {
+        Row: {
+          id: string
+          kind: string
+          vocabulary_id: string | null
+        }
+        Insert: {
+          id?: string
+          kind: string
+          vocabulary_id?: string | null
+        }
+        Update: {
+          id?: string
+          kind?: string
+          vocabulary_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cards_vocabulary_id_fkey"
+            columns: ["vocabulary_id"]
+            isOneToOne: true
+            referencedRelation: "vocabulary_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           description: string
@@ -82,33 +108,33 @@ export type Database = {
       }
       deck_items: {
         Row: {
+          card_id: string
           deck_id: string
           position: number
-          vocabulary_id: string
         }
         Insert: {
+          card_id: string
           deck_id: string
           position: number
-          vocabulary_id: string
         }
         Update: {
+          card_id?: string
           deck_id?: string
           position?: number
-          vocabulary_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "deck_items_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "deck_items_deck_id_fkey"
             columns: ["deck_id"]
             isOneToOne: false
             referencedRelation: "decks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "deck_items_vocabulary_id_fkey"
-            columns: ["vocabulary_id"]
-            isOneToOne: false
-            referencedRelation: "vocabulary_items"
             referencedColumns: ["id"]
           },
         ]
@@ -382,6 +408,7 @@ export type Database = {
       }
       review_items: {
         Row: {
+          card_id: string
           difficulty: number
           due_at: string
           lapses: number
@@ -393,9 +420,9 @@ export type Database = {
           stability: number
           state: number
           user_id: string
-          vocabulary_id: string
         }
         Insert: {
+          card_id: string
           difficulty?: number
           due_at?: string
           lapses?: number
@@ -407,9 +434,9 @@ export type Database = {
           stability?: number
           state?: number
           user_id: string
-          vocabulary_id: string
         }
         Update: {
+          card_id?: string
           difficulty?: number
           due_at?: string
           lapses?: number
@@ -421,20 +448,20 @@ export type Database = {
           stability?: number
           state?: number
           user_id?: string
-          vocabulary_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "review_items_vocabulary_id_fkey"
-            columns: ["vocabulary_id"]
+            foreignKeyName: "review_items_card_id_fkey"
+            columns: ["card_id"]
             isOneToOne: false
-            referencedRelation: "vocabulary_items"
+            referencedRelation: "cards"
             referencedColumns: ["id"]
           },
         ]
       }
       review_log: {
         Row: {
+          card_id: string
           difficulty: number
           due_at: string
           id: string
@@ -449,9 +476,9 @@ export type Database = {
           stability: number
           state: number
           user_id: string
-          vocabulary_id: string
         }
         Insert: {
+          card_id: string
           difficulty: number
           due_at: string
           id: string
@@ -466,9 +493,9 @@ export type Database = {
           stability: number
           state: number
           user_id: string
-          vocabulary_id: string
         }
         Update: {
+          card_id?: string
           difficulty?: number
           due_at?: string
           id?: string
@@ -483,14 +510,13 @@ export type Database = {
           stability?: number
           state?: number
           user_id?: string
-          vocabulary_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "review_log_vocabulary_id_fkey"
-            columns: ["vocabulary_id"]
+            foreignKeyName: "review_log_card_id_fkey"
+            columns: ["card_id"]
             isOneToOne: false
-            referencedRelation: "vocabulary_items"
+            referencedRelation: "cards"
             referencedColumns: ["id"]
           },
         ]
@@ -585,19 +611,20 @@ export type Database = {
       deck_words: {
         Args: { p_deck_code: string }
         Returns: {
+          card_id: string
           due_at: string
           high_german: string
           meaning: string
           notes: string
           state: number
           swiss_german: string
-          vocabulary_id: string
         }[]
       }
       due_flashcards: {
         Args: { p_deck_code?: string; p_limit: number }
         Returns: {
           audio_path: string
+          card_id: string
           difficulty: number
           due_at: string
           high_german: string
@@ -612,7 +639,6 @@ export type Database = {
           stability: number
           state: number
           swiss_german: string
-          vocabulary_id: string
         }[]
       }
       flashcard_decks: {
@@ -643,26 +669,40 @@ export type Database = {
           reviews_today: number
         }[]
       }
+      learner_cards: {
+        Args: never
+        Returns: {
+          id: string
+          kind: string
+          vocabulary_id: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "cards"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       learner_locale: { Args: never; Returns: string }
       new_flashcards: {
         Args: { p_deck_code: string; p_limit: number }
         Returns: {
           audio_path: string
+          card_id: string
           high_german: string
           meaning: string
           notes: string
           swiss_german: string
-          vocabulary_id: string
         }[]
       }
       save_review: {
         Args: {
           p_card: Json
+          p_card_id: string
           p_expected_reps: number
           p_log: Json
           p_model: string
           p_review_id: string
-          p_vocabulary_id: string
         }
         Returns: undefined
       }

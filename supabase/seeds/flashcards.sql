@@ -218,8 +218,9 @@ join public.vocabulary_items v on v.code = t.card_code;
 
 delete from public.deck_items;
 
-insert into public.deck_items (deck_id, vocabulary_id, position)
-select d.id, v.id, i.position
+-- Each word gets its card when it's first inserted, from a trigger.
+insert into public.deck_items (deck_id, card_id, position)
+select d.id, c.id, i.position
 from (values
   ('C01-T01', 'FC0001', 1),
   ('C01-T01', 'FC0002', 2),
@@ -283,6 +284,7 @@ from (values
   ('C02-T01', 'FC0060', 10)
 ) as i (deck_code, card_code, position)
 join public.decks d on d.code = i.deck_code
-join public.vocabulary_items v on v.code = i.card_code;
+join public.vocabulary_items v on v.code = i.card_code
+join public.cards c on c.vocabulary_id = v.id;
 
 commit;
