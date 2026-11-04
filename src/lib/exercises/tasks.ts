@@ -25,6 +25,8 @@ export type BuildTask = {
 // words that make up the mistake, next to each other, counting from 0 in sentenceWords.
 export type SpotErrorTask = {
   type: "spot_error";
+  // A line above the sentence, which can make clear which word is the mistake.
+  context?: string;
   sentence: string;
   wrong: number[];
   options: string[];
@@ -47,11 +49,16 @@ export function isSpotErrorCorrect(task: SpotErrorTask, tapped: number, picked: 
   return task.wrong.includes(tapped) && picked === task.answer;
 }
 
+// Punctuation at the end of a word, which stays when the word is corrected.
+const TRAILING_PUNCTUATION = /[.,!?;:…»]+$/;
+
 // The sentence with its mistake replaced by the correction.
 export function correctedSentence(task: SpotErrorTask) {
   const words = sentenceWords(task.sentence);
   const first = Math.min(...task.wrong);
-  words.splice(first, task.wrong.length, task.options[task.answer]);
+  const last = Math.max(...task.wrong);
+  const punctuation = TRAILING_PUNCTUATION.exec(words[last])?.[0] ?? "";
+  words.splice(first, task.wrong.length, task.options[task.answer] + punctuation);
   return words.join(" ");
 }
 

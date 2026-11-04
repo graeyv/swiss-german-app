@@ -70,8 +70,36 @@ regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project
   editing the row, not by adding a new code.
 - `audio_path` is an object path in the `lesson-audio` bucket. The `type` column isn't used by the
   app yet.
+- **Kind**: a deck holds words (`vocabulary`, the default) or grammar rules (`grammar`). Set `kind`
+  on a top-level deck, and the decks below it take it.
+- **Drafts**: `draft` set to `yes` keeps a deck and everything below it hidden from learners.
 
 Scheduling uses FSRS-6 through `ts-fsrs`, which needs Node 24 or later.
+
+#### Grammar
+
+Each grammar rule is one card, with its own schedule. Every time it's due, the learner gets one of
+its exercises, and the answer decides the rating. Rules go in `content/grammar_points.tsv` and their
+exercises in `content/grammar_exercises.tsv`, and `npm run db:content` loads them too.
+
+- **Grammar points** have a `code`, `deck_codes` (grammar decks only), `title_en` and
+  `explanation_en`, translated like other columns. Keep each rule to one decision the learner has to
+  make. Leave `dialect` empty for a rule of every dialect.
+- **Exercises** belong to a `point` and have a `type`, a `level` and a `payload` in JSON. Level 1
+  recognises the rule, 2 uses it with help, 3 uses it freely. Every rule needs a level 1 exercise,
+  and about 6–10 exercises in all, so learners rarely see the same one twice. `dialect` says who
+  sees the exercise. Leave it empty for every dialect.
+- **Payloads** follow the tasks in `src/lib/exercises/tasks.ts`:
+  - `pick`: `{"context"?, "prompt", "options", "answer"}`. `answer` is the position of the right
+    option, counting from 0, and each `___` in the prompt shows as a gap.
+  - `build`: `{"prompt", "tiles", "answer"}`. `answer` lists the words in order, and the other tiles
+    are distractors.
+  - `spot_error`: `{"context"?, "sentence", "wrong", "options", "answer"}`. `wrong` lists the
+    positions of the wrong words in the sentence, counting from 0.
+- **Text in the learner's language**, such as a context, a prompt to translate or an option that's a
+  meaning, can be translations instead: `{"en": "To a friend", "de": "Zu einem Freund"}`.
+- The build checks every payload, and an exercise removed from the file is deleted. A rule removed
+  from the file stays in the database, so learners keep their history.
 
 ## Database changes
 

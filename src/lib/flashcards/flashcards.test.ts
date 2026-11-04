@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
+import { payloadProblem } from "../../../scripts/lib/check-payload.mjs";
 import { CHEERS, pickCheer } from "./cheers";
 import { goalReached, presetId, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
 import { suggestedPace } from "../onboarding";
@@ -171,6 +172,79 @@ describe("buildSeed", () => {
     expect(() =>
       buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\nFC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`),
     ).toThrow(/Duplicate/);
+  });
+});
+
+describe("buildSeed with grammar", () => {
+  const decks =
+    "code\tparent_code\ttitle_en\tkind\tdraft\n" +
+    "C01\t\tLife\t\t\nC01-T01\tC01\tGreetings\t\t\n" +
+    "G01\t\tPronouns\tgrammar\tyes\nG01-T01\tG01\tPersonal\t\t\n";
+  const words = "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\nFC1\tC01-T01\tzh\ta\tb\tc\n";
+  const points = "code\tdeck_codes\tdialect\ttitle_en\texplanation_en\nGR1\tG01-T01\t\tSi\tPolite.\n";
+  const exerciseHeader = "code\tpoint\ttype\tlevel\tdialect\tpayload\n";
+  const pick = '{"prompt":"Chönd ___ hälfe?","options":["Si","du"],"answer":0}';
+  const exercises = `${exerciseHeader}GR1-E1\tGR1\tpick\t1\tzh\t${pick}\n`;
+
+  it("gives decks their parent's kind, and keeps drafts and their children unpublished", () => {
+    const seed = buildSeed(decks, words, points, exercises);
+    expect(seed).toContain("('C01-T01', 'C01', 'vocabulary', null, null, 1, true)");
+    expect(seed).toContain("('G01-T01', 'G01', 'grammar', null, null, 1, false)");
+    expect(seed).toContain("('G01-T01', 'GR1', 1)");
+    expect(seed).toContain(`('GR1-E1', 'GR1', 'pick', 1, 'zh', '${pick}')`);
+  });
+
+  it("works without any grammar", () => {
+    expect(buildSeed(decks, words)).toContain("where not (code = any (array[]::text[]))");
+  });
+
+  it("keeps words and grammar points to decks of their kind", () => {
+    const wordOnGrammar = words.replace("C01-T01", "G01-T01");
+    expect(() => buildSeed(decks, wordOnGrammar, points, exercises)).toThrow(/isn't a vocabulary deck/);
+    const pointOnWords = points.replace("G01-T01", "C01-T01");
+    expect(() => buildSeed(decks, words, pointOnWords, exercises)).toThrow(/isn't a grammar deck/);
+    const mixed = decks.replace("G01-T01\tG01\tPersonal\t\t", "G01-T01\tG01\tPersonal\tvocabulary\t");
+    expect(() => buildSeed(mixed, words, points, exercises)).toThrow(/its parent is grammar/);
+  });
+
+  it("checks each exercise and needs a level 1 one per grammar point", () => {
+    const build = (row: string) => () => buildSeed(decks, words, points, `${exercises}${row}\n`);
+    expect(build(`GR1-E2\tGR9\tpick\t1\tzh\t${pick}`)).toThrow(/unknown grammar point/);
+    expect(build(`GR1-E2\tGR1\tpick\t4\tzh\t${pick}`)).toThrow(/level 1, 2 or 3/);
+    expect(build(`GR1-E2\tGR1\tpick\t2\tzh\t{"prompt":`)).toThrow(/valid JSON/);
+    expect(build(`GR1-E2\tGR1\tpick\t2\tzh\t${pick.replace('"answer":0', '"answer":2')}`)).toThrow(
+      /GR1-E2: answer isn't the position/,
+    );
+    const onlyLevel2 = `${exerciseHeader}GR1-E1\tGR1\tpick\t2\tzh\t${pick}\n`;
+    expect(() => buildSeed(decks, words, points, onlyLevel2)).toThrow(/needs at least one level 1/);
+  });
+});
+
+describe("payloadProblem", () => {
+  it("accepts translated text where the learner reads their own language", () => {
+    const payload = { context: { en: "Who?", de: "Wer?" }, prompt: "Mir sind spaat.", options: [{ en: "we" }, "me"], answer: 0 };
+    expect(payloadProblem("pick", payload)).toBeNull();
+    expect(payloadProblem("pick", { ...payload, context: { de: "Wer?" } })).toMatch(/context/);
+  });
+
+  it("rejects unknown types, unknown fields and missing ones", () => {
+    expect(payloadProblem("match", {})).toMatch(/unknown type/);
+    expect(payloadProblem("pick", { prompt: "a", options: ["a", "b"], answer: 0, hint: "x" })).toMatch(/unknown field hint/);
+    expect(payloadProblem("build", { prompt: "a", tiles: ["a", "b"] })).toMatch(/missing answer/);
+  });
+
+  it("needs a build answer the tiles can make", () => {
+    const payload = { prompt: "We go.", tiles: ["Mir", "gönd"], answer: ["Mir", "gönd"] };
+    expect(payloadProblem("build", payload)).toBeNull();
+    expect(payloadProblem("build", { ...payload, answer: ["Mir", "Mir"] })).toMatch(/more often/);
+  });
+
+  it("needs a real mistake of words next to each other", () => {
+    const payload = { sentence: "Ich gseh du morn.", wrong: [2], options: ["di", "du"], answer: 0 };
+    expect(payloadProblem("spot_error", payload)).toBeNull();
+    expect(payloadProblem("spot_error", { ...payload, wrong: [1, 3] })).toMatch(/next to each other/);
+    expect(payloadProblem("spot_error", { ...payload, wrong: [4] })).toMatch(/positions/);
+    expect(payloadProblem("spot_error", { ...payload, sentence: "Ich gseh di.", wrong: [2] })).toMatch(/same as the mistake/);
   });
 });
 

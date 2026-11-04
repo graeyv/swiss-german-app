@@ -1,4 +1,4 @@
-code	parent_code	title_en	emoji	description_en	color
+code	parent_code	title_en	emoji	description_en	color	kind	draft
 C01		Everyday Life	🏙️	Daily conversations & routines	pink
 C01-T01	C01	Greetings & Introductions	👋
 C01-T02	C01	Numbers & Quantities	🔢
@@ -21,3 +21,5 @@ C02-T07	C02	Restaurant & Café	☕
 C02-T08	C02	Cooking	🍳
 C02-T09	C02	Taste & Texture	👅
 C02-T10	C02	Dietary Preferences	🥗
+G01		Pronouns	🫵	ich, du, mir, Si and the rest	purple	grammar	yes
+G01-T01	G01	Personal pronouns					

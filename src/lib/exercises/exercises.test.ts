@@ -52,6 +52,17 @@ describe("spot the error", () => {
   it("replaces a mistake of several words with its correction", () => {
     expect(correctedSentence(spotError)).toBe("Grüezi Herr Keller, händ Si Ziit?");
   });
+
+  it("keeps the punctuation after a corrected word", () => {
+    const task: SpotErrorTask = {
+      type: "spot_error",
+      sentence: "Ich gseh du morn, oder du?",
+      wrong: [5],
+      options: ["di", "du"],
+      answer: 0,
+    };
+    expect(correctedSentence(task)).toBe("Ich gseh du morn, oder di?");
+  });
 });
 
 describe("answerText", () => {

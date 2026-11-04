@@ -1,0 +1,30 @@
+code	point	type	level	dialect	payload
+GR001-E01	GR001	pick	1	zh	{"prompt": "___ gang hei.", "options": ["Ich", "Du"], "answer": 0}
+GR001-E02	GR001	pick	1	zh	{"prompt": "___ chunsch spaat.", "options": ["Du", "Ich"], "answer": 0}
+GR001-E03	GR001	pick	2	zh	{"prompt": "___ isch müed.", "options": ["Er", "Ich", "Du"], "answer": 0}
+GR001-E04	GR001	spot_error	2	zh	{"context": {"en": "Talking about yourself", "de": "Du sprichst über dich"}, "sentence": "Du gang hüt hei.", "wrong": [0], "options": ["Ich", "Mir", "Er"], "answer": 0}
+GR001-E05	GR001	build	3	zh	{"prompt": {"en": "You're coming late.", "de": "Du kommst spät."}, "tiles": ["Du", "chunsch", "spaat", "Ich", "chume"], "answer": ["Du", "chunsch", "spaat"]}
+GR002-E01	GR002	pick	1	zh	{"prompt": "___ gönd hüt is Kino.", "options": ["Mir", "Ich"], "answer": 0}
+GR002-E02	GR002	pick	1	zh	{"prompt": "Gib ___ bitte s Salz.", "options": ["mir", "mich"], "answer": 0}
+GR002-E03	GR002	pick	2	zh	{"context": {"en": "Who is late?", "de": "Wer ist spät dran?"}, "prompt": "Mir sind spaat.", "options": [{"en": "we", "de": "wir"}, {"en": "me", "de": "ich"}, {"en": "you", "de": "du"}], "answer": 0}
+GR002-E04	GR002	pick	2	zh	{"context": {"en": "Who needs help?", "de": "Wer braucht Hilfe?"}, "prompt": "Chasch mir hälfe?", "options": [{"en": "me", "de": "ich"}, {"en": "we", "de": "wir"}, {"en": "you", "de": "du"}], "answer": 0}
+GR002-E05	GR002	pick	2	zh	{"prompt": "___ händ Hunger.", "options": ["Mir", "Ich", "Du"], "answer": 0}
+GR002-E06	GR002	spot_error	2	zh	{"context": {"en": "About you and your friends", "de": "Über dich und deine Freunde"}, "sentence": "Mir gang hüt hei.", "wrong": [1], "options": ["gönd", "gaasch", "gaat"], "answer": 0}
+GR002-E07	GR002	build	3	zh	{"prompt": {"en": "We're going home.", "de": "Wir gehen heim."}, "tiles": ["Mir", "gönd", "hei", "Ich", "gang"], "answer": ["Mir", "gönd", "hei"]}
+GR002-E08	GR002	build	3	zh	{"prompt": {"en": "Can you help me?", "de": "Kannst du mir helfen?"}, "tiles": ["Chasch", "mir", "hälfe", "mich"], "answer": ["Chasch", "mir", "hälfe"]}
+GR003-E01	GR003	pick	1	zh	{"context": {"en": "To a shop assistant", "de": "Zur Verkäuferin"}, "prompt": "Chönd ___ mir hälfe?", "options": ["Si", "du"], "answer": 0}
+GR003-E02	GR003	pick	1	zh	{"context": {"en": "To a friend", "de": "Zu einem Freund"}, "prompt": "___ du Ziit?", "options": ["Häsch", "Händ"], "answer": 0}
+GR003-E03	GR003	pick	2	zh	{"context": {"en": "To your neighbour, Mrs Meier", "de": "Zu deiner Nachbarin, Frau Meier"}, "prompt": "Grüezi Frau Meier, wie gaht's ___?", "options": ["Ine", "dir", "Si"], "answer": 0}
+GR003-E04	GR003	spot_error	2	zh	{"context": {"en": "To your new boss", "de": "Zu deinem neuen Chef"}, "sentence": "Grüezi Herr Keller, häsch du Ziit?", "wrong": [3, 4], "options": ["händ Si", "häsch du", "hät er"], "answer": 0}
+GR003-E05	GR003	build	3	zh	{"prompt": {"en": "Do you have time? (formal)", "de": "Haben Sie Zeit?"}, "tiles": ["Händ", "Si", "Ziit", "Häsch", "du"], "answer": ["Händ", "Si", "Ziit"]}
+GR003-E06	GR003	build	3	zh	{"prompt": {"en": "How are you? (formal)", "de": "Wie geht es Ihnen?"}, "tiles": ["Wie", "gaht's", "Ine", "dir"], "answer": ["Wie", "gaht's", "Ine"]}
+GR004-E01	GR004	pick	1	zh	{"prompt": "Ich gseh ___ morn.", "options": ["di", "du"], "answer": 0}
+GR004-E02	GR004	pick	1	zh	{"prompt": "Chasch ___ abhole?", "options": ["mi", "ich"], "answer": 0}
+GR004-E03	GR004	pick	2	zh	{"context": {"en": "About your brother", "de": "Über deinen Bruder"}, "prompt": "Kännsch ___?", "options": ["en", "er", "ihm"], "answer": 0}
+GR004-E04	GR004	spot_error	2	zh	{"sentence": "Ich gseh du morn.", "wrong": [2], "options": ["di", "dir", "du"], "answer": 0}
+GR004-E05	GR004	build	3	zh	{"prompt": {"en": "Can you pick me up?", "de": "Kannst du mich abholen?"}, "tiles": ["Chasch", "mi", "abhole", "mir", "ich"], "answer": ["Chasch", "mi", "abhole"]}
+GR005-E01	GR005	pick	1	zh	{"prompt": "Das ghört ___.", "options": ["mir", "mich"], "answer": 0}
+GR005-E02	GR005	pick	1	zh	{"prompt": "Ich gib ___ s Buech.", "options": ["dir", "di"], "answer": 0}
+GR005-E03	GR005	pick	2	zh	{"context": {"en": "About your sister", "de": "Über deine Schwester"}, "prompt": "Das ghört ___.", "options": ["ihre", "si", "ihm"], "answer": 0}
+GR005-E04	GR005	spot_error	2	zh	{"sentence": "Chasch mich hälfe?", "wrong": [1], "options": ["mir", "mi", "ich"], "answer": 0}
+GR005-E05	GR005	build	3	zh	{"prompt": {"en": "I'll give you the book.", "de": "Ich gebe dir das Buch."}, "tiles": ["Ich", "gib", "dir", "s", "Buech", "di"], "answer": ["Ich", "gib", "dir", "s", "Buech"]}

@@ -27,6 +27,7 @@ export function SpotError({ task, t, answered, onAnswer }: SpotErrorProps) {
   return (
     <>
       <div className="flex flex-col gap-2">
+        {task.context && <p className="text-sm text-muted">{task.context}</p>}
         <p className="text-sm text-muted">{t.findMistake}</p>
         <div lang="gsw" className="-mx-2 flex flex-wrap text-2xl font-bold tracking-tight">
           {words.map((word, i) => (
