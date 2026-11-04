@@ -18,9 +18,9 @@ export const DEFAULT_NEW_CARDS = 10;
 export const NEW_CARDS_RANGE = { min: 0, max: 50 };
 
 export const PRESETS = [
-  { name: "Relaxed", newCardsPerDay: 5 },
-  { name: "Steady", newCardsPerDay: 10 },
-  { name: "Intensive", newCardsPerDay: 20 },
+  { id: "relaxed", newCardsPerDay: 5 },
+  { id: "steady", newCardsPerDay: 10 },
+  { id: "intensive", newCardsPerDay: 20 },
 ] as const;
 
 // Rule of thumb: once a pace settles, each new card a day brings up to about 10 reviews a day.
@@ -33,8 +33,8 @@ export function reviewLimit(newCardsPerDay: number) {
   return Math.max(MIN_REVIEW_LIMIT, newCardsPerDay * REVIEWS_PER_NEW_CARD);
 }
 
-export function presetName(newCardsPerDay: number) {
-  return PRESETS.find((preset) => preset.newCardsPerDay === newCardsPerDay)?.name;
+export function presetId(newCardsPerDay: number) {
+  return PRESETS.find((preset) => preset.newCardsPerDay === newCardsPerDay)?.id;
 }
 
 // Whether today's goal is met: something was practised, the new words are learned (or there are

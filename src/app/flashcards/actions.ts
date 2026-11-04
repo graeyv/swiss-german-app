@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getToday } from "@/lib/flashcards/data";
 import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
 import { FSRS_MODEL, previewIntervals, scheduleReview } from "@/lib/flashcards/scheduling";
+import { getDictionary } from "@/lib/i18n/server";
 import type { CardFront, Flashcard } from "@/lib/types";
 
 type ReviewResult =
@@ -54,7 +55,7 @@ export async function submitReview(
   return {
     dueAt: card.due_at,
     reviewId: randomUUID(),
-    intervals: await previewIntervals(card, vocabularyId, now),
+    intervals: await previewIntervals(card, vocabularyId, now, (await getDictionary()).intervals),
   };
 }
 
@@ -85,7 +86,7 @@ export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?:
 }
 
 export async function updateCardFront(cardFront: CardFront): Promise<{ error?: string }> {
-  if (cardFront !== "swiss_german" && cardFront !== "english") {
+  if (cardFront !== "swiss_german" && cardFront !== "translation") {
     return { error: "Unknown card side" };
   }
 

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
 import { CHEERS, pickCheer } from "./cheers";
-import { goalReached, presetName, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
-import { buildDeckTree, type DeckRow, findDeck } from "./decks";
+import { goalReached, presetId, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
+import { suggestedPace } from "../onboarding";
+import { buildDeckTree, type DeckRow, findDeck, sortByInterests } from "./decks";
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
@@ -130,8 +131,9 @@ describe("buildDeckTree", () => {
   });});
 
 describe("buildSeed", () => {
-  const decks = "code\tparent_code\ttitle\nC01\t\tLife\nC01-T01\tC01\tGreetings\n";
-  const header = "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tenglish\tnotes\taudio_path\ttype\n";
+  const decks = "code\tparent_code\ttitle_en\ttitle_de\nC01\t\tLife\tLeben\nC01-T01\tC01\tGreetings\t\n";
+  const header =
+    "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\tnotes_en\tnotes_de\taudio_path\ttype\n";
 
   it("escapes quotes and numbers cards per deck", () => {
     const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\tWie gaht's?\tWie geht's?\tHow?\t\t\t\n`);
@@ -140,8 +142,18 @@ describe("buildSeed", () => {
   });
 
   it("rejects unknown deck colours", () => {
-    const pink = "code\tparent_code\ttitle\temoji\tdescription\tcolor\nC01\t\tLife\t🏙️\t\tteal\n";
+    const pink = "code\tparent_code\ttitle_en\temoji\tdescription_en\tcolor\nC01\t\tLife\t🏙️\t\tteal\n";
     expect(() => buildSeed(pink, header)).toThrow(/unknown color/);
+  });
+
+  it("writes a translation row for each language with content, and requires English", () => {
+    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tHi\tPolite.\tHöflich.\t\t\n`);
+    expect(seed).toContain("('C01', 'en', 'Life', null)");
+    expect(seed).toContain("('C01', 'de', 'Leben', null)");
+    expect(seed).not.toContain("('C01-T01', 'de'");
+    expect(seed).toContain("('FC1', 'en', 'Hi', 'Polite.')");
+    expect(seed).toContain("('FC1', 'de', null, 'Höflich.')");
+    expect(() => buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\t\t\t\t\t\n`)).toThrow(/meaning_en/);
   });
 
   it("rejects cards on a level with children", () => {
@@ -189,10 +201,10 @@ describe("reviewLimit", () => {
 });
 
 
-describe("presetName", () => {
+describe("presetId", () => {
   it("names presets only", () => {
-    expect(presetName(10)).toBe("Steady");
-    expect(presetName(12)).toBeUndefined();
+    expect(presetId(10)).toBe("steady");
+    expect(presetId(12)).toBeUndefined();
   });
 });
 
@@ -286,5 +298,25 @@ describe("reviewProgress", () => {
     };
     // 3 reviewed, plus 1 known word in its steps and 4 due reviews still to go.
     expect(reviewProgress(10, summary)).toEqual({ done: 3, total: 8 });
+  });
+});
+
+describe("sortByInterests", () => {
+  it("puts chosen topics first and keeps the usual order otherwise", () => {
+    const decks = [{ code: "C01" }, { code: "C02" }, { code: "C03" }];
+    expect(sortByInterests(decks, ["C03", "C02"]).map((deck) => deck.code)).toEqual(["C02", "C03", "C01"]);
+    expect(sortByInterests(decks, []).map((deck) => deck.code)).toEqual(["C01", "C02", "C03"]);
+  });
+});
+
+describe("suggestedPace", () => {
+  it("suggests more new words to learners who already understand Swiss German", () => {
+    expect([null, "new", "few_words", "understands", "speaks"].map((level) => suggestedPace(level as never))).toEqual([
+      "steady",
+      "steady",
+      "steady",
+      "intensive",
+      "intensive",
+    ]);
   });
 });

@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useLayoutEffect, useState, useTransition } from "react";
+import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i18n";
 import type { Exercise, Vocabulary } from "@/lib/types";
 import { completeLesson } from "./actions";
 
 type LessonPlayerProps = {
   lessonId: string;
+  locale: Locale;
   title: string;
   exercises: Exercise[];
 };
@@ -22,7 +24,8 @@ function correctAnswer(exercise: Exercise) {
   return "";
 }
 
-export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) {
+export function LessonPlayer({ lessonId, locale, title, exercises }: LessonPlayerProps) {
+  const t = dictionary(locale);
   const [index, setIndex] = useState(0);
   const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
@@ -69,14 +72,14 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
   if (finalScore !== null) {
     return (
       <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-6 px-6 py-10">
-        <p className="font-semibold text-success">Lesson complete</p>
-        <h1 className="text-4xl font-bold tracking-tight">{finalScore}% correct</h1>
-        <p className="text-muted">You finished &ldquo;{title}&rdquo;.</p>
+        <p className="font-semibold text-success">{t.lesson.complete}</p>
+        <h1 className="text-4xl font-bold tracking-tight">{t.lesson.score(finalScore)}</h1>
+        <p className="text-muted">{t.lesson.finished(title)}</p>
         {saveError ? (
           <div aria-live="polite" className="flex flex-col gap-3">
-            <p className="text-danger">Your progress wasn&rsquo;t saved: {saveError}</p>
+            <p className="text-danger">{t.lesson.notSaved(saveError)}</p>
             <button onClick={() => save(finalScore)} disabled={saving} className={primaryButton}>
-              Try again
+              {t.lesson.tryAgain}
             </button>
           </div>
         ) : (
@@ -85,7 +88,7 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
             aria-disabled={saving}
             className={`${primaryButton} text-center ${saving ? "pointer-events-none opacity-50" : ""}`}
           >
-            {saving ? "Saving…" : "Back to lessons"}
+            {saving ? t.lesson.saving : t.lesson.backToLessons}
           </Link>
         )}
       </main>
@@ -96,9 +99,9 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
   if (!exercise) {
     return (
       <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-6 px-6 py-10">
-        <p className="text-muted">This lesson has no exercises yet.</p>
+        <p className="text-muted">{t.lesson.noExercises}</p>
         <Link href="/learn" className="underline underline-offset-4">
-          Back to lessons
+          {t.lesson.backToLessons}
         </Link>
       </main>
     );
@@ -109,12 +112,12 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-8 px-6 py-6">
       <header className="flex items-center gap-4">
-        <Link href="/learn" aria-label="Leave lesson" className="text-xl text-muted">
+        <Link href="/learn" aria-label={t.lesson.leave} className="text-xl text-muted">
           ×
         </Link>
         <div
           role="progressbar"
-          aria-label="Lesson progress"
+          aria-label={t.lesson.progress}
           aria-valuemin={0}
           aria-valuemax={exercises.length}
           aria-valuenow={index}
@@ -128,7 +131,9 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
       </header>
 
       <div className="flex flex-1 flex-col justify-center gap-6">
-        {exercise.type === "vocab_card" && <VocabCard vocabulary={exercise.vocabulary} />}
+        {exercise.type === "vocab_card" && (
+          <VocabCard vocabulary={exercise.vocabulary} locale={locale} />
+        )}
         {exercise.type === "multiple_choice" && (
           <MultipleChoice
             key={exercise.id}
@@ -140,6 +145,7 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
         {exercise.type === "word_order" && (
           <WordOrder
             key={exercise.id}
+            t={t.lesson}
             {...exercise.payload}
             answered={wasCorrect !== null}
             onAnswer={setWasCorrect}
@@ -149,16 +155,14 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
 
       <footer className="flex min-h-28 flex-col justify-end gap-3">
         <div aria-live="polite">
-          {wasCorrect === true && <p className="font-semibold text-success">Correct!</p>}
+          {wasCorrect === true && <p className="font-semibold text-success">{t.lesson.correct}</p>}
           {wasCorrect === false && (
-            <p className="font-semibold text-danger">
-              Not quite. The answer is: {correctAnswer(exercise)}
-            </p>
+            <p className="font-semibold text-danger">{t.lesson.incorrect(correctAnswer(exercise))}</p>
           )}
         </div>
         {answered && (
           <button onClick={handleContinue} className={primaryButton}>
-            Continue
+            {t.lesson.continue}
           </button>
         )}
       </footer>
@@ -166,16 +170,20 @@ export function LessonPlayer({ lessonId, title, exercises }: LessonPlayerProps) 
   );
 }
 
-function VocabCard({ vocabulary }: { vocabulary: Vocabulary }) {
+function VocabCard({ vocabulary, locale }: { vocabulary: Vocabulary; locale: Locale }) {
+  const t = dictionary(locale);
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-8 text-center">
       <p className="text-4xl font-bold tracking-tight" lang="gsw">
         {vocabulary.swiss_german}
       </p>
-      <p className="text-lg">{vocabulary.english}</p>
-      <p className="text-muted">
-        Standard German: <span lang="de">{vocabulary.high_german}</span>
-      </p>
+      <p className="text-lg">{translationOf(vocabulary, locale)}</p>
+      {/* Unless the translation already is Standard German, that follows as a second one. */}
+      {!t.translationIsStandardGerman && (
+        <p className="text-muted">
+          {t.standardGerman} <span lang="de">{vocabulary.high_german}</span>
+        </p>
+      )}
       {vocabulary.notes && <p className="mt-2 text-sm text-muted">{vocabulary.notes}</p>}
     </div>
   );
@@ -227,6 +235,7 @@ function MultipleChoice({
 }
 
 type WordOrderProps = {
+  t: Dictionary["lesson"];
   prompt: string;
   words: string[];
   answer: string[];
@@ -234,7 +243,7 @@ type WordOrderProps = {
   onAnswer: (correct: boolean) => void;
 };
 
-function WordOrder({ prompt, words, answer, answered, onAnswer }: WordOrderProps) {
+function WordOrder({ t, prompt, words, answer, answered, onAnswer }: WordOrderProps) {
   // Positions in words rather than the words themselves, so repeated words stay distinct.
   const [placed, setPlaced] = useState<number[]>([]);
 
@@ -244,7 +253,7 @@ function WordOrder({ prompt, words, answer, answered, onAnswer }: WordOrderProps
   return (
     <>
       <div>
-        <p className="text-sm text-muted">Put the words in order:</p>
+        <p className="text-sm text-muted">{t.putInOrder}</p>
         <h1 className="text-2xl font-bold tracking-tight">{prompt}</h1>
       </div>
 
@@ -284,7 +293,7 @@ function WordOrder({ prompt, words, answer, answered, onAnswer }: WordOrderProps
           }
           className={primaryButton}
         >
-          Check
+          {t.check}
         </button>
       )}
     </>

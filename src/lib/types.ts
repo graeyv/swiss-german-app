@@ -1,7 +1,8 @@
 export type Vocabulary = {
   swiss_german: string;
   high_german: string;
-  english: string;
+  // In the learner's language, falling back to English.
+  meaning: string;
   notes: string | null;
 };
 
@@ -32,14 +33,16 @@ export type Lesson = {
   description: string;
 };
 
-// Which side of a flashcard is shown first. Mirrors public.profiles.card_front.
-export type CardFront = "swiss_german" | "english";
+// Which side of a flashcard is shown first: Swiss German, or the translation in the learner's
+// language. Mirrors public.profiles.card_front.
+export type CardFront = "swiss_german" | "translation";
 
 export type Flashcard = {
   vocabulary_id: string;
   swiss_german: string;
   high_german: string;
-  english: string;
+  // In the learner's language, falling back to English.
+  meaning: string;
   notes: string | null;
   audio_url: string | null;
   // New words haven't been rated yet, learning words are in their same-day steps.

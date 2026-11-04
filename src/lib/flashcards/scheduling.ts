@@ -1,4 +1,7 @@
 import { DefaultScheduler, type Grade } from "ts-fsrs";
+import { en } from "@/lib/i18n/en";
+
+type IntervalUnits = typeof en.intervals;
 
 export const FSRS_MODEL = "FSRS-6";
 
@@ -46,28 +49,30 @@ async function restoreCard(row: CardRow | null, vocabularyId: string, now: Date)
   } as ReturnType<Awaited<typeof schedulerPromise>["newCard"]>;
 }
 
-export function formatInterval(milliseconds: number) {
+// Units come from the interface language, such as "min" in English or "Min." in German.
+export function formatInterval(milliseconds: number, units: IntervalUnits = en.intervals) {
   const minutes = Math.max(1, Math.round(milliseconds / 60_000));
-  if (minutes < 60) return `${minutes} min`;
+  if (minutes < 60) return `${minutes} ${units.minutes}`;
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours} h`;
+  if (hours < 24) return `${hours} ${units.hours}`;
   const days = Math.round(hours / 24);
-  if (days < 60) return `${days} d`;
+  if (days < 60) return `${days} ${units.days}`;
   const months = Math.round(days / 30);
-  if (months < 24) return `${months} mo`;
-  return `${Math.round(days / 365)} y`;
+  if (months < 24) return `${months} ${units.months}`;
+  return `${Math.round(days / 365)} ${units.years}`;
 }
 
 export async function previewIntervals(
   row: CardRow | null,
   vocabularyId: string,
   now: Date,
+  units: IntervalUnits = en.intervals,
 ): Promise<Previews> {
   const scheduler = await schedulerPromise;
   const card = await restoreCard(row, vocabularyId, now);
   const previews = {} as Previews;
   for (const { grade, card: next } of scheduler.preview({ card, now })) {
-    previews[grade] = formatInterval(next.dueAt.getTime() - now.getTime());
+    previews[grade] = formatInterval(next.dueAt.getTime() - now.getTime(), units);
   }
   return previews;
 }

@@ -36,6 +36,17 @@ export function buildDeckTree(rows: readonly DeckRow[]): DeckNode[] {
   return build(null, "yellow");
 }
 
+// The decks a learner chose as interests come first, in their usual order, then the rest.
+export function sortByInterests<Deck extends { code: string }>(
+  decks: readonly Deck[],
+  interests: readonly string[],
+): Deck[] {
+  return [
+    ...decks.filter((deck) => interests.includes(deck.code)),
+    ...decks.filter((deck) => !interests.includes(deck.code)),
+  ];
+}
+
 // The deck with this code, and the decks above it from the top level down.
 export function findDeck(
   tree: readonly DeckNode[],

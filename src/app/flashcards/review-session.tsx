@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useState, useTransition } from "react";
 import { type Cheer, pickCheer } from "@/lib/flashcards/cheers";
 import { advanceQueue } from "@/lib/flashcards/queue";
+import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i18n";
 import type { CardFront, Flashcard } from "@/lib/types";
 import { isTodaysGoalReached, submitReview, updateCardFront } from "./actions";
 
@@ -12,6 +13,7 @@ type Grade = 1 | 2 | 3 | 4;
 type ReviewSessionProps = {
   cards: Flashcard[];
   cardFront: CardFront;
+  locale: Locale;
   // Whether today's goal was already met when the session started, so only the session that
   // completes it celebrates.
   goalReachedBefore: boolean;
@@ -22,16 +24,16 @@ type ReviewSessionProps = {
 };
 
 const GRADES = [
-  { grade: 1, label: "Again", color: "text-danger" },
-  { grade: 2, label: "Hard", color: "text-foreground" },
-  { grade: 3, label: "Good", color: "text-success" },
-  { grade: 4, label: "Easy", color: "text-accent" },
+  { grade: 1, key: "again", color: "text-danger" },
+  { grade: 2, key: "hard", color: "text-foreground" },
+  { grade: 3, key: "good", color: "text-success" },
+  { grade: 4, key: "easy", color: "text-accent" },
 ] as const;
 
-const KIND_BADGES: Record<Flashcard["kind"], { label: string; className: string }> = {
-  new: { label: "New", className: "bg-accent/10 text-accent" },
-  learning: { label: "Learning", className: "bg-tint-yellow" },
-  review: { label: "Review", className: "bg-line" },
+const KIND_BADGES: Record<Flashcard["kind"], string> = {
+  new: "bg-accent/10 text-accent",
+  learning: "bg-tint-yellow",
+  review: "bg-line",
 };
 
 const primaryButton =
@@ -40,11 +42,13 @@ const primaryButton =
 export function ReviewSession({
   cards,
   cardFront,
+  locale,
   goalReachedBefore,
   emptyMessage,
   backHref,
   backLabel,
 }: ReviewSessionProps) {
+  const t = dictionary(locale).session;
   // Null until the first grade, so a session that hasn't started shows the latest cards.
   const [queue, setQueue] = useState<Flashcard[] | null>(null);
   // Cards finished for this session. A missed card goes back into the queue instead.
@@ -98,10 +102,10 @@ export function ReviewSession({
         {newLearned + reviewed > 0 && (
           <div className="flex divide-x divide-line rounded-2xl border border-line bg-surface">
             {newLearned > 0 && (
-              <Stat value={newLearned} label={newLearned === 1 ? "new word learned" : "new words learned"} />
+              <Stat value={newLearned} label={t.newWordsLearned(newLearned)} />
             )}
             {reviewed > 0 && (
-              <Stat value={reviewed} label={reviewed === 1 ? "word reviewed" : "words reviewed"} />
+              <Stat value={reviewed} label={t.wordsReviewed(reviewed)} />
             )}
           </div>
         )}
@@ -112,14 +116,14 @@ export function ReviewSession({
               🎯
             </span>
             <span className="flex flex-col">
-              <strong className="text-lg text-success">Today&rsquo;s goal reached!</strong>
-              <span className="text-sm text-muted">That&rsquo;s it for today. See you tomorrow.</span>
+              <strong className="text-lg text-success">{t.goalReached}</strong>
+              <span className="text-sm text-muted">{t.goalReachedNote}</span>
             </span>
           </div>
         )}
 
         <Link href={backHref} className={`${primaryButton} text-center`}>
-          Back to {backLabel}
+          {t.backTo(backLabel)}
         </Link>
       </main>
     );
@@ -131,7 +135,7 @@ export function ReviewSession({
       <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-6 px-6 py-10">
         <p className="text-muted">{emptyMessage}</p>
         <Link href={backHref} className="underline underline-offset-4">
-          Back to {backLabel}
+          {t.backTo(backLabel)}
         </Link>
       </main>
     );
@@ -170,7 +174,7 @@ export function ReviewSession({
 
   // The card turns over straight away. Saving the choice for other sessions happens meanwhile.
   function swapFront() {
-    const next = front === "swiss_german" ? "english" : "swiss_german";
+    const next = front === "swiss_german" ? "translation" : "swiss_german";
     setFront(next);
     void updateCardFront(next);
   }
@@ -180,14 +184,14 @@ export function ReviewSession({
       <header className="flex items-center gap-3">
         <Link
           href={backHref}
-          aria-label="Leave session"
+          aria-label={t.leave}
           className="-ml-2 flex size-11 shrink-0 items-center justify-center text-xl text-muted"
         >
           ×
         </Link>
         <div
           role="progressbar"
-          aria-label="Session progress"
+          aria-label={t.progress}
           aria-valuemin={0}
           aria-valuemax={total}
           aria-valuenow={completed}
@@ -203,12 +207,8 @@ export function ReviewSession({
         </p>
         <button
           onClick={swapFront}
-          aria-label={
-            front === "swiss_german"
-              ? "Showing Swiss German first. Show English first instead"
-              : "Showing English first. Show Swiss German first instead"
-          }
-          title="Swap card direction"
+          aria-label={front === "swiss_german" ? t.showingSwissGermanFirst : t.showingTranslationFirst}
+          title={t.swap}
           className="-mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
         >
           <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="size-5">
@@ -225,6 +225,7 @@ export function ReviewSession({
         key={card.review_id}
         card={card}
         front={front}
+        locale={locale}
         stacked={activeQueue.length > 1}
         saving={saving}
         saveError={saveError}
@@ -237,6 +238,7 @@ export function ReviewSession({
 type CardStageProps = {
   card: Flashcard;
   front: CardFront;
+  locale: Locale;
   // Whether more cards wait behind this one, shown as a stack.
   stacked: boolean;
   saving: boolean;
@@ -245,7 +247,9 @@ type CardStageProps = {
 };
 
 // Keyed by the card's attempt, so each card starts face down.
-function CardStage({ card, front, stacked, saving, saveError, onGrade }: CardStageProps) {
+function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }: CardStageProps) {
+  const texts = dictionary(locale);
+  const t = texts.session;
   const [revealed, setRevealed] = useState(false);
 
   // Space or Enter flips the card, and 1–4 grade it once it's revealed.
@@ -263,10 +267,10 @@ function CardStage({ card, front, stacked, saving, saveError, onGrade }: CardSta
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [revealed, saving, onGrade]);
 
-  const badge = KIND_BADGES[card.kind];
   const swissGerman = { text: card.swiss_german, lang: "gsw" };
-  const english = { text: card.english, lang: "en" };
-  const [prompt, answer] = front === "swiss_german" ? [swissGerman, english] : [english, swissGerman];
+  const translation = { text: translationOf(card, locale), lang: locale };
+  const [prompt, answer] =
+    front === "swiss_german" ? [swissGerman, translation] : [translation, swissGerman];
   const face =
     "absolute inset-0 flex flex-col rounded-3xl border border-line bg-surface p-6 shadow-lg backface-hidden";
 
@@ -299,8 +303,8 @@ function CardStage({ card, front, stacked, saving, saveError, onGrade }: CardSta
             >
               {/* Screen readers only read the side that is showing. */}
               <span aria-hidden={revealed} className={face}>
-                <span className={`w-fit rounded-full px-2.5 py-1 text-xs font-semibold ${badge.className}`}>
-                  {badge.label}
+                <span className={`w-fit rounded-full px-2.5 py-1 text-xs font-semibold ${KIND_BADGES[card.kind]}`}>
+                  {t.kinds[card.kind]}
                 </span>
                 <span className="flex flex-1 items-center justify-center px-2 text-center">
                   <span lang={prompt.lang} className="text-5xl font-bold tracking-tight break-words">
@@ -308,7 +312,7 @@ function CardStage({ card, front, stacked, saving, saveError, onGrade }: CardSta
                   </span>
                 </span>
                 <span className="mx-auto flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
-                  <span aria-hidden>👆</span> Tap card to reveal
+                  <span aria-hidden>👆</span> {t.tapToReveal}
                 </span>
               </span>
 
@@ -320,9 +324,12 @@ function CardStage({ card, front, stacked, saving, saveError, onGrade }: CardSta
                   <span lang={answer.lang} className="text-4xl font-bold tracking-tight break-words">
                     {answer.text}
                   </span>
-                  <span className="text-muted">
-                    Standard German: <span lang="de">{card.high_german}</span>
-                  </span>
+                  {/* Unless the translation already is Standard German, that follows as a second one. */}
+                  {!texts.translationIsStandardGerman && (
+                    <span className="text-muted">
+                      {texts.standardGerman} <span lang="de">{card.high_german}</span>
+                    </span>
+                  )}
                   {card.notes && (
                     <span className="mt-2 max-w-sm rounded-xl bg-highlight px-4 py-3 text-sm">
                       {card.notes}
@@ -333,27 +340,27 @@ function CardStage({ card, front, stacked, saving, saveError, onGrade }: CardSta
             </span>
           </button>
 
-          {/* Hearing the word first would give the answer away when English is the prompt. */}
-          {(front === "swiss_german" || revealed) && <AudioButton url={card.audio_url} />}
+          {/* Hearing the word first would give the answer away when the translation is the prompt. */}
+          {(front === "swiss_german" || revealed) && <AudioButton url={card.audio_url} t={t} />}
         </div>
       </div>
 
       <footer className="flex min-h-24 flex-col justify-end gap-3">
         {saveError && (
           <p aria-live="polite" className="text-sm text-danger">
-            Your answer wasn&rsquo;t saved: {saveError}. Choose again to retry.
+            {t.notSaved(saveError)}
           </p>
         )}
         {revealed && (
           <div className="grid grid-cols-4 gap-2">
-            {GRADES.map(({ grade: value, label, color }) => (
+            {GRADES.map(({ grade: value, key, color }) => (
               <button
                 key={value}
                 disabled={saving}
                 onClick={() => onGrade(value)}
                 className="flex min-h-16 flex-col items-center justify-center rounded-2xl border border-line bg-surface shadow-sm transition-colors enabled:hover:border-accent disabled:opacity-50"
               >
-                <span className={`font-semibold ${color}`}>{label}</span>
+                <span className={`font-semibold ${color}`}>{t.grades[key]}</span>
                 <span className="text-xs text-muted">{card.intervals[value]}</span>
               </button>
             ))}
@@ -374,13 +381,13 @@ function Stat({ value, label }: { value: number; label: string }) {
   );
 }
 
-function AudioButton({ url }: { url: string | null }) {
+function AudioButton({ url, t }: { url: string | null; t: Dictionary["session"] }) {
   return (
     <button
       onClick={() => url && void new Audio(url).play().catch(() => {})}
       disabled={!url}
-      aria-label={url ? "Play pronunciation" : "No recording yet"}
-      title={url ? "Play pronunciation" : "No recording yet"}
+      aria-label={url ? t.playPronunciation : t.noRecording}
+      title={url ? t.playPronunciation : t.noRecording}
       className="absolute top-4 right-4 z-10 flex size-11 items-center justify-center rounded-full bg-accent/10 text-accent transition-colors enabled:hover:bg-accent/20 disabled:bg-line disabled:text-muted"
     >
       <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="size-5">
