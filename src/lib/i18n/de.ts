@@ -56,8 +56,14 @@ export const de: Dictionary = {
     correct: "Richtig!",
     incorrect: (answer) => `Nicht ganz. Die Antwort ist: ${answer}`,
     continue: "Weiter",
+  },
+
+  exercises: {
     putInOrder: "Bring die Wörter in die richtige Reihenfolge:",
     check: "Prüfen",
+    findMistake: "Tippe auf den Fehler:",
+    replaceWith: (word) => `Ersetze «${word}» durch:`,
+    gap: "Lücke",
   },
 
   flashcards: {

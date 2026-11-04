@@ -30,6 +30,8 @@ Docker isn't required: these steps use a hosted Supabase project.
 | `src/app/onboarding` | First-run questions: language, Swiss German level, topics and pace |
 | `src/app/lessons/[slug]` | Lesson player |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
+| `src/app/exercises` | Exercise components shared by lessons and flashcards: pick, build, spot the error |
+| `src/lib/exercises` | The shape of each exercise and how its answer is checked |
 | `src/lib/flashcards` | FSRS scheduling, sessions, daily limits, the deck tree, and loading it all (`data.ts`) |
 | `src/lib/supabase/database.types.ts` | Database types, generated with `npm run db:types` |
 | `src/lib/types.ts` | Exercise payload and flashcard types |

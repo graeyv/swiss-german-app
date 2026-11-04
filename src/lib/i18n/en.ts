@@ -57,8 +57,14 @@ export const en = {
     correct: "Correct!",
     incorrect: (answer: string) => `Not quite. The answer is: ${answer}`,
     continue: "Continue",
+  },
+
+  exercises: {
     putInOrder: "Put the words in order:",
     check: "Check",
+    findMistake: "Tap the mistake:",
+    replaceWith: (word: string) => `Replace “${word}” with:`,
+    gap: "gap",
   },
 
   flashcards: {
