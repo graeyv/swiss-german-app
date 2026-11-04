@@ -333,8 +333,11 @@ export type Database = {
           dialect_id: string | null
           display_name: string | null
           id: string
+          interests: string[]
           locale: string
           new_cards_per_day: number
+          onboarded_at: string | null
+          swiss_german_level: string | null
         }
         Insert: {
           card_front?: string
@@ -342,8 +345,11 @@ export type Database = {
           dialect_id?: string | null
           display_name?: string | null
           id: string
+          interests?: string[]
           locale?: string
           new_cards_per_day?: number
+          onboarded_at?: string | null
+          swiss_german_level?: string | null
         }
         Update: {
           card_front?: string
@@ -351,8 +357,11 @@ export type Database = {
           dialect_id?: string | null
           display_name?: string | null
           id?: string
+          interests?: string[]
           locale?: string
           new_cards_per_day?: number
+          onboarded_at?: string | null
+          swiss_german_level?: string | null
         }
         Relationships: [
           {

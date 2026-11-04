@@ -122,5 +122,43 @@ export const de: Dictionary = {
     noRecording: "Noch keine Aufnahme",
   },
 
+  onboarding: {
+    title: "Willkommen",
+    step: (current, total) => `Schritt ${current} von ${total}`,
+    back: "Zurück",
+    next: "Weiter",
+    skip: "Überspringen",
+    language: {
+      heading: "Welche Sprache bevorzugst du?",
+      intro: "Grüezi verwendet sie überall. Du kannst sie jederzeit ändern.",
+    },
+    level: {
+      heading: "Wie gut kennst du Schweizerdeutsch?",
+      options: {
+        new: { label: "Ich fange gerade an", hint: "Schweizerdeutsch ist neu für mich" },
+        few_words: { label: "Ich kenne ein paar Wörter", hint: "Wie Grüezi und Merci" },
+        understands: { label: "Ich verstehe schon einiges", hint: "Aber ich spreche es noch nicht" },
+        speaks: { label: "Ich kann ein einfaches Gespräch führen", hint: "Und möchte besser werden" },
+      },
+    },
+    topics: {
+      heading: "Welche Themen interessieren dich?",
+      intro: "Wähle so viele, wie du möchtest. Wir zeigen sie dir zuerst.",
+    },
+    pace: {
+      heading: "So funktioniert Grüezi",
+      points: [
+        { icon: "📚", text: "Du lernst jeden Tag ein paar neue Wörter." },
+        { icon: "🔁", text: "Grüezi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest." },
+        { icon: "⏱️", text: "Ein paar Minuten am Tag reichen." },
+      ],
+      choose: "Wähle dein Tempo",
+      recommended: "Empfohlen",
+      finish: "Los geht’s",
+      saving: "Wird gespeichert…",
+      notSaved: (error) => `Nicht gespeichert: ${error}`,
+    },
+  },
+
   intervals: { minutes: "Min.", hours: "Std.", days: "T.", months: "Mt.", years: "J." },
 };

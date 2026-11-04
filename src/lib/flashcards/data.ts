@@ -13,7 +13,7 @@ import {
   goalReached,
   todaysQueue,
 } from "./daily-plan";
-import { buildDeckTree, DECK_COLORS, type DeckColor, type DeckRow } from "./decks";
+import { buildDeckTree, DECK_COLORS, type DeckColor, type DeckRow, sortByInterests } from "./decks";
 import { type CardRow, previewIntervals } from "./scheduling";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -30,7 +30,7 @@ async function getDeckTree(supabase: Supabase) {
 
 async function getDailyPlan(supabase: Supabase) {
   const [profile, summary] = await Promise.all([
-    supabase.from("profiles").select("new_cards_per_day").maybeSingle(),
+    supabase.from("profiles").select("new_cards_per_day, interests").maybeSingle(),
     supabase.rpc("flashcard_summary").single(),
   ]);
   if (profile.error) throw new Error(profile.error.message);
@@ -39,19 +39,20 @@ async function getDailyPlan(supabase: Supabase) {
   const flashcardSummary: FlashcardSummary = summary.data;
   return {
     newCardsPerDay: profile.data?.new_cards_per_day ?? DEFAULT_NEW_CARDS,
+    interests: profile.data?.interests ?? [],
     summary: flashcardSummary,
   };
 }
 
-// Everything the flashcards screens need about today: the decks with their counts, the daily
-// goal, what's left of it, and whether it's reached.
+// Everything the flashcards screens need about today: the decks with their counts (the
+// learner's chosen topics first), the daily goal, what's left of it, and whether it's reached.
 export async function getToday(supabase: Supabase) {
-  const [tree, { newCardsPerDay, summary }] = await Promise.all([
+  const [tree, { newCardsPerDay, interests, summary }] = await Promise.all([
     getDeckTree(supabase),
     getDailyPlan(supabase),
   ]);
   return {
-    tree,
+    tree: sortByInterests(tree, interests),
     newCardsPerDay,
     summary,
     limits: todaysQueue(newCardsPerDay, summary),

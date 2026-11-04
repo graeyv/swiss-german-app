@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
 import { CHEERS, pickCheer } from "./cheers";
 import { goalReached, presetId, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
-import { buildDeckTree, type DeckRow, findDeck } from "./decks";
+import { suggestedPace } from "../onboarding";
+import { buildDeckTree, type DeckRow, findDeck, sortByInterests } from "./decks";
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
@@ -297,5 +298,25 @@ describe("reviewProgress", () => {
     };
     // 3 reviewed, plus 1 known word in its steps and 4 due reviews still to go.
     expect(reviewProgress(10, summary)).toEqual({ done: 3, total: 8 });
+  });
+});
+
+describe("sortByInterests", () => {
+  it("puts chosen topics first and keeps the usual order otherwise", () => {
+    const decks = [{ code: "C01" }, { code: "C02" }, { code: "C03" }];
+    expect(sortByInterests(decks, ["C03", "C02"]).map((deck) => deck.code)).toEqual(["C02", "C03", "C01"]);
+    expect(sortByInterests(decks, []).map((deck) => deck.code)).toEqual(["C01", "C02", "C03"]);
+  });
+});
+
+describe("suggestedPace", () => {
+  it("suggests more new words to learners who already understand Swiss German", () => {
+    expect([null, "new", "few_words", "understands", "speaks"].map((level) => suggestedPace(level as never))).toEqual([
+      "steady",
+      "steady",
+      "steady",
+      "intensive",
+      "intensive",
+    ]);
   });
 });

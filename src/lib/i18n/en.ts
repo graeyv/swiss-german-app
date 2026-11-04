@@ -122,6 +122,44 @@ export const en = {
     noRecording: "No recording yet",
   },
 
+  onboarding: {
+    title: "Welcome",
+    step: (current: number, total: number) => `Step ${current} of ${total}`,
+    back: "Back",
+    next: "Next",
+    skip: "Skip",
+    language: {
+      heading: "Which language do you prefer?",
+      intro: "Grüezi will use it for everything. You can change it at any time.",
+    },
+    level: {
+      heading: "How familiar are you with Swiss German?",
+      options: {
+        new: { label: "I’m just starting", hint: "Swiss German is new to me" },
+        few_words: { label: "I know a few words", hint: "Like Grüezi and Merci" },
+        understands: { label: "I understand a fair amount", hint: "But I don’t speak it yet" },
+        speaks: { label: "I can hold a simple conversation", hint: "And want to get better" },
+      },
+    },
+    topics: {
+      heading: "Which topics interest you?",
+      intro: "Pick as many as you like. We’ll show them first.",
+    },
+    pace: {
+      heading: "How Grüezi works",
+      points: [
+        { icon: "📚", text: "You learn a few new words every day." },
+        { icon: "🔁", text: "Grüezi brings each word back just before you’d forget it." },
+        { icon: "⏱️", text: "A few minutes a day is enough." },
+      ],
+      choose: "Choose your pace",
+      recommended: "Recommended",
+      finish: "Start learning",
+      saving: "Saving…",
+      notSaved: (error: string) => `Not saved: ${error}`,
+    },
+  },
+
   // Units for how long until a card comes back, such as "10 min" or "3 d".
   intervals: { minutes: "min", hours: "h", days: "d", months: "mo", years: "y" },
 };

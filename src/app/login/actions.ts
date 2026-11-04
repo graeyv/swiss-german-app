@@ -24,6 +24,7 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
     });
     if (error) return { email, error: error.message };
     if (!data.session) return { email, message: (await getDictionary()).login.confirmEmail };
+    redirect("/onboarding");
   } else {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { email, error: error.message };
@@ -31,12 +32,14 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
     // The profile's language wins over the browser's, so the app looks the same on every device.
     const { data: profile } = await supabase
       .from("profiles")
-      .select("locale")
+      .select("locale, onboarded_at")
       .eq("id", data.user.id)
       .maybeSingle();
     if (isLocale(profile?.locale)) {
       (await cookies()).set(LOCALE_COOKIE, profile.locale, LOCALE_COOKIE_OPTIONS);
     }
+    // Learners who haven't finished onboarding start there.
+    if (!profile?.onboarded_at) redirect("/onboarding");
   }
 
   redirect("/learn");

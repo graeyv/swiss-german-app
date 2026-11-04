@@ -2,9 +2,10 @@
 
 import { useRef, useState, useTransition } from "react";
 import { updateDailyPlan } from "@/app/flashcards/actions";
-import { PRESETS, presetId, reviewLimit } from "@/lib/flashcards/daily-plan";
+import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { BottomSheet } from "./bottom-sheet";
+import { PaceOptions } from "./pace-options";
 
 type TodaysGoalProps = {
   newCardsPerDay: number;
@@ -114,24 +115,7 @@ export function TodaysGoal({
           </button>
         </div>
 
-        <div role="group" aria-label={t.paceLabel} className="grid grid-cols-3 gap-2">
-          {PRESETS.map(({ id, newCardsPerDay: value }) => (
-            <button
-              key={id}
-              aria-pressed={selected === value}
-              onClick={() => setSelected(value)}
-              className={`flex min-h-24 flex-col items-center justify-center gap-0.5 rounded-2xl border-2 px-2 py-3 text-center transition-colors ${
-                selected === value
-                  ? "border-accent bg-accent/10"
-                  : "border-line hover:border-accent/50"
-              }`}
-            >
-              <strong className="font-semibold">{t.presets[id]}</strong>
-              <span className="text-xs font-semibold">{t.newCards(value)}</span>
-              <span className="text-xs text-muted">{t.upToReviews(reviewLimit(value) ?? 0)}</span>
-            </button>
-          ))}
-        </div>
+        <PaceOptions selected={selected} onSelect={setSelected} locale={locale} />
 
         <p className="text-sm text-muted">{t.note}</p>
 

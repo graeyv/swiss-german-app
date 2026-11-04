@@ -27,6 +27,7 @@ Docker isn't required: these steps use a hosted Supabase project.
 | --- | --- |
 | `src/proxy.ts` | Refreshes the session and protects `/learn`, `/lessons` and `/flashcards` |
 | `src/app/(tabs)` | Lessons and Flashcards tabs, with their shared header |
+| `src/app/onboarding` | First-run questions: language, Swiss German level, topics and pace |
 | `src/app/lessons/[slug]` | Lesson player |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
 | `src/lib/flashcards` | FSRS scheduling, sessions, daily limits, the deck tree, and loading it all (`data.ts`) |
