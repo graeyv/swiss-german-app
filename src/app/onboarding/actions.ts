@@ -28,6 +28,7 @@ export async function finishOnboarding(answers: Answers): Promise<{ error: strin
     .from("decks")
     .select("code")
     .is("parent_id", null)
+    .eq("kind", "vocabulary")
     .in("code", answers.interests);
   if (topicsError) return { error: topicsError.message };
 

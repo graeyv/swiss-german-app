@@ -31,8 +31,8 @@ insert into seed_decks (code, parent_code, kind, emoji, color, position, publish
   ('C02-T08', 'C02', 'vocabulary', '🍳', null, 8, true),
   ('C02-T09', 'C02', 'vocabulary', '👅', null, 9, true),
   ('C02-T10', 'C02', 'vocabulary', '🥗', null, 10, true),
-  ('G01', null, 'grammar', '🫵', 'purple', 3, false),
-  ('G01-T01', 'G01', 'grammar', null, null, 1, false);
+  ('G01', null, 'grammar', '🫵', 'purple', 3, true),
+  ('G01-T01', 'G01', 'grammar', null, null, 1, true);
 
 insert into public.decks (code, kind, emoji, color, position, published)
 select code, kind, emoji, color, position, published from seed_decks

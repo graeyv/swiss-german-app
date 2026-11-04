@@ -4,31 +4,27 @@ import { Fragment } from "react";
 import type { Dictionary } from "@/lib/i18n";
 import type { PickTask } from "@/lib/exercises/tasks";
 import { Options } from "./options";
+import type { TaskProps } from "./task-view";
 
-type PickProps = {
-  task: PickTask;
-  t: Dictionary["exercises"];
-  answered: boolean;
-  onAnswer: (correct: boolean) => void;
-};
-
-export function Pick({ task, t, answered, onAnswer }: PickProps) {
-  return (
-    <>
+export function Pick({ task, t, answered, onAnswer, layout }: TaskProps<PickTask>) {
+  return layout({
+    prompt: (
       <div>
         {task.context && <p className="text-sm text-muted">{task.context}</p>}
-        <h1 className="text-2xl font-bold tracking-tight">
+        <h1 lang={task.promptLang} className="text-2xl font-bold tracking-tight">
           <WithGaps text={task.prompt} fill={answered ? task.options[task.answer] : null} t={t} />
         </h1>
       </div>
+    ),
+    controls: (
       <Options
         options={task.options}
         answer={task.answer}
         answered={answered}
         onPick={(i) => onAnswer(i === task.answer)}
       />
-    </>
-  );
+    ),
+  });
 }
 
 // Each "___" becomes a gap, which shows the right answer once the task is answered.

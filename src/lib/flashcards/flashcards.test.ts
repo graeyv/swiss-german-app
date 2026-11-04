@@ -5,6 +5,7 @@ import { CHEERS, pickCheer } from "./cheers";
 import { goalReached, presetId, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
 import { suggestedPace } from "../onboarding";
 import { buildDeckTree, type DeckRow, findDeck, sortByInterests } from "./decks";
+import { allowedLevels, gradeFromAnswer, grammarExercise, pickExercise } from "./grammar";
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
@@ -95,6 +96,7 @@ describe("buildDeckTree", () => {
       id,
       parent_id,
       code: id,
+      kind: "vocabulary",
       title: id,
       emoji: null,
       description: null,
@@ -245,6 +247,68 @@ describe("payloadProblem", () => {
     expect(payloadProblem("spot_error", { ...payload, wrong: [1, 3] })).toMatch(/next to each other/);
     expect(payloadProblem("spot_error", { ...payload, wrong: [4] })).toMatch(/positions/);
     expect(payloadProblem("spot_error", { ...payload, sentence: "Ich gseh di.", wrong: [2] })).toMatch(/same as the mistake/);
+  });
+});
+
+describe("pickExercise", () => {
+  const exercises = [
+    { id: "a", level: 1 },
+    { id: "b", level: 1 },
+    { id: "c", level: 2 },
+    { id: "d", level: 3 },
+  ];
+  const first = () => 0;
+
+  it("makes exercises harder as a rule comes back less often", () => {
+    expect(allowedLevels(null)).toEqual([1]);
+    expect(allowedLevels({ state: 1, scheduled_days: 0 })).toEqual([1]);
+    expect(allowedLevels({ state: 2, scheduled_days: 3 })).toEqual([1, 2]);
+    expect(allowedLevels({ state: 2, scheduled_days: 14 })).toEqual([2, 3]);
+    // Forgotten, so back to recognising it.
+    expect(allowedLevels({ state: 3, scheduled_days: 0 })).toEqual([1]);
+  });
+
+  it("picks among the levels the card is ready for, avoiding the last one shown", () => {
+    expect(pickExercise(exercises, null, null, first).id).toBe("a");
+    expect(pickExercise(exercises, null, "a", first).id).toBe("b");
+    expect(pickExercise(exercises, { state: 2, scheduled_days: 30 }, "c", first).id).toBe("d");
+  });
+
+  it("repeats the last exercise only when it's the only one, and falls back to any level", () => {
+    expect(pickExercise([{ id: "a", level: 1 }], null, "a").id).toBe("a");
+    expect(pickExercise([{ id: "a", level: 1 }], { state: 2, scheduled_days: 30 }, null).id).toBe("a");
+  });
+
+  it("rates a wrong answer Again and a right one Good", () => {
+    expect(gradeFromAnswer(false)).toBe(1);
+    expect(gradeFromAnswer(true)).toBe(3);
+  });
+});
+
+describe("grammarExercise", () => {
+  const row = {
+    id: "e1",
+    type: "pick" as const,
+    level: 2,
+    payload: {
+      context: { en: "Who is late?", de: "Wer ist spät dran?" },
+      prompt: "Mir sind spaat.",
+      options: [{ en: "we", de: "wir" }, { en: "me" }],
+      answer: 0,
+    },
+  };
+
+  it("shows translated text in the learner's language, falling back to English", () => {
+    const { task } = grammarExercise(row, "de");
+    expect(task).toEqual({
+      type: "pick",
+      context: "Wer ist spät dran?",
+      prompt: "Mir sind spaat.",
+      promptLang: "gsw",
+      options: ["wir", "me"],
+      answer: 0,
+    });
+    expect(grammarExercise(row, "en").task).toMatchObject({ context: "Who is late?", options: ["we", "me"] });
   });
 });
 

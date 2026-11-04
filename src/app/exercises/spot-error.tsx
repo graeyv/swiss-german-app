@@ -1,20 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import type { Dictionary } from "@/lib/i18n";
 import { isSpotErrorCorrect, sentenceWords, type SpotErrorTask } from "@/lib/exercises/tasks";
 import { Options } from "./options";
-
-type SpotErrorProps = {
-  task: SpotErrorTask;
-  t: Dictionary["exercises"];
-  answered: boolean;
-  onAnswer: (correct: boolean) => void;
-};
+import type { TaskProps } from "./task-view";
 
 // The learner taps the word they think is wrong, then picks what replaces it. They can tap
-// another word until they've picked.
-export function SpotError({ task, t, answered, onAnswer }: SpotErrorProps) {
+// another word until they've picked. The sentence is the prompt, the corrections the controls.
+export function SpotError({ task, t, answered, onAnswer, layout }: TaskProps<SpotErrorTask>) {
   const words = sentenceWords(task.sentence);
   const [tapped, setTapped] = useState<number | null>(null);
 
@@ -24,8 +17,8 @@ export function SpotError({ task, t, answered, onAnswer }: SpotErrorProps) {
     return "border-transparent";
   }
 
-  return (
-    <>
+  return layout({
+    prompt: (
       <div className="flex flex-col gap-2">
         {task.context && <p className="text-sm text-muted">{task.context}</p>}
         <p className="text-sm text-muted">{t.findMistake}</p>
@@ -43,19 +36,18 @@ export function SpotError({ task, t, answered, onAnswer }: SpotErrorProps) {
           ))}
         </div>
       </div>
-
-      {tapped !== null && (
-        <div className="flex flex-col gap-3">
-          <p className="text-sm text-muted">{t.replaceWith(words[tapped])}</p>
-          <Options
-            options={task.options}
-            answer={task.answer}
-            answered={answered}
-            lang="gsw"
-            onPick={(i) => onAnswer(isSpotErrorCorrect(task, tapped, i))}
-          />
-        </div>
-      )}
-    </>
-  );
+    ),
+    controls: tapped !== null && (
+      <div className="flex flex-col gap-3">
+        <p className="text-sm text-muted">{t.replaceWith(words[tapped])}</p>
+        <Options
+          options={task.options}
+          answer={task.answer}
+          answered={answered}
+          lang="gsw"
+          onPick={(i) => onAnswer(isSpotErrorCorrect(task, tapped, i))}
+        />
+      </div>
+    ),
+  });
 }

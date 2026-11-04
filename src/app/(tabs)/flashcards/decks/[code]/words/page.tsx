@@ -29,7 +29,7 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
   if (words.error) throw new Error(words.error.message);
 
   const found = findDeck(tree, code);
-  if (!found) notFound();
+  if (!found || found.deck.kind !== "vocabulary") notFound();
   const { deck, ancestors } = found;
   const parent = ancestors.at(-1);
   const { newWords, due } = deckAvailability(deck, limits);

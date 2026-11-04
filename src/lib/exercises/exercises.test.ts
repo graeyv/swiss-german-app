@@ -7,6 +7,7 @@ import {
   isSpotErrorCorrect,
   type SpotErrorTask,
   sentenceWords,
+  solutionOf,
 } from "./tasks";
 
 const build: BuildTask = {
@@ -62,6 +63,17 @@ describe("spot the error", () => {
       answer: 0,
     };
     expect(correctedSentence(task)).toBe("Ich gseh du morn, oder di?");
+  });
+});
+
+describe("solutionOf", () => {
+  it("fills a gap, or shows the answer under what was asked", () => {
+    const gap = { type: "pick" as const, prompt: "Ich ___ gloffe.", options: ["ha", "bi"], answer: 1 };
+    expect(solutionOf(gap)).toEqual({ asked: null, solution: "Ich bi gloffe." });
+    const meaning = { type: "pick" as const, prompt: "Mir sind spaat.", options: ["we", "me"], answer: 0 };
+    expect(solutionOf(meaning)).toEqual({ asked: "Mir sind spaat.", solution: "we" });
+    expect(solutionOf(build)).toEqual({ asked: "We're going home.", solution: "Mir gönd hei" });
+    expect(solutionOf(spotError)).toEqual({ asked: null, solution: "Grüezi Herr Keller, händ Si Ziit?" });
   });
 });
 

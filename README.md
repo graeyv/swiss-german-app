@@ -79,7 +79,8 @@ Scheduling uses FSRS-6 through `ts-fsrs`, which needs Node 24 or later.
 #### Grammar
 
 Each grammar rule is one card, with its own schedule. Every time it's due, the learner gets one of
-its exercises, and the answer decides the rating. Rules go in `content/grammar_points.tsv` and their
+its exercises, and the answer decides the rating. Learners find grammar decks under Flashcards ›
+Grammar. A new rule counts toward the day's new cards, like a word. Rules go in `content/grammar_points.tsv` and their
 exercises in `content/grammar_exercises.tsv`, and `npm run db:content` loads them too.
 
 - **Grammar points** have a `code`, `deck_codes` (grammar decks only), `title_en` and

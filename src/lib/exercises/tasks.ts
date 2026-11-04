@@ -8,6 +8,8 @@ export type PickTask = {
   // A line above the prompt, such as who the learner is talking to.
   context?: string;
   prompt: string;
+  // The prompt's language when it's Swiss German, so screen readers pronounce it as such.
+  promptLang?: string;
   options: string[];
   answer: number;
 };
@@ -60,6 +62,19 @@ export function correctedSentence(task: SpotErrorTask) {
   const punctuation = TRAILING_PUNCTUATION.exec(words[last])?.[0] ?? "";
   words.splice(first, task.wrong.length, task.options[task.answer] + punctuation);
   return words.join(" ");
+}
+
+// The solved task, to show once it's answered: the sentence with the right answer in it, under
+// what was asked when that isn't part of the sentence.
+export function solutionOf(task: Task): { asked: string | null; solution: string } {
+  if (task.type === "pick") {
+    const right = task.options[task.answer];
+    return task.prompt.includes("___")
+      ? { asked: null, solution: task.prompt.replaceAll("___", right) }
+      : { asked: task.prompt, solution: right };
+  }
+  if (task.type === "build") return { asked: task.prompt, solution: task.answer.join(" ") };
+  return { asked: null, solution: correctedSentence(task) };
 }
 
 // The right answer as text, to show after a wrong one.

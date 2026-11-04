@@ -5,8 +5,8 @@
 // the row types in this folder, which say which columns can be empty.
 import { randomUUID } from "node:crypto";
 import type { createClient } from "@/lib/supabase/server";
-import type { Dictionary } from "@/lib/i18n";
-import type { CardFront, Flashcard } from "@/lib/types";
+import type { Dictionary, Locale } from "@/lib/i18n";
+import type { CardFront, Flashcard, GrammarCard, WordCard } from "@/lib/types";
 import {
   DEFAULT_NEW_CARDS,
   type FlashcardSummary,
@@ -14,6 +14,7 @@ import {
   todaysQueue,
 } from "./daily-plan";
 import { buildDeckTree, DECK_COLORS, type DeckColor, type DeckRow, sortByInterests } from "./decks";
+import { type ExerciseRow, grammarExercise, pickExercise } from "./grammar";
 import { type CardRow, previewIntervals } from "./scheduling";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -23,6 +24,7 @@ async function getDeckTree(supabase: Supabase) {
   if (error) throw new Error(error.message);
   const rows: DeckRow[] = data.map((row) => ({
     ...row,
+    kind: row.kind === "grammar" ? "grammar" : "vocabulary",
     color: DECK_COLORS.includes(row.color as DeckColor) ? (row.color as DeckColor) : null,
   }));
   return buildDeckTree(rows);
@@ -75,16 +77,21 @@ type WordRow = {
   audio_path: string | null;
 };
 
+function statusOf(card: CardRow | null): Flashcard["status"] {
+  return !card || card.state === 0 ? "new" : card.state === 2 ? "review" : "learning";
+}
+
 // A word ready for a session, with its interval previews in the interface language. card is
 // null for a new word.
-export async function toFlashcard(
+export async function toWordCard(
   supabase: Supabase,
   word: WordRow,
   card: CardRow | null,
   now: Date,
   t: Dictionary,
-): Promise<Flashcard> {
+): Promise<WordCard> {
   return {
+    kind: "vocabulary",
     card_id: word.card_id,
     swiss_german: word.swiss_german,
     high_german: word.high_german,
@@ -93,8 +100,46 @@ export async function toFlashcard(
     audio_url: word.audio_path
       ? supabase.storage.from("lesson-audio").getPublicUrl(word.audio_path).data.publicUrl
       : null,
-    kind: !card || card.state === 0 ? "new" : card.state === 2 ? "review" : "learning",
+    status: statusOf(card),
     review_id: randomUUID(),
     intervals: await previewIntervals(card, word.card_id, now, t.intervals),
+  };
+}
+
+export type GrammarContent = { title: string; exercises: ExerciseRow[] };
+
+// Each grammar card's rule and the exercises the learner can be shown, by card.
+export async function getGrammarContent(supabase: Supabase, cardIds: string[]) {
+  const content = new Map<string, GrammarContent>();
+  if (cardIds.length === 0) return content;
+  const { data, error } = await supabase.rpc("grammar_content", { p_card_ids: cardIds });
+  if (error) throw new Error(error.message);
+  for (const row of data) {
+    content.set(row.card_id, {
+      title: row.title,
+      exercises: row.exercises as unknown as ExerciseRow[],
+    });
+  }
+  return content;
+}
+
+// A grammar rule ready for a session, showing an exercise it's ready for. card is null for a
+// new rule, and lastExerciseId the exercise it showed last time.
+export function toGrammarCard(
+  cardId: string,
+  content: GrammarContent,
+  card: CardRow | null,
+  lastExerciseId: string | null,
+  locale: Locale,
+): GrammarCard {
+  const exercises = content.exercises.map((row) => grammarExercise(row, locale));
+  return {
+    kind: "grammar",
+    card_id: cardId,
+    title: content.title,
+    exercises,
+    exercise: pickExercise(exercises, card, lastExerciseId),
+    status: statusOf(card),
+    review_id: randomUUID(),
   };
 }

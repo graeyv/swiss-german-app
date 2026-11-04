@@ -47,7 +47,8 @@ function DeckCard({ deck, limits, locale }: { deck: DeckNode; limits: TodaysLimi
           {deck.title} <span aria-hidden className="text-muted">›</span>
         </strong>
         <small className="truncate text-sm leading-snug text-muted">
-          {deck.description ?? t.words(deck.card_count)}
+          {deck.description ??
+            (deck.kind === "grammar" ? t.rules(deck.card_count) : t.words(deck.card_count))}
         </small>
       </span>
       {/* Pushed to the bottom, so chips line up across cards whose titles wrap differently. */}
