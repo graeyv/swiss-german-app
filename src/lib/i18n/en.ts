@@ -34,7 +34,14 @@ export const en = {
   nav: {
     label: "Main",
     lessons: "Lessons",
-    flashcards: "Flashcards",
+    practice: "Practice",
+    profile: "Profile",
+  },
+
+  profile: {
+    title: "Profile",
+    loggedInAs: (email: string) => `Logged in as ${email}`,
+    settings: "Settings",
     logOut: "Log out",
   },
 
@@ -68,7 +75,7 @@ export const en = {
   },
 
   flashcards: {
-    title: "Flashcards",
+    title: "Practice",
     noDecks: "No decks yet. Add the flashcards with",
     topics: "Topics",
     subcategories: "Subcategories",

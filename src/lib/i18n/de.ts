@@ -33,7 +33,14 @@ export const de: Dictionary = {
   nav: {
     label: "Hauptmenü",
     lessons: "Lektionen",
-    flashcards: "Karteikarten",
+    practice: "Üben",
+    profile: "Profil",
+  },
+
+  profile: {
+    title: "Profil",
+    loggedInAs: (email) => `Angemeldet als ${email}`,
+    settings: "Einstellungen",
     logOut: "Abmelden",
   },
 
@@ -67,7 +74,7 @@ export const de: Dictionary = {
   },
 
   flashcards: {
-    title: "Karteikarten",
+    title: "Üben",
     noDecks: "Noch keine Themen. Füge die Karteikarten hinzu mit",
     topics: "Themen",
     subcategories: "Unterkategorien",
