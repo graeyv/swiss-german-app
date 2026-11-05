@@ -131,7 +131,7 @@ function Choices<Value extends string>({
   );
 }
 
-// The language Grüezi speaks to the learner. Each language is listed in its own name.
+// The language Hoi speaks to the learner. Each language is listed in its own name.
 export function LanguageSetting({ locale }: { locale: Locale }) {
   const t = dictionary(locale).profile;
   const sheet = useRef<HTMLDialogElement>(null);

@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Mobile first
 
-Most learners use Grüezi on their phone. Design and check every screen at phone width first.
+Most learners use Hoi on their phone. Design and check every screen at phone width first.
 
 - Tap targets are at least 44×44 px, and the main actions of a session sit within thumb reach at
   the bottom of the screen.

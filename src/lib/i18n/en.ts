@@ -5,7 +5,7 @@ import { plural } from "./plural";
 const many = (count: number, one: string, other: string) => plural("en", count, { one, other });
 
 export const en = {
-  title: (page: string) => `${page} – Grüezi`,
+  title: (page: string) => `${page} – Hoi`,
   // The language's own name, as listed in the language picker.
   languageName: "English",
   language: "Language",
@@ -23,7 +23,7 @@ export const en = {
 
   login: {
     title: "Log in",
-    heading: "Log in to Grüezi",
+    heading: "Log in to Hoi",
     email: "Email",
     password: "Password",
     logIn: "Log in",
@@ -47,7 +47,7 @@ export const en = {
     rulesLearned: (count: number) => many(count, "rule learned", "rules learned"),
     languages: "Languages",
     iSpeak: "I speak",
-    iSpeakNote: "Grüezi uses this language for everything, including translations.",
+    iSpeakNote: "Hoi uses this language for everything, including translations.",
     dialect: "Dialect",
     dialectNote: "Words and grammar are in this dialect. Until you choose one, you see every dialect.",
     dialectNotChosen: "Not chosen",
@@ -183,7 +183,7 @@ export const en = {
     skip: "Skip",
     language: {
       heading: "Which language do you prefer?",
-      intro: "Grüezi will use it for everything. You can change it at any time.",
+      intro: "Hoi will use it for everything. You can change it at any time.",
     },
     level: {
       heading: "How familiar are you with Swiss German?",
@@ -199,10 +199,10 @@ export const en = {
       intro: "Pick as many as you like. We’ll show them first.",
     },
     pace: {
-      heading: "How Grüezi works",
+      heading: "How Hoi works",
       points: [
         { icon: "📚", text: "You learn a few new words every day." },
-        { icon: "🔁", text: "Grüezi brings each word back just before you’d forget it." },
+        { icon: "🔁", text: "Hoi brings each word back just before you’d forget it." },
         { icon: "⏱️", text: "A few minutes a day is enough." },
       ],
       choose: "Choose your pace",

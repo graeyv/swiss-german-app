@@ -1,4 +1,4 @@
-# Grüezi
+# Hoi
 
 A Babbel-style web app for learning Swiss German, built with Next.js and Supabase.
 

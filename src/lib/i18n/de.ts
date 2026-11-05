@@ -6,7 +6,7 @@ import { plural } from "./plural";
 const many = (count: number, one: string, other: string) => plural("de", count, { one, other });
 
 export const de: Dictionary = {
-  title: (page) => `${page} – Grüezi`,
+  title: (page) => `${page} – Hoi`,
   languageName: "Deutsch",
   language: "Sprache",
   // The translation already is Standard German, so there's no second one.
@@ -22,7 +22,7 @@ export const de: Dictionary = {
 
   login: {
     title: "Anmelden",
-    heading: "Bei Grüezi anmelden",
+    heading: "Bei Hoi anmelden",
     email: "E-Mail",
     password: "Passwort",
     logIn: "Anmelden",
@@ -46,7 +46,7 @@ export const de: Dictionary = {
     rulesLearned: (count) => many(count, "Regel gelernt", "Regeln gelernt"),
     languages: "Sprachen",
     iSpeak: "Ich spreche",
-    iSpeakNote: "Grüezi verwendet diese Sprache für alles, auch für die Übersetzungen.",
+    iSpeakNote: "Hoi verwendet diese Sprache für alles, auch für die Übersetzungen.",
     dialect: "Dialekt",
     dialectNote: "Wörter und Grammatik kommen in diesem Dialekt. Bis du einen wählst, siehst du alle Dialekte.",
     dialectNotChosen: "Nicht gewählt",
@@ -184,7 +184,7 @@ export const de: Dictionary = {
     skip: "Überspringen",
     language: {
       heading: "Welche Sprache bevorzugst du?",
-      intro: "Grüezi verwendet sie überall. Du kannst sie jederzeit ändern.",
+      intro: "Hoi verwendet sie überall. Du kannst sie jederzeit ändern.",
     },
     level: {
       heading: "Wie gut kennst du Schweizerdeutsch?",
@@ -200,10 +200,10 @@ export const de: Dictionary = {
       intro: "Wähle so viele, wie du möchtest. Wir zeigen sie dir zuerst.",
     },
     pace: {
-      heading: "So funktioniert Grüezi",
+      heading: "So funktioniert Hoi",
       points: [
         { icon: "📚", text: "Du lernst jeden Tag ein paar neue Wörter." },
-        { icon: "🔁", text: "Grüezi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest." },
+        { icon: "🔁", text: "Hoi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest." },
         { icon: "⏱️", text: "Ein paar Minuten am Tag reichen." },
       ],
       choose: "Wähle dein Tempo",
