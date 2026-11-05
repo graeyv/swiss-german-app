@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Grüezi – Learn Swiss German",
+  title: "Hoi – Learn Swiss German",
   description: "Short, practical lessons in Swiss German.",
 };
 

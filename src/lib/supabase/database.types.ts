@@ -859,6 +859,14 @@ export type Database = {
           swiss_german: string
         }[]
       }
+      profile_stats: {
+        Args: never
+        Returns: {
+          rules_learned: number
+          streak: number
+          words_learned: number
+        }[]
+      }
       save_review: {
         Args: {
           p_card: Json

@@ -37,7 +37,7 @@ async function Header() {
 
   return (
     <header className="flex flex-col gap-6">
-      <p className="font-semibold text-accent">Grüezi</p>
+      <p className="font-semibold text-accent">Hoi</p>
       <nav aria-label={t.nav.label} className="hidden gap-6 border-b border-line md:flex">
         {TABS.map((tab) => (
           <TabLink key={tab.href} href={tab.href} label={t.nav[tab.label]} icon={tab.icon} placement="top" />

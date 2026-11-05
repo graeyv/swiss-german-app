@@ -24,11 +24,13 @@ export type SavedReview = {
   intervals: WordCard["intervals"] | null;
 };
 
-// The overview and deck pages show today's counts. Running sessions aren't refreshed: they keep
-// their own queue, and reloading them would redo every card's interval previews.
+// The overview and deck pages show today's counts, and the profile the learner's progress and
+// pace. Running sessions aren't refreshed: they keep their own queue, and reloading them would
+// redo every card's interval previews.
 function revalidateFlashcardPages() {
   revalidatePath("/flashcards");
   revalidatePath("/flashcards/decks/[code]", "page");
+  revalidatePath("/profile");
 }
 
 const CARD_COLUMNS =
@@ -123,6 +125,7 @@ export async function updateCardFront(cardFront: CardFront): Promise<{ error?: s
     .select("id");
   if (error) return { error: error.message };
   if (data.length === 0) return { error: "Your profile is missing" };
+  revalidatePath("/profile");
   return {};
 }
 

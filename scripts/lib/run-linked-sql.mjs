@@ -27,7 +27,7 @@ export function userIdOf(email) {
 }
 
 export function runLinkedSql(sql) {
-  const dir = mkdtempSync(join(tmpdir(), "gruezi-"));
+  const dir = mkdtempSync(join(tmpdir(), "hoi-"));
   const file = join(dir, "script.sql");
   writeFileSync(file, sql);
 
