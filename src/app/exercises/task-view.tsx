@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import type { Dictionary } from "@/lib/i18n";
-import type { Task } from "@/lib/exercises/tasks";
+import type { Response, Task } from "@/lib/exercises/tasks";
 import { Build } from "./build";
 import { Pick } from "./pick";
 import { SpotError } from "./spot-error";
@@ -14,7 +14,8 @@ export type TaskProps<T> = {
   task: T;
   t: Dictionary["exercises"];
   answered: boolean;
-  onAnswer: (correct: boolean) => void;
+  // What the learner answered. isCorrect in src/lib/exercises/tasks.ts tells whether it's right.
+  onAnswer: (response: Response) => void;
   layout: TaskLayout;
 };
 

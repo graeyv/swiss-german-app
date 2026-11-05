@@ -134,6 +134,8 @@ export const en = {
     rulesPractised: (count: number) => many(count, "rule practised", "rules practised"),
     correct: "Correct!",
     notQuite: "Not quite",
+    yourAnswer: "Your answer",
+    correctAnswer: "Correct answer",
     continue: "Continue",
     saving: "Saving…",
     tryAgain: "Try again",

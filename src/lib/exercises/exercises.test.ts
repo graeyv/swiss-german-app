@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  answerReview,
   answerText,
   type BuildTask,
   correctedSentence,
@@ -7,7 +8,6 @@ import {
   isSpotErrorCorrect,
   type SpotErrorTask,
   sentenceWords,
-  solutionOf,
 } from "./tasks";
 
 const build: BuildTask = {
@@ -66,14 +66,80 @@ describe("spot the error", () => {
   });
 });
 
-describe("solutionOf", () => {
-  it("fills a gap, or shows the answer under what was asked", () => {
-    const gap = { type: "pick" as const, prompt: "Ich ___ gloffe.", options: ["ha", "bi"], answer: 1 };
-    expect(solutionOf(gap)).toEqual({ asked: null, solution: "Ich bi gloffe." });
+describe("answerReview", () => {
+  const gap = { type: "pick" as const, prompt: "Ich ___ gloffe.", options: ["ha", "bi"], answer: 1 };
+
+  it("fills a gap with the answer given and the right one, marked", () => {
+    expect(answerReview(gap, { type: "pick", picked: 1 })).toEqual({
+      correct: true,
+      asked: null,
+      given: [{ text: "Ich " }, { text: "bi", mark: "right" }, { text: " gloffe." }],
+      solution: [{ text: "Ich " }, { text: "bi", mark: "right" }, { text: " gloffe." }],
+    });
+    expect(answerReview(gap, { type: "pick", picked: 0 }).given).toEqual([
+      { text: "Ich " },
+      { text: "ha", mark: "wrong" },
+      { text: " gloffe." },
+    ]);
+  });
+
+  it("shows a pick without a gap under what was asked", () => {
     const meaning = { type: "pick" as const, prompt: "Mir sind spaat.", options: ["we", "me"], answer: 0 };
-    expect(solutionOf(meaning)).toEqual({ asked: "Mir sind spaat.", solution: "we" });
-    expect(solutionOf(build)).toEqual({ asked: "We're going home.", solution: "Mir gönd hei" });
-    expect(solutionOf(spotError)).toEqual({ asked: null, solution: "Grüezi Herr Keller, händ Si Ziit?" });
+    expect(answerReview(meaning, { type: "pick", picked: 1 })).toEqual({
+      correct: false,
+      asked: "Mir sind spaat.",
+      given: [{ text: "me", mark: "wrong" }],
+      solution: [{ text: "we", mark: "right" }],
+    });
+  });
+
+  it("marks a built sentence word by word", () => {
+    const review = answerReview(build, { type: "build", placed: [3, 1, 2] });
+    expect(review.correct).toBe(false);
+    expect(review.given).toEqual([
+      { text: "Ich", mark: "wrong" },
+      { text: " " },
+      { text: "gönd" },
+      { text: " " },
+      { text: "hei" },
+    ]);
+    expect(review.solution).toEqual([
+      { text: "Mir", mark: "right" },
+      { text: " " },
+      { text: "gönd" },
+      { text: " " },
+      { text: "hei" },
+    ]);
+    expect(answerReview(build, { type: "build", placed: [0, 1, 2] }).solution).toEqual([
+      { text: "Mir gönd hei", mark: "right" },
+    ]);
+  });
+
+  it("puts the learner's correction where they saw the mistake, keeping punctuation", () => {
+    const task: SpotErrorTask = {
+      type: "spot_error",
+      sentence: "Ich gseh du morn.",
+      wrong: [2],
+      options: ["di", "dir"],
+      answer: 0,
+    };
+    const solution = [{ text: "Ich gseh " }, { text: "di", mark: "right" }, { text: " morn." }];
+    expect(answerReview(task, { type: "spot_error", tapped: 2, picked: 1 })).toEqual({
+      correct: false,
+      asked: null,
+      given: [{ text: "Ich gseh " }, { text: "dir", mark: "wrong" }, { text: " morn." }],
+      solution,
+    });
+    expect(answerReview(task, { type: "spot_error", tapped: 3, picked: 0 }).given).toEqual([
+      { text: "Ich gseh du " },
+      { text: "di", mark: "wrong" },
+      { text: "." },
+    ]);
+    expect(answerReview(spotError, { type: "spot_error", tapped: 4, picked: 0 }).given).toEqual([
+      { text: "Grüezi Herr Keller, " },
+      { text: "händ Si", mark: "right" },
+      { text: " Ziit?" },
+    ]);
   });
 });
 

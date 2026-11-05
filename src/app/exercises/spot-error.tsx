@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { isSpotErrorCorrect, sentenceWords, type SpotErrorTask } from "@/lib/exercises/tasks";
+import { sentenceWords, type SpotErrorTask } from "@/lib/exercises/tasks";
 import { Options } from "./options";
 import type { TaskProps } from "./task-view";
 
@@ -10,6 +10,7 @@ import type { TaskProps } from "./task-view";
 export function SpotError({ task, t, answered, onAnswer, layout }: TaskProps<SpotErrorTask>) {
   const words = sentenceWords(task.sentence);
   const [tapped, setTapped] = useState<number | null>(null);
+  const [picked, setPicked] = useState<number | null>(null);
 
   function wordClass(i: number) {
     if (answered && task.wrong.includes(i)) return "border-danger text-danger line-through";
@@ -43,9 +44,13 @@ export function SpotError({ task, t, answered, onAnswer, layout }: TaskProps<Spo
         <Options
           options={task.options}
           answer={task.answer}
+          selected={picked}
           answered={answered}
           lang="gsw"
-          onPick={(i) => onAnswer(isSpotErrorCorrect(task, tapped, i))}
+          onPick={(i) => {
+            setPicked(i);
+            onAnswer({ type: "spot_error", tapped, picked: i });
+          }}
         />
       </div>
     ),

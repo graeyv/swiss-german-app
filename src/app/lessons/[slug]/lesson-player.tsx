@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useLayoutEffect, useState, useTransition } from "react";
 import { TaskView } from "@/app/exercises/task-view";
-import { answerText, type Task } from "@/lib/exercises/tasks";
+import { answerText, isCorrect, type Task } from "@/lib/exercises/tasks";
 import { dictionary, type Locale, translationOf } from "@/lib/i18n";
 import type { Exercise, Vocabulary } from "@/lib/types";
 import { completeLesson } from "./actions";
@@ -148,7 +148,7 @@ export function LessonPlayer({ lessonId, locale, title, exercises }: LessonPlaye
             task={task}
             t={t.exercises}
             answered={wasCorrect !== null}
-            onAnswer={setWasCorrect}
+            onAnswer={(response) => setWasCorrect(isCorrect(task, response))}
           />
         )}
       </div>

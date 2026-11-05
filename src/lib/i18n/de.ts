@@ -134,6 +134,8 @@ export const de: Dictionary = {
     rulesPractised: (count) => many(count, "Regel geübt", "Regeln geübt"),
     correct: "Richtig!",
     notQuite: "Nicht ganz",
+    yourAnswer: "Deine Antwort",
+    correctAnswer: "Richtige Antwort",
     continue: "Weiter",
     saving: "Wird gespeichert…",
     tryAgain: "Nochmals versuchen",
