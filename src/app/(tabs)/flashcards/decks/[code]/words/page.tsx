@@ -29,7 +29,7 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
   if (words.error) throw new Error(words.error.message);
 
   const found = findDeck(tree, code);
-  if (!found) notFound();
+  if (!found || found.deck.kind !== "vocabulary") notFound();
   const { deck, ancestors } = found;
   const parent = ancestors.at(-1);
   const { newWords, due } = deckAvailability(deck, limits);
@@ -73,7 +73,7 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
           </thead>
           <tbody className="divide-y divide-line">
             {words.data.map((word) => (
-              <tr key={word.vocabulary_id} className="align-top">
+              <tr key={word.card_id} className="align-top">
                 <td lang="gsw" className="px-4 py-3 font-semibold break-words">
                   {word.swiss_german}
                 </td>

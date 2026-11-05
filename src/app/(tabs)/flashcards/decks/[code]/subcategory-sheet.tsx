@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { BottomSheet } from "../../bottom-sheet";
+import type { DeckKind } from "@/lib/flashcards/decks";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { Counts } from "../../counts";
 
 type SubcategorySheetProps = {
   code: string;
+  kind: DeckKind;
   title: string;
   emoji: string;
   tint: string;
@@ -16,9 +18,11 @@ type SubcategorySheetProps = {
   locale: Locale;
 };
 
-// A lowest-level subcategory. Tapping it slides up a sheet to start flashcards or see the words.
+// A lowest-level subcategory. Tapping it slides up a sheet to start flashcards or see the words,
+// or for grammar, to start practising or see the rules.
 export function SubcategorySheet({
   code,
+  kind,
   title,
   emoji,
   tint,
@@ -73,15 +77,15 @@ export function SubcategorySheet({
               onClick={close}
               className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
             >
-              {t.startFlashcards}
+              {kind === "grammar" ? t.startPractice : t.startFlashcards}
             </Link>
           )}
           <Link
-            href={`/flashcards/decks/${code}/words`}
+            href={`/flashcards/decks/${code}/${kind === "grammar" ? "rules" : "words"}`}
             onClick={close}
             className="w-full rounded-full border border-line px-6 py-3 text-center font-semibold transition-colors hover:border-accent"
           >
-            {t.seeWordList}
+            {kind === "grammar" ? t.seeRules : t.seeWordList}
           </Link>
         </div>
       </BottomSheet>

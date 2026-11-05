@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getCardFront, getToday, toFlashcard } from "@/lib/flashcards/data";
+import { getCardFront, getGrammarContent, getToday, toGrammarCard, toWordCard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
 import { composeSession } from "@/lib/flashcards/session";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
@@ -51,13 +51,23 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
     { shuffle: shuffle === "1" },
   );
 
+  const grammarIds = entries.flatMap((entry) => {
+    const row = "due" in entry ? entry.due : entry.fresh;
+    return row.kind === "grammar" ? [row.card_id] : [];
+  });
+  const grammar = await getGrammarContent(supabase, grammarIds);
+
   const now = new Date();
   const cards = await Promise.all(
-    entries.map((entry) =>
-      "due" in entry
-        ? toFlashcard(supabase, entry.due, entry.due, now, t)
-        : toFlashcard(supabase, entry.fresh, null, now, t),
-    ),
+    entries.map((entry) => {
+      const row = "due" in entry ? entry.due : entry.fresh;
+      const card = "due" in entry ? entry.due : null;
+      if (row.kind !== "grammar") return toWordCard(supabase, row, card, now, t);
+      const content = grammar.get(row.card_id);
+      // A rule without exercises for the learner's dialect isn't offered in the first place.
+      if (!content || content.exercises.length === 0) return null;
+      return toGrammarCard(row.card_id, content, card, card?.last_exercise_id ?? null, locale);
+    }),
   );
 
   // Back to the category the learner came from: a subcategory's parent, or the deck itself.
@@ -67,7 +77,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
     <>
       <title>{t.title(found.deck.title)}</title>
       <ReviewSession
-        cards={cards}
+        cards={cards.filter((card) => card !== null)}
         cardFront={cardFront}
         locale={locale}
         goalReachedBefore={today.goalReached}

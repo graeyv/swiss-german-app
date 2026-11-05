@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getToday } from "@/lib/flashcards/data";
-import { type DeckNode, findDeck } from "@/lib/flashcards/decks";
+import { type DeckNode, findDeck, overviewHref } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { dictionary, type Locale } from "@/lib/i18n";
@@ -39,7 +39,7 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
 
       <div className="flex flex-col gap-4">
         <Link
-          href={parent ? `/flashcards/decks/${parent.code}` : "/flashcards"}
+          href={parent ? `/flashcards/decks/${parent.code}` : overviewHref(deck.kind)}
           className="-ml-1 flex min-h-11 w-fit items-center gap-1 text-sm font-semibold text-muted hover:text-foreground"
         >
           ‹ {parent?.title ?? t.flashcards.title}
@@ -134,6 +134,7 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
     return (
       <SubcategorySheet
         code={deck.code}
+        kind={deck.kind}
         title={deck.title}
         emoji={deck.emoji ?? "📚"}
         tint={TINTS[deck.color]}

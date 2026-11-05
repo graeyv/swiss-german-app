@@ -1,19 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
+import { payloadProblem } from "../../../scripts/lib/check-payload.mjs";
 import { CHEERS, pickCheer } from "./cheers";
 import { goalReached, presetId, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
 import { suggestedPace } from "../onboarding";
 import { buildDeckTree, type DeckRow, findDeck, sortByInterests } from "./decks";
+import { allowedLevels, gradeFromAnswer, grammarExercise, pickExercise } from "./grammar";
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
 
-const WORD = "5b0c2b8e-6d0e-4c1e-9a55-0d1f6f2f7a11";
+const CARD = "5b0c2b8e-6d0e-4c1e-9a55-0d1f6f2f7a11";
 const NOW = new Date("2026-11-01T10:00:00Z");
 
 describe("scheduleReview", () => {
   it("keeps a missed new card in the same day's learning steps", async () => {
-    const { card, log } = await scheduleReview(null, WORD, 1, NOW);
+    const { card, log } = await scheduleReview(null, CARD, 1, NOW);
     expect(card.state).toBe(1);
     expect(card.reps).toBe(1);
     expect(new Date(card.due_at).getTime() - NOW.getTime()).toBe(60_000);
@@ -35,19 +37,19 @@ describe("scheduleReview", () => {
       learning_step: 0,
       scheduled_days: 0,
     };
-    const fromRow = await scheduleReview(lessonRow, WORD, 3, NOW);
-    const fromNothing = await scheduleReview(null, WORD, 3, NOW);
+    const fromRow = await scheduleReview(lessonRow, CARD, 3, NOW);
+    const fromNothing = await scheduleReview(null, CARD, 3, NOW);
     expect(fromRow.card).toEqual(fromNothing.card);
   });
 
   it("continues correctly from a card restored from database values", async () => {
-    const first = await scheduleReview(null, WORD, 3, NOW);
-    const second = await scheduleReview(first.card, WORD, 3, new Date(first.card.due_at));
+    const first = await scheduleReview(null, CARD, 3, NOW);
+    const second = await scheduleReview(first.card, CARD, 3, new Date(first.card.due_at));
     expect(second.card.state).toBe(2);
     expect(second.card.reps).toBe(2);
 
     const lastReview = new Date(second.card.due_at);
-    const third = await scheduleReview(second.card, WORD, 1, lastReview);
+    const third = await scheduleReview(second.card, CARD, 1, lastReview);
     expect(third.card.state).toBe(3);
     expect(third.card.lapses).toBe(1);
     expect(third.log.stability).toBe(second.card.stability);
@@ -55,7 +57,7 @@ describe("scheduleReview", () => {
   });
 
   it("previews every grade, with longer intervals for better grades", async () => {
-    const previews = await previewIntervals(null, WORD, NOW);
+    const previews = await previewIntervals(null, CARD, NOW);
     expect(previews).toEqual({ 1: "1 min", 2: "6 min", 3: "10 min", 4: expect.stringMatching(/ d$/) });
   });
 });
@@ -94,6 +96,7 @@ describe("buildDeckTree", () => {
       id,
       parent_id,
       code: id,
+      kind: "vocabulary",
       title: id,
       emoji: null,
       description: null,
@@ -141,6 +144,12 @@ describe("buildSeed", () => {
     expect(seed).toContain("('C01-T01', 'FC1', 1)");
   });
 
+  it("puts each word's card in its decks, not the word itself", () => {
+    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`);
+    expect(seed).toContain("insert into public.deck_items (deck_id, card_id, position)");
+    expect(seed).toContain("join public.cards c on c.vocabulary_id = v.id");
+  });
+
   it("rejects unknown deck colours", () => {
     const pink = "code\tparent_code\ttitle_en\temoji\tdescription_en\tcolor\nC01\t\tLife\t🏙️\t\tteal\n";
     expect(() => buildSeed(pink, header)).toThrow(/unknown color/);
@@ -165,6 +174,141 @@ describe("buildSeed", () => {
     expect(() =>
       buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\nFC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`),
     ).toThrow(/Duplicate/);
+  });
+});
+
+describe("buildSeed with grammar", () => {
+  const decks =
+    "code\tparent_code\ttitle_en\tkind\tdraft\n" +
+    "C01\t\tLife\t\t\nC01-T01\tC01\tGreetings\t\t\n" +
+    "G01\t\tPronouns\tgrammar\tyes\nG01-T01\tG01\tPersonal\t\t\n";
+  const words = "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\nFC1\tC01-T01\tzh\ta\tb\tc\n";
+  const points = "code\tdeck_codes\tdialect\ttitle_en\texplanation_en\nGR1\tG01-T01\t\tSi\tPolite.\n";
+  const exerciseHeader = "code\tpoint\ttype\tlevel\tdialect\tpayload\n";
+  const pick = '{"prompt":"Chönd ___ hälfe?","options":["Si","du"],"answer":0}';
+  const exercises = `${exerciseHeader}GR1-E1\tGR1\tpick\t1\tzh\t${pick}\n`;
+
+  it("gives decks their parent's kind, and keeps drafts and their children unpublished", () => {
+    const seed = buildSeed(decks, words, points, exercises);
+    expect(seed).toContain("('C01-T01', 'C01', 'vocabulary', null, null, 1, true)");
+    expect(seed).toContain("('G01-T01', 'G01', 'grammar', null, null, 1, false)");
+    expect(seed).toContain("('G01-T01', 'GR1', 1)");
+    expect(seed).toContain(`('GR1-E1', 'GR1', 'pick', 1, 'zh', '${pick}')`);
+  });
+
+  it("works without any grammar", () => {
+    expect(buildSeed(decks, words)).toContain("where not (code = any (array[]::text[]))");
+  });
+
+  it("keeps words and grammar points to decks of their kind", () => {
+    const wordOnGrammar = words.replace("C01-T01", "G01-T01");
+    expect(() => buildSeed(decks, wordOnGrammar, points, exercises)).toThrow(/isn't a vocabulary deck/);
+    const pointOnWords = points.replace("G01-T01", "C01-T01");
+    expect(() => buildSeed(decks, words, pointOnWords, exercises)).toThrow(/isn't a grammar deck/);
+    const mixed = decks.replace("G01-T01\tG01\tPersonal\t\t", "G01-T01\tG01\tPersonal\tvocabulary\t");
+    expect(() => buildSeed(mixed, words, points, exercises)).toThrow(/its parent is grammar/);
+  });
+
+  it("checks each exercise and needs a level 1 one per grammar point", () => {
+    const build = (row: string) => () => buildSeed(decks, words, points, `${exercises}${row}\n`);
+    expect(build(`GR1-E2\tGR9\tpick\t1\tzh\t${pick}`)).toThrow(/unknown grammar point/);
+    expect(build(`GR1-E2\tGR1\tpick\t4\tzh\t${pick}`)).toThrow(/level 1, 2 or 3/);
+    expect(build(`GR1-E2\tGR1\tpick\t2\tzh\t{"prompt":`)).toThrow(/valid JSON/);
+    expect(build(`GR1-E2\tGR1\tpick\t2\tzh\t${pick.replace('"answer":0', '"answer":2')}`)).toThrow(
+      /GR1-E2: answer isn't the position/,
+    );
+    const onlyLevel2 = `${exerciseHeader}GR1-E1\tGR1\tpick\t2\tzh\t${pick}\n`;
+    expect(() => buildSeed(decks, words, points, onlyLevel2)).toThrow(/needs at least one level 1/);
+  });
+});
+
+describe("payloadProblem", () => {
+  it("accepts translated text where the learner reads their own language", () => {
+    const payload = { context: { en: "Who?", de: "Wer?" }, prompt: "Mir sind spaat.", options: [{ en: "we" }, "me"], answer: 0 };
+    expect(payloadProblem("pick", payload)).toBeNull();
+    expect(payloadProblem("pick", { ...payload, context: { de: "Wer?" } })).toMatch(/context/);
+  });
+
+  it("rejects unknown types, unknown fields and missing ones", () => {
+    expect(payloadProblem("match", {})).toMatch(/unknown type/);
+    expect(payloadProblem("pick", { prompt: "a", options: ["a", "b"], answer: 0, hint: "x" })).toMatch(/unknown field hint/);
+    expect(payloadProblem("build", { prompt: "a", tiles: ["a", "b"] })).toMatch(/missing answer/);
+  });
+
+  it("needs a build answer the tiles can make", () => {
+    const payload = { prompt: "We go.", tiles: ["Mir", "gönd"], answer: ["Mir", "gönd"] };
+    expect(payloadProblem("build", payload)).toBeNull();
+    expect(payloadProblem("build", { ...payload, answer: ["Mir", "Mir"] })).toMatch(/more often/);
+  });
+
+  it("needs a real mistake of words next to each other", () => {
+    const payload = { sentence: "Ich gseh du morn.", wrong: [2], options: ["di", "du"], answer: 0 };
+    expect(payloadProblem("spot_error", payload)).toBeNull();
+    expect(payloadProblem("spot_error", { ...payload, wrong: [1, 3] })).toMatch(/next to each other/);
+    expect(payloadProblem("spot_error", { ...payload, wrong: [4] })).toMatch(/positions/);
+    expect(payloadProblem("spot_error", { ...payload, sentence: "Ich gseh di.", wrong: [2] })).toMatch(/same as the mistake/);
+  });
+});
+
+describe("pickExercise", () => {
+  const exercises = [
+    { id: "a", level: 1 },
+    { id: "b", level: 1 },
+    { id: "c", level: 2 },
+    { id: "d", level: 3 },
+  ];
+  const first = () => 0;
+
+  it("makes exercises harder as a rule comes back less often", () => {
+    expect(allowedLevels(null)).toEqual([1]);
+    expect(allowedLevels({ state: 1, scheduled_days: 0 })).toEqual([1]);
+    expect(allowedLevels({ state: 2, scheduled_days: 3 })).toEqual([1, 2]);
+    expect(allowedLevels({ state: 2, scheduled_days: 14 })).toEqual([2, 3]);
+    // Forgotten, so back to recognising it.
+    expect(allowedLevels({ state: 3, scheduled_days: 0 })).toEqual([1]);
+  });
+
+  it("picks among the levels the card is ready for, avoiding the last one shown", () => {
+    expect(pickExercise(exercises, null, null, first).id).toBe("a");
+    expect(pickExercise(exercises, null, "a", first).id).toBe("b");
+    expect(pickExercise(exercises, { state: 2, scheduled_days: 30 }, "c", first).id).toBe("d");
+  });
+
+  it("repeats the last exercise only when it's the only one, and falls back to any level", () => {
+    expect(pickExercise([{ id: "a", level: 1 }], null, "a").id).toBe("a");
+    expect(pickExercise([{ id: "a", level: 1 }], { state: 2, scheduled_days: 30 }, null).id).toBe("a");
+  });
+
+  it("rates a wrong answer Again and a right one Good", () => {
+    expect(gradeFromAnswer(false)).toBe(1);
+    expect(gradeFromAnswer(true)).toBe(3);
+  });
+});
+
+describe("grammarExercise", () => {
+  const row = {
+    id: "e1",
+    type: "pick" as const,
+    level: 2,
+    payload: {
+      context: { en: "Who is late?", de: "Wer ist spät dran?" },
+      prompt: "Mir sind spaat.",
+      options: [{ en: "we", de: "wir" }, { en: "me" }],
+      answer: 0,
+    },
+  };
+
+  it("shows translated text in the learner's language, falling back to English", () => {
+    const { task } = grammarExercise(row, "de");
+    expect(task).toEqual({
+      type: "pick",
+      context: "Wer ist spät dran?",
+      prompt: "Mir sind spaat.",
+      promptLang: "gsw",
+      options: ["wir", "me"],
+      answer: 0,
+    });
+    expect(grammarExercise(row, "en").task).toMatchObject({ context: "Who is late?", options: ["we", "me"] });
   });
 });
 

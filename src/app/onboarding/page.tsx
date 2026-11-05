@@ -34,7 +34,9 @@ async function Onboarding() {
       <title>{dictionary(locale).title(dictionary(locale).onboarding.title)}</title>
       <OnboardingFlow
         locale={locale}
-        topics={tree.map(({ code, title, emoji, color }) => ({ code, title, emoji, color }))}
+        topics={tree
+          .filter((deck) => deck.kind === "vocabulary")
+          .map(({ code, title, emoji, color }) => ({ code, title, emoji, color }))}
         initialLevel={isLevel(profile.data?.swiss_german_level) ? profile.data.swiss_german_level : null}
         initialInterests={profile.data?.interests ?? []}
       />

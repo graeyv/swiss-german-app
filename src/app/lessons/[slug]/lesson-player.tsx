@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useLayoutEffect, useState, useTransition } from "react";
-import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i18n";
+import { TaskView } from "@/app/exercises/task-view";
+import { answerText, isCorrect, type Task } from "@/lib/exercises/tasks";
+import { dictionary, type Locale, translationOf } from "@/lib/i18n";
 import type { Exercise, Vocabulary } from "@/lib/types";
 import { completeLesson } from "./actions";
 
@@ -16,12 +18,17 @@ type LessonPlayerProps = {
 const primaryButton =
   "w-full rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50";
 
-function correctAnswer(exercise: Exercise) {
+// Lessons keep their own payloads. Each graded exercise is a task the shared exercises can show.
+function lessonTask(exercise: Exercise): Task | null {
   if (exercise.type === "multiple_choice") {
-    return exercise.payload.options[exercise.payload.answer_index];
+    const { question, options, answer_index } = exercise.payload;
+    return { type: "pick", prompt: question, options, answer: answer_index };
   }
-  if (exercise.type === "word_order") return exercise.payload.answer.join(" ");
-  return "";
+  if (exercise.type === "word_order") {
+    const { prompt, words, answer } = exercise.payload;
+    return { type: "build", prompt, tiles: words, answer };
+  }
+  return null;
 }
 
 export function LessonPlayer({ lessonId, locale, title, exercises }: LessonPlayerProps) {
@@ -107,7 +114,8 @@ export function LessonPlayer({ lessonId, locale, title, exercises }: LessonPlaye
     );
   }
 
-  const answered = exercise.type === "vocab_card" || wasCorrect !== null;
+  const task = lessonTask(exercise);
+  const answered = !task || wasCorrect !== null;
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-8 px-6 py-6">
@@ -134,21 +142,13 @@ export function LessonPlayer({ lessonId, locale, title, exercises }: LessonPlaye
         {exercise.type === "vocab_card" && (
           <VocabCard vocabulary={exercise.vocabulary} locale={locale} />
         )}
-        {exercise.type === "multiple_choice" && (
-          <MultipleChoice
+        {task && (
+          <TaskView
             key={exercise.id}
-            {...exercise.payload}
+            task={task}
+            t={t.exercises}
             answered={wasCorrect !== null}
-            onAnswer={setWasCorrect}
-          />
-        )}
-        {exercise.type === "word_order" && (
-          <WordOrder
-            key={exercise.id}
-            t={t.lesson}
-            {...exercise.payload}
-            answered={wasCorrect !== null}
-            onAnswer={setWasCorrect}
+            onAnswer={(response) => setWasCorrect(isCorrect(task, response))}
           />
         )}
       </div>
@@ -157,7 +157,7 @@ export function LessonPlayer({ lessonId, locale, title, exercises }: LessonPlaye
         <div aria-live="polite">
           {wasCorrect === true && <p className="font-semibold text-success">{t.lesson.correct}</p>}
           {wasCorrect === false && (
-            <p className="font-semibold text-danger">{t.lesson.incorrect(correctAnswer(exercise))}</p>
+            <p className="font-semibold text-danger">{t.lesson.incorrect(task ? answerText(task) : "")}</p>
           )}
         </div>
         {answered && (
@@ -186,116 +186,5 @@ function VocabCard({ vocabulary, locale }: { vocabulary: Vocabulary; locale: Loc
       )}
       {vocabulary.notes && <p className="mt-2 text-sm text-muted">{vocabulary.notes}</p>}
     </div>
-  );
-}
-
-type MultipleChoiceProps = {
-  question: string;
-  options: string[];
-  answer_index: number;
-  answered: boolean;
-  onAnswer: (correct: boolean) => void;
-};
-
-function MultipleChoice({
-  question,
-  options,
-  answer_index,
-  answered,
-  onAnswer,
-}: MultipleChoiceProps) {
-  const [selected, setSelected] = useState<number | null>(null);
-
-  function optionClass(i: number) {
-    if (answered && i === answer_index) return "border-success text-success";
-    if (answered && i === selected) return "border-danger text-danger";
-    return "border-line";
-  }
-
-  return (
-    <>
-      <h1 className="text-2xl font-bold tracking-tight">{question}</h1>
-      <div className="flex flex-col gap-3">
-        {options.map((option, i) => (
-          <button
-            key={option}
-            disabled={answered}
-            onClick={() => {
-              setSelected(i);
-              onAnswer(i === answer_index);
-            }}
-            className={`rounded-xl border-2 bg-surface p-4 text-left font-medium transition-colors enabled:hover:border-accent ${optionClass(i)}`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-    </>
-  );
-}
-
-type WordOrderProps = {
-  t: Dictionary["lesson"];
-  prompt: string;
-  words: string[];
-  answer: string[];
-  answered: boolean;
-  onAnswer: (correct: boolean) => void;
-};
-
-function WordOrder({ t, prompt, words, answer, answered, onAnswer }: WordOrderProps) {
-  // Positions in words rather than the words themselves, so repeated words stay distinct.
-  const [placed, setPlaced] = useState<number[]>([]);
-
-  const wordClass =
-    "rounded-lg border border-line bg-surface px-3 py-2 font-medium transition-colors enabled:hover:border-accent";
-
-  return (
-    <>
-      <div>
-        <p className="text-sm text-muted">{t.putInOrder}</p>
-        <h1 className="text-2xl font-bold tracking-tight">{prompt}</h1>
-      </div>
-
-      <div className="flex min-h-14 flex-wrap items-center gap-2 border-b-2 border-line pb-3">
-        {placed.map((wordIndex) => (
-          <button
-            key={wordIndex}
-            disabled={answered}
-            onClick={() => setPlaced(placed.filter((i) => i !== wordIndex))}
-            className={wordClass}
-          >
-            {words[wordIndex]}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        {words.map((word, i) =>
-          placed.includes(i) ? null : (
-            <button
-              key={i}
-              disabled={answered}
-              onClick={() => setPlaced([...placed, i])}
-              className={wordClass}
-            >
-              {word}
-            </button>
-          ),
-        )}
-      </div>
-
-      {!answered && (
-        <button
-          disabled={placed.length === 0}
-          onClick={() =>
-            onAnswer(placed.map((i) => words[i]).join(" ") === answer.join(" "))
-          }
-          className={primaryButton}
-        >
-          {t.check}
-        </button>
-      )}
-    </>
   );
 }
