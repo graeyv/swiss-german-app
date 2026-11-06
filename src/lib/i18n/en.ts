@@ -33,8 +33,9 @@ export const en = {
 
   nav: {
     label: "Main",
-    lessons: "Lessons",
+    learn: "Learn",
     practice: "Practice",
+    immerse: "Immerse",
     profile: "Profile",
   },
 
