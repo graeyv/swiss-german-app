@@ -2,17 +2,21 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { dictionary } from "@/lib/i18n";
-import { findLesson, findSection } from "@/lib/learn/lessons";
+import { findLesson, findRule, lessonHref, ruleParams } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
 import { ListenButton } from "./listen-button";
 
 const primaryButton =
   "flex min-h-12 flex-1 items-center justify-center rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90";
-const secondaryButton =
-  "flex min-h-12 flex-1 items-center justify-center rounded-full border border-line px-6 py-3 font-semibold transition-colors hover:border-accent";
+
+export function generateStaticParams() {
+  return ruleParams();
+}
 
 // One rule: what differs, examples to listen to on both sides, and the takeaway.
-export default function RulePage({ params }: PageProps<"/learn/[dialect]/[lesson]/[section]/[rule]">) {
+export default function RulePage({
+  params,
+}: PageProps<"/learn/[dialect]/[lesson]/[section]/[rule]">) {
   return (
     <Suspense fallback={<LessonLoading />}>
       <RuleView params={params} />
@@ -25,34 +29,37 @@ async function RuleView({
 }: Pick<PageProps<"/learn/[dialect]/[lesson]/[section]/[rule]">, "params">) {
   const { dialect, lesson: lessonId, section: sectionId, rule: ruleId } = await params;
   const found = findLesson(dialect, lessonId);
-  const section = found && findSection(found.lesson, sectionId);
-  const index = section ? section.rules.findIndex((rule) => rule.id === ruleId) : -1;
-  if (!found || !section || index === -1) notFound();
-  const t = dictionary(found.language);
-  const rule = section.rules[index];
-  const next = section.rules[index + 1];
-  const sectionHref = `/learn/${dialect}/${lessonId}/${section.id}`;
+  const place = found && findRule(found.lesson, sectionId, ruleId);
+  if (!found || !place) notFound();
+  const { lesson, language } = found;
+  const { section, rule, next } = place;
+  const t = dictionary(language);
   const dialectName = t.lesson.dialects[dialect] ?? dialect;
+  const nextHref = next && lessonHref(dialect, lesson, next.section, next.rule);
 
   return (
     <LessonScreen
-      lang={found.language}
-      back={{ href: sectionHref, label: t.lesson.back(section.title) }}
+      lang={language}
+      back={{
+        href: lessonHref(dialect, lesson, section),
+        label: t.lesson.back(section.title),
+      }}
+      heading={t.lesson.position(section.title, place.position, place.count)}
       footer={
-        next ? (
-          <Link href={`${sectionHref}/${next.id}`} className={primaryButton}>
-            {t.lesson.next}: {next.title}
+        nextHref ? (
+          // Within a section the next topic is named, and at its end the next section.
+          <Link href={nextHref} className={primaryButton}>
+            {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}
           </Link>
         ) : (
-          <Link href={sectionHref} className={secondaryButton}>
-            {t.lesson.overview}
+          <Link href={lessonHref(dialect, lesson)} className={primaryButton}>
+            {t.lesson.done}
           </Link>
         )
       }
     >
       <title>{t.title(`${rule.title} · ${section.title}`)}</title>
       <div className="flex flex-col gap-3">
-        <p className="text-sm font-semibold text-muted">{section.title}</p>
         <h1 className="text-4xl font-bold tracking-tight">{rule.title}</h1>
         <p>{rule.theory}</p>
       </div>

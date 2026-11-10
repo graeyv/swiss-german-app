@@ -7,23 +7,26 @@ type LessonScreenProps = {
   lang: string;
   // Where the arrow at the top leads, and its name for screen readers.
   back: { href: string; label: string };
+  // A short line next to the arrow, such as where a topic is in its section.
+  heading?: string;
   children: ReactNode;
   // Buttons kept at the bottom, within thumb reach, also when the screen is longer than the phone.
   footer?: ReactNode;
 };
 
 // A full screen of a Learn lesson.
-export function LessonScreen({ lang, back, children, footer }: LessonScreenProps) {
+export function LessonScreen({ lang, back, heading, children, footer }: LessonScreenProps) {
   return (
     <main lang={lang} className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 pt-4">
-      <header>
+      <header className="flex items-center gap-2">
         <Link
           href={back.href}
           aria-label={back.label}
-          className="-ml-2 flex size-11 items-center justify-center text-xl text-muted"
+          className="-ml-2 flex size-11 shrink-0 items-center justify-center text-xl text-muted"
         >
           ←
         </Link>
+        {heading && <p className="text-sm font-semibold text-muted tabular-nums">{heading}</p>}
       </header>
 
       <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">

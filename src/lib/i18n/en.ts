@@ -74,8 +74,11 @@ export const en = {
     topicsHeading: "Topics",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
+    start: "Let’s go",
     next: "Next",
-    overview: "Back to the overview",
+    done: "Done",
+    // Where a topic is in its section, such as "Consonants · 2 / 6".
+    position: (section: string, position: number, count: number) => `${section} · ${position} / ${count}`,
     remember: "Remember",
     standardGerman: "Standard German",
     // By dialect id. A dialect without a name here shows its id.

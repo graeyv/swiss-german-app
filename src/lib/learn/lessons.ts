@@ -61,3 +61,56 @@ export function findLesson(dialect: string, id: string): DialectLesson | undefin
 export function findSection(lesson: Lesson, id: string): Section | undefined {
   return lesson.sections.find((section) => section.id === id);
 }
+
+// A rule with the section it belongs to.
+export type RuleInSection = { section: Section; rule: Rule };
+
+// Where a rule sits: its place in its section, and the rule after it in the whole lesson, so the
+// learner can go from the last consonant straight on to the first vowel.
+export type RulePlace = RuleInSection & {
+  position: number;
+  count: number;
+  next?: RuleInSection;
+};
+
+export function findRule(lesson: Lesson, sectionId: string, ruleId: string): RulePlace | undefined {
+  const all = lesson.sections.flatMap((section) => section.rules.map((rule) => ({ section, rule })));
+  const index = all.findIndex(({ section, rule }) => section.id === sectionId && rule.id === ruleId);
+  if (index === -1) return undefined;
+  const { section, rule } = all[index];
+  return {
+    section,
+    rule,
+    position: section.rules.indexOf(rule) + 1,
+    count: section.rules.length,
+    next: all[index + 1],
+  };
+}
+
+export function lessonHref(dialect: string, lesson: Lesson, section?: Section, rule?: Rule) {
+  return [`/learn/${dialect}/${lesson.id}`, section?.id, rule?.id].filter(Boolean).join("/");
+}
+
+// Every lesson, section and rule page, so they're all built ahead of time and open instantly.
+export function lessonParams() {
+  return LESSONS.map(({ dialect, lesson }) => ({ dialect, lesson: lesson.id }));
+}
+
+export function sectionParams() {
+  return LESSONS.flatMap(({ dialect, lesson }) =>
+    lesson.sections.map((section) => ({ dialect, lesson: lesson.id, section: section.id })),
+  );
+}
+
+export function ruleParams() {
+  return LESSONS.flatMap(({ dialect, lesson }) =>
+    lesson.sections.flatMap((section) =>
+      section.rules.map((rule) => ({
+        dialect,
+        lesson: lesson.id,
+        section: section.id,
+        rule: rule.id,
+      })),
+    ),
+  );
+}

@@ -1,8 +1,12 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { dictionary } from "@/lib/i18n";
-import { findLesson, findSection } from "@/lib/learn/lessons";
+import { findLesson, findSection, lessonHref, sectionParams } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen, ListLink, listClass } from "../lesson-screen";
+
+export function generateStaticParams() {
+  return sectionParams();
+}
 
 // A section of a lesson, such as the consonants: its rules, each with its takeaway, to open.
 export default function SectionPage({ params }: PageProps<"/learn/[dialect]/[lesson]/[section]">) {
@@ -20,10 +24,9 @@ async function Rules({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]/[sect
   if (!found || !section) notFound();
   const { lesson, language } = found;
   const t = dictionary(language);
-  const base = `/learn/${dialect}/${lessonId}`;
 
   return (
-    <LessonScreen lang={language} back={{ href: base, label: t.lesson.back(lesson.title) }}>
+    <LessonScreen lang={language} back={{ href: lessonHref(dialect, lesson), label: t.lesson.back(lesson.title) }}>
       <title>{t.title(section.title)}</title>
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">{section.title}</h1>
@@ -33,7 +36,11 @@ async function Rules({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]/[sect
       <ul className={listClass}>
         {section.rules.map((rule) => (
           <li key={rule.id}>
-            <ListLink href={`${base}/${section.id}/${rule.id}`} title={rule.title} text={rule.takeaway} />
+            <ListLink
+              href={lessonHref(dialect, lesson, section, rule)}
+              title={rule.title}
+              text={rule.takeaway}
+            />
           </li>
         ))}
       </ul>
