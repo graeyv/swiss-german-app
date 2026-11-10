@@ -35,7 +35,8 @@ Docker isn't required: these steps use a hosted Supabase project.
 | `src/lib/supabase/database.types.ts` | Database types, generated with `npm run db:types` |
 | `src/lib/types.ts` | Flashcard types |
 | `src/lib/i18n` | Every interface text in English (`en.ts`) and Swiss Standard German (`de.ts`) |
-| `content` | Flashcard decks and cards, as tab-separated files |
+| `content` | Flashcard decks and cards, as tab-separated files, and Learn lessons as JSON |
+| `src/lib/learn` | The shape of a Learn lesson, and the list of lessons |
 | `supabase/migrations` | Database schema and access policies |
 | `supabase/seed.sql` | The dialects |
 | `supabase/seeds/flashcards.sql` | Generated from `content` |
@@ -44,6 +45,13 @@ Docker isn't required: these steps use a hosted Supabase project.
 
 Content belongs to a dialect, because Swiss German has no standard form. Clients can't write
 content. Only migrations, the seed files and the service role can.
+
+### Learn lessons
+
+Each lesson is a JSON file in `content/lessons/<dialect>/`, in the shape of `Lesson` in
+`src/lib/learn/lessons.ts`. Add a new file to `LESSONS` there. The type check flags a file that
+doesn't fit the shape. A lesson has sections, each section has rules, and each rule has examples
+that compare a word's Standard German and dialect pronunciation, with a recording of each.
 
 ### Flashcards
 

@@ -2,5 +2,6 @@
 -- Safe to run more than once.
 
 insert into public.dialects (id, name) values
-  ('zh', 'Züritüütsch (Zürich)')
+  ('zh', 'Züritüütsch (Zürich)'),
+  ('be', 'Bärndütsch (Bern)')
 on conflict (id) do nothing;

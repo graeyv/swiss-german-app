@@ -68,6 +68,20 @@ export const en = {
     logOut: "Log out",
   },
 
+  lesson: {
+    leave: "Leave lesson",
+    back: (page: string) => `Back to ${page}`,
+    rules: (count: number) => many(count, "rule", "rules"),
+    nextRule: "Next rule",
+    allRules: "All rules",
+    remember: "Remember",
+    standardGerman: "Standard German",
+    // By dialect id. A dialect without a name here shows its id.
+    dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
+    play: (variety: string) => `Listen in ${variety}`,
+    noRecording: "No recording yet",
+  },
+
   exercises: {
     putInOrder: "Put the words in order:",
     check: "Check",

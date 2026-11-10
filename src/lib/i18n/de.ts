@@ -68,6 +68,19 @@ export const de: Dictionary = {
     logOut: "Abmelden",
   },
 
+  lesson: {
+    leave: "Lektion verlassen",
+    back: (page) => `Zurück zu ${page}`,
+    rules: (count) => many(count, "Regel", "Regeln"),
+    nextRule: "Nächste Regel",
+    allRules: "Alle Regeln",
+    remember: "Merke",
+    standardGerman: "Hochdeutsch",
+    dialects: { be: "Berndeutsch", zh: "Zürichdeutsch" },
+    play: (variety) => `Auf ${variety} anhören`,
+    noRecording: "Noch keine Aufnahme",
+  },
+
   exercises: {
     putInOrder: "Bring die Wörter in die richtige Reihenfolge:",
     check: "Prüfen",

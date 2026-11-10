@@ -1,0 +1,444 @@
+{
+  "id": "pronunciation",
+  "title": "Aussprache",
+  "subtitle": "So klingt Berndeutsch",
+  "description": "Entdecke die wichtigsten Unterschiede zwischen der Aussprache im Hochdeutschen und im Berndeutschen.",
+  "note": "Wir verwenden hochdeutsche Wörter und sprechen sie mit Berner Aussprache aus. So kannst du dich ganz auf die Laute konzentrieren. Berndeutsch unterscheidet sich aber nicht nur in der Aussprache, sondern auch im Wortschatz und in der Grammatik. Die berndeutschen Wörter und ihre Schreibweise lernst du in späteren Lektionen.",
+  "sections": [
+    {
+      "id": "consonants",
+      "title": "Konsonanten",
+      "description": "Bei diesen Konsonanten unterscheidet sich die Aussprache vom Hochdeutschen.",
+      "rules": [
+        {
+          "id": "ch",
+          "title": "CH",
+          "theory": "Im Hochdeutschen gibt es drei verschiedene Arten, den CH-Laut auszusprechen: den Ach-Laut wie in «Bach», den Ich-Laut wie in «Dicht» und den K-Laut wie in «Chaos». Im Berndeutschen wird CH in den entsprechenden Wörtern als Ach-Laut ausgesprochen.",
+          "examples": [
+            {
+              "word": "Bach",
+              "pronunciation": {
+                "standardGerman": "Ach-Laut",
+                "dialect": "Ach-Laut"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Dicht",
+              "pronunciation": {
+                "standardGerman": "Ich-Laut",
+                "dialect": "Ach-Laut"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Chaos",
+              "pronunciation": {
+                "standardGerman": "K-Laut",
+                "dialect": "Ach-Laut"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "CH wird wie in «Bach» ausgesprochen."
+        },
+        {
+          "id": "k-ck",
+          "title": "K und CK",
+          "theory": "Im Berndeutschen wird K mit einem zusätzlichen rauen Reibelaut gesprochen. Man kann sich das ungefähr wie «K + ch» vorstellen. Das gilt auch für CK.",
+          "examples": [
+            {
+              "word": "Kunst",
+              "pronunciation": {
+                "standardGerman": "K-Laut",
+                "dialect": "K + ch"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Dick",
+              "pronunciation": {
+                "standardGerman": "K-Laut",
+                "dialect": "K + ch"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Klicken",
+              "pronunciation": {
+                "standardGerman": "K-Laut",
+                "dialect": "K + ch"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "Bei K und CK kommt ein leichtes «ch» dazu."
+        },
+        {
+          "id": "r",
+          "title": "R",
+          "theory": "Im Hochdeutschen wird das R häufig hinten im Rachen gebildet. Am Wortende, zum Beispiel bei «Wasser» oder «Bier», wird es oft nicht als richtiges R gesprochen, sondern klingt eher wie ein kurzer Vokal. Im Berndeutschen wird das R typischerweise mit der Zungenspitze gerollt.",
+          "examples": [
+            {
+              "word": "Wasser",
+              "pronunciation": {
+                "standardGerman": "Vokalisiertes R am Wortende",
+                "dialect": "Gerolltes R"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Bier",
+              "pronunciation": {
+                "standardGerman": "Vokalisiertes R am Wortende",
+                "dialect": "Gerolltes R"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "rund",
+              "pronunciation": {
+                "standardGerman": "R im Rachen",
+                "dialect": "Gerolltes R"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "Rolle das R mit der Zungenspitze."
+        },
+        {
+          "id": "s",
+          "title": "S",
+          "theory": "Im Hochdeutschen gibt es ein stimmhaftes, weiches S wie in «Sonne» und ein stimmloses, scharfes S wie in «Haus». Im Berndeutschen wird das einfache S grundsätzlich stimmlos ausgesprochen. ST und SP sind Ausnahmen und werden separat erklärt.",
+          "examples": [
+            {
+              "word": "Sonne",
+              "pronunciation": {
+                "standardGerman": "Stimmhaftes S",
+                "dialect": "Stimmloses S"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Haus",
+              "pronunciation": {
+                "standardGerman": "Stimmloses S",
+                "dialect": "Stimmloses S"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "sicher",
+              "pronunciation": {
+                "standardGerman": "Stimmhaftes S",
+                "dialect": "Stimmloses S"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "Das S klingt scharf wie in «Haus»."
+        },
+        {
+          "id": "st-sp",
+          "title": "ST und SP",
+          "theory": "Im Hochdeutschen werden ST und SP am Wortanfang normalerweise wie «scht» und «schp» ausgesprochen. Innerhalb eines Wortes hört man dagegen meist «st» und «sp». Im Berndeutschen bleibt die Aussprache «scht» und «schp» auch innerhalb des Wortes erhalten.",
+          "examples": [
+            {
+              "word": "Stadt",
+              "pronunciation": {
+                "standardGerman": "scht",
+                "dialect": "scht"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "spät",
+              "pronunciation": {
+                "standardGerman": "schp",
+                "dialect": "schp"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Fest",
+              "pronunciation": {
+                "standardGerman": "st",
+                "dialect": "scht"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Knospe",
+              "pronunciation": {
+                "standardGerman": "sp",
+                "dialect": "schp"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "ST klingt wie «scht» und SP wie «schp», auch in der Wortmitte."
+        },
+        {
+          "id": "t-p",
+          "title": "T und P",
+          "theory": "Im Hochdeutschen werden T und P am Wortanfang oft mit einem kräftigen Luftstoss ausgesprochen. Im Berndeutschen ist dieser Luftstoss normalerweise deutlich schwächer. Du kannst den Unterschied spüren, wenn du beim Sprechen eine Hand vor den Mund hältst.",
+          "examples": [
+            {
+              "word": "Tante",
+              "pronunciation": {
+                "standardGerman": "T mit starkem Luftstoss",
+                "dialect": "T mit schwachem Luftstoss"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Papagei",
+              "pronunciation": {
+                "standardGerman": "P mit starkem Luftstoss",
+                "dialect": "P mit schwachem Luftstoss"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Tempo",
+              "pronunciation": {
+                "standardGerman": "T und P mit starkem Luftstoss",
+                "dialect": "T und P mit schwachem Luftstoss"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "T und P ohne starken Luftstoss aussprechen."
+        }
+      ]
+    },
+    {
+      "id": "vowels",
+      "title": "Vokale",
+      "description": "Bei diesen Vokalen unterscheidet sich die Aussprache vom Hochdeutschen.",
+      "rules": [
+        {
+          "id": "o",
+          "title": "O",
+          "theory": "Im Hochdeutschen gibt es ein geschlossenes O wie in «Boot» und ein offeneres O wie in «offen». Im Berndeutschen wird das O in den hier gezeigten Beispielen üblicherweise offener ausgesprochen, ähnlich wie in «offen».",
+          "examples": [
+            {
+              "word": "Boot",
+              "pronunciation": {
+                "standardGerman": "Geschlossenes O",
+                "dialect": "Offenes O"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "offen",
+              "pronunciation": {
+                "standardGerman": "Offenes O",
+                "dialect": "Offenes O"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Obst",
+              "pronunciation": {
+                "standardGerman": "Geschlossenes O",
+                "dialect": "Offenes O"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "O klingt offen wie in «offen»."
+        },
+        {
+          "id": "ae",
+          "title": "Ä",
+          "theory": "Das berndeutsche Ä klingt offener als das typische lange Ä im Hochdeutschen. Es ähnelt ungefähr dem englischen «a» in «cat».",
+          "examples": [
+            {
+              "word": "Käse",
+              "pronunciation": {
+                "standardGerman": "Langes Ä",
+                "dialect": "Offeneres Ä"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Mädchen",
+              "pronunciation": {
+                "standardGerman": "Langes Ä",
+                "dialect": "Offeneres Ä"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Bären",
+              "pronunciation": {
+                "standardGerman": "Langes Ä",
+                "dialect": "Offeneres Ä"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "Ä klingt offen, ungefähr wie das «a» in «cat»."
+        },
+        {
+          "id": "oe",
+          "title": "Ö",
+          "theory": "Im Hochdeutschen gibt es ein geschlossenes Ö wie in «schön» oder «Öl» und ein offeneres Ö wie in «Löffel». Im Berndeutschen wird häufig das offenere Ö verwendet, ähnlich wie in «Löffel».",
+          "examples": [
+            {
+              "word": "Öl",
+              "pronunciation": {
+                "standardGerman": "Geschlossenes Ö",
+                "dialect": "Offenes Ö"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "öffentlich",
+              "pronunciation": {
+                "standardGerman": "Offenes Ö",
+                "dialect": "Offenes Ö"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "schön",
+              "pronunciation": {
+                "standardGerman": "Geschlossenes Ö",
+                "dialect": "Offenes Ö"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "Ö klingt offen wie in «Löffel»."
+        },
+        {
+          "id": "ue",
+          "title": "Ü",
+          "theory": "Im Hochdeutschen gibt es ein langes Ü wie in «Tür» und ein kurzes Ü wie in «Glück». Im Berndeutschen wird das Ü in den hier gezeigten Beispielen häufig kürzer ausgesprochen.",
+          "examples": [
+            {
+              "word": "Tür",
+              "pronunciation": {
+                "standardGerman": "Langes Ü",
+                "dialect": "Kurzes Ü"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "Glück",
+              "pronunciation": {
+                "standardGerman": "Kurzes Ü",
+                "dialect": "Kurzes Ü"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            },
+            {
+              "word": "müde",
+              "pronunciation": {
+                "standardGerman": "Langes Ü",
+                "dialect": "Kurzes Ü"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
+            }
+          ],
+          "takeaway": "Das Ü klingt kürzer."
+        }
+      ]
+    }
+  ]
+}
