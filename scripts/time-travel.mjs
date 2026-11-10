@@ -31,10 +31,6 @@ set reviewed_at = reviewed_at - ${shift},
     due_at = due_at - ${shift},
     last_review_at = last_review_at - ${shift}
 where user_id = ${user};
-
-update public.lesson_progress
-set completed_at = completed_at - ${shift}
-where user_id = ${user};
 `);
 
 console.log(`Moved ${email} ${days} ${days === 1 ? "day" : "days"} into the future.`);

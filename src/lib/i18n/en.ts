@@ -68,27 +68,6 @@ export const en = {
     logOut: "Log out",
   },
 
-  learn: {
-    title: "Your lessons",
-    noCourses: "No courses yet. Add the starter content with",
-  },
-
-  lesson: {
-    complete: "Lesson complete",
-    score: (percent: number) => `${percent}% correct`,
-    finished: (title: string) => `You finished “${title}”.`,
-    notSaved: (error: string) => `Your progress wasn’t saved: ${error}`,
-    tryAgain: "Try again",
-    saving: "Saving…",
-    backToLessons: "Back to lessons",
-    noExercises: "This lesson has no exercises yet.",
-    leave: "Leave lesson",
-    progress: "Lesson progress",
-    correct: "Correct!",
-    incorrect: (answer: string) => `Not quite. The answer is: ${answer}`,
-    continue: "Continue",
-  },
-
   exercises: {
     putInOrder: "Put the words in order:",
     check: "Check",

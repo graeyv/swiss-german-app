@@ -68,27 +68,6 @@ export const de: Dictionary = {
     logOut: "Abmelden",
   },
 
-  learn: {
-    title: "Deine Lektionen",
-    noCourses: "Noch keine Kurse. Füge die Startinhalte hinzu mit",
-  },
-
-  lesson: {
-    complete: "Lektion abgeschlossen",
-    score: (percent) => `${percent} % richtig`,
-    finished: (title) => `Du hast «${title}» abgeschlossen.`,
-    notSaved: (error) => `Dein Fortschritt wurde nicht gespeichert: ${error}`,
-    tryAgain: "Nochmals versuchen",
-    saving: "Wird gespeichert…",
-    backToLessons: "Zurück zu den Lektionen",
-    noExercises: "Diese Lektion hat noch keine Übungen.",
-    leave: "Lektion verlassen",
-    progress: "Fortschritt der Lektion",
-    correct: "Richtig!",
-    incorrect: (answer) => `Nicht ganz. Die Antwort ist: ${answer}`,
-    continue: "Weiter",
-  },
-
   exercises: {
     putInOrder: "Bring die Wörter in die richtige Reihenfolge:",
     check: "Prüfen",

@@ -10,7 +10,7 @@ Docker isn't required: these steps use a hosted Supabase project.
 2. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 3. In the dashboard, go to **Authentication > URL Configuration** and add
    `http://localhost:3000/auth/callback` to the redirect URLs.
-4. Install, link the project, and create the tables and starter lessons:
+4. Install, link the project, and create the tables:
 
    ```sh
    npm install
@@ -28,27 +28,22 @@ Docker isn't required: these steps use a hosted Supabase project.
 | `src/proxy.ts` | Refreshes the session and protects the pages that need an account |
 | `src/app/(tabs)` | Learn, Practice, Immerse and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
 | `src/app/onboarding` | First-run questions: language, Swiss German level, topics and pace |
-| `src/app/lessons/[slug]` | Lesson player |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
-| `src/app/exercises` | Exercise components shared by lessons and flashcards: pick, build, spot the error |
+| `src/app/exercises` | Exercise components for grammar flashcards: pick, build, spot the error |
 | `src/lib/exercises` | The shape of each exercise and how its answer is checked |
 | `src/lib/flashcards` | FSRS scheduling, sessions, daily limits, the deck tree, and loading it all (`data.ts`) |
 | `src/lib/supabase/database.types.ts` | Database types, generated with `npm run db:types` |
-| `src/lib/types.ts` | Exercise payload and flashcard types |
+| `src/lib/types.ts` | Flashcard types |
 | `src/lib/i18n` | Every interface text in English (`en.ts`) and Swiss Standard German (`de.ts`) |
 | `content` | Flashcard decks and cards, as tab-separated files |
 | `supabase/migrations` | Database schema and access policies |
-| `supabase/seed.sql` | Starter course in Zürich German |
+| `supabase/seed.sql` | The dialects |
 | `supabase/seeds/flashcards.sql` | Generated from `content` |
 
 ## Adding content
 
-Content belongs to a dialect, because Swiss German has no standard form. Add lessons in
-`supabase/seed.sql`, or in a new migration, then run `npm run db:push`. Exercises come in three
-types: `vocab_card`, `multiple_choice` and `word_order`. Their payloads are described in
-`src/lib/types.ts`.
-
-Clients can't write course content. Only migrations, the seed files and the service role can.
+Content belongs to a dialect, because Swiss German has no standard form. Clients can't write
+content. Only migrations, the seed files and the service role can.
 
 ### Flashcards
 

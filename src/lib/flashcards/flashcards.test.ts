@@ -24,7 +24,7 @@ describe("scheduleReview", () => {
     expect(log.last_review_at).toBeNull();
   });
 
-  it("treats a lesson's unrated row like a new card", async () => {
+  it("treats an unrated row like a new card", async () => {
     const lessonRow: CardRow = {
       state: 0,
       schedule_status: "new",

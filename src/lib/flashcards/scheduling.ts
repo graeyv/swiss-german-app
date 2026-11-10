@@ -29,7 +29,7 @@ export type Previews = Record<Grade, string>;
 
 async function restoreCard(row: CardRow | null, cardId: string, now: Date) {
   const scheduler = await schedulerPromise;
-  // A word queued by a lesson has a row, but no rating yet.
+  // The old lessons queued words with a row, but no rating yet.
   if (!row || row.state === 0) {
     return { ...scheduler.newCard({ now }), cardId };
   }

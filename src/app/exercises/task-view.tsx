@@ -19,7 +19,7 @@ export type TaskProps<T> = {
   layout: TaskLayout;
 };
 
-// The prompt above its controls, as lessons show tasks.
+// The prompt above its controls.
 const stacked: TaskLayout = ({ prompt, controls }) => (
   <>
     {prompt}
