@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { dictionary } from "@/lib/i18n";
 import { findLesson } from "@/lib/learn/lessons";
+import { LessonIcon } from "./lesson-icon";
 import { LessonLoading, LessonScreen, ListLink, listClass } from "./lesson-screen";
 
 // A Learn lesson's overview: its sections, such as consonants and vowels, to open one by one.
@@ -29,19 +30,37 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
         <p className="text-muted">{lesson.description}</p>
       </div>
 
-      <ul className={listClass}>
-        {lesson.sections.map((section) => (
-          <li key={section.id}>
-            <ListLink
-              href={`/learn/${dialect}/${id}/${section.id}`}
-              title={section.title}
-              text={t.lesson.topics(section.rules.length)}
-            />
-          </li>
-        ))}
-      </ul>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-bold tracking-tight">{t.lesson.expect}</h2>
+        <ul className="flex flex-col gap-4">
+          {lesson.expectations.map((expectation) => (
+            <li key={expectation.title} className="flex items-center gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-line bg-surface">
+                <LessonIcon name={expectation.icon} />
+              </span>
+              <span className="flex flex-col">
+                <span className="font-semibold">{expectation.title}</span>
+                <span className="text-sm text-muted">{expectation.text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      <p className="text-sm text-muted">{lesson.note}</p>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-bold tracking-tight">{t.lesson.topicsHeading}</h2>
+        <ul className={listClass}>
+          {lesson.sections.map((section) => (
+            <li key={section.id}>
+              <ListLink
+                href={`/learn/${dialect}/${id}/${section.id}`}
+                title={section.title}
+                text={t.lesson.topics(section.rules.length)}
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
     </LessonScreen>
   );
 }

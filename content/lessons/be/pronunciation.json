@@ -3,7 +3,18 @@
   "title": "Aussprache",
   "subtitle": "So klingt Berndeutsch",
   "description": "Entdecke die wichtigsten Unterschiede zwischen der Aussprache im Hochdeutschen und im Berndeutschen.",
-  "note": "Wir verwenden hochdeutsche Wörter und sprechen sie mit Berner Aussprache aus. So kannst du dich ganz auf die Laute konzentrieren. Berndeutsch unterscheidet sich aber nicht nur in der Aussprache, sondern auch im Wortschatz und in der Grammatik. Die berndeutschen Wörter und ihre Schreibweise lernst du in späteren Lektionen.",
+  "expectations": [
+    {
+      "icon": "sound",
+      "title": "Den Unterschied hören",
+      "text": "Dieselben Wörter auf Hochdeutsch und Berndeutsch im direkten Vergleich."
+    },
+    {
+      "icon": "speak",
+      "title": "Die Laute selbst sprechen",
+      "text": "Mit einfachen Tipps, zum Beispiel für das gerollte R."
+    }
+  ],
   "sections": [
     {
       "id": "consonants",

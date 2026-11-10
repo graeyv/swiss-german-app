@@ -31,12 +31,16 @@ export type Section = {
   rules: Rule[];
 };
 
+// One thing the learner can expect from a lesson, shown before they start. The icon is one of the
+// names LessonIcon knows, such as "sound" or "speak".
+export type Expectation = { icon: string; title: string; text: string };
+
 export type Lesson = {
   id: string;
   title: string;
   subtitle: string;
   description: string;
-  note: string;
+  expectations: Expectation[];
   sections: Section[];
 };
 

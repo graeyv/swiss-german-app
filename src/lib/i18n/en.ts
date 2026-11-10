@@ -70,6 +70,8 @@ export const en = {
 
   lesson: {
     leave: "Leave lesson",
+    expect: "What to expect",
+    topicsHeading: "Topics",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
     next: "Next",

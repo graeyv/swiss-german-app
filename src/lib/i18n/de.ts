@@ -70,6 +70,8 @@ export const de: Dictionary = {
 
   lesson: {
     leave: "Lektion verlassen",
+    expect: "Was dich erwartet",
+    topicsHeading: "Themen",
     back: (page) => `Zurück zu ${page}`,
     topics: (count) => many(count, "Thema", "Themen"),
     next: "Weiter",
