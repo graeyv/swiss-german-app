@@ -32,8 +32,9 @@ export const de: Dictionary = {
 
   nav: {
     label: "Hauptmenü",
-    lessons: "Lektionen",
+    learn: "Lernen",
     practice: "Üben",
+    immerse: "Alltag",
     profile: "Profil",
   },
 
