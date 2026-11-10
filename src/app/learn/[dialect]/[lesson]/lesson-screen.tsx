@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 
 type LessonScreenProps = {
+  // The lesson's language.
+  lang: string;
   // Where the arrow at the top leads, and its name for screen readers.
   back: { href: string; label: string };
   children: ReactNode;
@@ -10,10 +12,10 @@ type LessonScreenProps = {
   footer?: ReactNode;
 };
 
-// A full screen of a Learn lesson. The content is Standard German, whatever the interface language.
-export function LessonScreen({ back, children, footer }: LessonScreenProps) {
+// A full screen of a Learn lesson.
+export function LessonScreen({ lang, back, children, footer }: LessonScreenProps) {
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 pt-4">
+    <main lang={lang} className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 pt-4">
       <header>
         <Link
           href={back.href}
@@ -24,7 +26,7 @@ export function LessonScreen({ back, children, footer }: LessonScreenProps) {
         </Link>
       </header>
 
-      <div lang="de" className="flex flex-1 flex-col gap-6 pt-4 pb-8">
+      <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
         {children}
       </div>
 

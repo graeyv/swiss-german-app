@@ -2,6 +2,7 @@
 // in content/lessons/<dialect>/, so its text can change without touching the code. Assigning a file
 // to Lesson below makes the type check catch a file that doesn't have this shape.
 import bePronunciation from "../../../content/lessons/be/pronunciation.json";
+import type { Locale } from "@/lib/i18n";
 
 // The same thing in Standard German and in the dialect.
 export type Comparison<T> = { standardGerman: T; dialect: T };
@@ -39,16 +40,18 @@ export type Lesson = {
   sections: Section[];
 };
 
-// A lesson, with the dialect it teaches.
-export type DialectLesson = { dialect: string; lesson: Lesson };
+// A lesson, with the dialect it teaches and the language it's written in. The lesson's screens
+// use that language too, whatever the learner's interface language: learners who speak another
+// language get lessons of their own.
+export type DialectLesson = { dialect: string; language: Locale; lesson: Lesson };
 
 const pronunciation: Lesson = bePronunciation;
 
 // In the order learners should take them.
-export const LESSONS: DialectLesson[] = [{ dialect: "be", lesson: pronunciation }];
+export const LESSONS: DialectLesson[] = [{ dialect: "be", language: "de", lesson: pronunciation }];
 
-export function findLesson(dialect: string, id: string): Lesson | undefined {
-  return LESSONS.find((entry) => entry.dialect === dialect && entry.lesson.id === id)?.lesson;
+export function findLesson(dialect: string, id: string): DialectLesson | undefined {
+  return LESSONS.find((entry) => entry.dialect === dialect && entry.lesson.id === id);
 }
 
 export function findSection(lesson: Lesson, id: string): Section | undefined {

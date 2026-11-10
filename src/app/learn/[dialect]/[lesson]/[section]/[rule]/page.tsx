@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getDictionary } from "@/lib/i18n/server";
+import { dictionary } from "@/lib/i18n";
 import { findLesson, findSection } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
 import { ListenButton } from "./listen-button";
@@ -23,14 +23,12 @@ export default function RulePage({ params }: PageProps<"/learn/[dialect]/[lesson
 async function RuleView({
   params,
 }: Pick<PageProps<"/learn/[dialect]/[lesson]/[section]/[rule]">, "params">) {
-  const [{ dialect, lesson: lessonId, section: sectionId, rule: ruleId }, t] = await Promise.all([
-    params,
-    getDictionary(),
-  ]);
-  const lesson = findLesson(dialect, lessonId);
-  const section = lesson && findSection(lesson, sectionId);
+  const { dialect, lesson: lessonId, section: sectionId, rule: ruleId } = await params;
+  const found = findLesson(dialect, lessonId);
+  const section = found && findSection(found.lesson, sectionId);
   const index = section ? section.rules.findIndex((rule) => rule.id === ruleId) : -1;
-  if (!section || index === -1) notFound();
+  if (!found || !section || index === -1) notFound();
+  const t = dictionary(found.language);
   const rule = section.rules[index];
   const next = section.rules[index + 1];
   const sectionHref = `/learn/${dialect}/${lessonId}/${section.id}`;
@@ -38,15 +36,16 @@ async function RuleView({
 
   return (
     <LessonScreen
+      lang={found.language}
       back={{ href: sectionHref, label: t.lesson.back(section.title) }}
       footer={
         next ? (
           <Link href={`${sectionHref}/${next.id}`} className={primaryButton}>
-            {t.lesson.nextRule}: {next.title}
+            {t.lesson.next}: {next.title}
           </Link>
         ) : (
           <Link href={sectionHref} className={secondaryButton}>
-            {t.lesson.allRules}
+            {t.lesson.overview}
           </Link>
         )
       }
@@ -83,10 +82,15 @@ async function RuleView({
         ))}
       </ul>
 
-      <p className="rounded-2xl bg-highlight px-4 py-3">
-        <span className="block text-sm font-semibold">{t.lesson.remember}</span>
-        {rule.takeaway}
-      </p>
+      <div className="flex gap-3 rounded-2xl bg-highlight px-4 py-3">
+        <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="mt-0.5 size-5 shrink-0">
+          <path d="M10 1a6 6 0 0 0-3.815 10.631C7.237 12.5 8 13.443 8 14.456v.644a.75.75 0 0 0 .572.729 6.016 6.016 0 0 0 2.856 0A.75.75 0 0 0 12 15.1v-.644c0-1.013.762-1.957 1.815-2.825A6 6 0 0 0 10 1ZM8.863 17.414a.75.75 0 0 0-.226 1.483 9.066 9.066 0 0 0 2.726 0 .75.75 0 0 0-.226-1.483 7.553 7.553 0 0 1-2.274 0Z" />
+        </svg>
+        <p>
+          <span className="block text-sm font-semibold">{t.lesson.remember}</span>
+          {rule.takeaway}
+        </p>
+      </div>
     </LessonScreen>
   );
 }

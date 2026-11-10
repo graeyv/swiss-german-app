@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getDictionary } from "@/lib/i18n/server";
+import { dictionary } from "@/lib/i18n";
 import { findLesson, findSection } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen, ListLink, listClass } from "../lesson-screen";
 
@@ -14,17 +14,16 @@ export default function SectionPage({ params }: PageProps<"/learn/[dialect]/[les
 }
 
 async function Rules({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]/[section]">, "params">) {
-  const [{ dialect, lesson: lessonId, section: sectionId }, t] = await Promise.all([
-    params,
-    getDictionary(),
-  ]);
-  const lesson = findLesson(dialect, lessonId);
-  const section = lesson && findSection(lesson, sectionId);
-  if (!lesson || !section) notFound();
+  const { dialect, lesson: lessonId, section: sectionId } = await params;
+  const found = findLesson(dialect, lessonId);
+  const section = found && findSection(found.lesson, sectionId);
+  if (!found || !section) notFound();
+  const { lesson, language } = found;
+  const t = dictionary(language);
   const base = `/learn/${dialect}/${lessonId}`;
 
   return (
-    <LessonScreen back={{ href: base, label: t.lesson.back(lesson.title) }}>
+    <LessonScreen lang={language} back={{ href: base, label: t.lesson.back(lesson.title) }}>
       <title>{t.title(section.title)}</title>
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">{section.title}</h1>

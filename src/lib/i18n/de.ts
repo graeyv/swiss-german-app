@@ -71,9 +71,9 @@ export const de: Dictionary = {
   lesson: {
     leave: "Lektion verlassen",
     back: (page) => `Zurück zu ${page}`,
-    rules: (count) => many(count, "Regel", "Regeln"),
-    nextRule: "Nächste Regel",
-    allRules: "Alle Regeln",
+    topics: (count) => many(count, "Thema", "Themen"),
+    next: "Weiter",
+    overview: "Zur Übersicht",
     remember: "Merke",
     standardGerman: "Hochdeutsch",
     dialects: { be: "Berndeutsch", zh: "Zürichdeutsch" },

@@ -71,9 +71,9 @@ export const en = {
   lesson: {
     leave: "Leave lesson",
     back: (page: string) => `Back to ${page}`,
-    rules: (count: number) => many(count, "rule", "rules"),
-    nextRule: "Next rule",
-    allRules: "All rules",
+    topics: (count: number) => many(count, "topic", "topics"),
+    next: "Next",
+    overview: "Back to the overview",
     remember: "Remember",
     standardGerman: "Standard German",
     // By dialect id. A dialect without a name here shows its id.
