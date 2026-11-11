@@ -33,8 +33,8 @@
                 "dialect": "Ach-Laut"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/bach_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/bach_be.mp3"
               }
             },
             {
@@ -44,8 +44,8 @@
                 "dialect": "Ach-Laut"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/dicht_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/dicht_be.mp3"
               }
             },
             {
@@ -55,8 +55,8 @@
                 "dialect": "Ach-Laut"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/chaos_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/chaos_be.mp3"
               }
             }
           ],
