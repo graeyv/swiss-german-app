@@ -370,7 +370,7 @@
         {
           "id": "oe",
           "title": "Ö",
-          "theory": "Im Hochdeutschen gibt es ein geschlossenes Ö wie in «schön» oder «Öl» und ein offeneres Ö wie in «Löffel». Im Berndeutschen wird häufig das offenere Ö verwendet, ähnlich wie in «Löffel».",
+          "theory": "Im Hochdeutschen gibt es ein geschlossenes Ö wie in «schön» oder «Öl» und ein offeneres Ö wie in «Löffel». Im Berndeutschen wird häufig das offene Ö wie in «Löffel» verwendet.",
           "examples": [
             {
               "word": "Öl",
@@ -384,7 +384,7 @@
               }
             },
             {
-              "word": "öffentlich",
+              "word": "Löffel",
               "pronunciation": {
                 "standardGerman": "Offenes Ö",
                 "dialect": "Offenes Ö"
@@ -435,17 +435,6 @@
                 "dialect": null
               }
             },
-            {
-              "word": "müde",
-              "pronunciation": {
-                "standardGerman": "Langes Ü",
-                "dialect": "Kurzes Ü"
-              },
-              "audio": {
-                "standardGerman": null,
-                "dialect": null
-              }
-            }, 
             {
               "word": "müed",
               "pronunciation": {
