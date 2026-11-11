@@ -2,12 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { dictionary } from "@/lib/i18n";
-import {
-  findLesson,
-  findRule,
-  lessonHref,
-  ruleParams,
-} from "@/lib/learn/lessons";
+import { findLesson, findRule, lessonHref, ruleParams } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
 import { ListenButton } from "./listen-button";
 
@@ -32,12 +27,7 @@ export default function RulePage({
 async function RuleView({
   params,
 }: Pick<PageProps<"/learn/[dialect]/[lesson]/[section]/[rule]">, "params">) {
-  const {
-    dialect,
-    lesson: lessonId,
-    section: sectionId,
-    rule: ruleId,
-  } = await params;
+  const { dialect, lesson: lessonId, section: sectionId, rule: ruleId } = await params;
   const found = findLesson(dialect, lessonId);
   const place = found && findRule(found.lesson, sectionId, ruleId);
   if (!found || !place) notFound();
@@ -54,13 +44,16 @@ async function RuleView({
         href: lessonHref(dialect, lesson, section),
         label: t.lesson.back(section.title),
       }}
-      heading={t.lesson.position(section.title, place.position, place.count)}
+      progress={{
+        position: place.position,
+        count: place.count,
+        label: t.lesson.position(section.title, place.position, place.count),
+      }}
       footer={
         nextHref ? (
           // Within a section the next topic is named, and at its end the next section.
           <Link href={nextHref} className={primaryButton}>
-            {t.lesson.next}:{" "}
-            {next.section === section ? next.rule.title : next.section.title}
+            {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}
           </Link>
         ) : (
           <Link href={lessonHref(dialect, lesson)} className={primaryButton}>
@@ -71,7 +64,12 @@ async function RuleView({
     >
       <title>{t.title(`${rule.title} · ${section.title}`)}</title>
       <div className="flex flex-col gap-3">
-        <h1 className="text-4xl font-bold tracking-tight">{rule.title}</h1>
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-semibold tracking-wide text-muted uppercase">
+            {section.title}
+          </p>
+          <h1 className="text-4xl font-bold tracking-tight">{rule.title}</h1>
+        </div>
         <p>{rule.theory}</p>
       </div>
 
@@ -91,17 +89,11 @@ async function RuleView({
             </tr>
           </thead>
           {rule.examples.map((example) => {
-            const differs =
-              example.pronunciation.dialect !==
-              example.pronunciation.standardGerman;
+            const differs = example.pronunciation.dialect !== example.pronunciation.standardGerman;
             return (
               <tbody key={example.word}>
                 <tr>
-                  <th
-                    scope="rowgroup"
-                    colSpan={2}
-                    className="px-3 pt-3 text-left font-normal"
-                  >
+                  <th scope="rowgroup" colSpan={2} className="px-3 pt-3 text-left font-normal">
                     <span className="flex items-center justify-between gap-3">
                       <span className="min-w-0 text-lg font-semibold break-words">
                         {example.word}
@@ -149,18 +141,11 @@ async function RuleView({
       </div>
 
       <div className="flex gap-3 rounded-2xl bg-highlight px-4 py-3">
-        <svg
-          aria-hidden
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="mt-0.5 size-5 shrink-0"
-        >
+        <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="mt-0.5 size-5 shrink-0">
           <path d="M10 1a6 6 0 0 0-3.815 10.631C7.237 12.5 8 13.443 8 14.456v.644a.75.75 0 0 0 .572.729 6.016 6.016 0 0 0 2.856 0A.75.75 0 0 0 12 15.1v-.644c0-1.013.762-1.957 1.815-2.825A6 6 0 0 0 10 1ZM8.863 17.414a.75.75 0 0 0-.226 1.483 9.066 9.066 0 0 0 2.726 0 .75.75 0 0 0-.226-1.483 7.553 7.553 0 0 1-2.274 0Z" />
         </svg>
         <p>
-          <span className="block text-sm font-semibold">
-            {t.lesson.remember}
-          </span>
+          <span className="block text-sm font-semibold">{t.lesson.remember}</span>
           {rule.takeaway}
         </p>
       </div>

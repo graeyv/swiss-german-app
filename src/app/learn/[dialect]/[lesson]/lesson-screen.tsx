@@ -7,18 +7,19 @@ type LessonScreenProps = {
   lang: string;
   // Where the arrow at the top leads, and its name for screen readers.
   back: { href: string; label: string };
-  // A short line next to the arrow, such as where a topic is in its section.
-  heading?: string;
+  // Where a topic is in its section, shown as a bar with one segment per topic. The label names it
+  // for screen readers.
+  progress?: { position: number; count: number; label: string };
   children: ReactNode;
   // Buttons kept at the bottom, within thumb reach, also when the screen is longer than the phone.
   footer?: ReactNode;
 };
 
 // A full screen of a Learn lesson.
-export function LessonScreen({ lang, back, heading, children, footer }: LessonScreenProps) {
+export function LessonScreen({ lang, back, progress, children, footer }: LessonScreenProps) {
   return (
     <main lang={lang} className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 pt-4">
-      <header className="flex items-center gap-2">
+      <header className="flex items-center gap-3">
         <Link
           href={back.href}
           aria-label={back.label}
@@ -26,7 +27,28 @@ export function LessonScreen({ lang, back, heading, children, footer }: LessonSc
         >
           ←
         </Link>
-        {heading && <p className="text-sm font-semibold text-muted tabular-nums">{heading}</p>}
+        {progress && (
+          <>
+            <div
+              role="progressbar"
+              aria-label={progress.label}
+              aria-valuemin={1}
+              aria-valuemax={progress.count}
+              aria-valuenow={progress.position}
+              className="flex flex-1 gap-1"
+            >
+              {Array.from({ length: progress.count }, (_, index) => (
+                <span
+                  key={index}
+                  className={`h-2 flex-1 rounded-full ${index < progress.position ? "bg-accent" : "bg-line"}`}
+                />
+              ))}
+            </div>
+            <p aria-hidden className="shrink-0 text-sm font-semibold text-muted tabular-nums">
+              {progress.position} / {progress.count}
+            </p>
+          </>
+        )}
       </header>
 
       <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
