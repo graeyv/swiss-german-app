@@ -70,6 +70,7 @@ export const en = {
 
   lesson: {
     leave: "Leave lesson",
+    number: (number: number) => `Lesson ${number}`,
     expect: "What to expect",
     topicsHeading: "Topics",
     back: (page: string) => `Back to ${page}`,

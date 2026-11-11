@@ -55,6 +55,12 @@ const pronunciation: Lesson = bePronunciation;
 // In the order learners should take them.
 export const LESSONS: DialectLesson[] = [{ dialect: "be", language: "de", lesson: pronunciation }];
 
+// A lesson's number in its dialect, counting from 1 in the order above. It comes from that order,
+// so the lesson files don't have to keep their own numbers in step.
+export function lessonNumber(entry: DialectLesson): number {
+  return LESSONS.filter(({ dialect }) => dialect === entry.dialect).indexOf(entry) + 1;
+}
+
 export function findLesson(dialect: string, id: string): DialectLesson | undefined {
   return LESSONS.find((entry) => entry.dialect === dialect && entry.lesson.id === id);
 }

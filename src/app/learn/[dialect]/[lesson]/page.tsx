@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { dictionary } from "@/lib/i18n";
-import { findLesson, lessonHref, lessonParams } from "@/lib/learn/lessons";
+import { findLesson, lessonHref, lessonNumber, lessonParams } from "@/lib/learn/lessons";
 import { LessonIcon } from "./lesson-icon";
 import { LessonLoading, LessonScreen, ListLink, listClass } from "./lesson-screen";
 
@@ -43,7 +43,12 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
     >
       <title>{t.title(lesson.title)}</title>
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">{lesson.title}</h1>
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-semibold tracking-wide text-muted uppercase">
+            {t.lesson.number(lessonNumber(found))}
+          </p>
+          <h1 className="text-3xl font-bold tracking-tight">{lesson.title}</h1>
+        </div>
         <p className="font-semibold text-accent">{lesson.subtitle}</p>
         <p className="text-muted">{lesson.description}</p>
       </div>
