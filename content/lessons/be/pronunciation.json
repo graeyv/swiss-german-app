@@ -24,7 +24,7 @@
         {
           "id": "ch",
           "title": "CH",
-          "theory": "Im Hochdeutschen gibt es drei verschiedene Arten, den CH-Laut auszusprechen: den Ach-Laut wie in «Bach», den Ich-Laut wie in «Dicht» und den K-Laut wie in «Chaos». Im Berndeutschen wird CH in den entsprechenden Wörtern als Ach-Laut ausgesprochen.",
+          "theory": "Im Hochdeutschen gibt es drei verschiedene Arten, den CH-Laut auszusprechen: den Ach-Laut wie in «Bach», den Ich-Laut wie in «Dicht» und den K-Laut wie in «Chaos». Im Berndeutschen wird CH meist als Ach-Laut ausgesprochen.",
           "examples": [
             {
               "word": "Bach",
@@ -147,13 +147,13 @@
         {
           "id": "s",
           "title": "S",
-          "theory": "Im Hochdeutschen gibt es ein stimmhaftes, weiches S wie in «Sonne» und ein stimmloses, scharfes S wie in «Haus». Im Berndeutschen wird das einfache S grundsätzlich stimmlos ausgesprochen. ST und SP sind Ausnahmen und werden separat erklärt.",
+          "theory": "Im Hochdeutschen gibt es ein weiches S wie in «Sonne» und ein scharfes S wie in «Haus». Im Berndeutschen verwendet man grundsätzlich das scharfe S. ST und SP sind Ausnahmen und werden separat erklärt.",
           "examples": [
             {
               "word": "Sonne",
               "pronunciation": {
-                "standardGerman": "Stimmhaftes S",
-                "dialect": "Stimmloses S"
+                "standardGerman": "weiches S",
+                "dialect": "scharfes S"
               },
               "audio": {
                 "standardGerman": null,
@@ -163,8 +163,8 @@
             {
               "word": "Haus",
               "pronunciation": {
-                "standardGerman": "Stimmloses S",
-                "dialect": "Stimmloses S"
+                "standardGerman": "scharfes S",
+                "dialect": "scharfes S"
               },
               "audio": {
                 "standardGerman": null,
@@ -174,8 +174,8 @@
             {
               "word": "sicher",
               "pronunciation": {
-                "standardGerman": "Stimmhaftes S",
-                "dialect": "Stimmloses S"
+                "standardGerman": "weiches S",
+                "dialect": "scharfes S"
               },
               "audio": {
                 "standardGerman": null,
@@ -288,7 +288,7 @@
         {
           "id": "o",
           "title": "O",
-          "theory": "Im Hochdeutschen gibt es ein geschlossenes O wie in «Boot» und ein offeneres O wie in «offen». Im Berndeutschen wird das O in den hier gezeigten Beispielen üblicherweise offener ausgesprochen, ähnlich wie in «offen».",
+          "theory": "Im Hochdeutschen gibt es ein geschlossenes O wie in «Boot» und ein offeneres O wie in «offen». Im Berndeutschen wird das O üblicherweise wie in «offen» ausgesprochen.",
           "examples": [
             {
               "word": "Boot",
@@ -329,7 +329,7 @@
         {
           "id": "ae",
           "title": "Ä",
-          "theory": "Das berndeutsche Ä klingt offener als das typische lange Ä im Hochdeutschen. Es ähnelt ungefähr dem englischen «a» in «cat».",
+          "theory": "Das berndeutsche Ä klingt offener als das typische lange Ä im Hochdeutschen. Es klingt wie das englische «a» in «cat».",
           "examples": [
             {
               "word": "Käse",
@@ -411,7 +411,7 @@
         {
           "id": "ue",
           "title": "Ü",
-          "theory": "Im Hochdeutschen gibt es ein langes Ü wie in «Tür» und ein kurzes Ü wie in «Glück». Im Berndeutschen wird das Ü in den hier gezeigten Beispielen häufig kürzer ausgesprochen.",
+          "theory":"Im Hochdeutschen gibt es ein langes Ü wie in «Tür» und ein kurzes Ü wie in «Glück». Im Berndeutschen gibt es ebenfalls beide Varianten: Folgt auf das Ü ein E, wird es lang ausgesprochen, wie in «müed» (hochdeutsch: «müde»). Ohne folgendes E wird es kurz ausgesprochen.",
           "examples": [
             {
               "word": "Tür",
@@ -445,9 +445,20 @@
                 "standardGerman": null,
                 "dialect": null
               }
+            }, 
+            {
+              "word": "müed",
+              "pronunciation": {
+                "standardGerman": "-",
+                "dialect": "Kurzes Ü"
+              },
+              "audio": {
+                "standardGerman": null,
+                "dialect": null
+              }
             }
           ],
-          "takeaway": "Das Ü klingt kürzer."
+          "takeaway": "Folgt auf das Ü ein E, klingt es wie in «Tür». Sonst klingt es wie in «Glück»."
         }
       ]
     }
