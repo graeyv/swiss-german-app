@@ -9,8 +9,9 @@ export type Comparison<T> = { standardGerman: T; dialect: T };
 
 export type Example = {
   word: string;
-  // How the sound is described on each side, such as "Ich-Laut" and "Ach-Laut".
-  pronunciation: Comparison<string>;
+  // How the sound is described on each side, such as "Ich-Laut" and "Ach-Laut". Standard German is
+  // null for a word that only exists in the dialect, such as "müed".
+  pronunciation: { standardGerman: string | null; dialect: string };
   // Recordings of the word on each side, null until recorded.
   audio: Comparison<string | null>;
 };

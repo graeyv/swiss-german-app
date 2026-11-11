@@ -79,6 +79,8 @@ export const de: Dictionary = {
     done: "Fertig",
     position: (section, position, count) => `${section} · ${position} / ${count}`,
     remember: "Merke",
+    same: "gleich",
+    dialectOnly: "Kein hochdeutsches Wort",
     standardGerman: "Hochdeutsch",
     dialects: { be: "Berndeutsch", zh: "Zürichdeutsch" },
     play: (variety) => `Auf ${variety} anhören`,
