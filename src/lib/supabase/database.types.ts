@@ -75,47 +75,6 @@ export type Database = {
           },
         ]
       }
-      courses: {
-        Row: {
-          description: string
-          dialect_id: string
-          id: string
-          level: string
-          position: number
-          published: boolean
-          slug: string
-          title: string
-        }
-        Insert: {
-          description?: string
-          dialect_id: string
-          id?: string
-          level?: string
-          position: number
-          published?: boolean
-          slug: string
-          title: string
-        }
-        Update: {
-          description?: string
-          dialect_id?: string
-          id?: string
-          level?: string
-          position?: number
-          published?: boolean
-          slug?: string
-          title?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "courses_dialect_id_fkey"
-            columns: ["dialect_id"]
-            isOneToOne: false
-            referencedRelation: "dialects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       deck_items: {
         Row: {
           card_id: string
@@ -241,48 +200,6 @@ export type Database = {
         }
         Relationships: []
       }
-      exercises: {
-        Row: {
-          id: string
-          lesson_id: string
-          payload: Json
-          position: number
-          type: Database["public"]["Enums"]["exercise_type"]
-          vocabulary_id: string | null
-        }
-        Insert: {
-          id?: string
-          lesson_id: string
-          payload?: Json
-          position: number
-          type: Database["public"]["Enums"]["exercise_type"]
-          vocabulary_id?: string | null
-        }
-        Update: {
-          id?: string
-          lesson_id?: string
-          payload?: Json
-          position?: number
-          type?: Database["public"]["Enums"]["exercise_type"]
-          vocabulary_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "exercises_lesson_id_fkey"
-            columns: ["lesson_id"]
-            isOneToOne: false
-            referencedRelation: "lessons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "exercises_vocabulary_id_fkey"
-            columns: ["vocabulary_id"]
-            isOneToOne: false
-            referencedRelation: "vocabulary_items"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       grammar_exercises: {
         Row: {
           code: string
@@ -386,73 +303,6 @@ export type Database = {
             columns: ["dialect_id"]
             isOneToOne: false
             referencedRelation: "dialects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      lesson_progress: {
-        Row: {
-          best_score: number
-          completed_at: string
-          lesson_id: string
-          user_id: string
-        }
-        Insert: {
-          best_score: number
-          completed_at?: string
-          lesson_id: string
-          user_id: string
-        }
-        Update: {
-          best_score?: number
-          completed_at?: string
-          lesson_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "lesson_progress_lesson_id_fkey"
-            columns: ["lesson_id"]
-            isOneToOne: false
-            referencedRelation: "lessons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      lessons: {
-        Row: {
-          course_id: string
-          description: string
-          id: string
-          position: number
-          published: boolean
-          slug: string
-          title: string
-        }
-        Insert: {
-          course_id: string
-          description?: string
-          id?: string
-          position: number
-          published?: boolean
-          slug: string
-          title: string
-        }
-        Update: {
-          course_id?: string
-          description?: string
-          id?: string
-          position?: number
-          published?: boolean
-          slug?: string
-          title?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "lessons_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
             referencedColumns: ["id"]
           },
         ]
@@ -730,10 +580,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      complete_lesson: {
-        Args: { p_lesson_id: string; p_score: number }
-        Returns: undefined
-      }
       deck_grammar_points: {
         Args: { p_deck_code: string }
         Returns: {
@@ -859,6 +705,14 @@ export type Database = {
           swiss_german: string
         }[]
       }
+      profile_stats: {
+        Args: never
+        Returns: {
+          rules_learned: number
+          streak: number
+          words_learned: number
+        }[]
+      }
       save_review: {
         Args: {
           p_card: Json
@@ -881,7 +735,7 @@ export type Database = {
       }
     }
     Enums: {
-      exercise_type: "vocab_card" | "multiple_choice" | "word_order"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1011,8 +865,6 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {
-      exercise_type: ["vocab_card", "multiple_choice", "word_order"],
-    },
+    Enums: {},
   },
 } as const

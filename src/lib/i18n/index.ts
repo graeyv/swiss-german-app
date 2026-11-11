@@ -44,16 +44,3 @@ export function localeFromAcceptLanguage(header: string | null): Locale {
 export function translationOf(card: { meaning: string; high_german: string }, locale: Locale) {
   return dictionary(locale).translationIsStandardGerman ? card.high_german : card.meaning;
 }
-
-// A word's meaning and notes in a language, each falling back to English, like the
-// vocabulary_text database function. For words read straight from vocabulary_translations.
-type VocabularyTranslation = { locale: string; meaning: string | null; notes: string | null };
-
-export function vocabularyText(rows: readonly VocabularyTranslation[], locale: Locale) {
-  const own = rows.find((row) => row.locale === locale);
-  const english = rows.find((row) => row.locale === DEFAULT_LOCALE);
-  return {
-    meaning: own?.meaning ?? english?.meaning ?? "",
-    notes: own?.notes ?? english?.notes ?? null,
-  };
-}

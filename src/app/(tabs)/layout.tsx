@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 import { getLocale } from "@/lib/i18n/server";
 import { dictionary } from "@/lib/i18n";
-import { LessonsIcon, PracticeIcon, ProfileIcon } from "./tab-icons";
+import { ImmerseIcon, LearnIcon, PracticeIcon, ProfileIcon } from "./tab-icons";
 import { TabLink } from "./tab-link";
 
 const TABS = [
-  { href: "/learn", label: "lessons", icon: <LessonsIcon /> },
+  { href: "/learn", label: "learn", icon: <LearnIcon /> },
   { href: "/flashcards", label: "practice", icon: <PracticeIcon /> },
+  { href: "/immerse", label: "immerse", icon: <ImmerseIcon /> },
   { href: "/profile", label: "profile", icon: <ProfileIcon /> },
 ] as const;
 
@@ -37,7 +38,7 @@ async function Header() {
 
   return (
     <header className="flex flex-col gap-6">
-      <p className="font-semibold text-accent">Grüezi</p>
+      <p className="font-semibold text-accent">Hoi</p>
       <nav aria-label={t.nav.label} className="hidden gap-6 border-b border-line md:flex">
         {TABS.map((tab) => (
           <TabLink key={tab.href} href={tab.href} label={t.nav[tab.label]} icon={tab.icon} placement="top" />
@@ -56,7 +57,7 @@ async function BottomBar() {
       aria-label={t.nav.label}
       className="pointer-events-none fixed inset-x-0 bottom-0 z-20 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden"
     >
-      <div className="pointer-events-auto mx-auto grid max-w-sm grid-cols-3 gap-1 rounded-full border border-line/70 bg-surface/80 p-1.5 shadow-lg backdrop-blur-xl">
+      <div className="pointer-events-auto mx-auto grid max-w-md grid-cols-4 gap-1 rounded-full border border-line/70 bg-surface/80 p-1.5 shadow-lg backdrop-blur-xl">
         {TABS.map((tab) => (
           <TabLink key={tab.href} href={tab.href} label={t.nav[tab.label]} icon={tab.icon} placement="bottom" />
         ))}

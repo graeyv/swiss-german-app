@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { de } from "./de";
 import { en } from "./en";
-import { dictionary, localeFromAcceptLanguage, LOCALES, translationOf, vocabularyText } from "./index";
+import { dictionary, localeFromAcceptLanguage, LOCALES, translationOf } from "./index";
 import { plural } from "./plural";
 
 describe("localeFromAcceptLanguage", () => {
@@ -70,18 +70,5 @@ describe("plural", () => {
     // Polish has a separate form for 2–4.
     const forms = { one: "słowo", few: "słowa", many: "słów", other: "słowa" };
     expect([1, 3, 5].map((count) => plural("pl", count, forms))).toEqual(["1 słowo", "3 słowa", "5 słów"]);
-  });
-});
-
-describe("vocabularyText", () => {
-  const rows = [
-    { locale: "en", meaning: "Hello", notes: "Polite." },
-    { locale: "fr", meaning: "Bonjour", notes: null },
-  ];
-
-  it("uses the language's own text, and English for whatever it's missing", () => {
-    expect(vocabularyText(rows, "en")).toEqual({ meaning: "Hello", notes: "Polite." });
-    expect(vocabularyText(rows as never, "fr" as never)).toEqual({ meaning: "Bonjour", notes: "Polite." });
-    expect(vocabularyText(rows, "de")).toEqual({ meaning: "Hello", notes: "Polite." });
   });
 });

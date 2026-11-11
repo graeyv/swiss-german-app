@@ -1,5 +1,4 @@
-// Exercises a learner answers, in the shape the components in src/app/exercises take. Lessons
-// store their own payloads (Exercise in src/lib/types.ts) and convert them into these.
+// Exercises a learner answers, in the shape the components in src/app/exercises take.
 
 // Pick one option. Choosing a form, filling a gap and checking a meaning are all this task,
 // framed differently by the prompt. Each "___" in the prompt shows as a gap.
