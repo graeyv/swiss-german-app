@@ -68,25 +68,28 @@ export const en = {
     logOut: "Log out",
   },
 
-  learn: {
-    title: "Your lessons",
-    noCourses: "No courses yet. Add the starter content with",
-  },
-
   lesson: {
-    complete: "Lesson complete",
-    score: (percent: number) => `${percent}% correct`,
-    finished: (title: string) => `You finished “${title}”.`,
-    notSaved: (error: string) => `Your progress wasn’t saved: ${error}`,
-    tryAgain: "Try again",
-    saving: "Saving…",
-    backToLessons: "Back to lessons",
-    noExercises: "This lesson has no exercises yet.",
     leave: "Leave lesson",
-    progress: "Lesson progress",
-    correct: "Correct!",
-    incorrect: (answer: string) => `Not quite. The answer is: ${answer}`,
-    continue: "Continue",
+    number: (number: number) => `Lesson ${number}`,
+    expect: "What to expect",
+    topicsHeading: "Topics",
+    back: (page: string) => `Back to ${page}`,
+    topics: (count: number) => many(count, "topic", "topics"),
+    start: "Let’s go",
+    next: "Next",
+    done: "Done",
+    // Where a topic is in its section, such as "Consonants · 2 / 6".
+    position: (section: string, position: number, count: number) => `${section} · ${position} / ${count}`,
+    remember: "Remember",
+    // Marks a word that sounds the same in Standard German and the dialect.
+    same: "same",
+    // For screen readers, in place of the Standard German side of a dialect-only word.
+    dialectOnly: "No Standard German word",
+    standardGerman: "Standard German",
+    // By dialect id. A dialect without a name here shows its id.
+    dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
+    play: (variety: string) => `Listen in ${variety}`,
+    noRecording: "No recording yet",
   },
 
   exercises: {
