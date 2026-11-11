@@ -4,22 +4,34 @@ import { Suspense } from "react";
 import { getToday } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
+import {
+  filterSearch,
+  hasWordsAndPhrases,
+  keeps,
+  vocabularyFilter,
+} from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { dictionary, translationOf } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { TINTS } from "../../../deck-card";
+import { FilterSwitch } from "../../../filter-switch";
 
-export default function WordListPage({ params }: PageProps<"/flashcards/decks/[code]/words">) {
+// A topic's words, sentences and expressions. A topic with words and the others shows them in
+// three tabs: all, words, and sentences and expressions.
+export default function WordListPage({
+  params,
+  searchParams,
+}: PageProps<"/flashcards/decks/[code]/words">) {
   return (
     <Suspense fallback={<LoadingPlaceholder />}>
-      <WordList params={params} />
+      <WordList params={params} searchParams={searchParams} />
     </Suspense>
   );
 }
 
-async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/words">, "params">) {
-  const { code } = await params;
+async function WordList({ params, searchParams }: PageProps<"/flashcards/decks/[code]/words">) {
+  const [{ code }, { cards: only }] = await Promise.all([params, searchParams]);
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
   const [{ tree, limits }, words] = await Promise.all([
@@ -33,6 +45,10 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
   const { deck, ancestors } = found;
   const parent = ancestors.at(-1);
   const { newWords, due } = deckAvailability(deck, limits);
+  const mixed = hasWordsAndPhrases(deck);
+  const filter = mixed ? vocabularyFilter(only) : "all";
+  const shown = words.data.filter((word) => keeps(filter, word.type));
+  const wordCount = deck.card_count - deck.phrase_count;
 
   return (
     <>
@@ -55,10 +71,25 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
           </span>
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{deck.title}</h1>
-            <p className="text-sm text-muted">{t.flashcards.words(deck.card_count)}</p>
+            <p className="text-sm text-muted">
+              {[
+                wordCount > 0 && t.flashcards.words(wordCount),
+                deck.phrase_count > 0 && t.flashcards.phrases(deck.phrase_count),
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
           </div>
         </div>
       </div>
+
+      {mixed && (
+        <FilterSwitch
+          value={filter}
+          hrefOf={(option) => `/flashcards/decks/${deck.code}/words${filterSearch(option)}`}
+          locale={locale}
+        />
+      )}
 
       {/* Both sides of each card next to each other. A table keeps every row in the same columns.
           Bold Swiss German beside its translation explains itself, so the headers are for screen
@@ -72,7 +103,7 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
-            {words.data.map((word) => (
+            {shown.map((word) => (
               <tr key={word.card_id} className="align-top">
                 <td lang="gsw" className="px-4 py-3 font-semibold break-words">
                   {word.swiss_german}
@@ -92,10 +123,11 @@ async function WordList({ params }: Pick<PageProps<"/flashcards/decks/[code]/wor
         </table>
       </div>
 
-      {/* Same rules as the subcategory sheet: within today's goal, or nothing to start. */}
+      {/* Same rules as the subcategory sheet: within today's goal, or nothing to start. Flashcards
+          start with the cards of the tab the learner is on. */}
       {newWords + due > 0 ? (
         <Link
-          href={`/flashcards/session/${deck.code}`}
+          href={`/flashcards/session/${deck.code}${filterSearch(filter)}`}
           className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
         >
           {t.flashcards.startFlashcards}

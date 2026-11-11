@@ -17,6 +17,8 @@ export type DeckRow = {
   color: DeckColor | null;
   deck_position: number;
   card_count: number;
+  // The part of card_count that are sentences or expressions rather than single words.
+  phrase_count: number;
   due_count: number;
   // The part of due_count that are words the learner already knows, which the daily limit caps.
   due_review_count: number;

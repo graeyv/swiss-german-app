@@ -9,6 +9,7 @@ import { allowedLevels, gradeFromAnswer, grammarExercise, pickExercise } from ".
 import { advanceQueue } from "./queue";
 import { composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
+import { hasWordsAndPhrases, keeps, typesOf, vocabularyFilter } from "./vocabulary-filter";
 
 const CARD = "5b0c2b8e-6d0e-4c1e-9a55-0d1f6f2f7a11";
 const NOW = new Date("2026-11-01T10:00:00Z");
@@ -103,6 +104,7 @@ describe("buildDeckTree", () => {
       color,
       deck_position,
       card_count,
+      phrase_count: 0,
       due_count: 0,
       due_review_count: 0,
       new_count: 0,
@@ -167,6 +169,19 @@ describe("buildSeed", () => {
 
   it("rejects cards on a level with children", () => {
     expect(() => buildSeed(decks, `${header}FC1\tC01\tzh\ta\tb\tc\t\t\t\n`)).toThrow(/lowest level/);
+  });
+
+  it("stores each card's type, a word unless it says otherwise", () => {
+    const seed = buildSeed(
+      decks,
+      `${header}FC1	C01-T01	zh	a	b	c				
+FC2	C01-T01	zh	d	e	f				Sentence
+`,
+    );
+    expect(seed).toContain("('FC1', 'zh', 'a', 'b', null, 'word')");
+    expect(seed).toContain("('FC2', 'zh', 'd', 'e', null, 'sentence')");
+    expect(() => buildSeed(decks, `${header}FC1	C01-T01	zh	a	b	c				Verb
+`)).toThrow(/unknown type/);
   });
 
   it("rejects unknown decks and duplicate codes", () => {
@@ -361,6 +376,30 @@ describe("deckAvailability", () => {
 
   it("keeps words in their learning steps once the limits are reached", () => {
     expect(deckAvailability(deck, { newLeft: 0, reviewsLeft: 0 })).toEqual({ newWords: 0, due: 4 });
+  });
+});
+
+describe("vocabulary filter", () => {
+  it("reads the search parameter, mixing everything by default", () => {
+    expect(vocabularyFilter("words")).toBe("words");
+    expect(vocabularyFilter("phrases")).toBe("phrases");
+    expect(vocabularyFilter(undefined)).toBe("all");
+    expect(vocabularyFilter(["words"])).toBe("all");
+  });
+
+  it("keeps words or sentences and expressions apart", () => {
+    expect(typesOf("all")).toBeUndefined();
+    expect(typesOf("phrases")).toEqual(["sentence", "expression"]);
+    expect(keeps("words", "word")).toBe(true);
+    expect(keeps("words", "expression")).toBe(false);
+    expect(keeps("phrases", "sentence")).toBe(true);
+    expect(keeps("all", "sentence")).toBe(true);
+  });
+
+  it("only offers the choice when a deck has both", () => {
+    expect(hasWordsAndPhrases({ card_count: 10, phrase_count: 3 })).toBe(true);
+    expect(hasWordsAndPhrases({ card_count: 10, phrase_count: 0 })).toBe(false);
+    expect(hasWordsAndPhrases({ card_count: 3, phrase_count: 3 })).toBe(false);
   });
 });
 

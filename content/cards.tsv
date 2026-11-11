@@ -1,7 +1,7 @@
 code	deck_codes	dialect	swiss_german	high_german	meaning_en	notes_en	audio_path	type
-FC0001	C01-T01	zh	Hoi	Hallo	Hi	Informal: use it with friends and people you know.		Verb
-FC0002	C01-T01	zh	Sali	Hallo	Hi			Word
-FC0003	C01-T01	zh	Hoi zäme	Hallo zusammen	Hi everyone			Sentence
+FC0001	C01-T01	zh	Hoi	Hallo	Hi	Informal: use it with friends and people you know.		word
+FC0002	C01-T01	zh	Sali	Hallo	Hi			word
+FC0003	C01-T01	zh	Hoi zäme	Hallo zusammen	Hi everyone			sentence
 FC0004	C01-T01	zh	Grüezi	Guten Tag	Hello (formal)	Polite: use it with strangers. For several people, say "Grüezi mitenand".
 FC0005	C01-T01	zh	Guete Morge	Guten Morgen	Good morning
 FC0006	C01-T01	zh	Guete Tag	Guten Tag	Good day

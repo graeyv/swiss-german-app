@@ -106,6 +106,11 @@ export const en = {
     topics: "Topics",
     subcategories: "Subcategories",
     words: (count: number) => many(count, "word", "words"),
+    // Sentences include expressions, such as "Hoi zäme": learners don't need the difference.
+    phrases: (count: number) => many(count, "sentence", "sentences"),
+    // Practising or listing a topic's words and its sentences together or apart.
+    filterLabel: "Which cards",
+    filters: { all: "All", words: "Words", phrases: "Sentences" },
     newCount: (count: number) => `${count} new`,
     reviewCount: (count: number) => many(count, "review", "reviews"),
     doneForToday: "Done for today",

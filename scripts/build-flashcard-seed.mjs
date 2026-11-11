@@ -12,6 +12,11 @@ import { payloadProblem } from "./lib/check-payload.mjs";
 const DECK_COLORS = ["pink", "blue", "green", "yellow", "purple", "orange"];
 // Matches the check on public.decks.kind.
 const DECK_KINDS = ["vocabulary", "grammar"];
+// Matches the check on public.vocabulary_items.type. An empty type is a word.
+const CARD_TYPES = ["word", "sentence", "expression"];
+
+// A card's type in lower case, so "Sentence" from a spreadsheet works too.
+const typeOf = (card) => card.type?.toLowerCase() || "word";
 
 function parseTsv(text, name) {
   const [header, ...lines] = text.replace(/^﻿/, "").split(/\r?\n/).filter((line) => line.trim());
@@ -131,6 +136,9 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
     for (const column of ["code", "dialect", "swiss_german", "high_german", "meaning_en"]) {
       if (!card[column]) throw new Error(`Card ${card.code} is missing ${column}`);
     }
+    if (!CARD_TYPES.includes(typeOf(card))) {
+      throw new Error(`Card ${card.code} has an unknown type: ${card.type}`);
+    }
     checkDecks(card, `Card ${card.code}`, "vocabulary");
   }
 
@@ -185,7 +193,7 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
   );
   const cardRows = cards.map(
     (card) =>
-      `  (${[card.code, card.dialect, card.swiss_german, card.high_german, card.audio_path].map(quote).join(", ")})`,
+      `  (${[card.code, card.dialect, card.swiss_german, card.high_german, card.audio_path, typeOf(card)].map(quote).join(", ")})`,
   );
   const itemRows = cards.flatMap((card) =>
     card.deckCodes.map(
@@ -293,13 +301,14 @@ ${deckTranslationRows.join(",\n")}
 ) as t (deck_code, locale, title, description)
 join public.decks d on d.code = t.deck_code;
 
-insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german, audio_path) values
+insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german, audio_path, type) values
 ${cardRows.join(",\n")}
 on conflict (code) do update
   set dialect_id = excluded.dialect_id,
       swiss_german = excluded.swiss_german,
       high_german = excluded.high_german,
-      audio_path = excluded.audio_path;
+      audio_path = excluded.audio_path,
+      type = excluded.type;
 
 delete from public.vocabulary_translations
 where vocabulary_id in (

@@ -512,6 +512,7 @@ export type Database = {
           high_german: string
           id: string
           swiss_german: string
+          type: string
         }
         Insert: {
           audio_path?: string | null
@@ -520,6 +521,7 @@ export type Database = {
           high_german: string
           id?: string
           swiss_german: string
+          type?: string
         }
         Update: {
           audio_path?: string | null
@@ -528,6 +530,7 @@ export type Database = {
           high_german?: string
           id?: string
           swiss_german?: string
+          type?: string
         }
         Relationships: [
           {
@@ -607,10 +610,11 @@ export type Database = {
           notes: string
           state: number
           swiss_german: string
+          type: string
         }[]
       }
       due_flashcards: {
-        Args: { p_deck_code?: string; p_limit: number }
+        Args: { p_deck_code?: string; p_limit: number; p_types?: string[] }
         Returns: {
           audio_path: string
           card_id: string
@@ -647,6 +651,7 @@ export type Database = {
           kind: string
           new_count: number
           parent_id: string
+          phrase_count: number
           title: string
         }[]
       }
@@ -694,7 +699,7 @@ export type Database = {
       }
       learner_locale: { Args: never; Returns: string }
       new_flashcards: {
-        Args: { p_deck_code: string; p_limit: number }
+        Args: { p_deck_code: string; p_limit: number; p_types?: string[] }
         Returns: {
           audio_path: string
           card_id: string

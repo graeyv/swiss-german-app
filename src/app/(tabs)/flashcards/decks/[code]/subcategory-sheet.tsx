@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { BottomSheet } from "../../bottom-sheet";
 import type { DeckKind } from "@/lib/flashcards/decks";
+import { filterSearch, type VocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { Counts } from "../../counts";
+import { FilterSwitch } from "../../filter-switch";
 
 type SubcategorySheetProps = {
   code: string;
@@ -15,11 +17,14 @@ type SubcategorySheetProps = {
   tint: string;
   newWords: number;
   due: number;
+  // Whether the topic has words as well as sentences or expressions, so they can be practised apart.
+  mixed: boolean;
   locale: Locale;
 };
 
 // A lowest-level subcategory. Tapping it slides up a sheet to start flashcards or see the words,
-// or for grammar, to start practising or see the rules.
+// or for grammar, to start practising or see the rules. A topic with words and sentences or
+// expressions first asks which of them to practise, all mixed unless the learner picks one.
 export function SubcategorySheet({
   code,
   kind,
@@ -28,10 +33,12 @@ export function SubcategorySheet({
   tint,
   newWords,
   due,
+  mixed,
   locale,
 }: SubcategorySheetProps) {
   const t = dictionary(locale).flashcards;
   const dialog = useRef<HTMLDialogElement>(null);
+  const [filter, setFilter] = useState<VocabularyFilter>("all");
   const done = newWords + due === 0;
   const close = () => dialog.current?.close();
 
@@ -66,6 +73,8 @@ export function SubcategorySheet({
           </div>
         </div>
 
+        {mixed && !done && <FilterSwitch value={filter} onChange={setFilter} locale={locale} />}
+
         <div className="flex flex-col gap-2">
           {done ? (
             <span className="w-full rounded-full bg-line px-6 py-3 text-center font-semibold text-muted">
@@ -73,7 +82,7 @@ export function SubcategorySheet({
             </span>
           ) : (
             <Link
-              href={`/flashcards/session/${code}`}
+              href={`/flashcards/session/${code}${mixed ? filterSearch(filter) : ""}`}
               onClick={close}
               className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
             >

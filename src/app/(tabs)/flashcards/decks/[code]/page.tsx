@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { getToday } from "@/lib/flashcards/data";
 import { type DeckNode, findDeck, overviewHref } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
+import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
@@ -140,6 +141,7 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
         tint={TINTS[deck.color]}
         newWords={newWords}
         due={due}
+        mixed={deck.kind === "vocabulary" && hasWordsAndPhrases(deck)}
         locale={locale}
       />
     );

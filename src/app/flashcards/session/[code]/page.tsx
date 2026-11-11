@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getCardFront, getGrammarContent, getToday, toGrammarCard, toWordCard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
 import { composeSession } from "@/lib/flashcards/session";
+import { typesOf, vocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
@@ -27,7 +28,9 @@ export default function SessionPage({ params, searchParams }: PageProps<"/flashc
 }
 
 async function Session({ params, searchParams }: PageProps<"/flashcards/session/[code]">) {
-  const [{ code }, { shuffle }] = await Promise.all([params, searchParams]);
+  const [{ code }, { shuffle, cards: only }] = await Promise.all([params, searchParams]);
+  // Words only, or sentences and expressions only, when the learner chose that for the topic.
+  const types = typesOf(vocabularyFilter(only));
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
 
@@ -38,8 +41,8 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
 
   const { newLeft, reviewsLeft } = limits;
   const [due, fresh] = await Promise.all([
-    supabase.rpc("due_flashcards", { p_limit: MAX_DUE_CARDS, p_deck_code: code }),
-    supabase.rpc("new_flashcards", { p_deck_code: code, p_limit: newLeft }),
+    supabase.rpc("due_flashcards", { p_limit: MAX_DUE_CARDS, p_deck_code: code, p_types: types }),
+    supabase.rpc("new_flashcards", { p_deck_code: code, p_limit: newLeft, p_types: types }),
   ]);
   if (due.error) throw new Error(due.error.message);
   if (fresh.error) throw new Error(fresh.error.message);
