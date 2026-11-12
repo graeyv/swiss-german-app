@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { parseLabels, timeLines } from "../../scripts/conversation-times.mjs";
 import { DECK_COLORS } from "./flashcards/decks";
 import { findSituation, type Line, lineAt, lineSpans, textIn, TOPICS } from "./conversations";
 
@@ -34,6 +35,31 @@ describe("conversation timing", () => {
     expect(lineAt(lines, 4.9)).toBe(1);
     expect(lineAt(lines, 60)).toBe(2);
     expect(lineAt([line(null)], 3)).toBe(-1);
+  });
+});
+
+describe("timing a recording from Audacity labels", () => {
+  const lines = [{ ...line(null), speaker: "Anna" }, { ...line(null), speaker: "Luca" }];
+  // Audacity separates columns with tabs; Windows ends rows with \r\n.
+  const row = (...cells: string[]) => cells.join("\t");
+
+  it("reads Audacity's export, with or without a header", () => {
+    const labels = [row("start", "end", "speaker"), row("0.030", "2.350", "Anna"), row("2.354", "5.000", "Luca")];
+    expect(parseLabels(labels.join("\r\n"))).toEqual([
+      { start: 0.03, name: "Anna" },
+      { start: 2.354, name: "Luca" },
+    ]);
+  });
+
+  it("gives each line its label's start, in hundredths", () => {
+    const timed = timeLines(lines, [{ start: 0.03, name: "anna" }, { start: 2.354, name: "Luca" }]);
+    expect(timed.map((entry: Line) => entry.start)).toEqual([0.03, 2.35]);
+  });
+
+  it("rejects a missing label, a speaker mix-up and times out of order", () => {
+    expect(() => timeLines(lines, [{ start: 0, name: "Anna" }])).toThrow(/1 labels for 2 lines/);
+    expect(() => timeLines(lines, [{ start: 0, name: "Luca" }, { start: 2, name: "Anna" }])).toThrow(/Label 1 is Luca/);
+    expect(() => timeLines(lines, [{ start: 3, name: "Anna" }, { start: 2, name: "Luca" }])).toThrow(/before label 1/);
   });
 });
 

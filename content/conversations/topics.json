@@ -21,98 +21,98 @@
             "de": "Luca hat verschlafen, und Anna hilft ihm, rechtzeitig aus dem Haus zu kommen."
           },
           "dialect": "be",
-          "audio": null,
+          "audio": "/audio/conversations/be/waking-up.mp3",
           "lines": [
             {
               "speaker": "Anna",
               "swissGerman": "Guete Morge, Luca! Bisch scho wach?",
               "standardGerman": "Guten Morgen, Luca! Bist du schon wach?",
               "english": "Good morning, Luca! Are you awake yet?",
-              "start": null
+              "start": 0.03
             },
             {
               "speaker": "Luca",
               "swissGerman": "Chuum. Dr Wecker het scho drü Mau glütet.",
               "standardGerman": "Kaum. Der Wecker hat schon dreimal geklingelt.",
               "english": "Barely. The alarm has gone off three times already.",
-              "start": null
+              "start": 2.35
             },
             {
               "speaker": "Anna",
               "swissGerman": "Weisch, wie spät dass es isch? Scho haubi sibni!",
               "standardGerman": "Weisst du, wie spät es ist? Schon halb sieben!",
               "english": "Do you know what time it is? Half past six already!",
-              "start": null
+              "start": 4.99
             },
             {
               "speaker": "Luca",
               "swissGerman": "Oh nei. I ha hüt am achti e Sitzig.",
               "standardGerman": "Oh nein. Ich habe heute um acht eine Sitzung.",
               "english": "Oh no. I've got a meeting at eight today.",
-              "start": null
+              "start": 8.34
             },
             {
               "speaker": "Anna",
               "swissGerman": "De gang du zersch go dusche. I mache derwiu Kafi.",
               "standardGerman": "Dann geh du zuerst duschen. Ich mache in der Zwischenzeit Kaffee.",
               "english": "Then you shower first. I'll make coffee in the meantime.",
-              "start": null
+              "start": 11.36
             },
             {
               "speaker": "Luca",
               "swissGerman": "Merci vilmau! Hesch du mis blaue Hemmli gseh?",
               "standardGerman": "Danke vielmals! Hast du mein blaues Hemd gesehen?",
               "english": "Thanks a lot! Have you seen my blue shirt?",
-              "start": null
+              "start": 14.07
             },
             {
               "speaker": "Anna",
               "swissGerman": "Äuä im Wöschchorb. Nimm doch ds wysse.",
               "standardGerman": "Wohl im Wäschekorb. Nimm doch das weisse.",
               "english": "Probably in the laundry basket. Take the white one.",
-              "start": null
+              "start": 17.16
             },
             {
               "speaker": "Luca",
               "swissGerman": "Guet. U wie isch ds Wätter hüt?",
               "standardGerman": "Gut. Und wie ist das Wetter heute?",
               "english": "Fine. And what's the weather like today?",
-              "start": null
+              "start": 20.35
             },
             {
               "speaker": "Anna",
               "swissGerman": "Es rägnet. Vergiss dr Schirm nid!",
               "standardGerman": "Es regnet. Vergiss den Schirm nicht!",
               "english": "It's raining. Don't forget your umbrella!",
-              "start": null
+              "start": 22.4
             },
             {
               "speaker": "Luca",
               "swissGerman": "Mach i nid. Wo sy ächt mini Schlüssle?",
               "standardGerman": "Mache ich nicht. Wo sind wohl meine Schlüssel?",
               "english": "I won't. Where could my keys be?",
-              "start": null
+              "start": 25.22
             },
             {
               "speaker": "Anna",
               "swissGerman": "Uf em Tischli bir Tür, wi immer.",
               "standardGerman": "Auf dem Tischchen bei der Tür, wie immer.",
               "english": "On the little table by the door, as always.",
-              "start": null
+              "start": 27.69
             },
             {
               "speaker": "Luca",
               "swissGerman": "Perfekt. Bis hinech, gäu!",
               "standardGerman": "Perfekt. Bis heute Abend!",
               "english": "Perfect. See you tonight!",
-              "start": null
+              "start": 30.53
             },
             {
               "speaker": "Anna",
               "swissGerman": "Tschüss, u viu Glück a dr Sitzig!",
               "standardGerman": "Tschüss, und viel Glück bei der Sitzung!",
               "english": "Bye, and good luck at the meeting!",
-              "start": null
+              "start": 33.1
             }
           ]
         },

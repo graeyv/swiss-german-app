@@ -12,6 +12,7 @@
     "db:types": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
     "content:build": "node scripts/build-flashcard-seed.mjs",
     "db:content": "npm run content:build && supabase db query --linked -f supabase/seeds/flashcards.sql",
+    "conversations:times": "node scripts/conversation-times.mjs",
     "dev:reset-progress": "node scripts/reset-progress.mjs",
     "dev:time-travel": "node scripts/time-travel.mjs"
   },

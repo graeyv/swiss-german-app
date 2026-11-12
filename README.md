@@ -58,12 +58,15 @@ that compare a word's Standard German and dialect pronunciation, with a recordin
 Topics and their situations are in `content/conversations/topics.json`, in the shape of `Topic` in
 `src/lib/conversations.ts`. Each situation is one dialogue with a single recording:
 
-- Put the recording under `public/audio/conversations/<dialect>/` and set `audio` to its path, such
-  as `/audio/conversations/be/in-the-kitchen.mp3`. Until then, `audio` is `null` and the
-  transcript shows straight away.
-- Give each line a `start`: the second in the recording where it begins (Audacity's selection
-  start). A line ends where the next one starts. Lines with a start can be tapped to replay them
-  and are highlighted while they're spoken.
+- Each line has a `start`: the second in the recording where it begins. A line ends where the
+  next one starts. Lines with a start can be tapped to replay them and are highlighted while
+  they're spoken. Until a situation has a recording, `audio` is `null` and the transcript shows
+  straight away.
+- To add a recording, set a label in Audacity at the start of each line, named after its speaker,
+  and export them (*File › Export Other › Export Labels*). Then run
+  `npm run conversations:times -- <situation> <labels.txt> <recording.mp3>`. It checks that the
+  labels match the lines and their speakers, copies the recording to
+  `public/audio/conversations/<dialect>/<situation>.mp3` and writes the times and `audio`.
 - `title` and `scene` take a text per interface language, with English required. Each line has
   its Swiss German, Standard German and English.
 - `color` is one of the deck colours: pink, blue, green, yellow, purple or orange.
