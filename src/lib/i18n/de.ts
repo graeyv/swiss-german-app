@@ -34,7 +34,7 @@ export const de: Dictionary = {
     label: "Hauptmenü",
     learn: "Lernen",
     practice: "Üben",
-    immerse: "Alltag",
+    conversations: "Gespräche",
     profile: "Profil",
   },
 

@@ -35,7 +35,7 @@ export const en = {
     label: "Main",
     learn: "Learn",
     practice: "Practice",
-    immerse: "Immerse",
+    conversations: "Conversations",
     profile: "Profile",
   },
 

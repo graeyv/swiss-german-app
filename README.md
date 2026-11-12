@@ -26,7 +26,7 @@ Docker isn't required: these steps use a hosted Supabase project.
 | Path | Purpose |
 | --- | --- |
 | `src/proxy.ts` | Refreshes the session and protects the pages that need an account |
-| `src/app/(tabs)` | Learn, Practice, Immerse and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
+| `src/app/(tabs)` | Learn, Practice, Conversations and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
 | `src/app/onboarding` | First-run questions: language, Swiss German level, topics and pace |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
 | `src/app/exercises` | Exercise components for grammar flashcards: pick, build, spot the error |
