@@ -88,6 +88,25 @@ export const de: Dictionary = {
     noRecording: "Noch keine Aufnahme",
   },
 
+  conversations: {
+    back: "Zurück zu den Gesprächen",
+    lines: (count) => many(count, "Satz", "Sätze"),
+    play: "Abspielen",
+    pause: "Pausieren",
+    back5: "5 Sekunden zurück",
+    speed: (rate) => `Tempo: ${rate}`,
+    progress: "Stelle im Gespräch",
+    noRecording: "Noch keine Aufnahme",
+    listenFirst: "Hör zuerst einmal zu, ohne mitzulesen. Danach kannst du das Transkript öffnen.",
+    showAnyway: "Trotzdem anzeigen",
+    transcript: "Transkript",
+    showTranscript: "Transkript anzeigen",
+    hideTranscript: "Transkript ausblenden",
+    showTranslation: "Übersetzung anzeigen",
+    hideTranslation: "Übersetzung ausblenden",
+    playLine: (speaker) => `Satz von ${speaker} abspielen`,
+  },
+
   exercises: {
     putInOrder: "Bring die Wörter in die richtige Reihenfolge:",
     check: "Prüfen",

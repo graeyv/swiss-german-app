@@ -53,6 +53,21 @@ Each lesson is a JSON file in `content/lessons/<dialect>/`, in the shape of `Les
 doesn't fit the shape. A lesson has sections, each section has rules, and each rule has examples
 that compare a word's Standard German and dialect pronunciation, with a recording of each.
 
+### Conversations
+
+Topics and their situations are in `content/conversations/topics.json`, in the shape of `Topic` in
+`src/lib/conversations.ts`. Each situation is one dialogue with a single recording:
+
+- Put the recording under `public/audio/conversations/<dialect>/` and set `audio` to its path, such
+  as `/audio/conversations/be/in-the-kitchen.mp3`. Until then, `audio` is `null` and the
+  transcript shows straight away.
+- Give each line a `start`: the second in the recording where it begins (Audacity's selection
+  start). A line ends where the next one starts. Lines with a start can be tapped to replay them
+  and are highlighted while they're spoken.
+- `title` and `scene` take a text per interface language, with English required. Each line has
+  its Swiss German, Standard German and English.
+- `color` is one of the deck colours: pink, blue, green, yellow, purple or orange.
+
 ### Flashcards
 
 Edit `content/decks.tsv` and `content/cards.tsv`, then run `npm run db:content`. It checks the files,

@@ -1,0 +1,268 @@
+{
+  "topics": [
+    {
+      "id": "at-home",
+      "title": {
+        "en": "At home",
+        "de": "Zuhause"
+      },
+      "emoji": "🏠",
+      "color": "orange",
+      "situations": [
+        {
+          "id": "waking-up",
+          "title": {
+            "en": "Waking up & getting ready",
+            "de": "Aufstehen & bereit machen"
+          },
+          "emoji": "⏰",
+          "scene": {
+            "en": "Luca overslept, and Anna helps him get out of the door in time.",
+            "de": "Luca hat verschlafen, und Anna hilft ihm, rechtzeitig aus dem Haus zu kommen."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": [
+            {
+              "speaker": "Anna",
+              "swissGerman": "Guete Morge, Luca! Bisch scho wach?",
+              "standardGerman": "Guten Morgen, Luca! Bist du schon wach?",
+              "english": "Good morning, Luca! Are you awake yet?",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Chuum. Dr Wecker het scho drü Mau glütet.",
+              "standardGerman": "Kaum. Der Wecker hat schon dreimal geklingelt.",
+              "english": "Barely. The alarm has gone off three times already.",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Weisch, wie spät dass es isch? Scho haubi sibni!",
+              "standardGerman": "Weisst du, wie spät es ist? Schon halb sieben!",
+              "english": "Do you know what time it is? Half past six already!",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Oh nei. I ha hüt am achti e Sitzig.",
+              "standardGerman": "Oh nein. Ich habe heute um acht eine Sitzung.",
+              "english": "Oh no. I've got a meeting at eight today.",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "De gang du zersch go dusche. I mache derwiu Kafi.",
+              "standardGerman": "Dann geh du zuerst duschen. Ich mache in der Zwischenzeit Kaffee.",
+              "english": "Then you shower first. I'll make coffee in the meantime.",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Merci vilmau! Hesch du mis blaue Hemmli gseh?",
+              "standardGerman": "Danke vielmals! Hast du mein blaues Hemd gesehen?",
+              "english": "Thanks a lot! Have you seen my blue shirt?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Äuä im Wöschchorb. Nimm doch ds wysse.",
+              "standardGerman": "Wohl im Wäschekorb. Nimm doch das weisse.",
+              "english": "Probably in the laundry basket. Take the white one.",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Guet. U wie isch ds Wätter hüt?",
+              "standardGerman": "Gut. Und wie ist das Wetter heute?",
+              "english": "Fine. And what's the weather like today?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Es rägnet. Vergiss dr Schirm nid!",
+              "standardGerman": "Es regnet. Vergiss den Schirm nicht!",
+              "english": "It's raining. Don't forget your umbrella!",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Mach i nid. Wo sy ächt mini Schlüssle?",
+              "standardGerman": "Mache ich nicht. Wo sind wohl meine Schlüssel?",
+              "english": "I won't. Where could my keys be?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Uf em Tischli bir Tür, wi immer.",
+              "standardGerman": "Auf dem Tischchen bei der Tür, wie immer.",
+              "english": "On the little table by the door, as always.",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Perfekt. Bis hinech, gäu!",
+              "standardGerman": "Perfekt. Bis heute Abend!",
+              "english": "Perfect. See you tonight!",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Tschüss, u viu Glück a dr Sitzig!",
+              "standardGerman": "Tschüss, und viel Glück bei der Sitzung!",
+              "english": "Bye, and good luck at the meeting!",
+              "start": null
+            }
+          ]
+        },
+        {
+          "id": "in-the-kitchen",
+          "title": {
+            "en": "In the kitchen",
+            "de": "In der Küche"
+          },
+          "emoji": "🍳",
+          "scene": {
+            "en": "Anna and Luca decide what to cook for dinner.",
+            "de": "Anna und Luca überlegen, was sie zum Abendessen kochen."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": [
+            {
+              "speaker": "Luca",
+              "swissGerman": "Was wei mir hüt z Znacht ässe?",
+              "standardGerman": "Was wollen wir heute zum Abendessen essen?",
+              "english": "What shall we have for dinner tonight?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Mir hei no Rüebli u Härdöpfu. Viilech e Suppe?",
+              "standardGerman": "Wir haben noch Karotten und Kartoffeln. Vielleicht eine Suppe?",
+              "english": "We still have carrots and potatoes. Maybe a soup?",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Gueti Idee. Chasch du d Zibele schnide?",
+              "standardGerman": "Gute Idee. Kannst du die Zwiebeln schneiden?",
+              "english": "Good idea. Can you chop the onions?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Klar. Wo isch ds scharfe Mässer?",
+              "standardGerman": "Klar. Wo ist das scharfe Messer?",
+              "english": "Sure. Where's the sharp knife?",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "I dr oberschte Schublade, links.",
+              "standardGerman": "In der obersten Schublade, links.",
+              "english": "In the top drawer, on the left.",
+              "start": null
+            }
+          ]
+        },
+        {
+          "id": "cleaning-and-laundry",
+          "title": {
+            "en": "Cleaning & laundry",
+            "de": "Putzen & Waschen"
+          },
+          "emoji": "🧺",
+          "scene": {
+            "en": "It's laundry day, and the bathroom needs cleaning too.",
+            "de": "Heute ist Waschtag, und das Badezimmer muss auch geputzt werden."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": [
+            {
+              "speaker": "Anna",
+              "swissGerman": "Hüt isch Wöschtag. Hesch du dini Sache scho parat?",
+              "standardGerman": "Heute ist Waschtag. Hast du deine Sachen schon bereit?",
+              "english": "It's laundry day. Have you got your things ready?",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Fasch. Darf i mini Hemmli zu dine tue?",
+              "standardGerman": "Fast. Darf ich meine Hemden zu deinen tun?",
+              "english": "Almost. Can I put my shirts in with yours?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Ja, aber nid di rote Socke!",
+              "standardGerman": "Ja, aber nicht die roten Socken!",
+              "english": "Yes, but not the red socks!",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "Okay. U när putze mir zäme ds Badzimmer?",
+              "standardGerman": "Okay. Und dann putzen wir zusammen das Badezimmer?",
+              "english": "Okay. And then we clean the bathroom together?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Abgmacht. I nime dr Bode, du ds Lavabo.",
+              "standardGerman": "Abgemacht. Ich nehme den Boden, du das Waschbecken.",
+              "english": "Deal. I'll do the floor, you do the sink.",
+              "start": null
+            }
+          ]
+        },
+        {
+          "id": "relaxing-at-home",
+          "title": {
+            "en": "Relaxing at home",
+            "de": "Entspannen zu Hause"
+          },
+          "emoji": "🛋️",
+          "scene": {
+            "en": "After a long day, Anna and Luca plan a quiet evening.",
+            "de": "Nach einem langen Tag planen Anna und Luca einen ruhigen Abend."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": [
+            {
+              "speaker": "Luca",
+              "swissGerman": "Wosch hüt am Aabe e Film luege?",
+              "standardGerman": "Willst du heute Abend einen Film schauen?",
+              "english": "Do you want to watch a film tonight?",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "Gärn. Aber nüt z Längs, i bi müed.",
+              "standardGerman": "Gerne. Aber nichts zu Langes, ich bin müde.",
+              "english": "Sure. But nothing too long, I'm tired.",
+              "start": null
+            },
+            {
+              "speaker": "Luca",
+              "swissGerman": "De mache mir's üs uf em Sofa gmüetlech.",
+              "standardGerman": "Dann machen wir es uns auf dem Sofa gemütlich.",
+              "english": "Then let's get cosy on the sofa.",
+              "start": null
+            },
+            {
+              "speaker": "Anna",
+              "swissGerman": "U i hole d Decki u öppis z Nasche.",
+              "standardGerman": "Und ich hole die Decke und etwas zum Naschen.",
+              "english": "And I'll get the blanket and something to snack on.",
+              "start": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
