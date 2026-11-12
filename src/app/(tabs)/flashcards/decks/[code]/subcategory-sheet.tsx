@@ -94,7 +94,7 @@ export function SubcategorySheet({
             onClick={close}
             className="w-full rounded-full border border-line px-6 py-3 text-center font-semibold transition-colors hover:border-accent"
           >
-            {kind === "grammar" ? t.seeRules : t.seeWordList}
+            {kind === "grammar" ? t.seeRules : t.seeList}
           </Link>
         </div>
       </BottomSheet>

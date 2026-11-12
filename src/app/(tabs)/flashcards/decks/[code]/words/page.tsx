@@ -52,7 +52,7 @@ async function WordList({ params, searchParams }: PageProps<"/flashcards/decks/[
 
   return (
     <>
-      <title>{t.title(t.flashcards.wordListTitle(deck.title))}</title>
+      <title>{t.title(t.flashcards.listTitle(deck.title))}</title>
 
       <div className="flex flex-col gap-4">
         <Link

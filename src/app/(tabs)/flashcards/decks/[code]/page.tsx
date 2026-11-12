@@ -112,7 +112,7 @@ function ShuffleButton({ deck, availability, locale }: DeckProps) {
       <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5 shrink-0">
         <path d="M3 6h2.5c1.6 0 3 .8 3.9 2.1l2.2 3.8c.9 1.3 2.3 2.1 3.9 2.1H17M3 14h2.5c1.6 0 3-.8 3.9-2.1M12.6 8.1c.9-1.3 2.3-2.1 3.9-2.1H17M15 4l2 2-2 2M15 12l2 2-2 2" />
       </svg>
-      {/* Wraps before the chips do, as "12 Wiederholungen" is long on a narrow phone. */}
+      {/* Wraps before the chips do, should a label be long on a narrow phone. */}
       <span className="min-w-0 flex-1 leading-snug font-semibold">{t.shuffleAll}</span>
       <span className="flex shrink-0 gap-1.5 text-xs font-semibold">
         {newWords > 0 && <span className="rounded-full bg-white/20 px-2 py-1">{t.newCount(newWords)}</span>}
