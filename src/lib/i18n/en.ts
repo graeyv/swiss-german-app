@@ -116,7 +116,8 @@ export const en = {
     reviewCount: (count: number) => many(count, "review", "reviews"),
     doneForToday: "Done for today",
     nothingLeft: "Nothing left for today",
-    startFlashcards: "Start flashcards",
+    // Starts a topic's session, of words and sentences or of grammar.
+    practise: "Practise",
     // The list of a topic's words and sentences.
     seeList: "See list",
     // The button's label, and what screen readers hear, naming the category.
@@ -128,7 +129,6 @@ export const en = {
     vocabulary: "Vocabulary",
     grammar: "Grammar",
     rules: (count: number) => many(count, "rule", "rules"),
-    startPractice: "Start practising",
     seeRules: "See rules",
     ruleListTitle: (deck: string) => `${deck} rules`,
     newRule: "New",
