@@ -64,9 +64,65 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
     return () => cancelAnimationFrame(frame);
   }, [playing]);
 
+  // The transcript follows the conversation: each new line scrolls to the middle of the screen,
+  // above the controls. Once the learner scrolls themselves, it stops following, so they can
+  // reread in peace, and a button takes them back. Playing, skipping, seeking or tapping a line
+  // follows again, since each asks to be taken to that point.
+  const bubbles = useRef<(HTMLLIElement | null)[]>([]);
+  const controls = useRef<HTMLElement>(null);
+  const [following, setFollowing] = useState(true);
+  // Where the line being spoken is when it's off screen while not following, for the button.
+  const [currentIs, setCurrentIs] = useState<"above" | "below" | "visible">("visible");
+
+  useEffect(() => {
+    if (!following || current < 0 || stopAt.current !== null) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    bubbles.current[current]?.scrollIntoView({
+      block: "center",
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [current, following, transcriptOpen]);
+
+  // Only the learner's own touch, wheel or keys count as scrolling: the transcript's own smooth
+  // scrolling fires scroll events too. Touches on the controls, such as dragging the progress
+  // bar, don't count either.
+  useEffect(() => {
+    const SCROLL_KEYS = ["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"];
+    function scrolledByLearner(event: Event) {
+      if (event.target instanceof Node && controls.current?.contains(event.target)) return;
+      if (event instanceof KeyboardEvent && !SCROLL_KEYS.includes(event.key)) return;
+      setFollowing(false);
+    }
+    const events = ["touchmove", "wheel", "keydown"] as const;
+    for (const name of events) window.addEventListener(name, scrolledByLearner, { passive: true });
+    return () => {
+      for (const name of events) window.removeEventListener(name, scrolledByLearner);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (following) return;
+    let frame = 0;
+    function locate() {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const box = bubbles.current[current]?.getBoundingClientRect();
+        const bottom = controls.current?.getBoundingClientRect().top ?? window.innerHeight;
+        setCurrentIs(!box ? "visible" : box.bottom < 0 ? "above" : box.top > bottom ? "below" : "visible");
+      });
+    }
+    locate();
+    window.addEventListener("scroll", locate, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", locate);
+    };
+  }, [following, current]);
+
   function seek(to: number) {
     const element = player.current;
     if (!element) return;
+    setFollowing(true);
     stopAt.current = null;
     element.currentTime = Math.min(Math.max(0, to), duration || element.duration || 0);
     setTime(element.currentTime);
@@ -76,6 +132,7 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
     const element = player.current;
     if (!element) return;
     if (element.paused) {
+      setFollowing(true);
       stopAt.current = null;
       if (element.ended) element.currentTime = 0;
       void element.play().catch(() => setPlaying(false));
@@ -94,6 +151,7 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
     const element = player.current;
     const span = spans[index];
     if (!element || !span) return;
+    setFollowing(true);
     element.currentTime = span.start;
     stopAt.current = span.end;
     void element.play().catch(() => setPlaying(false));
@@ -148,7 +206,13 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
               } ${index === current ? "bg-accent/10 ring-2 ring-accent" : "bg-surface ring-1 ring-line"}`;
 
               return (
-                <li key={index} className={`flex ${right ? "justify-end" : "justify-start"}`}>
+                <li
+                  key={index}
+                  ref={(element) => {
+                    bubbles.current[index] = element;
+                  }}
+                  className={`flex ${right ? "justify-end" : "justify-start"}`}
+                >
                   {playable ? (
                     <button
                       type="button"
@@ -170,7 +234,22 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
       </section>
 
       {/* The controls stay at the bottom, within thumb reach, however long the transcript is. */}
-      <footer className="sticky bottom-0 -mx-6 flex flex-col gap-2 border-t border-line bg-background px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <footer
+        ref={controls}
+        className="sticky bottom-0 -mx-6 flex flex-col gap-2 border-t border-line bg-background px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+      >
+        {/* Floats above the controls while the transcript isn't following and the line being
+            spoken is off screen. */}
+        {!following && unlocked && transcriptOpen && current >= 0 && currentIs !== "visible" && (
+          <button
+            type="button"
+            onClick={() => setFollowing(true)}
+            className="absolute -top-14 left-1/2 flex min-h-11 -translate-x-1/2 items-center gap-1.5 rounded-full bg-foreground px-4 text-sm font-semibold whitespace-nowrap text-background shadow-lg transition-transform active:scale-95"
+          >
+            <span aria-hidden>{currentIs === "above" ? "↑" : "↓"}</span>
+            {t.followAgain}
+          </button>
+        )}
         {audio ? (
           <>
             <audio

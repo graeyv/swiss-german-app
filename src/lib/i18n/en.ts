@@ -101,6 +101,8 @@ export const en = {
     back5: "Back 5 seconds",
     forward5: "Forward 5 seconds",
     restart: "From the start",
+    // Scrolls the transcript back to the line being spoken, after the learner scrolled away.
+    followAgain: "Back to current line",
     // The playback speed, such as "Speed: 0.75×", switched with each tap.
     speed: (rate: string) => `Speed: ${rate}`,
     progress: "Position in the conversation",
