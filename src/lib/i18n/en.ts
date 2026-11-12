@@ -117,9 +117,10 @@ export const en = {
     nothingLeft: "Nothing left for today",
     startFlashcards: "Start flashcards",
     seeWordList: "See word list",
-    shuffle: "Shuffle learning in this category",
+    // The button's label, and what screen readers hear, naming the category.
+    shuffleAll: "Shuffle all",
+    shuffle: (deck: string) => `Shuffle all of ${deck}`,
     allDone: "All done for today",
-    comeBackTomorrow: (deck: string) => `Come back tomorrow for more ${deck}.`,
     wordListTitle: (deck: string) => `${deck} words`,
     kindLabel: "What to practise",
     vocabulary: "Vocabulary",
