@@ -94,6 +94,8 @@ export const de: Dictionary = {
     play: "Abspielen",
     pause: "Pausieren",
     back5: "5 Sekunden zurück",
+    forward5: "5 Sekunden vor",
+    restart: "Von vorne",
     speed: (rate) => `Tempo: ${rate}`,
     progress: "Stelle im Gespräch",
     noRecording: "Noch keine Aufnahme",

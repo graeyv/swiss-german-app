@@ -36,12 +36,41 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
   const [translationOpen, setTranslationOpen] = useState(false);
 
   const spans = lineSpans(lines);
+  const percent = duration ? Math.min(100, (time / duration) * 100) : 0;
   const current = playing || time > 0 ? lineAt(lines, time) : -1;
   // Speakers alternate sides like in a chat, in the order they first speak.
   const speakers = [...new Set(lines.map((line) => line.speaker))];
 
-  // Stops the conversation when the learner leaves the page.
-  useEffect(() => () => player.current?.pause(), []);
+  // The page is rendered on the server, so the browser can learn the recording's length before
+  // this code runs and its loadedmetadata event is missed. Read it once here too.
+  useEffect(() => {
+    const element = player.current;
+    if (element && element.readyState >= 1 && Number.isFinite(element.duration)) {
+      setDuration(element.duration);
+    }
+    // Stops the conversation when the learner leaves the page.
+    return () => element?.pause();
+  }, []);
+
+  // timeupdate only fires a few times a second, so while playing the position follows every
+  // frame, for a bar that moves smoothly.
+  useEffect(() => {
+    if (!playing) return;
+    let frame = requestAnimationFrame(function follow() {
+      const element = player.current;
+      if (element) setTime(element.currentTime);
+      frame = requestAnimationFrame(follow);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [playing]);
+
+  function seek(to: number) {
+    const element = player.current;
+    if (!element) return;
+    stopAt.current = null;
+    element.currentTime = Math.min(Math.max(0, to), duration || element.duration || 0);
+    setTime(element.currentTime);
+  }
 
   function toggle() {
     const element = player.current;
@@ -53,11 +82,6 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
     } else {
       element.pause();
     }
-  }
-
-  function skipBack() {
-    const element = player.current;
-    if (element) element.currentTime = Math.max(0, element.currentTime - 5);
   }
 
   function changeRate() {
@@ -154,6 +178,10 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
               src={audio}
               preload="metadata"
               onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+              onDurationChange={(event) => {
+                if (Number.isFinite(event.currentTarget.duration)) setDuration(event.currentTarget.duration);
+              }}
+              onSeeked={(event) => setTime(event.currentTarget.currentTime)}
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
               onTimeUpdate={(event) => {
@@ -169,33 +197,50 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
                 setUnlocked(true);
               }}
             />
-            <div className="flex items-center gap-3 text-xs text-muted tabular-nums">
-              <span>{clock(time)}</span>
-              <input
-                type="range"
-                aria-label={t.progress}
-                min={0}
-                max={duration || 0}
-                step={0.1}
-                value={time}
-                onChange={(event) => {
-                  if (player.current) player.current.currentTime = Number(event.target.value);
-                }}
-                className="h-11 flex-1 accent-accent"
-              />
-              <span>{clock(duration)}</span>
+            {/* The bar is drawn here, with a transparent native slider on top: it takes taps and
+                drags anywhere along it, the keyboard and screen readers, and looks the same in
+                every browser. */}
+            <div className="flex flex-col">
+              <div className="relative flex h-11 items-center">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
+                  <div className="h-full bg-accent" style={{ width: `${percent}%` }} />
+                </div>
+                <span
+                  aria-hidden
+                  className="absolute size-4 -translate-x-1/2 rounded-full bg-accent shadow-sm ring-2 ring-background"
+                  style={{ left: `${percent}%` }}
+                />
+                <input
+                  type="range"
+                  aria-label={t.progress}
+                  aria-valuetext={`${clock(time)} / ${clock(duration)}`}
+                  min={0}
+                  max={duration || 1}
+                  step={0.1}
+                  value={Math.min(time, duration || 1)}
+                  disabled={!duration}
+                  onChange={(event) => seek(Number(event.target.value))}
+                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-default"
+                />
+              </div>
+              <div className="flex justify-between text-xs text-muted tabular-nums">
+                <span>{clock(time)}</span>
+                <span>{clock(duration)}</span>
+              </div>
             </div>
-            <div className="flex items-center justify-center gap-6">
+
+            <div className="grid grid-cols-5 items-center justify-items-center">
               <button
                 type="button"
-                onClick={skipBack}
-                aria-label={t.back5}
-                className="flex size-12 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
+                onClick={changeRate}
+                aria-label={t.speed(`${rate}×`)}
+                className={`flex h-12 min-w-12 items-center justify-center rounded-full px-2 text-sm font-semibold tabular-nums transition-colors ${
+                  rate === 1 ? "text-muted hover:text-foreground" : "bg-accent/10 text-accent"
+                }`}
               >
-                <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="size-7">
-                  <path d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                </svg>
+                {rate}×
               </button>
+              <SkipButton label={t.back5} onClick={() => seek(time - 5)} direction="back" />
               <button
                 type="button"
                 onClick={toggle}
@@ -212,13 +257,16 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
                   </svg>
                 )}
               </button>
+              <SkipButton label={t.forward5} onClick={() => seek(time + 5)} direction="forward" />
               <button
                 type="button"
-                onClick={changeRate}
-                aria-label={t.speed(`${rate}×`)}
-                className="flex size-12 items-center justify-center rounded-full text-sm font-semibold text-muted tabular-nums transition-colors hover:text-foreground"
+                onClick={() => seek(0)}
+                aria-label={t.restart}
+                className="flex size-12 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
               >
-                {rate}×
+                <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="size-6">
+                  <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
               </button>
             </div>
           </>
@@ -229,6 +277,42 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
         )}
       </footer>
     </>
+  );
+}
+
+// Five seconds back or forward: a circular arrow with the 5 inside.
+function SkipButton({
+  label,
+  onClick,
+  direction,
+}: {
+  label: string;
+  onClick: () => void;
+  direction: "back" | "forward";
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="relative flex size-12 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground active:scale-95"
+    >
+      <svg
+        aria-hidden
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={`size-8 ${direction === "forward" ? "-scale-x-100" : ""}`}
+      >
+        <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4v3.5H8" />
+      </svg>
+      <span aria-hidden className="absolute pt-0.5 text-[0.65rem] font-bold">
+        5
+      </span>
+    </button>
   );
 }
 

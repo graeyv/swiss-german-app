@@ -99,6 +99,8 @@ export const en = {
     play: "Play",
     pause: "Pause",
     back5: "Back 5 seconds",
+    forward5: "Forward 5 seconds",
+    restart: "From the start",
     // The playback speed, such as "Speed: 0.75×", switched with each tap.
     speed: (rate: string) => `Speed: ${rate}`,
     progress: "Position in the conversation",
