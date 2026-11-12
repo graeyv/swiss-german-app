@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { TopBar } from "@/app/top-bar";
 
 type LessonScreenProps = {
   // The lesson's language.
@@ -18,15 +19,8 @@ type LessonScreenProps = {
 // A full screen of a Learn lesson.
 export function LessonScreen({ lang, back, progress, children, footer }: LessonScreenProps) {
   return (
-    <main lang={lang} className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 pt-4">
-      <header className="flex items-center gap-3">
-        <Link
-          href={back.href}
-          aria-label={back.label}
-          className="-ml-2 flex size-11 shrink-0 items-center justify-center text-xl text-muted"
-        >
-          ←
-        </Link>
+    <main lang={lang} className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6">
+      <TopBar back={back}>
         {progress && (
           <>
             <div
@@ -49,7 +43,7 @@ export function LessonScreen({ lang, back, progress, children, footer }: LessonS
             </p>
           </>
         )}
-      </header>
+      </TopBar>
 
       <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
         {children}

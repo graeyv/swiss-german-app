@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import { getLocale } from "@/lib/i18n/server";
 import { dictionary } from "@/lib/i18n";
-import { ImmerseIcon, LearnIcon, PracticeIcon, ProfileIcon } from "./tab-icons";
+import { ConversationsIcon, LearnIcon, PracticeIcon, ProfileIcon } from "./tab-icons";
 import { TabLink } from "./tab-link";
 
 const TABS = [
   { href: "/learn", label: "learn", icon: <LearnIcon /> },
   { href: "/flashcards", label: "practice", icon: <PracticeIcon /> },
-  { href: "/immerse", label: "immerse", icon: <ImmerseIcon /> },
+  { href: "/conversations", label: "conversations", icon: <ConversationsIcon /> },
   { href: "/profile", label: "profile", icon: <ProfileIcon /> },
 ] as const;
 

@@ -26,7 +26,7 @@ Docker isn't required: these steps use a hosted Supabase project.
 | Path | Purpose |
 | --- | --- |
 | `src/proxy.ts` | Refreshes the session and protects the pages that need an account |
-| `src/app/(tabs)` | Learn, Practice, Immerse and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
+| `src/app/(tabs)` | Learn, Practice, Conversations and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
 | `src/app/onboarding` | First-run questions: language, Swiss German level, topics and pace |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
 | `src/app/exercises` | Exercise components for grammar flashcards: pick, build, spot the error |
@@ -52,6 +52,24 @@ Each lesson is a JSON file in `content/lessons/<dialect>/`, in the shape of `Les
 `src/lib/learn/lessons.ts`. Add a new file to `LESSONS` there. The type check flags a file that
 doesn't fit the shape. A lesson has sections, each section has rules, and each rule has examples
 that compare a word's Standard German and dialect pronunciation, with a recording of each.
+
+### Conversations
+
+Topics and their situations are in `content/conversations/topics.json`, in the shape of `Topic` in
+`src/lib/conversations.ts`. Each situation is one dialogue with a single recording:
+
+- Each line has a `start`: the second in the recording where it begins. A line ends where the
+  next one starts. Lines with a start can be tapped to replay them and are highlighted while
+  they're spoken. Until a situation has a recording, `audio` is `null` and the transcript shows
+  straight away.
+- To add a recording, set a label in Audacity at the start of each line, named after its speaker,
+  and export them (*File › Export Other › Export Labels*). Then run
+  `npm run conversations:times -- <situation> <labels.txt> <recording.mp3>`. It checks that the
+  labels match the lines and their speakers, copies the recording to
+  `public/audio/conversations/<dialect>/<situation>.mp3` and writes the times and `audio`.
+- `title` and `scene` take a text per interface language, with English required. Each line has
+  its Swiss German, Standard German and English.
+- `color` is one of the deck colours: pink, blue, green, yellow, purple or orange.
 
 ### Flashcards
 

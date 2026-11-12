@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { LOCALE_COOKIE, LOCALE_COOKIE_OPTIONS, localeFromAcceptLanguage } from "@/lib/i18n";
 
-const PROTECTED_PATHS = ["/learn", "/flashcards", "/immerse", "/onboarding", "/profile"];
+const PROTECTED_PATHS = ["/learn", "/flashcards", "/conversations", "/onboarding", "/profile"];
 
 function redirectTo(path: string, request: NextRequest, response: NextResponse) {
   const url = request.nextUrl.clone();

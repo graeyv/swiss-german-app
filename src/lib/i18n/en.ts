@@ -35,7 +35,7 @@ export const en = {
     label: "Main",
     learn: "Learn",
     practice: "Practice",
-    immerse: "Immerse",
+    conversations: "Conversations",
     profile: "Profile",
   },
 
@@ -91,6 +91,32 @@ export const en = {
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
     play: (variety: string) => `Listen in ${variety}`,
     noRecording: "No recording yet",
+  },
+
+  conversations: {
+    back: "Back to conversations",
+    lines: (count: number) => many(count, "line", "lines"),
+    play: "Play",
+    pause: "Pause",
+    back5: "Back 5 seconds",
+    forward5: "Forward 5 seconds",
+    restart: "From the start",
+    // Scrolls the transcript back to the line being spoken, after the learner scrolled away.
+    followAgain: "Back to current line",
+    // The playback speed, such as "Speed: 0.75×", switched with each tap.
+    speed: (rate: string) => `Speed: ${rate}`,
+    progress: "Position in the conversation",
+    noRecording: "No recording yet",
+    // The transcript stays hidden until the conversation has been heard once: listening is the
+    // skill being trained.
+    listenFirst: "Listen once without reading along. The transcript unlocks afterwards.",
+    showAnyway: "Show it anyway",
+    transcript: "Transcript",
+    showTranscript: "Show transcript",
+    hideTranscript: "Hide transcript",
+    showTranslation: "Show translation",
+    hideTranslation: "Hide translation",
+    playLine: (speaker: string) => `Play ${speaker}’s line`,
   },
 
   exercises: {

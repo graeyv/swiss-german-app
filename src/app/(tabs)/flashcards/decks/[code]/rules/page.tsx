@@ -5,6 +5,7 @@ import { getToday } from "@/lib/flashcards/data";
 import { findDeck, overviewHref } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { TopBar } from "@/app/top-bar";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
@@ -39,14 +40,10 @@ async function RuleList({ params }: Pick<PageProps<"/flashcards/decks/[code]/rul
     <>
       <title>{t.title(t.flashcards.ruleListTitle(deck.title))}</title>
 
-      <div className="flex flex-col gap-4">
-        <Link
-          href={parent ? `/flashcards/decks/${parent.code}` : overviewHref("grammar")}
-          className="-ml-1 flex min-h-11 w-fit items-center gap-1 text-sm font-semibold text-muted hover:text-foreground"
-        >
-          ‹ {parent?.title ?? t.flashcards.title}
-        </Link>
+      {/* Directly in the page's column, so it stays at the top while the page scrolls. */}
+      <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : overviewHref("grammar") }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
 
+      <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
           <span
             aria-hidden
