@@ -71,8 +71,9 @@ regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project
   to the word, so a shared word is only learned once.
 - **Codes are permanent.** A card's `code` is what keeps learners' history, so fix a spelling by
   editing the row, not by adding a new code.
-- `audio_path` is an object path in the `lesson-audio` bucket. The `type` column isn't used by the
-  app yet.
+- `audio_path` is an object path in the `lesson-audio` bucket.
+- **Type**: a card is a `word` (the default when empty), a `sentence` or an `expression`. A topic
+  with words as well as sentences or expressions lets learners practise and list them apart.
 - **Kind**: a deck holds words (`vocabulary`, the default) or grammar rules (`grammar`). Set `kind`
   on a top-level deck, and the decks below it take it.
 - **Drafts**: `draft` set to `yes` keeps a deck and everything below it hidden from learners.

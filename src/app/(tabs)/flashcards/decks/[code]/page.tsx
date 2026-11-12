@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { getToday } from "@/lib/flashcards/data";
 import { type DeckNode, findDeck, overviewHref } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
+import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
@@ -89,37 +90,33 @@ function ShuffleButton({ deck, availability, locale }: DeckProps) {
   const { newWords, due } = availability;
   const t = dictionary(locale).flashcards;
 
-  // Takes the shuffle card's place and shape, so finishing reads as an achievement.
+  // Takes the shuffle button's place and shape, so finishing reads as an achievement and the page
+  // doesn't jump.
   if (newWords + due === 0) {
     return (
-      <div className="flex items-center gap-4 rounded-2xl bg-tint-green p-5">
-        <span aria-hidden className="text-3xl">
-          ✅
-        </span>
-        <span className="flex flex-col">
-          <strong className="text-lg text-success">{t.allDone}</strong>
-          <span className="text-sm text-muted">{t.comeBackTomorrow(deck.title)}</span>
-        </span>
-      </div>
+      <p className="flex min-h-14 items-center gap-2 rounded-2xl bg-tint-green px-4 font-semibold text-success">
+        <span aria-hidden>✅</span>
+        {t.allDone}
+      </p>
     );
   }
 
+  // A filled button with the cards' soft corners: no icon tile and no arrow, so it reads as an
+  // action rather than one more topic. The counts are what a session would hold today.
   return (
     <Link
       href={`/flashcards/session/${deck.code}?shuffle=1`}
-      className="flex items-center gap-4 rounded-2xl bg-accent p-5 text-accent-foreground transition-transform active:scale-[0.98]"
+      aria-label={`${t.shuffle(deck.title)}: ${t.newCount(newWords)}, ${t.reviewCount(due)}`}
+      className="flex min-h-14 items-center gap-2.5 rounded-2xl bg-accent px-4 py-2 text-accent-foreground shadow-sm transition-[opacity,transform] hover:opacity-90 active:scale-[0.98]"
     >
-      <span aria-hidden className="text-3xl">
-        🔀
-      </span>
-      <span className="flex flex-1 flex-col">
-        <strong className="text-lg">{t.shuffle}</strong>
-        <span className="text-sm opacity-90">
-          {t.newCount(newWords)} · {t.reviewCount(due)}
-        </span>
-      </span>
-      <span aria-hidden className="text-2xl">
-        ›
+      <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5 shrink-0">
+        <path d="M3 6h2.5c1.6 0 3 .8 3.9 2.1l2.2 3.8c.9 1.3 2.3 2.1 3.9 2.1H17M3 14h2.5c1.6 0 3-.8 3.9-2.1M12.6 8.1c.9-1.3 2.3-2.1 3.9-2.1H17M15 4l2 2-2 2M15 12l2 2-2 2" />
+      </svg>
+      {/* Wraps before the chips do, should a label be long on a narrow phone. */}
+      <span className="min-w-0 flex-1 leading-snug font-semibold">{t.shuffleAll}</span>
+      <span className="flex shrink-0 gap-1.5 text-xs font-semibold">
+        {newWords > 0 && <span className="rounded-full bg-white/20 px-2 py-1">{t.newCount(newWords)}</span>}
+        {due > 0 && <span className="rounded-full bg-white/20 px-2 py-1">{t.reviewCount(due)}</span>}
       </span>
     </Link>
   );
@@ -140,6 +137,7 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
         tint={TINTS[deck.color]}
         newWords={newWords}
         due={due}
+        mixed={deck.kind === "vocabulary" && hasWordsAndPhrases(deck)}
         locale={locale}
       />
     );

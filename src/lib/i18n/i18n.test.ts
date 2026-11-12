@@ -51,8 +51,10 @@ describe("dictionaries", () => {
   it("pluralise in both languages", () => {
     expect(en.flashcards.reviewCount(1)).toBe("1 review");
     expect(en.flashcards.reviewCount(3)).toBe("3 reviews");
-    expect(de.flashcards.reviewCount(1)).toBe("1 Wiederholung");
-    expect(de.flashcards.reviewCount(3)).toBe("3 Wiederholungen");
+    // German says "fällig" for any number, so its plurals are checked on another label.
+    expect(de.flashcards.reviewCount(3)).toBe("3 fällig");
+    expect(de.flashcards.words(1)).toBe("1 Wort");
+    expect(de.flashcards.words(3)).toBe("3 Wörter");
   });
 });
 

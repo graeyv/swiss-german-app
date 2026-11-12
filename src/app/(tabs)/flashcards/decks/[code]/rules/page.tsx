@@ -84,7 +84,7 @@ async function RuleList({ params }: Pick<PageProps<"/flashcards/decks/[code]/rul
           href={`/flashcards/session/${deck.code}`}
           className="w-full rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition-opacity hover:opacity-90"
         >
-          {t.flashcards.startPractice}
+          {t.flashcards.practise}
         </Link>
       ) : (
         <p className="w-full rounded-full bg-line px-6 py-3 text-center font-semibold text-muted">
