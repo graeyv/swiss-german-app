@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getCardFront, getGrammarContent, getToday, toGrammarCard, toWordCard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
-import { composeSession } from "@/lib/flashcards/session";
-import { typesOf, vocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
+import { alternate, composeSession } from "@/lib/flashcards/session";
+import { hasWordsAndPhrases, typesOf, vocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
@@ -30,7 +30,8 @@ export default function SessionPage({ params, searchParams }: PageProps<"/flashc
 async function Session({ params, searchParams }: PageProps<"/flashcards/session/[code]">) {
   const [{ code }, { shuffle, cards: only }] = await Promise.all([params, searchParams]);
   // Words only, or sentences and expressions only, when the learner chose that for the topic.
-  const types = typesOf(vocabularyFilter(only));
+  const filter = vocabularyFilter(only);
+  const types = typesOf(filter);
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
 
@@ -40,16 +41,23 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   if (!found) notFound();
 
   const { newLeft, reviewsLeft } = limits;
-  const [due, fresh] = await Promise.all([
+  // Mixing words and sentences, new ones take turns, so sentences don't wait until every word
+  // of the topic is learned.
+  const mixed = filter === "all" && hasWordsAndPhrases(found.deck);
+  const newCards = (p_types: string[] | undefined) =>
+    supabase.rpc("new_flashcards", { p_deck_code: code, p_limit: newLeft, p_types });
+  const [due, fresh, freshPhrases] = await Promise.all([
     supabase.rpc("due_flashcards", { p_limit: MAX_DUE_CARDS, p_deck_code: code, p_types: types }),
-    supabase.rpc("new_flashcards", { p_deck_code: code, p_limit: newLeft, p_types: types }),
+    newCards(mixed ? typesOf("words") : types),
+    mixed ? newCards(typesOf("phrases")) : null,
   ]);
   if (due.error) throw new Error(due.error.message);
   if (fresh.error) throw new Error(fresh.error.message);
+  if (freshPhrases?.error) throw new Error(freshPhrases.error.message);
 
   const entries = composeSession(
     due.data,
-    fresh.data,
+    freshPhrases ? alternate(fresh.data, freshPhrases.data, newLeft) : fresh.data,
     reviewsLeft,
     { shuffle: shuffle === "1" },
   );

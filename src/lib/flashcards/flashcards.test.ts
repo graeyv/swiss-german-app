@@ -7,7 +7,7 @@ import { suggestedPace } from "../onboarding";
 import { buildDeckTree, type DeckRow, findDeck, sortByInterests } from "./decks";
 import { allowedLevels, gradeFromAnswer, grammarExercise, pickExercise } from "./grammar";
 import { advanceQueue } from "./queue";
-import { composeSession, deckAvailability } from "./session";
+import { alternate, composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
 import { hasWordsAndPhrases, keeps, typesOf, vocabularyFilter } from "./vocabulary-filter";
 
@@ -400,6 +400,15 @@ describe("vocabulary filter", () => {
     expect(hasWordsAndPhrases({ card_count: 10, phrase_count: 3 })).toBe(true);
     expect(hasWordsAndPhrases({ card_count: 10, phrase_count: 0 })).toBe(false);
     expect(hasWordsAndPhrases({ card_count: 3, phrase_count: 3 })).toBe(false);
+  });
+});
+
+describe("alternate", () => {
+  it("lets words and sentences take turns, then fills up with the rest", () => {
+    expect(alternate(["w1", "w2", "w3", "w4"], ["s1"], 10)).toEqual(["w1", "s1", "w2", "w3", "w4"]);
+    expect(alternate(["w1", "w2"], ["s1", "s2"], 3)).toEqual(["w1", "s1", "w2"]);
+    expect(alternate([], ["s1", "s2"], 5)).toEqual(["s1", "s2"]);
+    expect(alternate(["w1"], ["s1"], 0)).toEqual([]);
   });
 });
 
