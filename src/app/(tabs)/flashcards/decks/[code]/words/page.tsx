@@ -11,6 +11,7 @@ import {
   vocabularyFilter,
 } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { TopBar } from "@/app/top-bar";
 import { dictionary, translationOf } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
@@ -54,14 +55,10 @@ async function WordList({ params, searchParams }: PageProps<"/flashcards/decks/[
     <>
       <title>{t.title(t.flashcards.listTitle(deck.title))}</title>
 
-      <div className="flex flex-col gap-4">
-        <Link
-          href={parent ? `/flashcards/decks/${parent.code}` : "/flashcards"}
-          className="-ml-1 flex min-h-11 w-fit items-center gap-1 text-sm font-semibold text-muted hover:text-foreground"
-        >
-          ‹ {parent?.title ?? t.flashcards.title}
-        </Link>
+      {/* Directly in the page's column, so it stays at the top while the page scrolls. */}
+      <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : "/flashcards" }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
 
+      <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
           <span
             aria-hidden

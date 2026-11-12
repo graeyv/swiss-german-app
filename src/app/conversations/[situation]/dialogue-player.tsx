@@ -107,8 +107,10 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const box = bubbles.current[current]?.getBoundingClientRect();
+        // The visible part of the page lies between the top bar and the controls.
+        const top = document.querySelector("[data-top-bar]")?.getBoundingClientRect().bottom ?? 0;
         const bottom = controls.current?.getBoundingClientRect().top ?? window.innerHeight;
-        setCurrentIs(!box ? "visible" : box.bottom < 0 ? "above" : box.top > bottom ? "below" : "visible");
+        setCurrentIs(!box ? "visible" : box.bottom < top ? "above" : box.top > bottom ? "below" : "visible");
       });
     }
     locate();

@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { TopBar } from "@/app/top-bar";
 import { findSituation, situationParams, textIn } from "@/lib/conversations";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
@@ -36,17 +36,9 @@ async function SituationView({ params }: Pick<PageProps<"/conversations/[situati
   const title = textIn(situation.title, locale);
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 pt-4">
+    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6">
       <title>{t.title(title)}</title>
-      <header>
-        <Link
-          href="/conversations"
-          aria-label={t.conversations.back}
-          className="-ml-2 flex size-11 items-center justify-center text-xl text-muted"
-        >
-          ←
-        </Link>
-      </header>
+      <TopBar back={{ href: "/conversations", label: t.conversations.back }} />
 
       <div className="flex flex-col gap-1 pt-4 pb-6">
         <p className="text-sm font-semibold tracking-wide text-muted uppercase">
