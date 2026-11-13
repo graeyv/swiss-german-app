@@ -9,7 +9,6 @@ import { TopBar } from "@/app/top-bar";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
-import { TINTS } from "../../../deck-card";
 
 export default function RuleListPage({ params }: PageProps<"/flashcards/decks/[code]/rules">) {
   return (
@@ -47,7 +46,7 @@ async function RuleList({ params }: Pick<PageProps<"/flashcards/decks/[code]/rul
         <div className="flex items-center gap-4">
           <span
             aria-hidden
-            className={`flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl ${TINTS[deck.color]}`}
+            className="flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl bg-mist"
           >
             {deck.emoji ?? "📚"}
           </span>

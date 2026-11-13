@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { textIn, TOPICS } from "@/lib/conversations";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
-import { TINTS } from "../flashcards/deck-card";
 
 // Swiss German conversations as they're heard in everyday situations, grouped by topic. Each
 // situation is a card, like the flashcard decks, that opens its dialogue. Every learner sees every
@@ -35,11 +34,11 @@ async function Conversations() {
               <li key={situation.id} className="flex">
                 <Link
                   href={`/conversations/${situation.id}`}
-                  className={`flex flex-1 flex-col gap-3 rounded-2xl p-4 transition-transform active:scale-[0.98] ${TINTS[topic.color]}`}
+                  className="flex flex-1 flex-col gap-3 rounded-2xl p-4 transition-transform active:scale-[0.98] bg-mist"
                 >
                   <span
                     aria-hidden
-                    className="flex size-12 items-center justify-center rounded-xl bg-surface/70 text-2xl"
+                    className="flex size-12 items-center justify-center rounded-xl bg-ivory text-2xl"
                   >
                     {situation.emoji}
                   </span>

@@ -126,7 +126,7 @@ export function ReviewSession({
         )}
 
         {goalJustReached && (
-          <div className="flex items-center gap-4 rounded-2xl bg-tint-green p-5 motion-safe:animate-pop">
+          <div className="flex items-center gap-4 rounded-2xl bg-yellow p-5 motion-safe:animate-pop">
             <span aria-hidden className="text-3xl">
               🎯
             </span>

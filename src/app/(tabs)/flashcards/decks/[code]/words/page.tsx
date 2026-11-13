@@ -15,7 +15,6 @@ import { TopBar } from "@/app/top-bar";
 import { dictionary, translationOf } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
-import { TINTS } from "../../../deck-card";
 import { FilterSwitch } from "../../../filter-switch";
 
 // A topic's words, sentences and expressions. A topic with words and the others shows them in
@@ -62,7 +61,7 @@ async function WordList({ params, searchParams }: PageProps<"/flashcards/decks/[
         <div className="flex items-center gap-4">
           <span
             aria-hidden
-            className={`flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl ${TINTS[deck.color]}`}
+            className="flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl bg-mist"
           >
             {deck.emoji ?? "📚"}
           </span>

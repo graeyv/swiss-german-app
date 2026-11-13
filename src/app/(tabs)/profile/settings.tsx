@@ -2,12 +2,10 @@
 
 import { type ReactNode, type RefObject, useRef, useState, useTransition } from "react";
 import { updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
-import type { DeckColor } from "@/lib/flashcards/decks";
 import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
 import type { CardFront } from "@/lib/types";
 import { BottomSheet } from "../flashcards/bottom-sheet";
-import { TINTS } from "../flashcards/deck-card";
 import { PaceOptions } from "../flashcards/pace-options";
 import { setLocale } from "../actions";
 import { updateDialect, updateInterests } from "./actions";
@@ -260,7 +258,7 @@ export function DirectionSetting({ cardFront, locale }: { cardFront: CardFront; 
   );
 }
 
-export type Topic = { code: string; title: string; emoji: string | null; color: DeckColor };
+export type Topic = { code: string; title: string; emoji: string | null };
 
 type TopicsSettingProps = { topics: Topic[]; interests: string[]; locale: Locale };
 
@@ -300,7 +298,7 @@ export function TopicsSetting({ topics, interests, locale }: TopicsSettingProps)
                 key={topic.code}
                 aria-pressed={selected}
                 onClick={() => toggle(topic.code)}
-                className={`flex min-h-14 items-center gap-2 rounded-2xl border-2 p-3 text-left transition-colors ${TINTS[topic.color]} ${
+                className={`flex min-h-14 items-center gap-2 rounded-2xl border-2 p-3 text-left transition-colors bg-mist ${
                   selected ? "border-accent" : "border-transparent"
                 }`}
               >

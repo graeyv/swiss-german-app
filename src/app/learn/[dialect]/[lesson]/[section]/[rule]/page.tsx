@@ -100,7 +100,7 @@ async function RuleView({
                       </span>
                       {/* Only sameness is spelled out; a difference shows in the dialect cell. */}
                       {!differs && (
-                        <span className="shrink-0 rounded-full bg-tint-green px-2.5 py-0.5 text-xs font-semibold text-success">
+                        <span className="shrink-0 rounded-full bg-sage px-2.5 py-0.5 text-xs font-semibold text-teal">
                           = {t.lesson.same}
                         </span>
                       )}

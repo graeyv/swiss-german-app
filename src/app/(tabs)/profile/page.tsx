@@ -45,7 +45,7 @@ async function Profile() {
   // Topics are the top-level word decks, as in onboarding.
   const topics = tree
     .filter((deck) => deck.kind === "vocabulary")
-    .map(({ code, title, emoji, color }) => ({ code, title, emoji, color }));
+    .map(({ code, title, emoji }) => ({ code, title, emoji }));
 
   return (
     <>
