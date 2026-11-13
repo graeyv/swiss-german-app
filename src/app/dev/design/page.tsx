@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ExampleList } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/example-list";
 import { answerClass, AnswerMark } from "@/app/ui/answer";
 import { Button } from "@/app/ui/button";
 import { Icon, type IconName } from "@/app/ui/icon";
@@ -6,6 +7,8 @@ import { ListRow, ListRows } from "@/app/ui/list-row";
 import { ProgressBar } from "@/app/ui/progress-bar";
 import { Card, Pill } from "@/app/ui/surface";
 import { Eyebrow, Highlight } from "@/app/ui/text";
+import { dictionary } from "@/lib/i18n";
+import { findLesson, findRule } from "@/lib/learn/lessons";
 import { devOnly } from "../exercises/data";
 
 // Developer tool: everything DESIGN.md defines, in one place, to check the look at phone width
@@ -133,6 +136,10 @@ export default function DevDesignPage() {
         </div>
       </Part>
 
+      <Part title="Beispiele einer Regel">
+        <ExampleList examples={EXAMPLES} dialectName="Berndeutsch" t={dictionary("de").lesson} />
+      </Part>
+
       <Part title="Icons">
         <ul className="flex flex-wrap gap-6">
           {ICONS.map((name) => (
@@ -158,6 +165,15 @@ const COLOURS = [
   ["rose", "#F6DED8", "falsch", "bg-rose"],
   ["brick", "#A63D2F", "Fehler, löschen", "bg-brick"],
 ] as const;
+
+// The CH rule, which has recordings and a sound that stays the same, plus "müed" from Ü, to show a
+// word only Berndeutsch has.
+const pronunciation = findLesson("be", "pronunciation")!.lesson;
+const CH = findRule(pronunciation, "consonants", "ch")!.rule;
+const EXAMPLES = [
+  ...CH.examples,
+  ...findRule(pronunciation, "vowels", "ue")!.rule.examples.filter(({ word }) => word === "müed"),
+];
 
 const ICONS: IconName[] = ["back", "forward", "check", "cross", "headphones", "mic"];
 
