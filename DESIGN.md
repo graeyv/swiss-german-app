@@ -88,7 +88,10 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 ## Building blocks
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
-here first.
+here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
+`Eyebrow`, `Highlight`, `ProgressBar`, `Icon`, `AnswerMark`), the type sizes are the `text-title`,
+`text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
+at `/dev/design`.
 
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`).
