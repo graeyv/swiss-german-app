@@ -20,7 +20,7 @@ export function ListRow({ href, title, caption }: ListRowProps) {
     <li>
       <Link
         href={href}
-        className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-colors active:bg-sage"
+        className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-transform active:scale-[0.98]"
       >
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="text-body font-bold">{title}</span>

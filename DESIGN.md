@@ -107,6 +107,8 @@ at `/dev/design`.
 - **Selected tab** in the tab bar: yellow behind the icon, teal icon and label. Other tabs teal
   without background.
 - **Progress bar**: track in mist, fill in teal.
+- **Pressed**: anything tappable shrinks a little (to 98 %) while pressed and keeps its colour. Only
+  the primary button also darkens, to `teal-pressed`. No coloured flash, no phone tap highlight.
 - **Inactive or disabled**: mist background, `teal-soft` text. Never grey.
 
 ## Not decided yet

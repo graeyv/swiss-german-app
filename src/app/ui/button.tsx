@@ -7,11 +7,11 @@ type Variant = "primary" | "secondary";
 
 const VARIANTS: Record<Variant, string> = {
   primary: "min-h-14 bg-teal text-ivory active:bg-teal-pressed",
-  secondary: "min-h-12 bg-mist text-teal active:bg-sage",
+  secondary: "min-h-12 bg-mist text-teal",
 };
 
 export function buttonClass(variant: Variant = "primary", className = "") {
-  return `flex w-full items-center justify-center gap-2 rounded-full px-6 text-center text-body font-semibold transition-colors disabled:bg-mist disabled:text-teal-soft ${VARIANTS[variant]} ${className}`;
+  return `flex w-full items-center justify-center gap-2 rounded-full px-6 text-center text-body font-semibold transition-[background-color,transform] active:scale-[0.98] disabled:active:scale-100 disabled:bg-mist disabled:text-teal-soft ${VARIANTS[variant]} ${className}`;
 }
 
 type ButtonProps = ComponentProps<"button"> & { variant?: Variant };

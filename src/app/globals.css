@@ -84,6 +84,8 @@
 
 html {
   color-scheme: light;
+  /* Phones flash a tinted box over whatever is tapped. Pressed elements shrink a little instead. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
