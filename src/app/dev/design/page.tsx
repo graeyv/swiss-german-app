@@ -6,6 +6,7 @@ import { Icon, type IconName } from "@/app/ui/icon";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { ProgressBar } from "@/app/ui/progress-bar";
 import { Card, Pill } from "@/app/ui/surface";
+import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule } from "@/lib/learn/lessons";
@@ -140,6 +141,10 @@ export default function DevDesignPage() {
         <ExampleList examples={EXAMPLES} dialectName="Berndeutsch" t={dictionary("de").lesson} />
       </Part>
 
+      <Part title="Merke">
+        <Takeaway label="Merke">{CH.takeaway}</Takeaway>
+      </Part>
+
       <Part title="Icons">
         <ul className="flex flex-wrap gap-6">
           {ICONS.map((name) => (
@@ -175,7 +180,7 @@ const EXAMPLES = [
   ...findRule(pronunciation, "vowels", "ue")!.rule.examples.filter(({ word }) => word === "müed"),
 ];
 
-const ICONS: IconName[] = ["back", "forward", "check", "cross", "headphones", "mic"];
+const ICONS: IconName[] = ["back", "forward", "check", "cross", "headphones", "mic", "bulb"];
 
 function Part({ title, children }: { title: string; children: ReactNode }) {
   return (

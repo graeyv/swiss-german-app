@@ -18,7 +18,7 @@ no decoration for its own sake.
 | `teal`   | `#0F4C4A` | Brand and interaction       | All text, icons, arrows, primary buttons, anything interactive |
 | `sage`   | `#A7C4A0` | Grouping content            | Content that should stand out as a group: the card being learned, category tiles, a correct answer |
 | `mist`   | `#E6EFE9` | Separating structure        | List rows, everyday cards, secondary surfaces, inactive states, borders, progress tracks |
-| `yellow` | `#FFE08A` | Attention, positive moments | Selected tab, the subtitle highlight, achievements such as a reached daily goal |
+| `yellow` | `#FFE08A` | Attention, positive moments | Selected tab, the lesson subtitle's highlight, a rule's takeaway, achievements such as a reached daily goal |
 | `ivory`  | `#FAF9F6` | Main background             | Screen background, the main neutral surface |
 
 Order of weight: teal draws the eye, sage groups, mist separates, yellow marks the special
@@ -89,14 +89,14 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `ProgressBar`, `Icon`, `AnswerMark`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`.
 
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`).
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
-  The highlight is the screen's one yellow element.
+  The highlight is the screen's one yellow element, and it's only used here.
 - **Icon list** ("Was dich erwartet"): a teal line icon, then one line of text. No boxes, no
   second line.
 - **List row** ("Konsonanten"): a rounded row on mist, bold title, caption below, teal arrow (→)
@@ -105,8 +105,8 @@ at `/dev/design`.
   caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut, gleich"), with
   only a changed sound bold. On the right, a round play button per side, on mist, teal while it
   plays; the sides are named once above the buttons. Space between the words.
-- **Takeaway** ("Merke"): eyebrow, then the sentence on the yellow highlight. The rule screen's one
-  yellow element.
+- **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in
+  semibold. The rule screen's one yellow element.
 - **Primary button** ("Los geht's"): teal pill, ivory text, at the bottom within thumb reach,
   above the home indicator. One per screen.
 - **Secondary button**: mist pill, teal text.

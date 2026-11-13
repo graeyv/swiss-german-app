@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ButtonLink } from "@/app/ui/button";
-import { Eyebrow, Highlight } from "@/app/ui/text";
+import { Takeaway } from "@/app/ui/takeaway";
+import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule, lessonHref, ruleParams } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
@@ -69,13 +70,7 @@ async function RuleView({
 
       <ExampleList examples={rule.examples} dialectName={dialectName} t={t.lesson} />
 
-      {/* The takeaway is the screen's one yellow: it's what the learner should keep. */}
-      <div className="flex flex-col gap-2">
-        <Eyebrow>{t.lesson.remember}</Eyebrow>
-        <p className="text-body font-semibold">
-          <Highlight>{rule.takeaway}</Highlight>
-        </p>
-      </div>
+      <Takeaway label={t.lesson.remember}>{rule.takeaway}</Takeaway>
     </LessonScreen>
   );
 }

@@ -10,8 +10,8 @@ export function Eyebrow({ children }: { children: ReactNode }) {
   );
 }
 
-// A hand-drawn yellow marker behind a few words, such as a lesson's subtitle. The screen's one
-// yellow element.
+// A hand-drawn yellow marker behind a lesson's subtitle, and only there. The screen's one yellow
+// element.
 export function Highlight({ children }: { children: ReactNode }) {
   return (
     <span className="-mx-2 rounded-[0.6em_0.3em_0.5em_0.25em/0.4em_0.5em_0.35em_0.5em] bg-yellow box-decoration-clone px-2 py-0.5">
