@@ -13,8 +13,9 @@ type ListenButtonProps = {
 // compared.
 let current: { audio: HTMLAudioElement; stop: () => void } | null = null;
 
-// A round play button in the examples list: tap it to hear the word, and tap again to stop. While
-// it plays, bars bounce in place of the play icon. Without a recording, it's pale and does nothing.
+// A round play button in the examples list: tap it to hear the word, and tap again to stop. It sits
+// quietly on mist and turns teal while it plays, with bars bouncing in place of the play icon.
+// Without a recording, its icon is pale and it does nothing.
 export function ListenButton({ url, label, noRecordingLabel }: ListenButtonProps) {
   const [playing, setPlaying] = useState(false);
   const audio = useRef<HTMLAudioElement | null>(null);
@@ -49,7 +50,7 @@ export function ListenButton({ url, label, noRecordingLabel }: ListenButtonProps
       aria-label={url ? label : `${label}: ${noRecordingLabel}`}
       aria-pressed={url ? playing : undefined}
       className={`flex size-11 items-center justify-center rounded-full transition-transform active:scale-95 disabled:active:scale-100 ${
-        url ? "bg-teal text-ivory" : "bg-mist text-teal-soft"
+        playing ? "bg-teal text-ivory" : url ? "bg-mist text-teal" : "bg-mist text-teal-soft"
       }`}
     >
       {playing ? (
