@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { type ReactNode, useEffect, useState } from "react";
+import { Icon } from "./ui/icon";
 
 type TopBarProps = {
   // Where the back button leads. label names it for screen readers when no text is shown.
@@ -38,7 +39,7 @@ export function TopBar({ back, backText, children, className = "" }: TopBarProps
         <Link
           href={back.href}
           aria-label={backText ? undefined : back.label}
-          className="-ml-2 flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1 px-1 text-muted transition-colors hover:text-foreground"
+          className="-ml-2 flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1 px-1 text-teal transition-colors active:text-teal-soft"
         >
           {backText ? (
             <>
@@ -48,9 +49,7 @@ export function TopBar({ back, backText, children, className = "" }: TopBarProps
               <span className="max-w-[60vw] truncate text-sm font-semibold">{backText}</span>
             </>
           ) : (
-            <span aria-hidden className="text-xl">
-              ←
-            </span>
+            <Icon name="back" size={28} />
           )}
         </Link>
         {children}

@@ -1,10 +1,12 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ButtonLink } from "@/app/ui/button";
+import { Icon, isIconName } from "@/app/ui/icon";
+import { ListRow, ListRows } from "@/app/ui/list-row";
+import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { findLesson, lessonHref, lessonNumber, lessonParams } from "@/lib/learn/lessons";
-import { LessonIcon } from "./lesson-icon";
-import { LessonLoading, LessonScreen, ListLink, listClass } from "./lesson-screen";
+import { LessonLoading, LessonScreen } from "./lesson-screen";
 
 export function generateStaticParams() {
   return lessonParams();
@@ -33,56 +35,47 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
       back={{ href: "/learn", label: t.lesson.leave }}
       footer={
         // Straight to the first topic. The lists below are for looking one up.
-        <Link
-          href={lessonHref(dialect, lesson, first, first.rules[0])}
-          className="flex min-h-12 flex-1 items-center justify-center rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90"
-        >
-          {t.lesson.start}
-        </Link>
+        <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])}>{t.lesson.start}</ButtonLink>
       }
     >
       <title>{t.title(lesson.title)}</title>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <p className="text-sm font-semibold tracking-wide text-muted uppercase">
-            {t.lesson.number(lessonNumber(found))}
-          </p>
-          <h1 className="text-3xl font-bold tracking-tight">{lesson.title}</h1>
+          <Eyebrow>{t.lesson.number(lessonNumber(found))}</Eyebrow>
+          <h1 className="text-title font-bold">{lesson.title}</h1>
         </div>
-        <p className="font-semibold text-accent">{lesson.subtitle}</p>
-        <p className="text-muted">{lesson.description}</p>
+        <p className="text-subtitle font-semibold">
+          <Highlight>{lesson.subtitle}</Highlight>
+        </p>
+        <p className="text-body">{lesson.description}</p>
       </div>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold tracking-tight">{t.lesson.expect}</h2>
+        <h2 className="text-heading font-bold">{t.lesson.expect}</h2>
         <ul className="flex flex-col gap-4">
           {lesson.expectations.map((expectation) => (
             <li key={expectation.title} className="flex items-center gap-4">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-line bg-surface">
-                <LessonIcon name={expectation.icon} />
-              </span>
-              <span className="flex flex-col">
-                <span className="font-semibold">{expectation.title}</span>
-                <span className="text-sm text-muted">{expectation.text}</span>
-              </span>
+              {isIconName(expectation.icon) && <Icon name={expectation.icon} size={28} />}
+              <span className="text-body">{expectation.title}</span>
             </li>
           ))}
         </ul>
       </section>
 
+      <hr className="border-mist" />
+
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold tracking-tight">{t.lesson.topicsHeading}</h2>
-        <ul className={listClass}>
+        <h2 className="text-heading font-bold">{t.lesson.topicsHeading}</h2>
+        <ListRows>
           {lesson.sections.map((section) => (
-            <li key={section.id}>
-              <ListLink
-                href={lessonHref(dialect, lesson, section)}
-                title={section.title}
-                text={t.lesson.topics(section.rules.length)}
-              />
-            </li>
+            <ListRow
+              key={section.id}
+              href={lessonHref(dialect, lesson, section)}
+              title={section.title}
+              caption={t.lesson.topics(section.rules.length)}
+            />
           ))}
-        </ul>
+        </ListRows>
       </section>
     </LessonScreen>
   );

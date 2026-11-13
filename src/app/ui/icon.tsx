@@ -12,6 +12,11 @@ const PATHS = {
 
 export type IconName = keyof typeof PATHS;
 
+// For icons named in content files, such as a lesson's.
+export function isIconName(name: string): name is IconName {
+  return name in PATHS;
+}
+
 type IconProps = {
   name: IconName;
   // 24 px for icons in a row of text, 28 px where an icon leads a line, such as a list.
