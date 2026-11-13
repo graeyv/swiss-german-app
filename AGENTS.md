@@ -20,3 +20,8 @@ Most learners use Hoi on their phone. Design and check every screen at phone wid
   learners wait on the network between cards when it can be avoided.
 - Account for the browser's changing toolbar height (`dvh` rather than `vh`) and the iPhone home
   indicator (`env(safe-area-inset-bottom)`) on full-screen views.
+
+## Design
+
+Read `DESIGN.md` before changing how any screen looks. Use only its colours, type sizes and building
+blocks, and add anything new to it first.
