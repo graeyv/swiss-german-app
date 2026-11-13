@@ -17,7 +17,7 @@ no decoration for its own sake.
 | -------- | --------- | --------------------------- | -------- |
 | `teal`   | `#0F4C4A` | Brand and interaction       | All text, icons, arrows, primary buttons, anything interactive |
 | `sage`   | `#A7C4A0` | Grouping content            | Content that should stand out as a group: the card being learned, category tiles, a correct answer |
-| `mist`   | `#E6EFE9` | Separating structure        | List rows, everyday cards, secondary surfaces, inactive states, borders, dividers, progress tracks |
+| `mist`   | `#E6EFE9` | Separating structure        | List rows, everyday cards, secondary surfaces, inactive states, borders, progress tracks |
 | `yellow` | `#FFE08A` | Attention, positive moments | Selected tab, the subtitle highlight, achievements such as a reached daily goal |
 | `ivory`  | `#FAF9F6` | Main background             | Screen background, the main neutral surface |
 
@@ -81,7 +81,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 - Rows and cards: corner radius 24 px, padding about 16 px vertically and 24 px horizontally,
   12 px between rows. No border, no shadow: the background colour sets them off.
 - Buttons: fully rounded (pill), at least 56 px high for the main action, full width.
-- Space between sections: about 32 px. A thin `mist` divider may separate sections.
+- Space between sections: about 32 px. Space alone separates them: no divider lines.
 - Icons: line icons, about 2 px stroke, teal, 24–28 px, without a box around them.
 - Tap targets at least 44 × 44 px, also for small icons such as the back arrow.
 
@@ -119,5 +119,6 @@ at `/dev/design`.
 - No grey, black or extra colours: every colour comes from the tokens above.
 - No colour with opacity for text.
 - No borders and shadows on cards to set them off: use mist or sage.
+- No lines between sections: use space.
 - No second yellow element on a screen, no yellow just for decoration.
 - No new radius, size or spacing for one screen: add it here first, or use an existing one.

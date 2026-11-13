@@ -62,8 +62,6 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
         </ul>
       </section>
 
-      <hr className="border-mist" />
-
       <section className="flex flex-col gap-4">
         <h2 className="text-heading font-bold">{t.lesson.topicsHeading}</h2>
         <ListRows>

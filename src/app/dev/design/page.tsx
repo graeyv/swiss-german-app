@@ -73,8 +73,6 @@ export default function DevDesignPage() {
             </ul>
           </section>
 
-          <hr className="border-mist" />
-
           <section className="flex flex-col gap-4">
             <h3 className="text-heading font-bold">Themen</h3>
             <ListRows>
