@@ -102,7 +102,7 @@ at `/dev/design`.
 - **List row** ("Konsonanten"): a rounded row on mist, bold title, caption below, teal arrow (→)
   on the right. The whole row is the tap target.
 - **Example list** (a rule's words): no cards, no colour. Each word in subtitle size, below it one
-  caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut, gleich"), with
+  caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut → gleich"), with
   only a changed sound bold. On the right, a round play button per side, on mist, teal while it
   plays; the sides are named once above the buttons. Space between the words.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in

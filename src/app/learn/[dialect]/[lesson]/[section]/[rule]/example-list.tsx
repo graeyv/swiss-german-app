@@ -51,7 +51,7 @@ export function ExampleList({ examples, dialectName, t }: ExampleListProps) {
   );
 }
 
-// What happens to the sound: "Ich-Laut → Ach-Laut", "Ach-Laut, gleich", or "Kurzes Ü, nur
+// What happens to the sound: "Ich-Laut → Ach-Laut", "Ach-Laut → gleich", or "Kurzes Ü, nur
 // Berndeutsch" for a word Standard German doesn't have. Only a changed sound is bold.
 function SoundLine({ example, dialectName, t }: Omit<ExampleListProps, "examples"> & { example: Example }) {
   const { standardGerman, dialect } = example.pronunciation;
@@ -60,7 +60,9 @@ function SoundLine({ example, dialectName, t }: Omit<ExampleListProps, "examples
       {standardGerman === null ? (
         `${dialect}, ${t.onlyIn(dialectName)}`
       ) : standardGerman === dialect ? (
-        `${dialect}, ${t.same}`
+        <>
+          {dialect} <span aria-hidden>→</span> {t.same}
+        </>
       ) : (
         <>
           {standardGerman} <span aria-hidden>→</span>
