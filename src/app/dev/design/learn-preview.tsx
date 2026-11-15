@@ -27,7 +27,7 @@ export function LearnPreviewComplete() {
         {isIconName(current.lesson.icon) && <Icon name={current.lesson.icon} size={28} />}
         <div className="flex flex-col gap-1">
           <p className="text-caption font-semibold tracking-[0.08em] uppercase">
-            Lektion {current.number}
+            Modul {current.number}
           </p>
           <p className="text-heading font-bold">{current.lesson.title}</p>
           <p className="text-body">{current.lesson.subtitle}</p>
@@ -45,7 +45,7 @@ export function LearnPreviewComplete() {
 
       <section className="flex flex-col gap-4">
         <h4 className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">
-          Alle Lektionen
+          Alle Module
         </h4>
         <ul className="flex flex-col gap-3">
           {lessons.map((entry) => {
@@ -59,7 +59,7 @@ export function LearnPreviewComplete() {
                   {isIconName(entry.lesson.icon) && <Icon name={entry.lesson.icon} size={28} />}
                   <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                     <span className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">
-                      Lektion {entry.number}
+                      Modul {entry.number}
                     </span>
                     <span className="text-body font-bold">{entry.lesson.title}</span>
                     <span className="text-caption text-teal-soft">

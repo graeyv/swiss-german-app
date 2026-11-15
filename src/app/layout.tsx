@@ -13,7 +13,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Hoi – Learn Swiss German",
-  description: "Short, practical lessons in Swiss German.",
+  description: "Short, practical modules in Swiss German.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

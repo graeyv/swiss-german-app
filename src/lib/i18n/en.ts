@@ -17,7 +17,7 @@ export const en = {
   home: {
     headline: "Understand your Swiss neighbours, not just their signs.",
     intro:
-      "Short lessons in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
+      "Short modules in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
     start: "Start learning",
   },
 
@@ -33,7 +33,7 @@ export const en = {
 
   learn: {
     intro: "What’s different in Swiss German.",
-    all: "All lessons",
+    all: "All modules",
   },
 
   nav: {
@@ -75,8 +75,8 @@ export const en = {
   },
 
   lesson: {
-    leave: "Leave lesson",
-    number: (number: number) => `Lesson ${number}`,
+    leave: "Leave module",
+    number: (number: number) => `Module ${number}`,
     expect: "What to expect",
     topicsHeading: "Topics",
     back: (page: string) => `Back to ${page}`,
@@ -101,7 +101,7 @@ export const en = {
     noRecording: "No recording yet",
     comingSoon: "Coming soon",
     // On the overview of a lesson that's still being written.
-    inTheMaking: "This lesson is still being written. Here's what it will cover.",
+    inTheMaking: "This module is still being written. Here's what it will cover.",
   },
 
   conversations: {
@@ -223,9 +223,6 @@ export const en = {
     goalReachedNote: "That’s it for today. See you tomorrow.",
     playPronunciation: "Play pronunciation",
     noRecording: "No recording yet",
-    comingSoon: "Coming soon",
-    // On the overview of a lesson that's still being written.
-    inTheMaking: "This lesson is still being written. Here's what it will cover.",
   },
 
   onboarding: {

@@ -16,7 +16,7 @@ export const de: Dictionary = {
   home: {
     headline: "Versteh deine Schweizer Nachbarn, nicht nur ihre Schilder.",
     intro:
-      "Kurze Lektionen in echtem Schweizerdeutsch, angefangen mit Zürichdeutsch. Lerne, was die Leute wirklich sagen: in der Bäckerei, bei der Arbeit und im Tram.",
+      "Kurze Module in echtem Schweizerdeutsch, angefangen mit Zürichdeutsch. Lerne, was die Leute wirklich sagen: in der Bäckerei, bei der Arbeit und im Tram.",
     start: "Jetzt lernen",
   },
 
@@ -32,7 +32,7 @@ export const de: Dictionary = {
 
   learn: {
     intro: "Was im Schweizerdeutschen anders ist.",
-    all: "Alle Lektionen",
+    all: "Alle Module",
   },
 
   nav: {
@@ -74,8 +74,8 @@ export const de: Dictionary = {
   },
 
   lesson: {
-    leave: "Lektion verlassen",
-    number: (number) => `Lektion ${number}`,
+    leave: "Modul verlassen",
+    number: (number) => `Modul ${number}`,
     expect: "Was dich erwartet",
     topicsHeading: "Themen",
     back: (page) => `Zurück zu ${page}`,
@@ -94,7 +94,7 @@ export const de: Dictionary = {
     play: (variety) => `Auf ${variety} anhören`,
     noRecording: "Noch keine Aufnahme",
     comingSoon: "Bald verfügbar",
-    inTheMaking: "An dieser Lektion arbeiten wir noch. Das wird sie behandeln.",
+    inTheMaking: "An diesem Modul arbeiten wir noch. Das wird es behandeln.",
   },
 
   conversations: {
@@ -207,8 +207,6 @@ export const de: Dictionary = {
     goalReachedNote: "Das war’s für heute. Bis morgen!",
     playPronunciation: "Aussprache abspielen",
     noRecording: "Noch keine Aufnahme",
-    comingSoon: "Bald verfügbar",
-    inTheMaking: "An dieser Lektion arbeiten wir noch. Das wird sie behandeln.",
   },
 
   onboarding: {

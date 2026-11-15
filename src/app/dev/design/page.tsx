@@ -55,11 +55,11 @@ export default function DevDesignPage() {
         </div>
       </Part>
 
-      <Part title="Lektion (Vorlage)">
+      <Part title="Modul (Vorlage)">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
-              <Eyebrow>Lektion 1</Eyebrow>
+              <Eyebrow>Modul 1</Eyebrow>
               <h2 className="text-title font-bold">Aussprache</h2>
             </div>
             <p className="text-subtitle font-semibold">

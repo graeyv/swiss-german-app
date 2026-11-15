@@ -66,7 +66,7 @@ DM Sans (free, Open Font License), loaded with `next/font/google`. No other font
 | Style          | Size / weight      | Example in the model screen |
 | -------------- | ------------------ | --------------------------- |
 | Title          | 32 px, bold        | Aussprache |
-| Eyebrow        | 14 px, semibold, uppercase, letter-spaced, `teal-soft` | LEKTION 1 |
+| Eyebrow        | 14 px, semibold, uppercase, letter-spaced, `teal-soft` | MODUL 1 |
 | Subtitle       | 20 px, semibold    | So klingt Berndeutsch, on a yellow highlight |
 | Section header | 22 px, bold        | Was dich erwartet, Themen |
 | Body           | 17 px, regular     | Entdecke die wichtigsten Unterschiede … |
@@ -93,14 +93,15 @@ These are the parts of the model screen. Every screen is built from them, and ne
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
 `Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
-at `/dev/design`.
+at `/dev/design`. In the app, a lesson is called "Modul" ("module" in English); the code and
+this guide still say lesson.
 
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`).
-- **Current lesson** (Learn tab): a sage card with the lesson's icon, "LEKTION 1" in teal (the
+- **Current lesson** (Learn tab): a sage card with the lesson's icon, "MODUL 1" in teal (the
   softer teal is too faint on sage), title, subtitle, "2 Teile · 10 Themen" and the primary button
-  to start. The text opens the lesson's overview. Below, under an "ALLE LEKTIONEN" eyebrow, every
-  lesson as a list row: its icon, "LEKTION N", title, and "N Teile · N Themen". Lessons still being
+  to start. The text opens the lesson's overview. Below, under an "ALLE MODULE" eyebrow, every
+  lesson as a list row: its icon, "MODUL N", title, and "N Teile · N Themen". Lessons still being
   written look the same. Every lesson has its own line icon, never a colour.
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
   The highlight is the screen's one yellow element, and it's only used here.
