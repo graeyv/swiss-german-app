@@ -11,6 +11,7 @@ import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule } from "@/lib/learn/lessons";
 import { devOnly } from "../exercises/data";
+import { GradePreview } from "./grade-preview";
 
 // Developer tool: everything DESIGN.md defines, in one place, to check the look at phone width
 // before it goes onto the screens. German, like the model screen.
@@ -145,6 +146,10 @@ export default function DevDesignPage() {
         <Takeaway label="Merke">{CH.takeaway}</Takeaway>
       </Part>
 
+      <Part title="Bewertung einer Karte">
+        <GradePreview />
+      </Part>
+
       <Part title="Icons">
         <ul className="flex flex-wrap gap-6">
           {ICONS.map((name) => (
@@ -164,6 +169,7 @@ const COLOURS = [
   ["teal", "#0F4C4A", "Text, Icons, Aktionen", "bg-teal"],
   ["teal-soft", "#3F6F6D", "Nebentext", "bg-teal-soft"],
   ["sage", "#A7C4A0", "Gruppen, richtig", "bg-sage"],
+  ["sage-light", "#D1DFCB", "Bewertung «Gut»", "bg-sage-light"],
   ["mist", "#E6EFE9", "Zeilen, Linien", "bg-mist"],
   ["yellow", "#FFE08A", "Erfolge, Auswahl", "bg-yellow"],
   ["ivory", "#FAF9F6", "Hintergrund", "bg-ivory ring-1 ring-mist ring-inset"],
@@ -180,7 +186,20 @@ const EXAMPLES = [
   ...findRule(pronunciation, "vowels", "ue")!.rule.examples.filter(({ word }) => word === "müed"),
 ];
 
-const ICONS: IconName[] = ["back", "forward", "check", "cross", "headphones", "mic", "bulb"];
+const ICONS: IconName[] = [
+  "back",
+  "forward",
+  "check",
+  "cross",
+  "headphones",
+  "mic",
+  "bulb",
+  "again",
+  "hard",
+  "good",
+  "easy",
+  "clock",
+];
 
 function Part({ title, children }: { title: string; children: ReactNode }) {
   return (

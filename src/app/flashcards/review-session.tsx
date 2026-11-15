@@ -16,9 +16,8 @@ import {
 } from "./actions";
 import { CARD_FACE, CardStack } from "./card-stack";
 import { ExerciseStage } from "./exercise-stage";
+import { type Grade, GradeButtons } from "./grade-buttons";
 import { StatusBadge } from "./status-badge";
-
-type Grade = 1 | 2 | 3 | 4;
 
 type ReviewSessionProps = {
   cards: Flashcard[];
@@ -32,13 +31,6 @@ type ReviewSessionProps = {
   backHref: string;
   backLabel: string;
 };
-
-const GRADES = [
-  { grade: 1, key: "again", color: "text-danger" },
-  { grade: 2, key: "hard", color: "text-foreground" },
-  { grade: 3, key: "good", color: "text-success" },
-  { grade: 4, key: "easy", color: "text-accent" },
-] as const;
 
 const primaryButton =
   "w-full rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50";
@@ -403,21 +395,7 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
             {t.notSaved(saveError)}
           </p>
         )}
-        {revealed && (
-          <div className="grid grid-cols-4 gap-2">
-            {GRADES.map(({ grade: value, key, color }) => (
-              <button
-                key={value}
-                disabled={saving}
-                onClick={() => onGrade(value)}
-                className="flex min-h-16 flex-col items-center justify-center rounded-2xl border border-line bg-surface shadow-sm transition-colors enabled:hover:border-accent disabled:opacity-50"
-              >
-                <span className={`font-semibold ${color}`}>{t.grades[key]}</span>
-                <span className="text-xs text-muted">{card.intervals[value]}</span>
-              </button>
-            ))}
-          </div>
-        )}
+        {revealed && <GradeButtons intervals={card.intervals} onGrade={onGrade} disabled={saving} t={t} />}
       </footer>
     </>
   );

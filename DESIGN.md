@@ -41,6 +41,7 @@ Derived shades, defined once as tokens so nobody mixes their own:
 | -------------- | --------- | -------- |
 | `teal-soft`    | `#3F6F6D` | Secondary text: eyebrows, captions such as "6 Themen", hints. Readable on ivory and mist. |
 | `teal-pressed` | `#0B3B39` | Primary button while pressed |
+| `sage-light`   | `#D1DFCB` | Half sage, half ivory: the "Gut" rating, between mist and sage |
 | `rose`         | `#F6DED8` | Background of a wrong answer |
 | `brick`        | `#A63D2F` | The cross on a wrong answer, error messages, destructive actions such as deleting the account |
 
@@ -82,7 +83,8 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
   12 px between rows. No border, no shadow: the background colour sets them off.
 - Buttons: fully rounded (pill), at least 56 px high for the main action, full width.
 - Space between sections: about 32 px. Space alone separates them: no divider lines.
-- Icons: line icons, about 2 px stroke, teal, 24–28 px, without a box around them.
+- Icons: line icons, about 2 px stroke, teal, 24–28 px, without a box around them. 16 px only
+  beside a caption, such as the clock before a review time.
 - Tap targets at least 44 × 44 px, also for small icons such as the back arrow.
 
 ## Building blocks
@@ -107,6 +109,10 @@ at `/dev/design`.
   plays; the sides are named once above the buttons. Space between the words.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in
   semibold. The rule screen's one yellow element.
+- **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
+  an icon (circular arrow, sad, smiling, laughing face) and the word. Below each, a clock and when
+  the card comes back. The colour gets greener the better the card was known: rose with a brick
+  icon (like a wrong answer), mist, `sage-light`, sage. No yellow.
 - **Primary button** ("Los geht's"): teal pill, ivory text, at the bottom within thumb reach,
   above the home indicator. One per screen.
 - **Secondary button**: mist pill, teal text.

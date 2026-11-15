@@ -6,6 +6,7 @@
   --teal-soft: #3f6f6d;
   --teal-pressed: #0b3b39;
   --sage: #a7c4a0;
+  --sage-light: #d1dfcb;
   --mist: #e6efe9;
   --yellow: #ffe08a;
   --ivory: #faf9f6;
@@ -18,6 +19,7 @@
   --color-teal-soft: var(--teal-soft);
   --color-teal-pressed: var(--teal-pressed);
   --color-sage: var(--sage);
+  --color-sage-light: var(--sage-light);
   --color-mist: var(--mist);
   --color-yellow: var(--yellow);
   --color-ivory: var(--ivory);
