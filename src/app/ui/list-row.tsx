@@ -8,7 +8,9 @@ export function ListRows({ children }: { children: ReactNode }) {
 }
 
 type ListRowProps = {
-  href: string;
+  // Without one, the row only shows what's there, such as a section still being written: no arrow,
+  // nothing to tap.
+  href?: string;
   title: string;
   // The line below the title, such as "6 Themen".
   caption?: string;
@@ -16,18 +18,25 @@ type ListRowProps = {
 
 // A row on mist: bold title, caption below, an arrow on the right. The whole row is the tap target.
 export function ListRow({ href, title, caption }: ListRowProps) {
+  const text = (
+    <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+      <span className="text-body font-bold">{title}</span>
+      {caption && <span className="text-caption text-teal-soft">{caption}</span>}
+    </span>
+  );
   return (
     <li>
-      <Link
-        href={href}
-        className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-transform active:scale-[0.98]"
-      >
-        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-body font-bold">{title}</span>
-          {caption && <span className="text-caption text-teal-soft">{caption}</span>}
-        </span>
-        <Icon name="forward" />
-      </Link>
+      {href ? (
+        <Link
+          href={href}
+          className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-transform active:scale-[0.98]"
+        >
+          {text}
+          <Icon name="forward" />
+        </Link>
+      ) : (
+        <div className="flex min-h-18 items-center rounded-3xl bg-mist px-6 py-4">{text}</div>
+      )}
     </li>
   );
 }

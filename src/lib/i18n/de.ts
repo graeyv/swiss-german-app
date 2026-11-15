@@ -87,6 +87,8 @@ export const de: Dictionary = {
     dialects: { be: "Berndeutsch", zh: "Zürichdeutsch" },
     play: (variety) => `Auf ${variety} anhören`,
     noRecording: "Noch keine Aufnahme",
+    comingSoon: "Bald verfügbar",
+    inTheMaking: "An dieser Lektion arbeiten wir noch. Das wird sie behandeln.",
   },
 
   conversations: {
@@ -199,6 +201,8 @@ export const de: Dictionary = {
     goalReachedNote: "Das war’s für heute. Bis morgen!",
     playPronunciation: "Aussprache abspielen",
     noRecording: "Noch keine Aufnahme",
+    comingSoon: "Bald verfügbar",
+    inTheMaking: "An dieser Lektion arbeiten wir noch. Das wird sie behandeln.",
   },
 
   onboarding: {

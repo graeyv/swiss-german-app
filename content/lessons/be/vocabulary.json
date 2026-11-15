@@ -1,0 +1,30 @@
+{
+  "id": "vocabulary",
+  "title": "Wortschatz",
+  "subtitle": "Bekannte Wörter, neue Formen",
+  "description": "Viele berndeutsche Wörter kennst du schon, sie klingen nur anders. Andere sehen vertraut aus und bedeuten etwas anderes, und manche gibt es nur im Berndeutschen.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "related-words",
+      "title": "Verwandte Wörter",
+      "description": "Wörter, die du aus dem Hochdeutschen kennst, in ihrer berndeutschen Form.",
+      "planned": ["Vokalwechsel", "Konsonantenwechsel", "Wortanfänge und Endungen", "Unregelmässige Wörter"],
+      "rules": []
+    },
+    {
+      "id": "false-friends",
+      "title": "Falsche Freunde",
+      "description": "Wörter, die gleich aussehen wie im Hochdeutschen, aber etwas anderes bedeuten.",
+      "planned": ["luege, lose, schmöcke", "loufe, springe"],
+      "rules": []
+    },
+    {
+      "id": "own-words",
+      "title": "Eigenständige Wörter",
+      "description": "Wörter, die es im Hochdeutschen so nicht gibt.",
+      "planned": ["Aus dem Französischen", "Dialektwörter"],
+      "rules": []
+    }
+  ]
+}

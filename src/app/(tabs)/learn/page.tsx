@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { Pill } from "@/app/ui/surface";
 import { getDictionary } from "@/lib/i18n/server";
-import { LESSONS, lessonNumber } from "@/lib/learn/lessons";
+import { isReady, LESSONS, lessonNumber } from "@/lib/learn/lessons";
 
 // Lessons on how Swiss German differs from Standard German. Every learner sees every lesson for
 // now, whatever their dialect, until there are lessons for more than one.
@@ -43,6 +44,8 @@ async function Learn() {
                   <span className="sr-only">{t.lesson.number(number)}</span>
                   <span className="font-semibold">{lesson.title}</span>
                   <span className="text-sm text-muted">{lesson.subtitle}</span>
+                  {/* Still being written: its overview shows what it will cover. */}
+                  {!isReady(lesson) && <Pill className="mt-1">{t.lesson.comingSoon}</Pill>}
                 </span>
                 <span aria-hidden className="text-muted">
                   →

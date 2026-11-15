@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { dictionary } from "@/lib/i18n";
-import { findLesson, findSection, lessonHref, sectionParams } from "@/lib/learn/lessons";
+import { findLesson, findSection, isReady, lessonHref, sectionParams } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen } from "../lesson-screen";
 
 export function generateStaticParams() {
@@ -22,7 +22,8 @@ async function Rules({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]/[sect
   const { dialect, lesson: lessonId, section: sectionId } = await params;
   const found = findLesson(dialect, lessonId);
   const section = found && findSection(found.lesson, sectionId);
-  if (!found || !section) notFound();
+  // A section still being written has no page yet.
+  if (!found || !section || !isReady(section)) notFound();
   const { lesson, language } = found;
   const t = dictionary(language);
 

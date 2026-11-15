@@ -1,0 +1,27 @@
+{
+  "id": "grammar",
+  "title": "Grammatik",
+  "subtitle": "Gleich gemeint, anders gebaut",
+  "description": "Die berndeutsche Grammatik ist einfacher, als sie klingt. Sie folgt nur an ein paar Stellen eigenen Regeln.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "articles-and-cases",
+      "title": "Artikel und Fälle",
+      "description": "Wie Artikel und Fälle im Berndeutschen funktionieren.",
+      "rules": []
+    },
+    {
+      "id": "verbs",
+      "title": "Verben",
+      "description": "Wie Verben im Berndeutschen gebildet werden.",
+      "rules": []
+    },
+    {
+      "id": "sentences",
+      "title": "Satzbau",
+      "description": "Wie berndeutsche Sätze gebaut sind.",
+      "rules": []
+    }
+  ]
+}

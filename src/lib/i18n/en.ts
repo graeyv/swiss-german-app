@@ -92,6 +92,9 @@ export const en = {
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
     play: (variety: string) => `Listen in ${variety}`,
     noRecording: "No recording yet",
+    comingSoon: "Coming soon",
+    // On the overview of a lesson that's still being written.
+    inTheMaking: "This lesson is still being written. Here's what it will cover.",
   },
 
   conversations: {
@@ -213,6 +216,9 @@ export const en = {
     goalReachedNote: "That’s it for today. See you tomorrow.",
     playPronunciation: "Play pronunciation",
     noRecording: "No recording yet",
+    comingSoon: "Coming soon",
+    // On the overview of a lesson that's still being written.
+    inTheMaking: "This lesson is still being written. Here's what it will cover.",
   },
 
   onboarding: {
