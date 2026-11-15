@@ -31,6 +31,11 @@ export const en = {
     confirmEmail: "Check your email to confirm your account.",
   },
 
+  learn: {
+    intro: "What’s different in Swiss German.",
+    upcoming: "Coming soon",
+  },
+
   nav: {
     label: "Main",
     learn: "Learn",
@@ -76,6 +81,8 @@ export const en = {
     topicsHeading: "Topics",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
+    // A lesson's sections, such as "Consonants" and "Vowels".
+    parts: (count: number) => many(count, "part", "parts"),
     start: "Let’s go",
     next: "Next",
     done: "Done",

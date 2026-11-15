@@ -30,6 +30,11 @@ export const de: Dictionary = {
     confirmEmail: "Bestätige dein Konto über den Link in deiner E-Mail.",
   },
 
+  learn: {
+    intro: "Was im Schweizerdeutschen anders ist.",
+    upcoming: "Bald verfügbar",
+  },
+
   nav: {
     label: "Hauptmenü",
     learn: "Lernen",
@@ -75,6 +80,7 @@ export const de: Dictionary = {
     topicsHeading: "Themen",
     back: (page) => `Zurück zu ${page}`,
     topics: (count) => many(count, "Thema", "Themen"),
+    parts: (count) => many(count, "Teil", "Teile"),
     start: "Los geht’s",
     next: "Weiter",
     done: "Fertig",

@@ -2,6 +2,7 @@
   "id": "related-words",
   "title": "Verwandte Wörter",
   "subtitle": "Bekannte Wörter, neue Formen",
+  "icon": "link",
   "description": "Viele berndeutsche Wörter kennst du schon aus dem Hochdeutschen, sie klingen nur anders. Mit ein paar Mustern erkennst du sie wieder.",
   "expectations": [],
   "sections": [

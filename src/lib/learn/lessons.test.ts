@@ -11,6 +11,7 @@ describe("lessons", () => {
     for (const { lesson } of LESSONS) {
       const ids = lesson.sections.map((section) => section.id);
       expect(new Set(ids).size).toBe(ids.length);
+      expect(isIconName(lesson.icon)).toBe(true);
       for (const expectation of lesson.expectations) expect(isIconName(expectation.icon)).toBe(true);
     }
   });

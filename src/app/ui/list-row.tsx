@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Icon } from "./icon";
+import { Icon, type IconName } from "./icon";
 
 // Rows to open one by one, such as a lesson's topics. See DESIGN.md.
 export function ListRows({ children }: { children: ReactNode }) {
@@ -14,10 +14,12 @@ type ListRowProps = {
   title: string;
   // The line below the title, such as "6 Themen".
   caption?: string;
+  // Leads the row, such as a lesson's icon.
+  icon?: IconName;
 };
 
 // A row on mist: bold title, caption below, an arrow on the right. The whole row is the tap target.
-export function ListRow({ href, title, caption }: ListRowProps) {
+export function ListRow({ href, title, caption, icon }: ListRowProps) {
   const text = (
     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
       <span className="text-body font-bold">{title}</span>
@@ -31,11 +33,15 @@ export function ListRow({ href, title, caption }: ListRowProps) {
           href={href}
           className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-transform active:scale-[0.98]"
         >
+          {icon && <Icon name={icon} size={28} />}
           {text}
           <Icon name="forward" />
         </Link>
       ) : (
-        <div className="flex min-h-18 items-center rounded-3xl bg-mist px-6 py-4">{text}</div>
+        <div className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4">
+          {icon && <Icon name={icon} size={28} />}
+          {text}
+        </div>
       )}
     </li>
   );

@@ -2,6 +2,7 @@
   "id": "new-words",
   "title": "Neue Wörter",
   "subtitle": "Was du noch nicht kennst",
+  "icon": "sparkles",
   "description": "Manche berndeutschen Wörter sehen vertraut aus und bedeuten etwas anderes. Andere gibt es im Hochdeutschen gar nicht.",
   "expectations": [],
   "sections": [

@@ -12,6 +12,7 @@ import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule } from "@/lib/learn/lessons";
 import { devOnly } from "../exercises/data";
 import { GradePreview } from "./grade-preview";
+import { LearnPreviewComplete } from "./learn-preview";
 
 // Developer tool: everything DESIGN.md defines, in one place, to check the look at phone width
 // before it goes onto the screens. German, like the model screen.
@@ -88,6 +89,10 @@ export default function DevDesignPage() {
 
           <Button>Los geht&apos;s</Button>
         </div>
+      </Part>
+
+      <Part title="Lernen-Tab später, mit gespeichertem Fortschritt">
+        <LearnPreviewComplete />
       </Part>
 
       <Part title="Buttons">
@@ -199,6 +204,10 @@ const ICONS: IconName[] = [
   "good",
   "easy",
   "clock",
+  "link",
+  "sparkles",
+  "puzzle",
+  "chat",
 ];
 
 function Part({ title, children }: { title: string; children: ReactNode }) {

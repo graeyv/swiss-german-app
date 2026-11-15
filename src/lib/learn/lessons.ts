@@ -47,6 +47,8 @@ export type Lesson = {
   id: string;
   title: string;
   subtitle: string;
+  // One of the app's icons, such as "headphones", for the lesson in the Learn tab.
+  icon: string;
   description: string;
   expectations: Expectation[];
   sections: Section[];
