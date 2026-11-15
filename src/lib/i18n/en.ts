@@ -78,11 +78,11 @@ export const en = {
     leave: "Leave module",
     number: (number: number) => `Module ${number}`,
     expect: "What to expect",
-    topicsHeading: "Topics",
+    topicsHeading: "Lessons",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
-    // A lesson's sections, such as "Consonants" and "Vowels".
-    parts: (count: number) => many(count, "part", "parts"),
+    // A module's lessons (sections in the code), such as "Consonants" and "Vowels".
+    sections: (count: number) => many(count, "lesson", "lessons"),
     start: "Let’s go",
     next: "Next",
     done: "Done",

@@ -93,15 +93,15 @@ These are the parts of the model screen. Every screen is built from them, and ne
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
 `Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
-at `/dev/design`. In the app, a lesson is called "Modul" ("module" in English); the code and
-this guide still say lesson.
+at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
+topic in English); in the code and this guide they are lesson → section → rule.
 
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`).
 - **Current lesson** (Learn tab): a sage card with the lesson's icon, "MODUL 1" in teal (the
-  softer teal is too faint on sage), title, subtitle, "2 Teile · 10 Themen" and the primary button
+  softer teal is too faint on sage), title, subtitle, "2 Lektionen · 10 Themen" and the primary button
   to start. The text opens the lesson's overview. Below, under an "ALLE MODULE" eyebrow, every
-  lesson as a list row: its icon, "MODUL N", title, and "N Teile · N Themen". Lessons still being
+  lesson as a list row: its icon, "MODUL N", title, and "N Lektionen · N Themen". Lessons still being
   written look the same. Every lesson has its own line icon, never a colour.
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
   The highlight is the screen's one yellow element, and it's only used here.

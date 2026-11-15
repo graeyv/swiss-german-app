@@ -65,11 +65,11 @@ async function Learn() {
   );
 }
 
-// Such as "2 Teile · 10 Themen", or only the parts while no topic is planned yet.
+// Such as "2 Lektionen · 10 Themen", or only the lessons while no topic is planned yet.
 function size(lesson: Lesson, t: Dictionary) {
-  const parts = t.lesson.parts(lesson.sections.length);
+  const sections = t.lesson.sections(lesson.sections.length);
   const topics = topicCount(lesson);
-  return topics > 0 ? `${parts} · ${t.lesson.topics(topics)}` : parts;
+  return topics > 0 ? `${sections} · ${t.lesson.topics(topics)}` : sections;
 }
 
 // Sage, so it stands out as the next step. The text opens the lesson's overview, the button starts

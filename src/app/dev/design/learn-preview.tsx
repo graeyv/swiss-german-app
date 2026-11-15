@@ -67,7 +67,7 @@ export function LearnPreviewComplete() {
                         ? "Abgeschlossen"
                         : entry.done > 0
                           ? `${entry.done} von ${entry.topics} Themen`
-                          : `${entry.lesson.sections.length} Teile · ${entry.topics} Themen`}
+                          : `${entry.lesson.sections.length} Lektionen · ${entry.topics} Themen`}
                     </span>
                   </span>
                   {finished ? (
