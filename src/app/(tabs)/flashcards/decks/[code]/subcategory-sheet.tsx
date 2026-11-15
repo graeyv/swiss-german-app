@@ -14,7 +14,6 @@ type SubcategorySheetProps = {
   kind: DeckKind;
   title: string;
   emoji: string;
-  tint: string;
   newWords: number;
   due: number;
   // Whether the topic has words as well as sentences or expressions, so they can be practised apart.
@@ -30,7 +29,6 @@ export function SubcategorySheet({
   kind,
   title,
   emoji,
-  tint,
   newWords,
   due,
   mixed,
@@ -48,7 +46,7 @@ export function SubcategorySheet({
         onClick={() => dialog.current?.showModal()}
         className="flex min-h-16 w-full items-center gap-3 rounded-2xl border border-line bg-surface p-3 text-left transition-colors hover:border-accent active:scale-[0.99]"
       >
-        <span aria-hidden className={`flex size-11 shrink-0 items-center justify-center rounded-xl text-2xl ${tint}`}>
+        <span aria-hidden className="flex size-11 shrink-0 items-center justify-center rounded-xl text-2xl bg-mist">
           {emoji}
         </span>
         <span className="min-w-0 flex-1 font-semibold leading-snug">{title}</span>
@@ -60,7 +58,7 @@ export function SubcategorySheet({
 
       <BottomSheet ref={dialog} label={title}>
         <div className="flex items-center gap-4">
-          <span aria-hidden className={`flex size-14 shrink-0 items-center justify-center rounded-2xl text-3xl ${tint}`}>
+          <span aria-hidden className="flex size-14 shrink-0 items-center justify-center rounded-2xl text-3xl bg-mist">
             {emoji}
           </span>
           <div className="flex min-w-0 flex-col gap-1">

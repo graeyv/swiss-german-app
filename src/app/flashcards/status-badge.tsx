@@ -2,9 +2,9 @@ import type { Dictionary } from "@/lib/i18n";
 import type { Flashcard } from "@/lib/types";
 
 const BADGES: Record<Flashcard["status"], string> = {
-  new: "bg-accent/10 text-accent",
-  learning: "bg-tint-yellow",
-  review: "bg-line",
+  new: "bg-sage",
+  learning: "bg-mist",
+  review: "bg-mist text-teal-soft",
 };
 
 // Whether the card is new, in its learning steps, or a review.

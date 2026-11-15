@@ -10,7 +10,6 @@ import { TopBar } from "@/app/top-bar";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
-import { TINTS } from "../../deck-card";
 import { Counts } from "../../counts";
 import { SubcategorySheet } from "./subcategory-sheet";
 
@@ -46,7 +45,7 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
         <div className="flex items-center gap-4">
           <span
             aria-hidden
-            className={`flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl ${TINTS[deck.color]}`}
+            className="flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl bg-mist"
           >
             {deck.emoji ?? "📚"}
           </span>
@@ -91,7 +90,7 @@ function ShuffleButton({ deck, availability, locale }: DeckProps) {
   // doesn't jump.
   if (newWords + due === 0) {
     return (
-      <p className="flex min-h-14 items-center gap-2 rounded-2xl bg-tint-green px-4 font-semibold text-success">
+      <p className="flex min-h-14 items-center gap-2 rounded-2xl bg-yellow px-4 font-semibold text-teal">
         <span aria-hidden>✅</span>
         {t.allDone}
       </p>
@@ -131,7 +130,6 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
         kind={deck.kind}
         title={deck.title}
         emoji={deck.emoji ?? "📚"}
-        tint={TINTS[deck.color]}
         newWords={newWords}
         due={due}
         mixed={deck.kind === "vocabulary" && hasWordsAndPhrases(deck)}
@@ -147,7 +145,7 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
     >
       <span
         aria-hidden
-        className={`flex size-11 shrink-0 items-center justify-center rounded-xl text-2xl ${TINTS[deck.color]}`}
+        className="flex size-11 shrink-0 items-center justify-center rounded-xl text-2xl bg-mist"
       >
         {deck.emoji ?? "📚"}
       </span>

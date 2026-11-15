@@ -1,18 +1,8 @@
 import Link from "next/link";
-import type { DeckColor, DeckNode } from "@/lib/flashcards/decks";
+import type { DeckNode } from "@/lib/flashcards/decks";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { Counts } from "./counts";
-
-// Full class names, so Tailwind finds them in the source.
-export const TINTS: Record<DeckColor, string> = {
-  pink: "bg-tint-pink",
-  blue: "bg-tint-blue",
-  green: "bg-tint-green",
-  yellow: "bg-tint-yellow",
-  purple: "bg-tint-purple",
-  orange: "bg-tint-orange",
-};
 
 type TodaysLimits = Parameters<typeof deckAvailability>[1];
 type DeckGridProps = { decks: DeckNode[]; limits: TodaysLimits; locale: Locale };
@@ -34,11 +24,11 @@ function DeckCard({ deck, limits, locale }: { deck: DeckNode; limits: TodaysLimi
   return (
     <Link
       href={`/flashcards/decks/${deck.code}`}
-      className={`flex flex-col gap-3 rounded-2xl p-4 transition-transform active:scale-[0.98] ${TINTS[deck.color]}`}
+      className="flex flex-col gap-3 rounded-2xl bg-mist p-4 transition-transform active:scale-[0.98]"
     >
       <span
         aria-hidden
-        className="flex size-12 items-center justify-center rounded-xl bg-surface/70 text-2xl"
+        className="flex size-12 items-center justify-center rounded-xl bg-ivory text-2xl"
       >
         {deck.emoji ?? "📚"}
       </span>

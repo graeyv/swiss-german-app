@@ -32,9 +32,9 @@ export type Section = {
   rules: Rule[];
 };
 
-// One thing the learner can expect from a lesson, shown before they start. The icon is one of the
-// names LessonIcon knows, such as "sound" or "speak".
-export type Expectation = { icon: string; title: string; text: string };
+// One thing the learner can expect from a lesson, in one line, shown before they start. The icon is
+// one of the app's icons, such as "headphones" or "mic" (src/app/ui/icon.tsx).
+export type Expectation = { icon: string; title: string };
 
 export type Lesson = {
   id: string;

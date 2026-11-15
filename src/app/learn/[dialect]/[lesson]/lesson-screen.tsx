@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TopBar } from "@/app/top-bar";
@@ -34,23 +33,23 @@ export function LessonScreen({ lang, back, progress, children, footer }: LessonS
               {Array.from({ length: progress.count }, (_, index) => (
                 <span
                   key={index}
-                  className={`h-2 flex-1 rounded-full ${index < progress.position ? "bg-accent" : "bg-line"}`}
+                  className={`h-2 flex-1 rounded-full ${index < progress.position ? "bg-teal" : "bg-mist"}`}
                 />
               ))}
             </div>
-            <p aria-hidden className="shrink-0 text-sm font-semibold text-muted tabular-nums">
+            <p aria-hidden className="shrink-0 text-caption font-semibold text-teal-soft tabular-nums">
               {progress.position} / {progress.count}
             </p>
           </>
         )}
       </TopBar>
 
-      <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
+      <div className="flex flex-1 flex-col gap-8 pt-2 pb-8">
         {children}
       </div>
 
       {footer ? (
-        <footer className="sticky bottom-0 -mx-6 flex gap-3 bg-background px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+        <footer className="sticky bottom-0 -mx-6 flex gap-3 bg-ivory px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
           {footer}
         </footer>
       ) : (
@@ -59,27 +58,6 @@ export function LessonScreen({ lang, back, progress, children, footer }: LessonS
     </main>
   );
 }
-
-// A tappable row of a list: a title, the line below it, and an arrow.
-export function ListLink({ href, title, text }: { href: string; title: string; text: string }) {
-  return (
-    <Link
-      href={href}
-      className="flex min-h-16 items-center gap-4 px-4 py-3 transition-colors hover:bg-accent/5"
-    >
-      <span className="flex flex-1 flex-col gap-0.5">
-        <span className="text-lg font-semibold">{title}</span>
-        <span className="text-sm text-muted">{text}</span>
-      </span>
-      <span aria-hidden className="text-muted">
-        →
-      </span>
-    </Link>
-  );
-}
-
-export const listClass =
-  "flex flex-col divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface";
 
 export function LessonLoading() {
   return (

@@ -3,7 +3,6 @@
 // text can change without touching the code. Assigning the file to the types below makes the
 // type check catch content that doesn't have this shape.
 import topicsFile from "../../content/conversations/topics.json";
-import type { DeckColor } from "@/lib/flashcards/decks";
 import type { Locale } from "@/lib/i18n";
 
 // Text in each interface language. English is required, the others fall back to it.
@@ -35,15 +34,13 @@ export type Topic = {
   id: string;
   title: Translated;
   emoji: string;
-  color: DeckColor;
   situations: Situation[];
 };
 
-const file: { topics: (Omit<Topic, "color"> & { color: string })[] } = topicsFile;
+const file: { topics: Topic[] } = topicsFile;
 
 // In the order learners see them. A topic without situations stays hidden.
 export const TOPICS: Topic[] = file.topics
-  .map((topic) => ({ ...topic, color: topic.color as DeckColor }))
   .filter((topic) => topic.situations.length > 0);
 
 export function textIn(text: Translated, locale: Locale): string {

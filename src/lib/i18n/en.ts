@@ -85,7 +85,8 @@ export const en = {
     // Marks a word that sounds the same in Standard German and the dialect.
     same: "same",
     // For screen readers, in place of the Standard German side of a dialect-only word.
-    dialectOnly: "No Standard German word",
+    onlyIn: (variety: string) => `only in ${variety}`,
+    becomes: "becomes",
     standardGerman: "Standard German",
     // By dialect id. A dialect without a name here shows its id.
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,

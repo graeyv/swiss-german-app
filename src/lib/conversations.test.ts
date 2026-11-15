@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { parseLabels, timeLines } from "../../scripts/conversation-times.mjs";
-import { DECK_COLORS } from "./flashcards/decks";
 import { findSituation, type Line, lineAt, lineSpans, textIn, TOPICS } from "./conversations";
 
 const line = (start: number | null): Line => ({
@@ -66,10 +65,9 @@ describe("timing a recording from Audacity labels", () => {
 describe("conversation content", () => {
   const situations = TOPICS.flatMap((topic) => topic.situations);
 
-  it("has unique ids and known colours", () => {
+  it("has unique ids", () => {
     const ids = [...TOPICS.map((topic) => topic.id), ...situations.map((situation) => situation.id)];
     expect(new Set(ids).size).toBe(ids.length);
-    for (const topic of TOPICS) expect(DECK_COLORS).toContain(topic.color);
   });
 
   it("has every text in English, and lines with start times in order", () => {

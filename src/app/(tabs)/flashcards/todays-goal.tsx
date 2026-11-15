@@ -63,15 +63,13 @@ export function TodaysGoal({
 
   return (
     <section
-      className={`flex flex-col gap-4 rounded-2xl border border-line bg-linear-135 to-surface to-75% p-5 ${
-        reached ? "from-tint-green" : "from-highlight"
-      }`}
+      className={`flex flex-col gap-4 rounded-2xl p-5 ${reached ? "bg-yellow" : "bg-mist"}`}
     >
       <div className="flex items-center justify-between gap-4">
         <h2 className="flex items-center gap-2 text-lg font-bold tracking-tight">
           {t.heading}
           {reached && (
-            <span className="rounded-full bg-success px-2.5 py-0.5 text-xs font-semibold text-surface motion-safe:animate-pop">
+            <span className="rounded-full bg-teal px-2.5 py-0.5 text-xs font-semibold text-ivory motion-safe:animate-pop">
               🎉 {t.reached}
             </span>
           )}
