@@ -16,12 +16,17 @@ type ListRowProps = {
   caption?: string;
   // Leads the row, such as a lesson's icon.
   icon?: IconName;
+  // A small line above the title, such as "LEKTION 2".
+  eyebrow?: string;
 };
 
 // A row on mist: bold title, caption below, an arrow on the right. The whole row is the tap target.
-export function ListRow({ href, title, caption, icon }: ListRowProps) {
+export function ListRow({ href, title, caption, icon, eyebrow }: ListRowProps) {
   const text = (
     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+      {eyebrow && (
+        <span className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">{eyebrow}</span>
+      )}
       <span className="text-body font-bold">{title}</span>
       {caption && <span className="text-caption text-teal-soft">{caption}</span>}
     </span>

@@ -32,7 +32,7 @@ export const de: Dictionary = {
 
   learn: {
     intro: "Was im Schweizerdeutschen anders ist.",
-    upcoming: "Bald verfügbar",
+    all: "Alle Lektionen",
   },
 
   nav: {

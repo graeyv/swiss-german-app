@@ -1,19 +1,16 @@
 import Link from "next/link";
 import { ButtonLink } from "@/app/ui/button";
 import { Icon, isIconName } from "@/app/ui/icon";
-import { LESSONS, lessonHref, lessonNumber } from "@/lib/learn/lessons";
+import { LESSONS, lessonHref, lessonNumber, topicCount } from "@/lib/learn/lessons";
 
 // The Learn tab once every lesson has content and progress is saved, for a learner who has
-// finished Aussprache and is in the middle of Verwandte Wörter. Topic counts of lessons still being
-// written are their planned topics. Progress isn't saved yet, so it's made up here.
+// finished Aussprache and is in the middle of Verwandte Wörter. Progress isn't saved yet, so it's
+// made up here.
 const DONE: Record<string, number> = { pronunciation: Infinity, "related-words": 5 };
 
 export function LearnPreviewComplete() {
   const lessons = LESSONS.filter(({ dialect }) => dialect === "be").map((entry) => {
-    const topics = entry.lesson.sections.reduce(
-      (sum, section) => sum + (section.rules.length || section.planned?.length || 2),
-      0,
-    );
+    const topics = topicCount(entry.lesson);
     const done = Math.min(DONE[entry.lesson.id] ?? 0, topics);
     return { ...entry, number: lessonNumber(entry), topics, done };
   });

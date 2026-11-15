@@ -75,6 +75,11 @@ export const LESSONS: DialectLesson[] = [
   { dialect: "be", language: "de", lesson: everyday },
 ];
 
+// How many topics a lesson has, counting the planned ones of sections still being written.
+export function topicCount(lesson: Lesson): number {
+  return lesson.sections.reduce((sum, section) => sum + (section.rules.length || section.planned?.length || 0), 0);
+}
+
 // Whether a section, or a lesson, has anything to open yet.
 export function isReady(item: Section | Lesson): boolean {
   return "rules" in item ? item.rules.length > 0 : item.sections.some(isReady);

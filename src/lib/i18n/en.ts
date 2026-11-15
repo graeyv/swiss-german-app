@@ -33,7 +33,7 @@ export const en = {
 
   learn: {
     intro: "What’s different in Swiss German.",
-    upcoming: "Coming soon",
+    all: "All lessons",
   },
 
   nav: {
