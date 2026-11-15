@@ -20,7 +20,7 @@ export function LearnPreviewComplete() {
     <div className="flex flex-col gap-8 rounded-3xl border border-mist p-4">
       <div className="flex flex-col gap-1">
         <h3 className="text-title font-bold">Lernen</h3>
-        <p className="text-body text-teal-soft">Was im Berndeutschen anders ist.</p>
+        <p className="text-body text-teal-soft">Was Schweizerdeutsch vom Hochdeutschen unterscheidet.</p>
       </div>
 
       <div className="flex flex-col gap-4 rounded-3xl bg-sage p-6">

@@ -31,7 +31,7 @@ export const de: Dictionary = {
   },
 
   learn: {
-    intro: "Was im Schweizerdeutschen anders ist.",
+    intro: "Was Schweizerdeutsch vom Hochdeutschen unterscheidet.",
     all: "Alle Module",
   },
 
