@@ -37,9 +37,9 @@ async function Learn() {
   return (
     <>
       <title>{t.title(t.nav.learn)}</title>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <h1 className="text-title font-bold">{t.nav.learn}</h1>
-        <p className="text-body text-teal-soft">{t.learn.intro}</p>
+        <p className="text-subtitle font-semibold">{t.learn.intro}</p>
       </div>
 
       {current && <CurrentLesson entry={current} t={t} />}

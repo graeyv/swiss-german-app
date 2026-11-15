@@ -98,6 +98,8 @@ topic in English); in the code and this guide they are lesson → section → ru
 
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`).
+- **Tab header** (Learn tab): the tab's name as title, below it one line in subtitle size and
+  weight, full teal, saying what the tab is for. No marker.
 - **Current lesson** (Learn tab): a sage card with the lesson's icon, "MODUL 1" in teal (the
   softer teal is too faint on sage), title, subtitle, "2 Lektionen · 10 Themen" and the primary button
   to start. The text opens the lesson's overview. Below, under an "ALLE MODULE" eyebrow, every
