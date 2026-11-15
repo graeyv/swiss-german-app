@@ -3,8 +3,9 @@
 // to Lesson below makes the type check catch a file that doesn't have this shape.
 import beEveryday from "../../../content/lessons/be/everyday.json";
 import beGrammar from "../../../content/lessons/be/grammar.json";
+import beNewWords from "../../../content/lessons/be/new-words.json";
 import bePronunciation from "../../../content/lessons/be/pronunciation.json";
-import beVocabulary from "../../../content/lessons/be/vocabulary.json";
+import beRelatedWords from "../../../content/lessons/be/related-words.json";
 import type { Locale } from "@/lib/i18n";
 
 // The same thing in Standard German and in the dialect.
@@ -57,7 +58,8 @@ export type Lesson = {
 export type DialectLesson = { dialect: string; language: Locale; lesson: Lesson };
 
 const pronunciation: Lesson = bePronunciation;
-const vocabulary: Lesson = beVocabulary;
+const relatedWords: Lesson = beRelatedWords;
+const newWords: Lesson = beNewWords;
 const grammar: Lesson = beGrammar;
 const everyday: Lesson = beEveryday;
 
@@ -65,7 +67,8 @@ const everyday: Lesson = beEveryday;
 // see where the track leads.
 export const LESSONS: DialectLesson[] = [
   { dialect: "be", language: "de", lesson: pronunciation },
-  { dialect: "be", language: "de", lesson: vocabulary },
+  { dialect: "be", language: "de", lesson: relatedWords },
+  { dialect: "be", language: "de", lesson: newWords },
   { dialect: "be", language: "de", lesson: grammar },
   { dialect: "be", language: "de", lesson: everyday },
 ];

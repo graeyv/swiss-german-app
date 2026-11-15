@@ -83,7 +83,7 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
               caption={
                 isReady(section)
                   ? t.lesson.topics(section.rules.length)
-                  : (section.planned?.join(", ") ?? section.description)
+                  : (section.planned?.join(" · ") ?? section.description)
               }
             />
           ))}

@@ -4,7 +4,7 @@ import { isReady, LESSONS, lessonNumber, sectionParams } from "./lessons";
 
 describe("lessons", () => {
   it("numbers the lessons of a dialect in order", () => {
-    expect(LESSONS.filter(({ dialect }) => dialect === "be").map(lessonNumber)).toEqual([1, 2, 3, 4]);
+    expect(LESSONS.filter(({ dialect }) => dialect === "be").map(lessonNumber)).toEqual([1, 2, 3, 4, 5]);
   });
 
   it("has unique ids and only icons the app knows", () => {
