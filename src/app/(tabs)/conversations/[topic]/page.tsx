@@ -46,7 +46,8 @@ async function ConversationTopic({ params }: Pick<PageProps<"/conversations/[top
             key={scene.id}
             href={isReady(scene) ? `/conversations/${topic.id}/${scene.id}` : undefined}
             title={textIn(scene.title, locale)}
-            caption={isReady(scene) ? textIn(scene.scene, locale) : t.conversations.comingSoon}
+            caption={textIn(scene.scene, locale)}
+            comingSoon={isReady(scene) ? undefined : t.conversations.comingSoon}
           />
         ))}
       </ListRows>

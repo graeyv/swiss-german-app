@@ -121,11 +121,13 @@ topic in English); in the code and this guide they are lesson → section → ru
   are short enough for one line at iPhone width (about 133 px), such as "Freizeit". A topic with
   nothing in it yet is inactive: its picture on mist instead of `sage-light`, its title in
   `teal-soft`, and under the title, instead of its size, a small ivory pill with a clock and
-  "Bald verfügbar" (12 px, on one line), so testers see it's not ready rather than broken.
+  "Bald verfügbar" (12 px, on one line), so testers see it's not ready rather than broken. The pill
+  is `ComingSoonPill`, and an empty subtopic or scene row shows it the same way: title in
+  `teal-soft`, the pill in place of its caption, and no arrow.
 - **Topic banner** (`TopicBanner`): the top of a topic's page, its illustration at 2:1, whole and
   centred on `sage-light` rather than cropped. Its title below in title size, then its subtopics
-  or scenes as list rows. A scene still to be written is a row without an arrow saying "Bald
-  verfügbar".
+  or scenes as list rows. A subtopic or scene with nothing in it yet is an inactive row, with the
+  "Bald verfügbar" pill and no arrow.
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
   The highlight is the screen's one yellow element, and it's only used here.
 - **Icon list** ("Was dich erwartet"): a filled icon in `teal-soft`, then one line of text. No boxes, no

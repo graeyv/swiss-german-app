@@ -1,6 +1,7 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ComingSoonPill } from "./coming-soon-pill";
 import { Icon, type IconName } from "./icons";
 
 type TopicTileProps = {
@@ -43,11 +44,7 @@ export function TopicTile({ href, title, caption, image, icon = "cards", footer,
       <span className={`flex min-w-0 flex-1 flex-col gap-0.5 px-4 ${footer ? "" : "pb-4"}`}>
         <strong className={`leading-snug font-semibold ${comingSoon ? "text-teal-soft" : ""}`}>{title}</strong>
         {comingSoon ? (
-          // Small and on one line: a tile is only about 165 px wide on a phone.
-          <span className="mt-1 inline-flex w-fit items-center gap-1 rounded-full bg-ivory px-2 py-0.5 text-[0.75rem] leading-4 font-semibold whitespace-nowrap text-teal">
-            <Icon name="clock" size={12} />
-            {comingSoon}
-          </span>
+          <ComingSoonPill label={comingSoon} />
         ) : (
           caption && <small className="truncate text-sm leading-snug text-teal-soft">{caption}</small>
         )}

@@ -7,6 +7,7 @@ import { deckAvailability } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TOPIC_ILLUSTRATIONS } from "@/app/topic-illustrations";
+import { ComingSoonPill } from "@/app/ui/coming-soon-pill";
 import { Icon } from "@/app/ui/icons";
 import { TopicBanner } from "@/app/ui/topic-banner";
 import { TopBar } from "@/app/top-bar";
@@ -137,8 +138,8 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
       <div className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4">
         <Icon name={deckIcon(deck.code)} size={28} className="text-teal-soft" />
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-body font-bold">{deck.title}</span>
-          <span className="text-caption text-teal-soft">{dictionary(locale).flashcards.comingSoon}</span>
+          <span className="text-body font-bold text-teal-soft">{deck.title}</span>
+          <ComingSoonPill label={dictionary(locale).flashcards.comingSoon} />
         </span>
       </div>
     );

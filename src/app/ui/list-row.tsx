@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ComingSoonPill } from "./coming-soon-pill";
 import { Icon, type IconName } from "./icons";
 
 // Rows to open one by one, such as a lesson's topics. See DESIGN.md.
@@ -18,17 +19,24 @@ type ListRowProps = {
   icon?: IconName;
   // A small line above the title, such as "LEKTION 2".
   eyebrow?: string;
+  // For a row with nothing in it yet: the label of the pill that replaces its caption, such as
+  // "Bald verfügbar". Its title turns teal-soft, like an inactive topic tile.
+  comingSoon?: string;
 };
 
 // A row on mist: bold title, caption below, an arrow on the right. The whole row is the tap target.
-export function ListRow({ href, title, caption, icon, eyebrow }: ListRowProps) {
+export function ListRow({ href, title, caption, icon, eyebrow, comingSoon }: ListRowProps) {
   const text = (
     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
       {eyebrow && (
         <span className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">{eyebrow}</span>
       )}
-      <span className="text-body font-bold">{title}</span>
-      {caption && <span className="text-caption text-teal-soft">{caption}</span>}
+      <span className={`text-body font-bold ${comingSoon ? "text-teal-soft" : ""}`}>{title}</span>
+      {comingSoon ? (
+        <ComingSoonPill label={comingSoon} />
+      ) : (
+        caption && <span className="text-caption text-teal-soft">{caption}</span>
+      )}
     </span>
   );
   return (
