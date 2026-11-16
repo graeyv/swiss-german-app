@@ -140,6 +140,13 @@ describe("buildSeed", () => {
   const header =
     "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\tnotes_en\tnotes_de\taudio_path\ttype\n";
 
+  it("builds the deck structure without any words", () => {
+    const seed = buildSeed(decks, header);
+    expect(seed).toContain("('C01-T01', 'C01', 'vocabulary'");
+    expect(seed).not.toContain("vocabulary_items (code");
+    expect(seed).not.toMatch(/values\s*\n\s*(on conflict|\))/);
+  });
+
   it("escapes quotes and numbers cards per deck", () => {
     const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\tWie gaht's?\tWie geht's?\tHow?\t\t\t\n`);
     expect(seed).toContain("'Wie gaht''s?'");

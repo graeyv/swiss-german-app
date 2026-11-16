@@ -209,6 +209,46 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
   const cardTranslationRows = translationRows(cards, ["meaning", "notes"], (card) => card.code);
   const pointTranslationRows = translationRows(points, ["title", "explanation"], (point) => point.code);
 
+  // Words are optional too, so content can hold only the deck structure for a while.
+  const vocabularySql = cards.length
+    ? `
+insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german, audio_path, type) values
+${cardRows.join(",\n")}
+on conflict (code) do update
+  set dialect_id = excluded.dialect_id,
+      swiss_german = excluded.swiss_german,
+      high_german = excluded.high_german,
+      audio_path = excluded.audio_path,
+      type = excluded.type;
+
+delete from public.vocabulary_translations
+where vocabulary_id in (
+  select id from public.vocabulary_items where code in (${cards.map((card) => quote(card.code)).join(", ")})
+);
+
+insert into public.vocabulary_translations (vocabulary_id, locale, meaning, notes)
+select v.id, t.locale, t.meaning, t.notes
+from (values
+${cardTranslationRows.join(",\n")}
+) as t (card_code, locale, meaning, notes)
+join public.vocabulary_items v on v.code = t.card_code;
+`
+    : "";
+
+  const itemsSql = itemRows.length
+    ? `
+-- Each word and grammar point gets its card when it's first inserted, from a trigger.
+insert into public.deck_items (deck_id, card_id, position)
+select d.id, c.id, i.position
+from (values
+${itemRows.join(",\n")}
+) as i (deck_code, card_code, position)
+join public.decks d on d.code = i.deck_code
+join public.vocabulary_items v on v.code = i.card_code
+join public.cards c on c.vocabulary_id = v.id;
+`
+    : "";
+
   const grammarSql = points.length
     ? `
 insert into public.grammar_points (code, dialect_id) values
@@ -301,42 +341,13 @@ ${deckTranslationRows.join(",\n")}
 ) as t (deck_code, locale, title, description)
 join public.decks d on d.code = t.deck_code;
 
-insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german, audio_path, type) values
-${cardRows.join(",\n")}
-on conflict (code) do update
-  set dialect_id = excluded.dialect_id,
-      swiss_german = excluded.swiss_german,
-      high_german = excluded.high_german,
-      audio_path = excluded.audio_path,
-      type = excluded.type;
-
-delete from public.vocabulary_translations
-where vocabulary_id in (
-  select id from public.vocabulary_items where code in (${cards.map((card) => quote(card.code)).join(", ")})
-);
-
-insert into public.vocabulary_translations (vocabulary_id, locale, meaning, notes)
-select v.id, t.locale, t.meaning, t.notes
-from (values
-${cardTranslationRows.join(",\n")}
-) as t (card_code, locale, meaning, notes)
-join public.vocabulary_items v on v.code = t.card_code;
-${grammarSql}
+${vocabularySql}${grammarSql}
 delete from public.grammar_exercises
 where not (code = any (${codeArray(exercises.map((exercise) => exercise.code))}));
 
 delete from public.deck_items;
 
--- Each word and grammar point gets its card when it's first inserted, from a trigger.
-insert into public.deck_items (deck_id, card_id, position)
-select d.id, c.id, i.position
-from (values
-${itemRows.join(",\n")}
-) as i (deck_code, card_code, position)
-join public.decks d on d.code = i.deck_code
-join public.vocabulary_items v on v.code = i.card_code
-join public.cards c on c.vocabulary_id = v.id;
-${pointItemsSql}
+${itemsSql}${pointItemsSql}
 commit;
 `;
 }
