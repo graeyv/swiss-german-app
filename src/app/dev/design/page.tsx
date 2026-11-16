@@ -1,4 +1,7 @@
+import Image, { type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
+import atHome from "../../../../public/illustrations/topics/at-home.png";
+import socialLife from "../../../../public/illustrations/topics/social-life.png";
 import { ExampleList } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/example-list";
 import { answerClass, AnswerMark } from "@/app/ui/answer";
 import { Button } from "@/app/ui/button";
@@ -165,6 +168,21 @@ export default function DevDesignPage() {
           ))}
         </ul>
       </Part>
+
+      <Part title="Themen mit Illustration (Test)">
+        <ul className="grid grid-cols-2 gap-3">
+          {ILLUSTRATIONS.map(({ image, title, caption }) => (
+            <li key={title} className="flex flex-col gap-3 overflow-hidden rounded-3xl bg-mist pb-4">
+              {/* Without its own background: sage-light behind it sets it off from the tile. */}
+              <Image src={image} alt="" quality={90} sizes="(min-width: 36rem) 17rem, 50vw" className="aspect-[3/2] w-full bg-sage-light" />
+              <span className="flex flex-col px-4">
+                <span className="text-body font-bold">{title}</span>
+                <span className="text-caption text-teal-soft">{caption}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Part>
     </main>
   );
 }
@@ -189,6 +207,12 @@ const CH = findRule(pronunciation, "consonants", "ch")!.rule;
 const EXAMPLES = [
   ...CH.examples,
   ...findRule(pronunciation, "vowels", "ue")!.rule.examples.filter(({ word }) => word === "müed"),
+];
+
+// The new overarching topics that have an illustration yet. The others follow once they're made.
+const ILLUSTRATIONS: { image: StaticImageData; title: string; caption: string }[] = [
+  { image: socialLife, title: "Freizeit & Freunde", caption: "Treffen & Ausgehen" },
+  { image: atHome, title: "Zuhause", caption: "Wohnen & Haushalt" },
 ];
 
 const ICONS: IconName[] = [
