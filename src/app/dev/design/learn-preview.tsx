@@ -59,7 +59,7 @@ export function LearnPathWithProgress() {
                 href={lessonHref(entry.dialect, lesson)}
                 className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-transform active:scale-[0.98]"
               >
-                {icon && <Icon name={icon} size={28} />}
+                {icon && <Icon name={icon} size={28} className="text-teal-soft" />}
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">
                     Modul {entry.number}

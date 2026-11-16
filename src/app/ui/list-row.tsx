@@ -38,13 +38,13 @@ export function ListRow({ href, title, caption, icon, eyebrow }: ListRowProps) {
           href={href}
           className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-transform active:scale-[0.98]"
         >
-          {icon && <Icon name={icon} size={28} />}
+          {icon && <Icon name={icon} size={28} className="text-teal-soft" />}
           {text}
           <Icon name="forward" />
         </Link>
       ) : (
         <div className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4">
-          {icon && <Icon name={icon} size={28} />}
+          {icon && <Icon name={icon} size={28} className="text-teal-soft" />}
           {text}
         </div>
       )}

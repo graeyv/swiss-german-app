@@ -64,7 +64,7 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
           <ul className="flex flex-col gap-4">
             {lesson.expectations.map((expectation) => (
               <li key={expectation.title} className="flex items-center gap-4">
-                {isIconName(expectation.icon) && <Icon name={expectation.icon} size={28} />}
+                {isIconName(expectation.icon) && <Icon name={expectation.icon} size={28} className="text-teal-soft" />}
                 <span className="text-body">{expectation.title}</span>
               </li>
             ))}
