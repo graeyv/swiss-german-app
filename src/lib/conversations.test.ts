@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseLabels, timeLines } from "../../scripts/conversation-times.mjs";
-import { findSituation, type Line, lineAt, lineSpans, textIn, TOPICS } from "./conversations";
+import { readFileSync } from "node:fs";
+import { findTopic, isReady, type Line, lineAt, lineSpans, sceneParams, textIn, TOPICS } from "./conversations";
 
 const line = (start: number | null): Line => ({
   speaker: "Anna",
@@ -70,10 +71,9 @@ describe("conversation content", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("has every text in English, and lines with start times in order", () => {
+  it("has every text in English, and in ready scenes lines with start times in order", () => {
     for (const situation of situations) {
       expect(situation.title.en && situation.scene.en).toBeTruthy();
-      expect(situation.lines.length).toBeGreaterThan(0);
       const starts = situation.lines.flatMap((entry) => (entry.start === null ? [] : [entry.start]));
       expect(starts).toEqual([...starts].sort((a, b) => a - b));
       for (const entry of situation.lines) {
@@ -82,11 +82,24 @@ describe("conversation content", () => {
     }
   });
 
-  it("finds a situation with its topic, in the learner's language", () => {
-    const found = findSituation("in-the-kitchen");
-    expect(found?.topic.id).toBe("at-home");
-    expect(textIn(found!.situation.title, "de")).toBe("In der Küche");
+  // The topics are the flashcard topics: same code, same titles.
+  it("names each topic like its flashcard topic", () => {
+    const [header, ...rows] = readFileSync("content/decks.tsv", "utf8").split(/\r?\n/).filter(Boolean);
+    const columns = header.split("\t");
+    const decks = rows.map((row) => Object.fromEntries(row.split("\t").map((value, i) => [columns[i], value])));
+    for (const topic of TOPICS) {
+      const deck = decks.find((candidate) => candidate.code === topic.deck);
+      expect(deck, topic.deck).toBeDefined();
+      expect(deck?.parent_code).toBe("");
+      expect(topic.title).toEqual({ en: deck?.title_en, de: deck?.title_de });
+    }
+  });
+
+  it("opens only scenes that are ready, in the learner's language", () => {
+    expect(sceneParams()).toContainEqual({ topic: "at-home", scene: "waking-up" });
+    expect(sceneParams().every(({ topic, scene }) => isReady(findTopic(topic)!.situations.find((s) => s.id === scene)!))).toBe(true);
+    expect(textIn(findTopic("at-home")!.situations[0].title, "de")).toBe("Verschlafen!");
     expect(textIn({ en: "Only English" }, "de")).toBe("Only English");
-    expect(findSituation("nowhere")).toBeUndefined();
+    expect(findTopic("nowhere")).toBeUndefined();
   });
 });

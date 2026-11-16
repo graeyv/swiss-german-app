@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { Icon, type IconName } from "@/app/ui/icons";
 import { BottomSheet } from "../../bottom-sheet";
 import type { DeckKind } from "@/lib/flashcards/decks";
 import { filterSearch, type VocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
@@ -13,7 +14,7 @@ type SubcategorySheetProps = {
   code: string;
   kind: DeckKind;
   title: string;
-  emoji: string;
+  icon: IconName;
   newWords: number;
   due: number;
   // Whether the topic has words as well as sentences or expressions, so they can be practised apart.
@@ -28,7 +29,7 @@ export function SubcategorySheet({
   code,
   kind,
   title,
-  emoji,
+  icon,
   newWords,
   due,
   mixed,
@@ -44,23 +45,17 @@ export function SubcategorySheet({
     <>
       <button
         onClick={() => dialog.current?.showModal()}
-        className="flex min-h-16 w-full items-center gap-3 rounded-2xl border border-line bg-surface p-3 text-left transition-colors hover:border-accent active:scale-[0.99]"
+        className="flex min-h-18 w-full items-center gap-4 rounded-3xl bg-mist px-6 py-4 text-left transition-transform active:scale-[0.98]"
       >
-        <span aria-hidden className="flex size-11 shrink-0 items-center justify-center rounded-xl text-2xl bg-mist">
-          {emoji}
-        </span>
-        <span className="min-w-0 flex-1 font-semibold leading-snug">{title}</span>
+        <Icon name={icon} size={28} className="text-teal-soft" />
+        <span className="min-w-0 flex-1 text-body font-bold">{title}</span>
         <Counts newWords={newWords} due={due} locale={locale} />
-        <span aria-hidden className="text-muted">
-          ›
-        </span>
+        <Icon name="forward" />
       </button>
 
       <BottomSheet ref={dialog} label={title}>
         <div className="flex items-center gap-4">
-          <span aria-hidden className="flex size-14 shrink-0 items-center justify-center rounded-2xl text-3xl bg-mist">
-            {emoji}
-          </span>
+          <Icon name={icon} size={28} className="text-teal-soft" />
           <div className="flex min-w-0 flex-col gap-1">
             <h2 className="text-xl font-bold tracking-tight">{title}</h2>
             {done ? (

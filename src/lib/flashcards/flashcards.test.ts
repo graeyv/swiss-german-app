@@ -116,29 +116,36 @@ describe("buildDeckTree", () => {
     row("life", null, 2, 1),
     row("past", "verbs", 2, 1),
     row("present", "verbs", 1, 1, "blue"),
-    row("hidden", "verbs", 3, 0),
+    row("future", "verbs", 3, 0),
   ]);
 
-  it("nests decks in order and hides empty ones", () => {
-    expect(tree.map((deck) => deck.id)).toEqual(["life", "verbs"]);
-    expect(tree[1].children.map((deck) => deck.id)).toEqual(["present", "past"]);
+  it("nests decks in order, empty ones too", () => {
+    expect(tree.map((deck) => deck.id)).toEqual(["empty", "life", "verbs"]);
+    expect(tree[2].children.map((deck) => deck.id)).toEqual(["present", "past", "future"]);
   });
 
   it("gives topics their parent's colour unless they have their own", () => {
-    expect(tree[1].children.map((deck) => deck.color)).toEqual(["blue", "green"]);
+    expect(tree[2].children.map((deck) => deck.color)).toEqual(["blue", "green", "green"]);
   });
 
   it("finds a deck at any depth, with the decks above it", () => {
     const found = findDeck(tree, "past");
     expect(found?.deck.id).toBe("past");
     expect(found?.ancestors.map((deck) => deck.id)).toEqual(["verbs"]);
-    expect(findDeck(tree, "empty")).toBeNull();
+    expect(findDeck(tree, "missing")).toBeNull();
   });});
 
 describe("buildSeed", () => {
   const decks = "code\tparent_code\ttitle_en\ttitle_de\nC01\t\tLife\tLeben\nC01-T01\tC01\tGreetings\t\n";
   const header =
     "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\tnotes_en\tnotes_de\taudio_path\ttype\n";
+
+  it("builds the deck structure without any words", () => {
+    const seed = buildSeed(decks, header);
+    expect(seed).toContain("('C01-T01', 'C01', 'vocabulary'");
+    expect(seed).not.toContain("vocabulary_items (code");
+    expect(seed).not.toMatch(/values\s*\n\s*(on conflict|\))/);
+  });
 
   it("escapes quotes and numbers cards per deck", () => {
     const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\tWie gaht's?\tWie geht's?\tHow?\t\t\t\n`);

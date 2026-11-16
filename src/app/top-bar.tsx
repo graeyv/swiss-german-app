@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { type ReactNode, useEffect, useState } from "react";
-import { Icon } from "./ui/icon";
+import { Icon } from "./ui/icons";
 
 type TopBarProps = {
   // Where the back button leads. label names it for screen readers when no text is shown.

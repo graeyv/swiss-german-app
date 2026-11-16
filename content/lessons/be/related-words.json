@@ -1,0 +1,38 @@
+{
+  "id": "related-words",
+  "title": "Verwandte Wörter",
+  "subtitle": "Bekannte Wörter, neue Formen",
+  "icon": "link",
+  "description": "Viele berndeutsche Wörter kennst du schon aus dem Hochdeutschen, sie klingen nur anders. Mit ein paar Mustern erkennst du sie wieder.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "vowels",
+      "title": "Vokalwechsel",
+      "description": "Wie sich Vokale vom Hochdeutschen ins Berndeutsche verändern.",
+      "planned": ["Zeit → Zyt", "Haus → Huus", "heute → hüt", "gut → guet"],
+      "rules": []
+    },
+    {
+      "id": "consonants",
+      "title": "Konsonantenwechsel",
+      "description": "Wie sich Konsonanten vom Hochdeutschen ins Berndeutsche verändern.",
+      "planned": ["kalt → chaut", "viel → viu", "Hund → Hung"],
+      "rules": []
+    },
+    {
+      "id": "beginnings-and-endings",
+      "title": "Wortanfänge und Endungen",
+      "description": "Was am Anfang und am Ende eines Wortes wegfällt oder sich ändert.",
+      "planned": ["gesehen → gseh", "machen → mache", "Zeitung → Zytig", "Häuschen → Hüsli"],
+      "rules": []
+    },
+    {
+      "id": "irregular",
+      "title": "Unregelmässige Wörter",
+      "description": "Verwandte Wörter, die keinem Muster folgen.",
+      "planned": ["nichts → nüt", "etwas → öppis", "auch → ou"],
+      "rules": []
+    }
+  ]
+}

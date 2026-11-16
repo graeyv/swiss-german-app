@@ -1,8 +1,11 @@
+import Image, { type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
+import atHome from "../../../../public/illustrations/topics/at-home.png";
+import socialLife from "../../../../public/illustrations/topics/social-life.png";
 import { ExampleList } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/example-list";
 import { answerClass, AnswerMark } from "@/app/ui/answer";
 import { Button } from "@/app/ui/button";
-import { Icon, type IconName } from "@/app/ui/icon";
+import { Icon, type IconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { ProgressBar } from "@/app/ui/progress-bar";
 import { Card, Pill } from "@/app/ui/surface";
@@ -12,6 +15,10 @@ import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule } from "@/lib/learn/lessons";
 import { devOnly } from "../exercises/data";
 import { GradePreview } from "./grade-preview";
+import { ComingSoonPreview } from "./coming-soon-preview";
+import { ContinuePreview } from "./continue-preview";
+import { LearnPathWithProgress } from "./learn-preview";
+import { LogoPreview } from "./logo-preview";
 
 // Developer tool: everything DESIGN.md defines, in one place, to check the look at phone width
 // before it goes onto the screens. German, like the model screen.
@@ -25,6 +32,18 @@ export default function DevDesignPage() {
         <h1 className="text-title font-bold">Design</h1>
         <p className="text-body text-teal-soft">Alles aus DESIGN.md, so wie es auf den Screens aussieht.</p>
       </div>
+
+      <Part title="Lernen: weitermachen oder von vorne">
+        <ContinuePreview />
+      </Part>
+
+      <Part title="Logo">
+        <LogoPreview />
+      </Part>
+
+      <Part title="Themen-Kachel: bald verfügbar (iPhone-Breite)">
+        <ComingSoonPreview />
+      </Part>
 
       <Part title="Farben">
         <ul className="grid grid-cols-2 gap-3">
@@ -54,11 +73,11 @@ export default function DevDesignPage() {
         </div>
       </Part>
 
-      <Part title="Lektion (Vorlage)">
+      <Part title="Modul (Vorlage)">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
-              <Eyebrow>Lektion 1</Eyebrow>
+              <Eyebrow>Modul 1</Eyebrow>
               <h2 className="text-title font-bold">Aussprache</h2>
             </div>
             <p className="text-subtitle font-semibold">
@@ -88,6 +107,10 @@ export default function DevDesignPage() {
 
           <Button>Los geht&apos;s</Button>
         </div>
+      </Part>
+
+      <Part title="Lernen-Tab später, mit gespeichertem Fortschritt">
+        <LearnPathWithProgress />
       </Part>
 
       <Part title="Buttons">
@@ -160,7 +183,52 @@ export default function DevDesignPage() {
           ))}
         </ul>
       </Part>
+
+      <Part title="Themen mit Illustration (Test)">
+        <ul className="grid grid-cols-2 gap-3">
+          {ILLUSTRATIONS.map(({ image, title, caption }) => (
+            <li key={title} className="flex flex-col gap-3 overflow-hidden rounded-3xl bg-mist pb-4">
+              {/* Without its own background: sage-light behind it sets it off from the tile. */}
+              <Image src={image} alt="" quality={90} sizes="(min-width: 36rem) 17rem, 50vw" className="aspect-[3/2] w-full bg-sage-light" />
+              <span className="flex flex-col px-4">
+                <span className="text-body font-bold">{title}</span>
+                <span className="text-caption text-teal-soft">{caption}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Part>
+
+      <Part title="Themenseite: Kopf mit Illustration">
+        <TopicHeader />
+      </Part>
+
     </main>
+  );
+}
+
+// The top of a topic's page: its illustration as a 2:1 banner, whole and centred on sage-light,
+// since cropping it cuts off heads and feet.
+function TopicHeader() {
+  return (
+    <div className="flex flex-col gap-6">
+      <Image
+        src={atHome}
+        alt=""
+        quality={90}
+        sizes="(min-width: 36rem) 33rem, 100vw"
+        className="aspect-[2/1] w-full rounded-3xl bg-sage-light object-contain"
+      />
+      <div className="flex flex-col gap-1">
+        <h2 className="text-title font-bold">Zuhause</h2>
+        <p className="text-body text-teal-soft">Wohnen & Haushalt</p>
+      </div>
+      <ListRows>
+        <ListRow icon="sunrise" title="Morgenroutine" caption="Bald verfügbar" />
+        <ListRow icon="pot" title="In der Küche" caption="Bald verfügbar" />
+        <ListRow icon="washer" title="Putzen & Waschen" caption="Bald verfügbar" />
+      </ListRows>
+    </div>
   );
 }
 
@@ -186,6 +254,12 @@ const EXAMPLES = [
   ...findRule(pronunciation, "vowels", "ue")!.rule.examples.filter(({ word }) => word === "müed"),
 ];
 
+// The new overarching topics that have an illustration yet. The others follow once they're made.
+const ILLUSTRATIONS: { image: StaticImageData; title: string; caption: string }[] = [
+  { image: socialLife, title: "Freizeit", caption: "Treffen & Ausgehen" },
+  { image: atHome, title: "Zuhause", caption: "Wohnen & Haushalt" },
+];
+
 const ICONS: IconName[] = [
   "back",
   "forward",
@@ -199,6 +273,55 @@ const ICONS: IconName[] = [
   "good",
   "easy",
   "clock",
+  "link",
+  "sparkles",
+  "puzzle",
+  "chat",
+  "sunrise",
+  "pot",
+  "washer",
+  "sofa",
+  "building",
+  "coffee",
+  "user",
+  "users",
+  "wine",
+  "bike",
+  "sun",
+  "phone",
+  "clipboard",
+  "cart",
+  "pill",
+  "mail",
+  "banknote",
+  "scissors",
+  "shirt",
+  "tram",
+  "pin",
+  "suitcase",
+  "wave",
+  "activity",
+  "palette",
+  "box",
+  "question",
+  "calendar",
+  "cards",
+  "learn",
+  "practice",
+  "talk",
+  "profile",
+  "shuffle",
+  "swap",
+  "restart",
+  "skip",
+  "signOut",
+  "play",
+  "pause",
+  "speaker",
+  "gear",
+  "timer",
+  "grid",
+  "globe",
 ];
 
 function Part({ title, children }: { title: string; children: ReactNode }) {
@@ -213,7 +336,7 @@ function Part({ title, children }: { title: string; children: ReactNode }) {
 function IconLine({ icon, children }: { icon: IconName; children: ReactNode }) {
   return (
     <li className="flex items-center gap-4">
-      <Icon name={icon} size={28} />
+      <Icon name={icon} size={28} className="text-teal-soft" />
       <span className="text-body">{children}</span>
     </li>
   );

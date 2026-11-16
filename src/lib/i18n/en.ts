@@ -17,7 +17,7 @@ export const en = {
   home: {
     headline: "Understand your Swiss neighbours, not just their signs.",
     intro:
-      "Short lessons in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
+      "Short modules in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
     start: "Start learning",
   },
 
@@ -29,6 +29,13 @@ export const en = {
     logIn: "Log in",
     createAccount: "Create account",
     confirmEmail: "Check your email to confirm your account.",
+  },
+
+  learn: {
+    intro: "How Swiss German differs from Standard German.",
+    // On the large module card: why it's large.
+    lastOpened: "Opened last",
+    startHere: "Start here",
   },
 
   nav: {
@@ -70,13 +77,17 @@ export const en = {
   },
 
   lesson: {
-    leave: "Leave lesson",
-    number: (number: number) => `Lesson ${number}`,
+    leave: "Leave module",
+    number: (number: number) => `Module ${number}`,
     expect: "What to expect",
-    topicsHeading: "Topics",
+    topicsHeading: "Lessons",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
+    // A module's lessons (sections in the code), such as "Consonants" and "Vowels".
+    sections: (count: number) => many(count, "lesson", "lessons"),
     start: "Let’s go",
+    // Beside "Next: R" on a module the learner has been in before.
+    fromStart: "Start over",
     next: "Next",
     done: "Done",
     // Where a topic is in its section, such as "Consonants · 2 / 6".
@@ -92,11 +103,16 @@ export const en = {
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
     play: (variety: string) => `Listen in ${variety}`,
     noRecording: "No recording yet",
+    comingSoon: "Coming soon",
+    // On the overview of a lesson that's still being written.
+    inTheMaking: "This module is still being written. Here's what it will cover.",
   },
 
   conversations: {
-    back: "Back to conversations",
-    lines: (count: number) => many(count, "line", "lines"),
+    // How many scenes a topic has, such as "5 scenes".
+    scenes: (count: number) => many(count, "scene", "scenes"),
+    // On a scene that is still to be written.
+    comingSoon: "Coming soon",
     play: "Play",
     pause: "Pause",
     back5: "Back 5 seconds",
@@ -142,6 +158,8 @@ export const en = {
     newCount: (count: number) => `${count} new`,
     reviewCount: (count: number) => many(count, "review", "reviews"),
     doneForToday: "Done for today",
+    // On a topic that has no cards yet.
+    comingSoon: "Coming soon",
     nothingLeft: "Nothing left for today",
     // Starts a topic's session, of words and sentences or of grammar.
     practise: "Practise",

@@ -1,7 +1,11 @@
 // Learn lessons explain how Swiss German differs from Standard German. Each lesson is a JSON file
 // in content/lessons/<dialect>/, so its text can change without touching the code. Assigning a file
 // to Lesson below makes the type check catch a file that doesn't have this shape.
+import beEveryday from "../../../content/lessons/be/everyday.json";
+import beGrammar from "../../../content/lessons/be/grammar.json";
+import beNewWords from "../../../content/lessons/be/new-words.json";
 import bePronunciation from "../../../content/lessons/be/pronunciation.json";
+import beRelatedWords from "../../../content/lessons/be/related-words.json";
 import type { Locale } from "@/lib/i18n";
 
 // The same thing in Standard German and in the dialect.
@@ -25,21 +29,26 @@ export type Rule = {
   takeaway: string;
 };
 
+// A section without rules is still being written. Its planned topics, if already known, are
+// shown in their place, so learners see what's coming.
 export type Section = {
   id: string;
   title: string;
   description: string;
   rules: Rule[];
+  planned?: string[];
 };
 
 // One thing the learner can expect from a lesson, in one line, shown before they start. The icon is
-// one of the app's icons, such as "headphones" or "mic" (src/app/ui/icon.tsx).
+// one of the app's icons, such as "headphones" or "mic" (src/app/ui/icons.tsx).
 export type Expectation = { icon: string; title: string };
 
 export type Lesson = {
   id: string;
   title: string;
   subtitle: string;
+  // One of the app's icons, such as "headphones", for the lesson in the Learn tab.
+  icon: string;
   description: string;
   expectations: Expectation[];
   sections: Section[];
@@ -51,9 +60,30 @@ export type Lesson = {
 export type DialectLesson = { dialect: string; language: Locale; lesson: Lesson };
 
 const pronunciation: Lesson = bePronunciation;
+const relatedWords: Lesson = beRelatedWords;
+const newWords: Lesson = beNewWords;
+const grammar: Lesson = beGrammar;
+const everyday: Lesson = beEveryday;
 
-// In the order learners should take them.
-export const LESSONS: DialectLesson[] = [{ dialect: "be", language: "de", lesson: pronunciation }];
+// In the order learners should take them. Lessons still being written are listed too, so learners
+// see where the track leads.
+export const LESSONS: DialectLesson[] = [
+  { dialect: "be", language: "de", lesson: pronunciation },
+  { dialect: "be", language: "de", lesson: relatedWords },
+  { dialect: "be", language: "de", lesson: newWords },
+  { dialect: "be", language: "de", lesson: grammar },
+  { dialect: "be", language: "de", lesson: everyday },
+];
+
+// How many topics a lesson has, counting the planned ones of sections still being written.
+export function topicCount(lesson: Lesson): number {
+  return lesson.sections.reduce((sum, section) => sum + (section.rules.length || section.planned?.length || 0), 0);
+}
+
+// Whether a section, or a lesson, has anything to open yet.
+export function isReady(item: Section | Lesson): boolean {
+  return "rules" in item ? item.rules.length > 0 : item.sections.some(isReady);
+}
 
 // A lesson's number in its dialect, counting from 1 in the order above. It comes from that order,
 // so the lesson files don't have to keep their own numbers in step.
@@ -105,7 +135,9 @@ export function lessonParams() {
 
 export function sectionParams() {
   return LESSONS.flatMap(({ dialect, lesson }) =>
-    lesson.sections.map((section) => ({ dialect, lesson: lesson.id, section: section.id })),
+    lesson.sections
+      .filter(isReady)
+      .map((section) => ({ dialect, lesson: lesson.id, section: section.id })),
   );
 }
 

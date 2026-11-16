@@ -1,0 +1,31 @@
+{
+  "id": "new-words",
+  "title": "Neue Wörter",
+  "subtitle": "Was du noch nicht kennst",
+  "icon": "sparkles",
+  "description": "Manche berndeutschen Wörter sehen vertraut aus und bedeuten etwas anderes. Andere gibt es im Hochdeutschen gar nicht.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "false-friends",
+      "title": "Falsche Freunde",
+      "description": "Wörter, die gleich aussehen wie im Hochdeutschen, aber etwas anderes bedeuten.",
+      "planned": ["luege = schauen", "lose = zuhören", "schmöcke = riechen", "loufe = gehen", "springe = rennen"],
+      "rules": []
+    },
+    {
+      "id": "from-french",
+      "title": "Aus dem Französischen",
+      "description": "Wörter, die das Berndeutsche aus dem Französischen übernommen hat.",
+      "planned": ["Velo", "Merci", "Glace", "Trottoir"],
+      "rules": []
+    },
+    {
+      "id": "dialect-words",
+      "title": "Dialektwörter",
+      "description": "Wörter, die es nur im Berndeutschen gibt.",
+      "planned": ["Anke", "äuä", "gäng"],
+      "rules": []
+    }
+  ]
+}

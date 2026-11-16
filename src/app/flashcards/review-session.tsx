@@ -18,6 +18,7 @@ import { CARD_FACE, CardStack } from "./card-stack";
 import { ExerciseStage } from "./exercise-stage";
 import { type Grade, GradeButtons } from "./grade-buttons";
 import { StatusBadge } from "./status-badge";
+import { Icon } from "@/app/ui/icons";
 
 type ReviewSessionProps = {
   cards: Flashcard[];
@@ -256,13 +257,7 @@ export function ReviewSession({
             title={t.swap}
             className="-mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
           >
-            <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="size-5">
-              <path
-                fillRule="evenodd"
-                d="M13.2 2.24a.75.75 0 0 0 .04 1.06l2.1 1.95H6.75a.75.75 0 0 0 0 1.5h8.59l-2.1 1.95a.75.75 0 1 0 1.02 1.1l3.5-3.25a.75.75 0 0 0 0-1.1l-3.5-3.25a.75.75 0 0 0-1.06.04Zm-6.4 8a.75.75 0 0 0-1.06-.04l-3.5 3.25a.75.75 0 0 0 0 1.1l3.5 3.25a.75.75 0 1 0 1.02-1.1l-2.1-1.95h8.59a.75.75 0 0 0 0-1.5H4.66l2.1-1.95a.75.75 0 0 0 .04-1.06Z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <Icon name="swap" size={20} />
           </button>
         )}
       </header>
@@ -420,10 +415,7 @@ function AudioButton({ url, t }: { url: string | null; t: Dictionary["session"] 
       title={url ? t.playPronunciation : t.noRecording}
       className="absolute top-4 right-4 z-10 flex size-11 items-center justify-center rounded-full bg-accent/10 text-accent transition-colors enabled:hover:bg-accent/20 disabled:bg-line disabled:text-muted"
     >
-      <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="size-5">
-        <path d="M10.5 3.75a.75.75 0 0 0-1.264-.546L5.203 7H2.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 1.5 10c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h2.535l4.033 3.796a.75.75 0 0 0 1.264-.546V3.75ZM16.45 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
-        <path d="M14.329 7.172a.75.75 0 0 0-1.061 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 0 0 1.06 1.06 4 4 0 0 0 0-5.656Z" />
-      </svg>
+      <Icon name="speaker" size={20} />
     </button>
   );
 }

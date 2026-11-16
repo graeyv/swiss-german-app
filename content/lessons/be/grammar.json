@@ -1,0 +1,38 @@
+{
+  "id": "grammar",
+  "title": "Grammatik",
+  "subtitle": "Gleich gemeint, anders gebaut",
+  "icon": "puzzle",
+  "description": "Die berndeutsche Grammatik ist einfacher, als sie klingt. Sie folgt nur an ein paar Stellen eigenen Regeln.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "verbs",
+      "title": "Verben",
+      "description": "Wie Verben im Berndeutschen gebildet werden.",
+      "planned": ["Nur Perfekt", "Kein Futur", "Pluralformen", "sy, ha, gah, cho, wöue", "go poschte, cho ässe"],
+      "rules": []
+    },
+    {
+      "id": "subjunctive",
+      "title": "Konjunktiv",
+      "description": "Wünsche, Höflichkeit und was andere gesagt haben.",
+      "planned": ["würd, wär, hätt", "sig"],
+      "rules": []
+    },
+    {
+      "id": "articles-and-cases",
+      "title": "Artikel und Fälle",
+      "description": "Wie Artikel und Fälle im Berndeutschen funktionieren.",
+      "planned": ["dr, d, ds", "Namen mit Artikel", "Gleiche Form für Nominativ und Akkusativ", "Kein Genitiv"],
+      "rules": []
+    },
+    {
+      "id": "sentences",
+      "title": "Satzbau",
+      "description": "Wie berndeutsche Sätze gebaut sind.",
+      "planned": ["wo im Relativsatz", "für z statt um zu", "Reihenfolge der Verben"],
+      "rules": []
+    }
+  ]
+}

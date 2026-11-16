@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { type Line, lineAt, lineSpans } from "@/lib/conversations";
 import { dictionary, type Locale } from "@/lib/i18n";
+import { Icon } from "@/app/ui/icons";
 
 type DialoguePlayerProps = {
   audio: string | null;
@@ -203,9 +204,10 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
                   {translationOpen && <Translation line={line} locale={locale} />}
                 </>
               );
+              // The line being spoken stands out by its fill alone, without an outline.
               const bubble = `flex max-w-[85%] flex-col gap-0.5 rounded-2xl px-4 py-2.5 text-left transition-colors ${
                 right ? "rounded-br-md" : "rounded-bl-md"
-              } ${index === current ? "bg-accent/10 ring-2 ring-accent" : "bg-surface ring-1 ring-line"}`;
+              } ${index === current ? "bg-sage-light" : "bg-surface ring-1 ring-line"}`;
 
               return (
                 <li
@@ -329,13 +331,9 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
                 className="flex size-16 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-sm transition-transform active:scale-95"
               >
                 {playing ? (
-                  <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="size-7">
-                    <path d="M5.75 3a.75.75 0 0 0-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 0 0 .75-.75V3.75A.75.75 0 0 0 7.25 3h-1.5ZM12.75 3a.75.75 0 0 0-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 0 0 .75-.75V3.75a.75.75 0 0 0-.75-.75h-1.5Z" />
-                  </svg>
+                  <Icon name="pause" size={28} />
                 ) : (
-                  <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="ml-1 size-7">
-                    <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.34-5.89a1.5 1.5 0 0 0 0-2.54L6.3 2.84Z" />
-                  </svg>
+                  <Icon name="play" size={28} className="ml-1" />
                 )}
               </button>
               <SkipButton label={t.forward5} onClick={() => seek(time + 5)} direction="forward" />
@@ -345,9 +343,7 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
                 aria-label={t.restart}
                 className="flex size-12 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
               >
-                <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="size-6">
-                  <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                </svg>
+                <Icon name="restart" size={24} />
               </button>
             </div>
           </>
@@ -378,18 +374,7 @@ function SkipButton({
       aria-label={label}
       className="relative flex size-12 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground active:scale-95"
     >
-      <svg
-        aria-hidden
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={`size-8 ${direction === "forward" ? "-scale-x-100" : ""}`}
-      >
-        <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4v3.5H8" />
-      </svg>
+      <Icon name="skip" size={32} className={direction === "forward" ? "-scale-x-100" : ""} />
       <span aria-hidden className="absolute pt-0.5 text-[0.65rem] font-bold">
         5
       </span>

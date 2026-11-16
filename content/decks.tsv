@@ -1,25 +1,39 @@
-code	parent_code	title_en	emoji	description_en	color	kind	draft
-C01		Everyday Life	🏙️	Daily conversations & routines	pink
-C01-T01	C01	Greetings & Introductions	👋
-C01-T02	C01	Numbers & Quantities	🔢
-C01-T03	C01	Time & Dates	🕒
-C01-T04	C01	Days & Months	📅
-C01-T05	C01	Daily Routines	⏰
-C01-T06	C01	Household	🏠
-C01-T07	C01	Clothing	👕
-C01-T08	C01	Weather & Seasons	🌦️
-C01-T09	C01	Colours & Shapes	🎨
-C01-T10	C01	Money & Payments	💰
-C02		Food & Drinks	🥑	Meals, ingredients & ordering	blue
-C02-T01	C02	Fruits & Vegetables	🍎
-C02-T02	C02	Food & Ingredients	🧂
-C02-T03	C02	Swiss Specialities	🧀
-C02-T04	C02	Breakfast	🥐
-C02-T05	C02	Meals	🍽️
-C02-T06	C02	Drinks	🥤
-C02-T07	C02	Restaurant & Café	☕
-C02-T08	C02	Cooking	🍳
-C02-T09	C02	Taste & Texture	👅
-C02-T10	C02	Dietary Preferences	🥗
+code	parent_code	title_en	emoji	description_en	color	kind	draft	title_de	description_de
+C04		At Home	🏠	Living & household				Zuhause	Wohnen & Haushalt
+C04-T01	C04	Morning routine	⏰					Morgenroutine	
+C04-T02	C04	In the kitchen	🍳					In der Küche	
+C04-T03	C04	Cleaning & laundry	🧺					Putzen & Waschen	
+C04-T04	C04	Relaxing at home	🛋️					Entspannen zuhause	
+C04-T05	C04	Neighbours & the building	🏢					Nachbarn & Haus	
+C03		Social Life	☕	Friends, going out & free time				Freizeit	Treffen & Ausgehen
+C03-T01	C03	At the café & restaurant	☕					Im Café & Restaurant	
+C03-T02	C03	Introducing yourself	🤝					Sich vorstellen	
+C03-T03	C03	Small talk	💬					Small Talk	
+C03-T04	C03	Going out & invitations	🥂					Ausgehen & Einladungen	
+C03-T05	C03	Hobbies & sport	⚽					Hobbys & Sport	
+C03-T06	C03	Holidays & weekends	🏖️					Ferien & Wochenende	
+C05		At Work	💼	Office, colleagues & meetings				Bei der Arbeit	Büro, Kollegen & Sitzungen
+C05-T01	C05	Colleagues & breaks	☕					Kollegen & Pausen	
+C05-T02	C05	Meetings & calls	📞					Sitzungen & Anrufe	
+C05-T03	C05	Tasks & projects	📋					Aufgaben & Projekte	
+C06		Errands	🏦	Post, bank, doctor & more				Erledigungen	Post, Bank, Arzt & mehr
+C06-T01	C06	At the supermarket	🛒					Im Supermarkt	
+C06-T02	C06	Doctor & pharmacy	💊					Arzt & Apotheke	
+C06-T03	C06	At the post office	📮					Auf der Post	
+C06-T04	C06	Bank & money	💰					Bank & Geld	
+C06-T05	C06	Hairdresser & repairs	✂️					Coiffeur & Reparaturen	
+C06-T06	C06	Clothes shopping	👕					Kleider kaufen	
+C07		Getting Around	🚋	Tram, train & directions				Unterwegs	Tram, Zug & Wege
+C07-T01	C07	Public transport	🚋					Öffentlicher Verkehr	
+C07-T02	C07	Asking for directions	🧭					Nach dem Weg fragen	
+C07-T03	C07	Travelling	🧳					Reisen	
+C08		Building Blocks	🧭	Numbers, time & key words				Bausteine	Zahlen, Zeit & Grundwörter
+C08-T01	C08	Greetings & polite phrases	👋					Grüssen & Höflichkeit	
+C08-T02	C08	Common verbs	🏃					Häufige Verben	
+C08-T03	C08	Common adjectives	🎨					Häufige Adjektive	
+C08-T04	C08	Essential nouns	📦					Wichtige Nomen	
+C08-T05	C08	Pronouns & question words	❓					Pronomen & Fragewörter	
+C08-T06	C08	Connectors & prepositions	🔗					Verbindungswörter & Präpositionen	
+C08-T07	C08	Numbers, time & dates	🔢					Zahlen, Zeit & Daten	
 G01		Pronouns	🫵	ich, du, mir, Si and the rest	purple	grammar	
 G01-T01	G01	Personal pronouns					

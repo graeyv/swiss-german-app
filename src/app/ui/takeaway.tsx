@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 
 // What to remember from a rule ("Merke"): a yellow card, a lightbulb and the label on top, the
 // sentence below. The rule screen's one yellow element. See DESIGN.md.

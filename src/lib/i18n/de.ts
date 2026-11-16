@@ -16,7 +16,7 @@ export const de: Dictionary = {
   home: {
     headline: "Versteh deine Schweizer Nachbarn, nicht nur ihre Schilder.",
     intro:
-      "Kurze Lektionen in echtem Schweizerdeutsch, angefangen mit Zürichdeutsch. Lerne, was die Leute wirklich sagen: in der Bäckerei, bei der Arbeit und im Tram.",
+      "Kurze Module in echtem Schweizerdeutsch, angefangen mit Zürichdeutsch. Lerne, was die Leute wirklich sagen: in der Bäckerei, bei der Arbeit und im Tram.",
     start: "Jetzt lernen",
   },
 
@@ -28,6 +28,12 @@ export const de: Dictionary = {
     logIn: "Anmelden",
     createAccount: "Konto erstellen",
     confirmEmail: "Bestätige dein Konto über den Link in deiner E-Mail.",
+  },
+
+  learn: {
+    intro: "Was Schweizerdeutsch vom Hochdeutschen unterscheidet.",
+    lastOpened: "Zuletzt geöffnet",
+    startHere: "Hier beginnen",
   },
 
   nav: {
@@ -69,13 +75,15 @@ export const de: Dictionary = {
   },
 
   lesson: {
-    leave: "Lektion verlassen",
-    number: (number) => `Lektion ${number}`,
+    leave: "Modul verlassen",
+    number: (number) => `Modul ${number}`,
     expect: "Was dich erwartet",
-    topicsHeading: "Themen",
+    topicsHeading: "Lektionen",
     back: (page) => `Zurück zu ${page}`,
     topics: (count) => many(count, "Thema", "Themen"),
+    sections: (count) => many(count, "Lektion", "Lektionen"),
     start: "Los geht’s",
+    fromStart: "Von vorne",
     next: "Weiter",
     done: "Fertig",
     position: (section, position, count) => `${section} · ${position} / ${count}`,
@@ -87,11 +95,13 @@ export const de: Dictionary = {
     dialects: { be: "Berndeutsch", zh: "Zürichdeutsch" },
     play: (variety) => `Auf ${variety} anhören`,
     noRecording: "Noch keine Aufnahme",
+    comingSoon: "Bald verfügbar",
+    inTheMaking: "An diesem Modul arbeiten wir noch. Das wird es behandeln.",
   },
 
   conversations: {
-    back: "Zurück zu den Gesprächen",
-    lines: (count) => many(count, "Satz", "Sätze"),
+    scenes: (count) => many(count, "Szene", "Szenen"),
+    comingSoon: "Bald verfügbar",
     play: "Abspielen",
     pause: "Pausieren",
     back5: "5 Sekunden zurück",
@@ -131,6 +141,7 @@ export const de: Dictionary = {
     newCount: (count) => `${count} neu`,
     reviewCount: (count) => `${count} fällig`,
     doneForToday: "Für heute erledigt",
+    comingSoon: "Bald verfügbar",
     nothingLeft: "Für heute nichts mehr übrig",
     practise: "Üben",
     seeList: "Liste ansehen",

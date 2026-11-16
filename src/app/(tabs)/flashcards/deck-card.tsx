@@ -1,8 +1,10 @@
-import Link from "next/link";
+import { TOPIC_ILLUSTRATIONS } from "@/app/topic-illustrations";
+import { TopicTile } from "@/app/ui/topic-tile";
 import type { DeckNode } from "@/lib/flashcards/decks";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { Counts } from "./counts";
+import { deckIcon } from "./deck-icons";
 
 type TodaysLimits = Parameters<typeof deckAvailability>[1];
 type DeckGridProps = { decks: DeckNode[]; limits: TodaysLimits; locale: Locale };
@@ -17,38 +19,26 @@ export function DeckGrid({ decks, limits, locale }: DeckGridProps) {
   );
 }
 
+// A topic and what it holds for today. A topic without cards yet says it's coming soon.
 function DeckCard({ deck, limits, locale }: { deck: DeckNode; limits: TodaysLimits; locale: Locale }) {
   const { newWords, due } = deckAvailability(deck, limits);
   const t = dictionary(locale).flashcards;
 
   return (
-    <Link
+    <TopicTile
       href={`/flashcards/decks/${deck.code}`}
-      className="flex flex-col gap-3 rounded-2xl bg-mist p-4 transition-transform active:scale-[0.98]"
-    >
-      <span
-        aria-hidden
-        className="flex size-12 items-center justify-center rounded-xl bg-ivory text-2xl"
-      >
-        {deck.emoji ?? "📚"}
-      </span>
-      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <strong className="leading-snug font-semibold">
-          {deck.title} <span aria-hidden className="text-muted">›</span>
-        </strong>
-        <small className="truncate text-sm leading-snug text-muted">
-          {deck.description ??
-            (deck.kind === "grammar" ? t.rules(deck.card_count) : t.words(deck.card_count))}
-        </small>
-      </span>
-      {/* Pushed to the bottom, so chips line up across cards whose titles wrap differently. */}
-      <span className="mt-auto">
-        {newWords + due === 0 ? (
+      title={deck.title}
+      caption={deck.description ?? (deck.kind === "grammar" ? t.rules(deck.card_count) : t.words(deck.card_count))}
+      image={TOPIC_ILLUSTRATIONS[deck.code]}
+      icon={deckIcon(deck.code)}
+      comingSoon={deck.card_count === 0 ? t.comingSoon : undefined}
+      footer={
+        deck.card_count === 0 ? undefined : newWords + due === 0 ? (
           <span className="text-sm font-semibold text-success">✓ {t.doneForToday}</span>
         ) : (
           <Counts newWords={newWords} due={due} locale={locale} />
-        )}
-      </span>
-    </Link>
+        )
+      }
+    />
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "@/app/ui/icons";
 
 type ListenButtonProps = {
   url: string | null;
@@ -64,9 +65,7 @@ export function ListenButton({ url, label, noRecordingLabel }: ListenButtonProps
           ))}
         </span>
       ) : (
-        <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="ml-0.5 size-4">
-          <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.34-5.89a1.5 1.5 0 0 0 0-2.54L6.3 2.84Z" />
-        </svg>
+        <Icon name="play" size={16} className="ml-0.5" />
       )}
     </button>
   );
