@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ButtonLink } from "@/app/ui/button";
-import { Icon, isIconName } from "@/app/ui/icon";
+import { Icon, isIconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Pill } from "@/app/ui/surface";
 import { Eyebrow, Highlight } from "@/app/ui/text";

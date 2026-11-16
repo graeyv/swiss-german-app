@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { Icon, type IconName } from "@/app/ui/icon";
+import { Icon, type IconName } from "@/app/ui/icons";
 import { BottomSheet } from "../../bottom-sheet";
 import type { DeckKind } from "@/lib/flashcards/decks";
 import { filterSearch, type VocabularyFilter } from "@/lib/flashcards/vocabulary-filter";

@@ -5,7 +5,7 @@ import socialLife from "../../../../public/illustrations/topics/social-life.png"
 import { ExampleList } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/example-list";
 import { answerClass, AnswerMark } from "@/app/ui/answer";
 import { Button } from "@/app/ui/button";
-import { Icon, type IconName } from "@/app/ui/icon";
+import { Icon, type IconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { ProgressBar } from "@/app/ui/progress-bar";
 import { Card, Pill } from "@/app/ui/surface";

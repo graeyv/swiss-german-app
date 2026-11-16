@@ -7,7 +7,7 @@ import { deckAvailability } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TOPIC_ILLUSTRATIONS } from "@/app/topic-illustrations";
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 import { TopicBanner } from "@/app/ui/topic-banner";
 import { TopBar } from "@/app/top-bar";
 import { dictionary, type Locale } from "@/lib/i18n";

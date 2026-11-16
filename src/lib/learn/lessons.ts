@@ -40,7 +40,7 @@ export type Section = {
 };
 
 // One thing the learner can expect from a lesson, in one line, shown before they start. The icon is
-// one of the app's icons, such as "headphones" or "mic" (src/app/ui/icon.tsx).
+// one of the app's icons, such as "headphones" or "mic" (src/app/ui/icons.tsx).
 export type Expectation = { icon: string; title: string };
 
 export type Lesson = {

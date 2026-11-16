@@ -84,7 +84,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
   12 px between rows. No border, no shadow: the background colour sets them off.
 - Buttons: fully rounded (pill), at least 56 px high for the main action, full width.
 - Space between sections: about 32 px. Space alone separates them: no divider lines.
-- Icons: Phosphor Icons (MIT licence), in `src/app/ui/icon.tsx`, without a box around them.
+- Icons: Phosphor Icons (MIT licence), in `src/app/ui/icons.tsx`, without a box around them.
   Symbols (a topic, a lesson, the tabs, the ratings, Merke) are Phosphor's **fill** style; signs
   (arrows, check mark, cross, clock) its **regular** line. 24–28 px, 16 px only beside a caption,
   such as the clock before a review time. An icon that leads a row or a list is `teal-soft`; on

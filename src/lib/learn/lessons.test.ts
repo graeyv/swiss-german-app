@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isIconName } from "@/app/ui/icon";
+import { isIconName } from "@/app/ui/icons";
 import { isReady, LESSONS, lessonNumber, sectionParams, topicCount } from "./lessons";
 
 describe("lessons", () => {

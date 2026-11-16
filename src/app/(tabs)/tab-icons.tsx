@@ -1,4 +1,4 @@
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 
 // The tabs' icons, from the app's set. They fill the box the tab gives them and take the colour of
 // the text around them.

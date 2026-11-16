@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { ButtonLink } from "@/app/ui/button";
-import { Icon, isIconName } from "@/app/ui/icon";
+import { Icon, isIconName } from "@/app/ui/icons";
 import { ListRow } from "@/app/ui/list-row";
 import type { Dictionary } from "@/lib/i18n";
 import { getDictionary } from "@/lib/i18n/server";

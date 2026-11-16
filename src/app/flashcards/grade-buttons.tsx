@@ -1,4 +1,4 @@
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 import type { Dictionary } from "@/lib/i18n";
 
 export type Grade = 1 | 2 | 3 | 4;

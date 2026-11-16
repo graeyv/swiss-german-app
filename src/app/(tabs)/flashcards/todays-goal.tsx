@@ -6,7 +6,7 @@ import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { BottomSheet } from "./bottom-sheet";
 import { PaceOptions } from "./pace-options";
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 
 type TodaysGoalProps = {
   newCardsPerDay: number;

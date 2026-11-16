@@ -1,4 +1,4 @@
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 
 // Right and wrong from DESIGN.md: correct on sage with a check, wrong on rose with a brick cross.
 // The text stays teal either way.

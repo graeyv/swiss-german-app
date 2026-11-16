@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Icon, type IconName } from "./icon";
+import { Icon, type IconName } from "./icons";
 
 // Rows to open one by one, such as a lesson's topics. See DESIGN.md.
 export function ListRows({ children }: { children: ReactNode }) {

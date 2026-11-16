@@ -1,4 +1,4 @@
-import type { IconName } from "@/app/ui/icon";
+import type { IconName } from "@/app/ui/icons";
 
 // The icon of each subtopic, and of a topic without an illustration, by deck code, instead of
 // the emoji in content/decks.tsv: emojis bring colours and a style of their own. A new subtopic

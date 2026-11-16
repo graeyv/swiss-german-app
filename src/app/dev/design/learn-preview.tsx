@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ButtonLink } from "@/app/ui/button";
-import { Icon, isIconName } from "@/app/ui/icon";
+import { Icon, isIconName } from "@/app/ui/icons";
 import { LESSONS, lessonHref, lessonNumber, topicCount } from "@/lib/learn/lessons";
 
 // Made-up progress, as saving it is still to come: Aussprache finished, Verwandte Wörter at 5 of

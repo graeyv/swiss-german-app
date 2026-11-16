@@ -1,3 +1,4 @@
+// Not icon.tsx: Next treats a file of that name in src/app as the site's favicon.
 // The app's icons, from Phosphor Icons (MIT licence, @phosphor-icons/core 2.1.1). See DESIGN.md:
 // symbols are filled, and signs such as arrows are drawn in Phosphor's regular line. They take the
 // text colour; an icon that leads a row or a list is teal-soft. Add new ones here rather than

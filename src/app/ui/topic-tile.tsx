@@ -1,7 +1,7 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Icon, type IconName } from "./icon";
+import { Icon, type IconName } from "./icons";
 
 type TopicTileProps = {
   href: string;

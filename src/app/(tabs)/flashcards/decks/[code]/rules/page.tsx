@@ -9,7 +9,7 @@ import { TopBar } from "@/app/top-bar";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 import { deckIcon } from "../../../deck-icons";
 
 export default function RuleListPage({ params }: PageProps<"/flashcards/decks/[code]/rules">) {

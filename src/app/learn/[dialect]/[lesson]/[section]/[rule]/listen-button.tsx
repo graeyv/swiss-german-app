@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 
 type ListenButtonProps = {
   url: string | null;

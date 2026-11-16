@@ -18,7 +18,7 @@ import { CARD_FACE, CardStack } from "./card-stack";
 import { ExerciseStage } from "./exercise-stage";
 import { type Grade, GradeButtons } from "./grade-buttons";
 import { StatusBadge } from "./status-badge";
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 
 type ReviewSessionProps = {
   cards: Flashcard[];

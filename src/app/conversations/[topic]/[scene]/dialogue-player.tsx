@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { type Line, lineAt, lineSpans } from "@/lib/conversations";
 import { dictionary, type Locale } from "@/lib/i18n";
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 
 type DialoguePlayerProps = {
   audio: string | null;

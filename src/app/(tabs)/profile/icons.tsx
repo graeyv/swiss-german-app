@@ -1,4 +1,4 @@
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 
 // The settings rows' icons, from the app's set. They lead their row, so they're teal-soft, like
 // every icon that leads a row. See DESIGN.md.

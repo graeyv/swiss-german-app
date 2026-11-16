@@ -16,7 +16,7 @@ import { dictionary, translationOf } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { FilterSwitch } from "../../../filter-switch";
-import { Icon } from "@/app/ui/icon";
+import { Icon } from "@/app/ui/icons";
 import { deckIcon } from "../../../deck-icons";
 
 // A topic's words, sentences and expressions. A topic with words and the others shows them in
