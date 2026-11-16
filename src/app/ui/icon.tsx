@@ -82,13 +82,13 @@ export function isIconName(name: string): name is IconName {
 type IconProps = {
   name: IconName;
   // 24 px for icons in a row of text, 28 px where an icon leads a line, such as a list, 16 px
-  // beside a caption, such as the clock before a review time. 20 and 32 px only inside small and
+  // beside a caption, such as the clock before a review time, 12 px in a small pill. 20 and 32 px only inside small and
   // large round buttons. "full" fills a box that sets the size, such as a tab's.
-  size?: 16 | 20 | 24 | 28 | 32 | "full";
+  size?: 12 | 16 | 20 | 24 | 28 | 32 | "full";
   className?: string;
 };
 
-const SIZES = { 16: "size-4", 20: "size-5", 24: "size-6", 28: "size-7", 32: "size-8", full: "size-full" } as const;
+const SIZES = { 12: "size-3", 16: "size-4", 20: "size-5", 24: "size-6", 28: "size-7", 32: "size-8", full: "size-full" } as const;
 
 // Decorative: whatever the icon belongs to carries the words for screen readers.
 export function Icon({ name, size = 24, className = "" }: IconProps) {

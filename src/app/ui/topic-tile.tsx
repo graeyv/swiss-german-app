@@ -12,10 +12,15 @@ type TopicTileProps = {
   icon?: IconName;
   // Pinned to the bottom, such as today's counts, so it lines up across tiles of a row.
   footer?: ReactNode;
+  // For a topic with nothing in it yet: the label to show, such as "Bald verfügbar".
+  comingSoon?: string;
 };
 
-// A topic in a two-column grid, as in Flashcards and Conversations. See DESIGN.md.
-export function TopicTile({ href, title, caption, image, icon = "cards", footer }: TopicTileProps) {
+// A topic in a two-column grid, as in Flashcards and Conversations. See DESIGN.md. A topic with
+// nothing in it yet is inactive, its picture on mist and its title in teal-soft, with a pill
+// under the title instead of its size, so prototype testers see at once that it's not ready
+// rather than broken.
+export function TopicTile({ href, title, caption, image, icon = "cards", footer, comingSoon }: TopicTileProps) {
   return (
     <Link
       href={href}
@@ -24,14 +29,28 @@ export function TopicTile({ href, title, caption, image, icon = "cards", footer 
     >
       {image ? (
         // Half the column, which is at most 42rem wide. The image has no background of its own:
-        // sage-light sets it off from the tile.
-        <Image src={image} alt="" quality={90} sizes="(min-width: 42rem) 20rem, 50vw" className="aspect-[3/2] w-full bg-sage-light" />
+        // sage-light sets it off from the tile, or mist while it's inactive.
+        <Image
+          src={image}
+          alt=""
+          quality={90}
+          sizes="(min-width: 42rem) 20rem, 50vw"
+          className={`aspect-[3/2] w-full ${comingSoon ? "bg-mist" : "bg-sage-light"}`}
+        />
       ) : (
         <Icon name={icon} size={28} className="mx-4 mt-4 text-teal-soft" />
       )}
       <span className={`flex min-w-0 flex-1 flex-col gap-0.5 px-4 ${footer ? "" : "pb-4"}`}>
-        <strong className="leading-snug font-semibold">{title}</strong>
-        {caption && <small className="truncate text-sm leading-snug text-teal-soft">{caption}</small>}
+        <strong className={`leading-snug font-semibold ${comingSoon ? "text-teal-soft" : ""}`}>{title}</strong>
+        {comingSoon ? (
+          // Small and on one line: a tile is only about 165 px wide on a phone.
+          <span className="mt-1 inline-flex w-fit items-center gap-1 rounded-full bg-ivory px-2 py-0.5 text-[0.75rem] leading-4 font-semibold whitespace-nowrap text-teal">
+            <Icon name="clock" size={12} />
+            {comingSoon}
+          </span>
+        ) : (
+          caption && <small className="truncate text-sm leading-snug text-teal-soft">{caption}</small>
+        )}
       </span>
       {footer && <span className="mt-auto px-4 pb-4">{footer}</span>}
     </Link>

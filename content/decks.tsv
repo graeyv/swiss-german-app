@@ -5,7 +5,7 @@ C04-T02	C04	In the kitchen	🍳					In der Küche
 C04-T03	C04	Cleaning & laundry	🧺					Putzen & Waschen	
 C04-T04	C04	Relaxing at home	🛋️					Entspannen zuhause	
 C04-T05	C04	Neighbours & the building	🏢					Nachbarn & Haus	
-C03		Social Life	☕	Friends, going out & free time				Freizeit & Freunde	Treffen & Ausgehen
+C03		Social Life	☕	Friends, going out & free time				Freizeit	Treffen & Ausgehen
 C03-T01	C03	At the café & restaurant	☕					Im Café & Restaurant	
 C03-T02	C03	Introducing yourself	🤝					Sich vorstellen	
 C03-T03	C03	Small talk	💬					Small Talk	
@@ -16,7 +16,7 @@ C05		At Work	💼	Office, colleagues & meetings				Bei der Arbeit	Büro, Kollege
 C05-T01	C05	Colleagues & breaks	☕					Kollegen & Pausen	
 C05-T02	C05	Meetings & calls	📞					Sitzungen & Anrufe	
 C05-T03	C05	Tasks & projects	📋					Aufgaben & Projekte	
-C06		Everyday Services	🏦	Post, bank, doctor & more				Alltag & Dienste	Post, Bank, Arzt & mehr
+C06		Errands	🏦	Post, bank, doctor & more				Erledigungen	Post, Bank, Arzt & mehr
 C06-T01	C06	At the supermarket	🛒					Im Supermarkt	
 C06-T02	C06	Doctor & pharmacy	💊					Arzt & Apotheke	
 C06-T03	C06	At the post office	📮					Auf der Post	

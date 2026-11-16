@@ -177,7 +177,7 @@
       "deck": "C03",
       "title": {
         "en": "Social Life",
-        "de": "Freizeit & Freunde"
+        "de": "Freizeit"
       },
       "situations": [
         {
@@ -294,8 +294,8 @@
       "id": "everyday-services",
       "deck": "C06",
       "title": {
-        "en": "Everyday Services",
-        "de": "Alltag & Dienste"
+        "en": "Errands",
+        "de": "Erledigungen"
       },
       "situations": [
         {

@@ -21,7 +21,7 @@ const ICONS: Record<string, IconName> = {
   "C05-T01": "users",
   "C05-T02": "phone",
   "C05-T03": "clipboard",
-  // Everyday Services
+  // Errands
   "C06-T01": "cart",
   "C06-T02": "pill",
   "C06-T03": "mail",

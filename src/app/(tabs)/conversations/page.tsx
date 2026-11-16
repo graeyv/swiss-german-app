@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TOPIC_ILLUSTRATIONS } from "@/app/topic-illustrations";
 import { TopicTile } from "@/app/ui/topic-tile";
-import { textIn, TOPICS } from "@/lib/conversations";
+import { isReady, textIn, TOPICS } from "@/lib/conversations";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 
 // Swiss German conversations as they're heard in everyday life: the flashcard topics, without The
@@ -32,6 +32,8 @@ async function Conversations() {
               title={textIn(topic.title, locale)}
               caption={t.conversations.scenes(topic.situations.length)}
               image={TOPIC_ILLUSTRATIONS[topic.deck]}
+              // Like a flashcard topic without cards: there's nothing to listen to here yet.
+              comingSoon={topic.situations.some(isReady) ? undefined : t.conversations.comingSoon}
             />
           </li>
         ))}

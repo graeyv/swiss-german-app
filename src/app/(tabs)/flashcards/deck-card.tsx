@@ -31,10 +31,9 @@ function DeckCard({ deck, limits, locale }: { deck: DeckNode; limits: TodaysLimi
       caption={deck.description ?? (deck.kind === "grammar" ? t.rules(deck.card_count) : t.words(deck.card_count))}
       image={TOPIC_ILLUSTRATIONS[deck.code]}
       icon={deckIcon(deck.code)}
+      comingSoon={deck.card_count === 0 ? t.comingSoon : undefined}
       footer={
-        deck.card_count === 0 ? (
-          <span className="text-sm text-teal-soft">{t.comingSoon}</span>
-        ) : newWords + due === 0 ? (
+        deck.card_count === 0 ? undefined : newWords + due === 0 ? (
           <span className="text-sm font-semibold text-success">✓ {t.doneForToday}</span>
         ) : (
           <Counts newWords={newWords} due={due} locale={locale} />

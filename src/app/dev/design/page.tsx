@@ -15,6 +15,7 @@ import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule } from "@/lib/learn/lessons";
 import { devOnly } from "../exercises/data";
 import { GradePreview } from "./grade-preview";
+import { ComingSoonPreview } from "./coming-soon-preview";
 import { LearnPathWithProgress } from "./learn-preview";
 import { LogoPreview } from "./logo-preview";
 
@@ -33,6 +34,10 @@ export default function DevDesignPage() {
 
       <Part title="Logo">
         <LogoPreview />
+      </Part>
+
+      <Part title="Themen-Kachel: bald verfügbar (iPhone-Breite)">
+        <ComingSoonPreview />
       </Part>
 
       <Part title="Farben">
@@ -246,7 +251,7 @@ const EXAMPLES = [
 
 // The new overarching topics that have an illustration yet. The others follow once they're made.
 const ILLUSTRATIONS: { image: StaticImageData; title: string; caption: string }[] = [
-  { image: socialLife, title: "Freizeit & Freunde", caption: "Treffen & Ausgehen" },
+  { image: socialLife, title: "Freizeit", caption: "Treffen & Ausgehen" },
   { image: atHome, title: "Zuhause", caption: "Wohnen & Haushalt" },
 ];
 
