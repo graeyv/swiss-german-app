@@ -2,18 +2,19 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TopBar } from "@/app/top-bar";
-import { findSituation, situationParams, textIn } from "@/lib/conversations";
+import { findTopic, isReady, sceneParams, textIn } from "@/lib/conversations";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { DialoguePlayer } from "./dialogue-player";
 
 export function generateStaticParams() {
-  return situationParams();
+  return sceneParams();
 }
 
-// One situation: its dialogue to listen to, with the transcript and its translation once it's
-// been heard. Full screen like a lesson, with the player at the bottom within thumb reach.
-export default function SituationPage({ params }: PageProps<"/conversations/[situation]">) {
+// One scene: its dialogue to listen to, with the transcript and its translation once it's been
+// heard. Full screen like a lesson, with the player at the bottom within thumb reach. A scene
+// still to be written has no page.
+export default function ScenePage({ params }: PageProps<"/conversations/[topic]/[scene]">) {
   return (
     <Suspense
       fallback={
@@ -27,27 +28,24 @@ export default function SituationPage({ params }: PageProps<"/conversations/[sit
   );
 }
 
-async function SituationView({ params }: Pick<PageProps<"/conversations/[situation]">, "params">) {
-  const [{ situation: id }, locale] = await Promise.all([params, getLocale()]);
-  const found = findSituation(id);
-  if (!found) notFound();
-  const { topic, situation } = found;
+async function SituationView({ params }: Pick<PageProps<"/conversations/[topic]/[scene]">, "params">) {
+  const [{ topic: topicId, scene: sceneId }, locale] = await Promise.all([params, getLocale()]);
+  const topic = findTopic(topicId);
+  const situation = topic?.situations.find((candidate) => candidate.id === sceneId);
+  if (!topic || !situation || !isReady(situation)) notFound();
   const t = dictionary(locale);
   const title = textIn(situation.title, locale);
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6">
       <title>{t.title(title)}</title>
-      <TopBar back={{ href: "/conversations", label: t.conversations.back }} />
+      <TopBar back={{ href: `/conversations/${topic.id}` }} backText={textIn(topic.title, locale)} />
 
       <div className="flex flex-col gap-1 pt-4 pb-6">
         <p className="text-sm font-semibold tracking-wide text-muted uppercase">
           {textIn(topic.title, locale)}
         </p>
-        <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight">
-          <span aria-hidden>{situation.emoji}</span>
-          {title}
-        </h1>
+        <h1 className="text-title font-bold">{title}</h1>
         <p className="text-muted">{textIn(situation.scene, locale)}</p>
       </div>
 

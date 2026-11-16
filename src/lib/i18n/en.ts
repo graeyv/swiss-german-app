@@ -104,8 +104,10 @@ export const en = {
   },
 
   conversations: {
-    back: "Back to conversations",
-    lines: (count: number) => many(count, "line", "lines"),
+    // How many scenes a topic has, such as "5 scenes".
+    scenes: (count: number) => many(count, "scene", "scenes"),
+    // On a scene that is still to be written.
+    comingSoon: "Coming soon",
     play: "Play",
     pause: "Pause",
     back5: "Back 5 seconds",

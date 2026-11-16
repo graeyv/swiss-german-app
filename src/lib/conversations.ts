@@ -1,5 +1,7 @@
-// Conversations: everyday situations as short dialogues to listen to, grouped by topic, such as
-// "In the kitchen" under "At home". They're kept in content/conversations/topics.json, so their
+// Conversations: scenes from everyday life as short dialogues to listen to, such as "Overslept!"
+// under "At Home". The topics are the flashcard topics, without The Essentials, so learners meet
+// the same five worlds in both: each names its deck code, which gives it its illustration, and a
+// test checks its titles against content/decks.tsv. In the code a scene is a situation. They're kept in content/conversations/topics.json, so their
 // text can change without touching the code. Assigning the file to the types below makes the
 // type check catch content that doesn't have this shape.
 import topicsFile from "../../content/conversations/topics.json";
@@ -21,43 +23,50 @@ export type Line = {
 export type Situation = {
   id: string;
   title: Translated;
-  emoji: string;
   // Who is talking, and where, in one sentence.
   scene: Translated;
   dialect: string;
   // The recording of the whole dialogue under public/, or null until it's recorded.
   audio: string | null;
+  // Empty while the scene is still to be written: it's listed as coming soon.
   lines: Line[];
 };
 
 export type Topic = {
   id: string;
+  // The flashcard topic it matches, such as "C04" for At Home.
+  deck: string;
   title: Translated;
-  emoji: string;
   situations: Situation[];
 };
 
 const file: { topics: Topic[] } = topicsFile;
 
-// In the order learners see them. A topic without situations stays hidden.
-export const TOPICS: Topic[] = file.topics
-  .filter((topic) => topic.situations.length > 0);
+// In the order learners see them.
+export const TOPICS: Topic[] = file.topics;
+
+// Whether a scene can be listened to yet.
+export function isReady(situation: Situation): boolean {
+  return situation.lines.length > 0;
+}
+
+export function findTopic(id: string): Topic | undefined {
+  return TOPICS.find((topic) => topic.id === id);
+}
 
 export function textIn(text: Translated, locale: Locale): string {
   return text[locale] ?? text.en;
 }
 
-export function findSituation(id: string): { topic: Topic; situation: Situation } | undefined {
-  for (const topic of TOPICS) {
-    const situation = topic.situations.find((candidate) => candidate.id === id);
-    if (situation) return { topic, situation };
-  }
-  return undefined;
+// Every topic's page and every ready scene's, so they're built ahead of time and open instantly.
+export function topicParams() {
+  return TOPICS.map((topic) => ({ topic: topic.id }));
 }
 
-// Every situation's page, so they're all built ahead of time and open instantly.
-export function situationParams() {
-  return TOPICS.flatMap((topic) => topic.situations.map((situation) => ({ situation: situation.id })));
+export function sceneParams() {
+  return TOPICS.flatMap((topic) =>
+    topic.situations.filter(isReady).map((situation) => ({ topic: topic.id, scene: situation.id })),
+  );
 }
 
 // Where each line plays in the recording: from its start to the next line's start, or to the end

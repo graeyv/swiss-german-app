@@ -2,19 +2,18 @@
   "topics": [
     {
       "id": "at-home",
+      "deck": "C04",
       "title": {
-        "en": "At home",
+        "en": "At Home",
         "de": "Zuhause"
       },
-      "emoji": "🏠",
       "situations": [
         {
           "id": "waking-up",
           "title": {
-            "en": "Waking up & getting ready",
-            "de": "Aufstehen & bereit machen"
+            "en": "Overslept!",
+            "de": "Verschlafen!"
           },
-          "emoji": "⏰",
           "scene": {
             "en": "Luca overslept, and Anna helps him get out of the door in time.",
             "de": "Luca hat verschlafen, und Anna hilft ihm, rechtzeitig aus dem Haus zu kommen."
@@ -116,150 +115,296 @@
           ]
         },
         {
-          "id": "in-the-kitchen",
+          "id": "what-to-cook",
           "title": {
-            "en": "In the kitchen",
-            "de": "In der Küche"
+            "en": "What shall we cook?",
+            "de": "Was kochen wir?"
           },
-          "emoji": "🍳",
           "scene": {
             "en": "Anna and Luca decide what to cook for dinner.",
             "de": "Anna und Luca überlegen, was sie zum Abendessen kochen."
           },
           "dialect": "be",
           "audio": null,
-          "lines": [
-            {
-              "speaker": "Luca",
-              "swissGerman": "Was wei mir hüt z Znacht ässe?",
-              "standardGerman": "Was wollen wir heute zum Abendessen essen?",
-              "english": "What shall we have for dinner tonight?",
-              "start": null
-            },
-            {
-              "speaker": "Anna",
-              "swissGerman": "Mir hei no Rüebli u Härdöpfu. Viilech e Suppe?",
-              "standardGerman": "Wir haben noch Karotten und Kartoffeln. Vielleicht eine Suppe?",
-              "english": "We still have carrots and potatoes. Maybe a soup?",
-              "start": null
-            },
-            {
-              "speaker": "Luca",
-              "swissGerman": "Gueti Idee. Chasch du d Zibele schnide?",
-              "standardGerman": "Gute Idee. Kannst du die Zwiebeln schneiden?",
-              "english": "Good idea. Can you chop the onions?",
-              "start": null
-            },
-            {
-              "speaker": "Anna",
-              "swissGerman": "Klar. Wo isch ds scharfe Mässer?",
-              "standardGerman": "Klar. Wo ist das scharfe Messer?",
-              "english": "Sure. Where's the sharp knife?",
-              "start": null
-            },
-            {
-              "speaker": "Luca",
-              "swissGerman": "I dr oberschte Schublade, links.",
-              "standardGerman": "In der obersten Schublade, links.",
-              "english": "In the top drawer, on the left.",
-              "start": null
-            }
-          ]
+          "lines": []
         },
         {
-          "id": "cleaning-and-laundry",
+          "id": "laundry-day",
           "title": {
-            "en": "Cleaning & laundry",
-            "de": "Putzen & Waschen"
+            "en": "Laundry day",
+            "de": "Waschtag"
           },
-          "emoji": "🧺",
           "scene": {
-            "en": "It's laundry day, and the bathroom needs cleaning too.",
-            "de": "Heute ist Waschtag, und das Badezimmer muss auch geputzt werden."
+            "en": "In the laundry room, and the bathroom needs cleaning too.",
+            "de": "In der Waschküche, und das Badezimmer muss auch noch geputzt werden."
           },
           "dialect": "be",
           "audio": null,
-          "lines": [
-            {
-              "speaker": "Anna",
-              "swissGerman": "Hüt isch Wöschtag. Hesch du dini Sache scho parat?",
-              "standardGerman": "Heute ist Waschtag. Hast du deine Sachen schon bereit?",
-              "english": "It's laundry day. Have you got your things ready?",
-              "start": null
-            },
-            {
-              "speaker": "Luca",
-              "swissGerman": "Fasch. Darf i mini Hemmli zu dine tue?",
-              "standardGerman": "Fast. Darf ich meine Hemden zu deinen tun?",
-              "english": "Almost. Can I put my shirts in with yours?",
-              "start": null
-            },
-            {
-              "speaker": "Anna",
-              "swissGerman": "Ja, aber nid di rote Socke!",
-              "standardGerman": "Ja, aber nicht die roten Socken!",
-              "english": "Yes, but not the red socks!",
-              "start": null
-            },
-            {
-              "speaker": "Luca",
-              "swissGerman": "Okay. U när putze mir zäme ds Badzimmer?",
-              "standardGerman": "Okay. Und dann putzen wir zusammen das Badezimmer?",
-              "english": "Okay. And then we clean the bathroom together?",
-              "start": null
-            },
-            {
-              "speaker": "Anna",
-              "swissGerman": "Abgmacht. I nime dr Bode, du ds Lavabo.",
-              "standardGerman": "Abgemacht. Ich nehme den Boden, du das Waschbecken.",
-              "english": "Deal. I'll do the floor, you do the sink.",
-              "start": null
-            }
-          ]
+          "lines": []
         },
         {
-          "id": "relaxing-at-home",
+          "id": "quiet-evening",
           "title": {
-            "en": "Relaxing at home",
-            "de": "Entspannen zu Hause"
+            "en": "A quiet evening",
+            "de": "Ein ruhiger Abend"
           },
-          "emoji": "🛋️",
           "scene": {
-            "en": "After a long day, Anna and Luca plan a quiet evening.",
-            "de": "Nach einem langen Tag planen Anna und Luca einen ruhigen Abend."
+            "en": "A film or a walk? Anna and Luca plan their evening.",
+            "de": "Film oder Spaziergang? Anna und Luca planen den Abend."
           },
           "dialect": "be",
           "audio": null,
-          "lines": [
-            {
-              "speaker": "Luca",
-              "swissGerman": "Wosch hüt am Aabe e Film luege?",
-              "standardGerman": "Willst du heute Abend einen Film schauen?",
-              "english": "Do you want to watch a film tonight?",
-              "start": null
-            },
-            {
-              "speaker": "Anna",
-              "swissGerman": "Gärn. Aber nüt z Längs, i bi müed.",
-              "standardGerman": "Gerne. Aber nichts zu Langes, ich bin müde.",
-              "english": "Sure. But nothing too long, I'm tired.",
-              "start": null
-            },
-            {
-              "speaker": "Luca",
-              "swissGerman": "De mache mir's üs uf em Sofa gmüetlech.",
-              "standardGerman": "Dann machen wir es uns auf dem Sofa gemütlich.",
-              "english": "Then let's get cosy on the sofa.",
-              "start": null
-            },
-            {
-              "speaker": "Anna",
-              "swissGerman": "U i hole d Decki u öppis z Nasche.",
-              "standardGerman": "Und ich hole die Decke und etwas zum Naschen.",
-              "english": "And I'll get the blanket and something to snack on.",
-              "start": null
-            }
-          ]
+          "lines": []
+        },
+        {
+          "id": "new-neighbour",
+          "title": {
+            "en": "New in the building",
+            "de": "Neu im Haus"
+          },
+          "scene": {
+            "en": "Anna meets the new neighbour on the stairs.",
+            "de": "Anna trifft im Treppenhaus die neue Nachbarin."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        }
+      ]
+    },
+    {
+      "id": "social-life",
+      "deck": "C03",
+      "title": {
+        "en": "Social Life",
+        "de": "Freizeit & Freunde"
+      },
+      "situations": [
+        {
+          "id": "apero",
+          "title": {
+            "en": "Apéro after work",
+            "de": "Apéro nach der Arbeit"
+          },
+          "scene": {
+            "en": "Luca introduces Anna to a colleague.",
+            "de": "Luca stellt Anna einem Kollegen vor."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "at-the-cafe",
+          "title": {
+            "en": "Ordering at the café",
+            "de": "Im Café bestellen"
+          },
+          "scene": {
+            "en": "Ordering, paying, and who pays.",
+            "de": "Bestellen, bezahlen und die Frage, wer zahlt."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "weekend-plans",
+          "title": {
+            "en": "Weekend plans",
+            "de": "Pläne fürs Wochenende"
+          },
+          "scene": {
+            "en": "Hiking, the lake or the cinema?",
+            "de": "Wandern, an den See oder ins Kino?"
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "back-from-holiday",
+          "title": {
+            "en": "Back from holiday",
+            "de": "Zurück aus den Ferien"
+          },
+          "scene": {
+            "en": "Anna tells a friend about her holiday.",
+            "de": "Anna erzählt einer Freundin von ihren Ferien."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        }
+      ]
+    },
+    {
+      "id": "at-work",
+      "deck": "C05",
+      "title": {
+        "en": "At Work",
+        "de": "Bei der Arbeit"
+      },
+      "situations": [
+        {
+          "id": "first-day",
+          "title": {
+            "en": "The first day",
+            "de": "Der erste Tag"
+          },
+          "scene": {
+            "en": "Luca introduces himself to his new team.",
+            "de": "Luca stellt sich im neuen Team vor."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "znueni-break",
+          "title": {
+            "en": "Znüni break",
+            "de": "Znüni-Pause"
+          },
+          "scene": {
+            "en": "Small talk at the coffee machine.",
+            "de": "Small Talk an der Kaffeemaschine."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "short-meeting",
+          "title": {
+            "en": "A short meeting",
+            "de": "Kurzes Meeting"
+          },
+          "scene": {
+            "en": "Who does what, and by when?",
+            "de": "Wer macht was bis wann?"
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        }
+      ]
+    },
+    {
+      "id": "everyday-services",
+      "deck": "C06",
+      "title": {
+        "en": "Everyday Services",
+        "de": "Alltag & Dienste"
+      },
+      "situations": [
+        {
+          "id": "at-the-bakery",
+          "title": {
+            "en": "At the bakery",
+            "de": "In der Bäckerei"
+          },
+          "scene": {
+            "en": "Ordering bread and croissants.",
+            "de": "Brot und Gipfeli bestellen."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "at-the-pharmacy",
+          "title": {
+            "en": "At the pharmacy",
+            "de": "In der Apotheke"
+          },
+          "scene": {
+            "en": "Anna has a cold and asks for advice.",
+            "de": "Anna ist erkältet und lässt sich beraten."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "at-the-post-office",
+          "title": {
+            "en": "At the post office",
+            "de": "Auf der Post"
+          },
+          "scene": {
+            "en": "Sending a parcel.",
+            "de": "Ein Paket aufgeben."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "at-the-hairdresser",
+          "title": {
+            "en": "At the hairdresser",
+            "de": "Beim Coiffeur"
+          },
+          "scene": {
+            "en": "Explaining what you'd like.",
+            "de": "Erklären, was man möchte."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        }
+      ]
+    },
+    {
+      "id": "getting-around",
+      "deck": "C07",
+      "title": {
+        "en": "Getting Around",
+        "de": "Unterwegs"
+      },
+      "situations": [
+        {
+          "id": "ticket-machine",
+          "title": {
+            "en": "At the ticket machine",
+            "de": "Billett am Automaten"
+          },
+          "scene": {
+            "en": "Luca needs help buying a ticket.",
+            "de": "Luca braucht Hilfe beim Billettkauf."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "train-delayed",
+          "title": {
+            "en": "The train is late",
+            "de": "Der Zug hat Verspätung"
+          },
+          "scene": {
+            "en": "Missed the connection, what now?",
+            "de": "Den Anschluss verpasst, was nun?"
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
+        },
+        {
+          "id": "asking-the-way",
+          "title": {
+            "en": "Asking the way",
+            "de": "Nach dem Weg fragen"
+          },
+          "scene": {
+            "en": "Anna is looking for the station.",
+            "de": "Anna sucht den Bahnhof."
+          },
+          "dialect": "be",
+          "audio": null,
+          "lines": []
         }
       ]
     }

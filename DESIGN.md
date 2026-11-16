@@ -95,7 +95,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
 topic in English); in the code and this guide they are lesson → section → rule.
@@ -114,6 +114,14 @@ topic in English); in the code and this guide they are lesson → section → ru
   primary button ("Weiter: R", or "Los geht's"). If the card's button would be out of sight, the
   tab opens scrolled to it, at once, with the row above still peeking in. Modules still being
   written look the same. Every module has its own icon, never a colour.
+- **Topic tile** (`TopicTile`, Flashcards and Conversations): the topics in a two-column grid, each
+  a tile on mist with the topic's illustration across the top on `sage-light` (3:2), its title and
+  caption below, and, in Flashcards, today's counts at the bottom. Conversations uses the
+  flashcard topics without The Essentials, so both show the same illustrations and titles.
+- **Topic banner** (`TopicBanner`): the top of a topic's page, its illustration at 2:1, whole and
+  centred on `sage-light` rather than cropped. Its title below in title size, then its subtopics
+  or scenes as list rows. A scene still to be written is a row without an arrow saying "Bald
+  verfügbar".
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
   The highlight is the screen's one yellow element, and it's only used here.
 - **Icon list** ("Was dich erwartet"): a filled icon in `teal-soft`, then one line of text. No boxes, no
@@ -144,8 +152,8 @@ topic in English); in the code and this guide they are lesson → section → ru
 ## Not decided yet
 
 - **Emojis**: multicoloured emojis clash with "teal is the only icon colour". Flashcard subtopics
-  now use icons, and topic pages their illustration. Onboarding, settings and the conversation
-  situations still show emojis; this guide will say how to replace them.
+  now use icons, and topics their illustration. Onboarding and settings still show the topics'
+  emojis; this guide will say how to replace them.
 
 ## Don'ts
 

@@ -97,8 +97,8 @@ export const de: Dictionary = {
   },
 
   conversations: {
-    back: "Zurück zu den Gesprächen",
-    lines: (count) => many(count, "Satz", "Sätze"),
+    scenes: (count) => many(count, "Szene", "Szenen"),
+    comingSoon: "Bald verfügbar",
     play: "Abspielen",
     pause: "Pausieren",
     back5: "5 Sekunden zurück",

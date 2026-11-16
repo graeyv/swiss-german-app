@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -7,14 +6,15 @@ import { type DeckNode, findDeck, overviewHref } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { TOPIC_ILLUSTRATIONS } from "@/app/topic-illustrations";
 import { Icon } from "@/app/ui/icon";
+import { TopicBanner } from "@/app/ui/topic-banner";
 import { TopBar } from "@/app/top-bar";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { Counts } from "../../counts";
 import { deckIcon } from "../../deck-icons";
-import { TOPIC_ILLUSTRATIONS } from "../../illustrations";
 import { SubcategorySheet } from "./subcategory-sheet";
 
 type Availability = ReturnType<typeof deckAvailability>;
@@ -46,18 +46,10 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
       {/* Directly in the page's column, so it stays at the top while the page scrolls. */}
       <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : overviewHref(deck.kind) }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
 
-      {/* The topic's illustration as a flat banner, whole and centred on sage-light: cropping it
-          would cut off heads and feet. Without one, the deck's icon leads the title. */}
+      {/* The topic's illustration as a banner, or without one, the deck's icon. */}
       <div className="flex flex-col gap-6">
         {illustration ? (
-          <Image
-            src={illustration}
-            alt=""
-            quality={90}
-            preload
-            sizes="(min-width: 42rem) 39rem, 100vw"
-            className="aspect-[2/1] w-full rounded-3xl bg-sage-light object-contain"
-          />
+          <TopicBanner image={illustration} />
         ) : (
           <Icon name={deckIcon(deck.code)} size={28} className="text-teal-soft" />
         )}
