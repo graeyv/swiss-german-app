@@ -32,7 +32,7 @@ const ICONS: Record<string, IconName> = {
   "C07-T01": "tram",
   "C07-T02": "pin",
   "C07-T03": "suitcase",
-  // The Essentials
+  // Building Blocks
   "C08-T01": "wave",
   "C08-T02": "activity",
   "C08-T03": "palette",

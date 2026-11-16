@@ -117,7 +117,7 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Topic tile** (`TopicTile`, Flashcards and Conversations): the topics in a two-column grid, each
   a tile on mist with the topic's illustration across the top on `sage-light` (3:2), its title and
   caption below, and, in Flashcards, today's counts at the bottom. Conversations uses the
-  flashcard topics without The Essentials, so both show the same illustrations and titles. Titles
+  flashcard topics without Building Blocks, so both show the same illustrations and titles. Titles
   are short enough for one line at iPhone width (about 133 px), such as "Freizeit". A topic with
   nothing in it yet is inactive: its picture on mist instead of `sage-light`, its title in
   `teal-soft`, and under the title, instead of its size, a small ivory pill with a clock and

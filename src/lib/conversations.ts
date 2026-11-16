@@ -1,5 +1,5 @@
 // Conversations: scenes from everyday life as short dialogues to listen to, such as "Overslept!"
-// under "At Home". The topics are the flashcard topics, without The Essentials, so learners meet
+// under "At Home". The topics are the flashcard topics, without Building Blocks, so learners meet
 // the same five worlds in both: each names its deck code, which gives it its illustration, and a
 // test checks its titles against content/decks.tsv. In the code a scene is a situation. They're kept in content/conversations/topics.json, so their
 // text can change without touching the code. Assigning the file to the types below makes the
