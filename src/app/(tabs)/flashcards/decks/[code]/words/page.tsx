@@ -16,6 +16,8 @@ import { dictionary, translationOf } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { FilterSwitch } from "../../../filter-switch";
+import { Icon } from "@/app/ui/icon";
+import { deckIcon } from "../../../deck-icons";
 
 // A topic's words, sentences and expressions. A topic with words and the others shows them in
 // three tabs: all, words, and sentences and expressions.
@@ -59,12 +61,7 @@ async function WordList({ params, searchParams }: PageProps<"/flashcards/decks/[
 
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
-          <span
-            aria-hidden
-            className="flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl bg-mist"
-          >
-            {deck.emoji ?? "📚"}
-          </span>
+          <Icon name={deckIcon(deck.code)} size={28} className="text-teal-soft" />
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{deck.title}</h1>
             <p className="text-sm text-muted">

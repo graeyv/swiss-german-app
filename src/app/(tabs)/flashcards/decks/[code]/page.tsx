@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -6,11 +7,14 @@ import { type DeckNode, findDeck, overviewHref } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { Icon } from "@/app/ui/icon";
 import { TopBar } from "@/app/top-bar";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { Counts } from "../../counts";
+import { deckIcon } from "../../deck-icons";
+import { TOPIC_ILLUSTRATIONS } from "../../illustrations";
 import { SubcategorySheet } from "./subcategory-sheet";
 
 type Availability = ReturnType<typeof deckAvailability>;
@@ -33,6 +37,7 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
   if (!found) notFound();
   const { deck, ancestors } = found;
   const parent = ancestors.at(-1);
+  const illustration = TOPIC_ILLUSTRATIONS[deck.code];
 
   return (
     <>
@@ -41,18 +46,24 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
       {/* Directly in the page's column, so it stays at the top while the page scrolls. */}
       <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : overviewHref(deck.kind) }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
 
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-4">
-          <span
-            aria-hidden
-            className="flex size-16 shrink-0 items-center justify-center rounded-2xl text-4xl bg-mist"
-          >
-            {deck.emoji ?? "📚"}
-          </span>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">{deck.title}</h1>
-            {deck.description && <p className="text-sm text-muted">{deck.description}</p>}
-          </div>
+      {/* The topic's illustration as a flat banner, whole and centred on sage-light: cropping it
+          would cut off heads and feet. Without one, the deck's icon leads the title. */}
+      <div className="flex flex-col gap-6">
+        {illustration ? (
+          <Image
+            src={illustration}
+            alt=""
+            quality={90}
+            preload
+            sizes="(min-width: 42rem) 39rem, 100vw"
+            className="aspect-[2/1] w-full rounded-3xl bg-sage-light object-contain"
+          />
+        ) : (
+          <Icon name={deckIcon(deck.code)} size={28} className="text-teal-soft" />
+        )}
+        <div className="flex flex-col gap-1">
+          <h1 className="text-title font-bold">{deck.title}</h1>
+          {deck.description && <p className="text-body text-teal-soft">{deck.description}</p>}
         </div>
       </div>
 
@@ -112,9 +123,7 @@ function ShuffleButton({ deck, availability, locale }: DeckProps) {
       aria-label={`${t.shuffle(deck.title)}: ${t.newCount(newWords)}, ${t.reviewCount(due)}`}
       className="flex min-h-14 items-center gap-2.5 rounded-2xl bg-accent px-4 py-2 text-accent-foreground shadow-sm transition-[opacity,transform] hover:opacity-90 active:scale-[0.98]"
     >
-      <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5 shrink-0">
-        <path d="M3 6h2.5c1.6 0 3 .8 3.9 2.1l2.2 3.8c.9 1.3 2.3 2.1 3.9 2.1H17M3 14h2.5c1.6 0 3-.8 3.9-2.1M12.6 8.1c.9-1.3 2.3-2.1 3.9-2.1H17M15 4l2 2-2 2M15 12l2 2-2 2" />
-      </svg>
+      <Icon name="shuffle" size={20} />
       {/* Wraps before the chips do, should a label be long on a narrow phone. */}
       <span className="min-w-0 flex-1 leading-snug font-semibold">{t.shuffleAll}</span>
       <span className="flex shrink-0 gap-1.5 text-xs font-semibold">
@@ -133,15 +142,12 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
   // Still without cards: shown so the structure is visible, but there's nothing to open yet.
   if (deck.card_count === 0) {
     return (
-      <div className="flex min-h-16 items-center gap-3 rounded-2xl bg-mist p-3">
-        <span
-          aria-hidden
-          className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-ivory text-2xl"
-        >
-          {deck.emoji ?? "📚"}
+      <div className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4">
+        <Icon name={deckIcon(deck.code)} size={28} className="text-teal-soft" />
+        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="text-body font-bold">{deck.title}</span>
+          <span className="text-caption text-teal-soft">{dictionary(locale).flashcards.comingSoon}</span>
         </span>
-        <span className="min-w-0 flex-1 leading-snug font-semibold">{deck.title}</span>
-        <span className="shrink-0 text-sm text-teal-soft">{dictionary(locale).flashcards.comingSoon}</span>
       </div>
     );
   }
@@ -152,7 +158,7 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
         code={deck.code}
         kind={deck.kind}
         title={deck.title}
-        emoji={deck.emoji ?? "📚"}
+        icon={deckIcon(deck.code)}
         newWords={newWords}
         due={due}
         mixed={deck.kind === "vocabulary" && hasWordsAndPhrases(deck)}
@@ -164,19 +170,12 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
   return (
     <Link
       href={`/flashcards/decks/${deck.code}`}
-      className="flex min-h-16 items-center gap-3 rounded-2xl border border-line bg-surface p-3 transition-colors hover:border-accent active:scale-[0.99]"
+      className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4 transition-transform active:scale-[0.98]"
     >
-      <span
-        aria-hidden
-        className="flex size-11 shrink-0 items-center justify-center rounded-xl text-2xl bg-mist"
-      >
-        {deck.emoji ?? "📚"}
-      </span>
-      <span className="min-w-0 flex-1 font-semibold leading-snug">{deck.title}</span>
+      <Icon name={deckIcon(deck.code)} size={28} className="text-teal-soft" />
+      <span className="min-w-0 flex-1 text-body font-bold">{deck.title}</span>
       <Counts newWords={newWords} due={due} locale={locale} />
-      <span aria-hidden className="text-muted">
-        ›
-      </span>
+      <Icon name="forward" />
     </Link>
   );
 }

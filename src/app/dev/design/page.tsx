@@ -183,7 +183,37 @@ export default function DevDesignPage() {
           ))}
         </ul>
       </Part>
+
+      <Part title="Themenseite: Kopf mit Illustration">
+        <TopicHeader />
+      </Part>
+
     </main>
+  );
+}
+
+// The top of a topic's page: its illustration as a 2:1 banner, whole and centred on sage-light,
+// since cropping it cuts off heads and feet.
+function TopicHeader() {
+  return (
+    <div className="flex flex-col gap-6">
+      <Image
+        src={atHome}
+        alt=""
+        quality={90}
+        sizes="(min-width: 36rem) 33rem, 100vw"
+        className="aspect-[2/1] w-full rounded-3xl bg-sage-light object-contain"
+      />
+      <div className="flex flex-col gap-1">
+        <h2 className="text-title font-bold">Zuhause</h2>
+        <p className="text-body text-teal-soft">Wohnen & Haushalt</p>
+      </div>
+      <ListRows>
+        <ListRow icon="sunrise" title="Morgenroutine" caption="Bald verfügbar" />
+        <ListRow icon="pot" title="In der Küche" caption="Bald verfügbar" />
+        <ListRow icon="washer" title="Putzen & Waschen" caption="Bald verfügbar" />
+      </ListRows>
+    </div>
   );
 }
 
@@ -232,6 +262,51 @@ const ICONS: IconName[] = [
   "sparkles",
   "puzzle",
   "chat",
+  "sunrise",
+  "pot",
+  "washer",
+  "sofa",
+  "building",
+  "coffee",
+  "user",
+  "users",
+  "wine",
+  "bike",
+  "sun",
+  "phone",
+  "clipboard",
+  "cart",
+  "pill",
+  "mail",
+  "banknote",
+  "scissors",
+  "shirt",
+  "tram",
+  "pin",
+  "suitcase",
+  "wave",
+  "activity",
+  "palette",
+  "box",
+  "question",
+  "calendar",
+  "cards",
+  "learn",
+  "practice",
+  "talk",
+  "profile",
+  "shuffle",
+  "swap",
+  "restart",
+  "skip",
+  "signOut",
+  "play",
+  "pause",
+  "speaker",
+  "gear",
+  "timer",
+  "grid",
+  "globe",
 ];
 
 function Part({ title, children }: { title: string; children: ReactNode }) {
@@ -246,7 +321,7 @@ function Part({ title, children }: { title: string; children: ReactNode }) {
 function IconLine({ icon, children }: { icon: IconName; children: ReactNode }) {
   return (
     <li className="flex items-center gap-4">
-      <Icon name={icon} size={28} />
+      <Icon name={icon} size={28} className="text-teal-soft" />
       <span className="text-body">{children}</span>
     </li>
   );
