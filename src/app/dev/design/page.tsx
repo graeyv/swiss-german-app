@@ -16,6 +16,7 @@ import { findLesson, findRule } from "@/lib/learn/lessons";
 import { devOnly } from "../exercises/data";
 import { GradePreview } from "./grade-preview";
 import { LearnPathWithProgress } from "./learn-preview";
+import { LogoPreview } from "./logo-preview";
 
 // Developer tool: everything DESIGN.md defines, in one place, to check the look at phone width
 // before it goes onto the screens. German, like the model screen.
@@ -29,6 +30,10 @@ export default function DevDesignPage() {
         <h1 className="text-title font-bold">Design</h1>
         <p className="text-body text-teal-soft">Alles aus DESIGN.md, so wie es auf den Screens aussieht.</p>
       </div>
+
+      <Part title="Logo">
+        <LogoPreview />
+      </Part>
 
       <Part title="Farben">
         <ul className="grid grid-cols-2 gap-3">
