@@ -32,6 +32,8 @@ export const de: Dictionary = {
 
   learn: {
     intro: "Was Schweizerdeutsch vom Hochdeutschen unterscheidet.",
+    lastOpened: "Zuletzt geöffnet",
+    startHere: "Hier beginnen",
   },
 
   nav: {
@@ -81,6 +83,7 @@ export const de: Dictionary = {
     topics: (count) => many(count, "Thema", "Themen"),
     sections: (count) => many(count, "Lektion", "Lektionen"),
     start: "Los geht’s",
+    fromStart: "Von vorne",
     next: "Weiter",
     done: "Fertig",
     position: (section, position, count) => `${section} · ${position} / ${count}`,

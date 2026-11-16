@@ -5,6 +5,7 @@ import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { ButtonLink } from "@/app/ui/button";
 import { Icon, isIconName } from "@/app/ui/icons";
 import { ListRow } from "@/app/ui/list-row";
+import { Pill } from "@/app/ui/surface";
 import type { Dictionary } from "@/lib/i18n";
 import { getDictionary } from "@/lib/i18n/server";
 import { LAST_OPENED_COOKIE, parsePlace } from "@/lib/learn/last-opened";
@@ -37,7 +38,7 @@ export default function LearnPage() {
 // whole track. Progress isn't saved yet, so nothing is marked as done.
 async function Learn() {
   const [t, jar] = await Promise.all([getDictionary(), cookies()]);
-  const { current, resume } = whereToContinue(jar.get(LAST_OPENED_COOKIE)?.value);
+  const { current, resume, opened } = whereToContinue(jar.get(LAST_OPENED_COOKIE)?.value);
 
   return (
     <>
@@ -52,7 +53,7 @@ async function Learn() {
           entry === current ? (
             <li key={`${entry.dialect}/${entry.lesson.id}`}>
               <ScrollIntoReach>
-                <CurrentModule entry={entry} resume={resume} t={t} />
+                <CurrentModule entry={entry} resume={resume} opened={opened} t={t} />
               </ScrollIntoReach>
             </li>
           ) : (
@@ -72,14 +73,18 @@ async function Learn() {
 }
 
 // The module opened last, and the topic in it, if any. Without one, or if it no longer exists,
-// the first module with content.
-function whereToContinue(cookie: string | undefined): { current?: DialectLesson; resume?: RulePlace } {
+// the first module with content, which the learner hasn't opened.
+function whereToContinue(cookie: string | undefined): {
+  current?: DialectLesson;
+  resume?: RulePlace;
+  opened: boolean;
+} {
   const place = parsePlace(cookie);
-  const opened =
+  const last =
     place && LESSONS.find(({ dialect, lesson }) => dialect === place.dialect && lesson.id === place.lesson);
-  if (!opened) return { current: LESSONS.find(({ lesson }) => isReady(lesson)) };
-  const resume = place.section && place.rule ? findRule(opened.lesson, place.section, place.rule) : undefined;
-  return { current: opened, resume };
+  if (!last) return { current: LESSONS.find(({ lesson }) => isReady(lesson)), opened: false };
+  const resume = place.section && place.rule ? findRule(last.lesson, place.section, place.rule) : undefined;
+  return { current: last, resume, opened: true };
 }
 
 // Such as "2 Lektionen · 10 Themen", or only the lessons while no topic is planned yet.
@@ -89,12 +94,13 @@ function size(lesson: Lesson, t: Dictionary) {
   return topics > 0 ? `${sections} · ${t.lesson.topics(topics)}` : sections;
 }
 
-type CurrentModuleProps = { entry: DialectLesson; resume?: RulePlace; t: Dictionary };
+type CurrentModuleProps = { entry: DialectLesson; resume?: RulePlace; opened: boolean; t: Dictionary };
 
-// Sage, so it stands out as where to continue. The text opens the module's overview. The button
-// goes back to the topic the learner was at, or starts with the first one, or, for a module still
-// being written, opens its overview.
-function CurrentModule({ entry, resume, t }: CurrentModuleProps) {
+// Sage, so it stands out as where to continue, with a pill saying why it's large: opened last, or
+// for a new learner, where to start. The text opens the module's overview. The button goes back to
+// the topic the learner was at, or starts with the first one, or, for a module still being
+// written, opens its overview.
+function CurrentModule({ entry, resume, opened, t }: CurrentModuleProps) {
   const { dialect, lesson } = entry;
   const first = lesson.sections.find(isReady);
   const [href, label] = resume
@@ -105,6 +111,10 @@ function CurrentModule({ entry, resume, t }: CurrentModuleProps) {
 
   return (
     <div className="flex flex-col gap-4 rounded-3xl bg-sage p-6">
+      <Pill tone="ivory">
+        <Icon name="clock" size={16} />
+        {opened ? t.learn.lastOpened : t.learn.startHere}
+      </Pill>
       <Link href={lessonHref(dialect, lesson)} className="flex flex-col gap-4">
         {isIconName(lesson.icon) && <Icon name={lesson.icon} size={28} />}
         <span className="flex flex-col gap-1">

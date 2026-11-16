@@ -33,6 +33,9 @@ export const en = {
 
   learn: {
     intro: "How Swiss German differs from Standard German.",
+    // On the large module card: why it's large.
+    lastOpened: "Opened last",
+    startHere: "Start here",
   },
 
   nav: {
@@ -83,6 +86,8 @@ export const en = {
     // A module's lessons (sections in the code), such as "Consonants" and "Vowels".
     sections: (count: number) => many(count, "lesson", "lessons"),
     start: "Let’s go",
+    // Beside "Next: R" on a module the learner has been in before.
+    fromStart: "Start over",
     next: "Next",
     done: "Done",
     // Where a topic is in its section, such as "Consonants · 2 / 6".
