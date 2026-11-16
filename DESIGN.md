@@ -95,11 +95,15 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
 topic in English); in the code and this guide they are lesson → section → rule.
 
+- **Logo** (`Logo`): "hoi" in lowercase, bold and teal, in a sage-light speech bubble with its
+  tail at the bottom left. At the top left of the tabs and on the welcome page. Never in another
+  colour or without the bubble. The app icon and favicon are the same bubble on teal
+  (`src/app/icon.png`, `apple-icon.png`, `public/icons/`).
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`).
 - **Tab header** (Learn tab): the tab's name as title, below it one line in subtitle size and
