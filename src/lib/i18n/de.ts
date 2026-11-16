@@ -138,6 +138,7 @@ export const de: Dictionary = {
     newCount: (count) => `${count} neu`,
     reviewCount: (count) => `${count} fällig`,
     doneForToday: "Für heute erledigt",
+    comingSoon: "Bald verfügbar",
     nothingLeft: "Für heute nichts mehr übrig",
     practise: "Üben",
     seeList: "Liste ansehen",

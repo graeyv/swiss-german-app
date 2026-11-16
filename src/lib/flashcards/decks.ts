@@ -28,11 +28,11 @@ export type DeckRow = {
 // color is never null here: a deck without its own takes its parent's.
 export type DeckNode = Omit<DeckRow, "color"> & { color: DeckColor; children: DeckNode[] };
 
-// Decks without cards stay hidden, so the tree can be filled in topic by topic.
+// Decks without cards show all the same, so learners see the whole structure and what's coming.
 export function buildDeckTree(rows: readonly DeckRow[]): DeckNode[] {
   const build = (parentId: string | null, parentColor: DeckColor): DeckNode[] =>
     rows
-      .filter((row) => row.parent_id === parentId && row.card_count > 0)
+      .filter((row) => row.parent_id === parentId)
       .sort((a, b) => a.deck_position - b.deck_position)
       .map((row) => {
         const color = row.color ?? parentColor;

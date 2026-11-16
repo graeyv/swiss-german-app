@@ -151,6 +151,8 @@ export const en = {
     newCount: (count: number) => `${count} new`,
     reviewCount: (count: number) => many(count, "review", "reviews"),
     doneForToday: "Done for today",
+    // On a topic that has no cards yet.
+    comingSoon: "Coming soon",
     nothingLeft: "Nothing left for today",
     // Starts a topic's session, of words and sentences or of grammar.
     practise: "Practise",

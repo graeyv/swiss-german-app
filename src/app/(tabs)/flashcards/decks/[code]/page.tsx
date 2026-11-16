@@ -56,7 +56,14 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
         </div>
       </div>
 
-      <ShuffleButton deck={deck} availability={deckAvailability(deck, limits)} locale={locale} />
+      {/* A topic without cards yet says so, rather than that today's cards are done. */}
+      {deck.card_count === 0 ? (
+        <p className="flex min-h-14 items-center rounded-2xl bg-mist px-4 font-semibold text-teal-soft">
+          {t.flashcards.comingSoon}
+        </p>
+      ) : (
+        <ShuffleButton deck={deck} availability={deckAvailability(deck, limits)} locale={locale} />
+      )}
 
       {deck.children.length > 0 && (
         <section className="flex flex-col gap-3">
@@ -122,6 +129,22 @@ function ShuffleButton({ deck, availability, locale }: DeckProps) {
 // with its own subcategories opens its page instead, whatever its depth.
 function Subcategory({ deck, availability, locale }: DeckProps) {
   const { newWords, due } = availability;
+
+  // Still without cards: shown so the structure is visible, but there's nothing to open yet.
+  if (deck.card_count === 0) {
+    return (
+      <div className="flex min-h-16 items-center gap-3 rounded-2xl bg-mist p-3">
+        <span
+          aria-hidden
+          className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-ivory text-2xl"
+        >
+          {deck.emoji ?? "📚"}
+        </span>
+        <span className="min-w-0 flex-1 leading-snug font-semibold">{deck.title}</span>
+        <span className="shrink-0 text-sm text-teal-soft">{dictionary(locale).flashcards.comingSoon}</span>
+      </div>
+    );
+  }
 
   if (deck.children.length === 0) {
     return (
