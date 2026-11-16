@@ -204,9 +204,10 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
                   {translationOpen && <Translation line={line} locale={locale} />}
                 </>
               );
+              // The line being spoken stands out by its fill alone, without an outline.
               const bubble = `flex max-w-[85%] flex-col gap-0.5 rounded-2xl px-4 py-2.5 text-left transition-colors ${
                 right ? "rounded-br-md" : "rounded-bl-md"
-              } ${index === current ? "bg-accent/10 ring-2 ring-accent" : "bg-surface ring-1 ring-line"}`;
+              } ${index === current ? "bg-sage-light" : "bg-surface ring-1 ring-line"}`;
 
               return (
                 <li
