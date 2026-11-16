@@ -6,6 +6,7 @@ import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule, lessonHref, ruleParams } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
+import { RememberPlace } from "../../remember-place";
 import { ExampleList } from "./example-list";
 
 export function generateStaticParams() {
@@ -60,6 +61,7 @@ async function RuleView({
       }
     >
       <title>{t.title(`${rule.title} · ${section.title}`)}</title>
+      <RememberPlace path={`${dialect}/${lesson.id}/${section.id}/${rule.id}`} />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <Eyebrow>{section.title}</Eyebrow>

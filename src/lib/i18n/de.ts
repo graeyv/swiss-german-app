@@ -32,7 +32,6 @@ export const de: Dictionary = {
 
   learn: {
     intro: "Was Schweizerdeutsch vom Hochdeutschen unterscheidet.",
-    all: "Alle Module",
   },
 
   nav: {

@@ -33,7 +33,6 @@ export const en = {
 
   learn: {
     intro: "How Swiss German differs from Standard German.",
-    all: "All modules",
   },
 
   nav: {

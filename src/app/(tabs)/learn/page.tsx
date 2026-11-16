@@ -1,20 +1,25 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { ButtonLink } from "@/app/ui/button";
 import { Icon, isIconName } from "@/app/ui/icon";
-import { ListRow, ListRows } from "@/app/ui/list-row";
+import { ListRow } from "@/app/ui/list-row";
 import type { Dictionary } from "@/lib/i18n";
 import { getDictionary } from "@/lib/i18n/server";
+import { LAST_OPENED_COOKIE, parsePlace } from "@/lib/learn/last-opened";
 import {
   type DialectLesson,
+  findRule,
   isReady,
   type Lesson,
   LESSONS,
   lessonHref,
   lessonNumber,
+  type RulePlace,
   topicCount,
 } from "@/lib/learn/lessons";
+import { ScrollIntoReach } from "./scroll-into-reach";
 
 // Lessons on how Swiss German differs from Standard German. Every learner sees every lesson for
 // now, whatever their dialect, until there are lessons for more than one.
@@ -26,13 +31,13 @@ export default function LearnPage() {
   );
 }
 
-// The lesson to do now stands out as a large card that starts it, and all lessons follow as the
-// path through the track. Lessons still being written look like the others, counting their planned
-// topics: the prototype shows the whole track. Progress isn't saved yet, so the lesson to do now is
-// the first one with content, and nothing is marked as done.
+// All modules in order, the path through the track. The one the learner opened last is a large
+// card to continue with, in its place; far down the list, the page opens scrolled to it. Modules
+// still being written look like the others, counting their planned topics: the prototype shows the
+// whole track. Progress isn't saved yet, so nothing is marked as done.
 async function Learn() {
-  const t = await getDictionary();
-  const current = LESSONS.find(({ lesson }) => isReady(lesson));
+  const [t, jar] = await Promise.all([getDictionary(), cookies()]);
+  const { current, resume } = whereToContinue(jar.get(LAST_OPENED_COOKIE)?.value);
 
   return (
     <>
@@ -42,14 +47,15 @@ async function Learn() {
         <p className="text-subtitle font-semibold">{t.learn.intro}</p>
       </div>
 
-      {current && <CurrentLesson entry={current} t={t} />}
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">
-          {t.learn.all}
-        </h2>
-        <ListRows>
-          {LESSONS.map((entry) => (
+      <ol className="flex flex-col gap-3">
+        {LESSONS.map((entry) =>
+          entry === current ? (
+            <li key={`${entry.dialect}/${entry.lesson.id}`}>
+              <ScrollIntoReach>
+                <CurrentModule entry={entry} resume={resume} t={t} />
+              </ScrollIntoReach>
+            </li>
+          ) : (
             <ListRow
               key={`${entry.dialect}/${entry.lesson.id}`}
               href={lessonHref(entry.dialect, entry.lesson)}
@@ -58,11 +64,22 @@ async function Learn() {
               title={entry.lesson.title}
               caption={size(entry.lesson, t)}
             />
-          ))}
-        </ListRows>
-      </section>
+          ),
+        )}
+      </ol>
     </>
   );
+}
+
+// The module opened last, and the topic in it, if any. Without one, or if it no longer exists,
+// the first module with content.
+function whereToContinue(cookie: string | undefined): { current?: DialectLesson; resume?: RulePlace } {
+  const place = parsePlace(cookie);
+  const opened =
+    place && LESSONS.find(({ dialect, lesson }) => dialect === place.dialect && lesson.id === place.lesson);
+  if (!opened) return { current: LESSONS.find(({ lesson }) => isReady(lesson)) };
+  const resume = place.section && place.rule ? findRule(opened.lesson, place.section, place.rule) : undefined;
+  return { current: opened, resume };
 }
 
 // Such as "2 Lektionen · 10 Themen", or only the lessons while no topic is planned yet.
@@ -72,11 +89,19 @@ function size(lesson: Lesson, t: Dictionary) {
   return topics > 0 ? `${sections} · ${t.lesson.topics(topics)}` : sections;
 }
 
-// Sage, so it stands out as the next step. The text opens the lesson's overview, the button starts
-// straight with its first topic.
-function CurrentLesson({ entry, t }: { entry: DialectLesson; t: Dictionary }) {
+type CurrentModuleProps = { entry: DialectLesson; resume?: RulePlace; t: Dictionary };
+
+// Sage, so it stands out as where to continue. The text opens the module's overview. The button
+// goes back to the topic the learner was at, or starts with the first one, or, for a module still
+// being written, opens its overview.
+function CurrentModule({ entry, resume, t }: CurrentModuleProps) {
   const { dialect, lesson } = entry;
-  const first = lesson.sections.find(isReady)!;
+  const first = lesson.sections.find(isReady);
+  const [href, label] = resume
+    ? [lessonHref(dialect, lesson, resume.section, resume.rule), `${t.lesson.next}: ${resume.rule.title}`]
+    : first
+      ? [lessonHref(dialect, lesson, first, first.rules[0]), t.lesson.start]
+      : [lessonHref(dialect, lesson), t.lesson.next];
 
   return (
     <div className="flex flex-col gap-4 rounded-3xl bg-sage p-6">
@@ -92,7 +117,7 @@ function CurrentLesson({ entry, t }: { entry: DialectLesson; t: Dictionary }) {
           <span className="text-caption">{size(lesson, t)}</span>
         </span>
       </Link>
-      <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])}>{t.lesson.start}</ButtonLink>
+      <ButtonLink href={href}>{label}</ButtonLink>
     </div>
   );
 }

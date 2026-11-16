@@ -8,6 +8,7 @@ import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { findLesson, isReady, lessonHref, lessonNumber, lessonParams } from "@/lib/learn/lessons";
 import { LessonLoading, LessonScreen } from "./lesson-screen";
+import { RememberPlace } from "./remember-place";
 
 export function generateStaticParams() {
   return lessonParams();
@@ -44,6 +45,7 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
       }
     >
       <title>{t.title(lesson.title)}</title>
+      <RememberPlace path={`${dialect}/${lesson.id}`} />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <Eyebrow>{t.lesson.number(lessonNumber(found))}</Eyebrow>

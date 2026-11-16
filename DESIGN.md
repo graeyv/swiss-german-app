@@ -100,11 +100,12 @@ topic in English); in the code and this guide they are lesson → section → ru
   while the page scrolls (`TopBar`).
 - **Tab header** (Learn tab): the tab's name as title, below it one line in subtitle size and
   weight, full teal, saying what the tab is for. No marker.
-- **Current lesson** (Learn tab): a sage card with the lesson's icon, "MODUL 1" in teal (the
-  softer teal is too faint on sage), title, subtitle, "2 Lektionen · 10 Themen" and the primary button
-  to start. The text opens the lesson's overview. Below, under an "ALLE MODULE" eyebrow, every
-  lesson as a list row: its icon, "MODUL N", title, and "N Lektionen · N Themen". Lessons still being
-  written look the same. Every lesson has its own line icon, never a colour.
+- **Module list** (Learn tab): every module in order, as list rows with its icon, "MODUL N",
+  title and "N Lektionen · N Themen". The module opened last is a sage card in its place instead:
+  icon, "MODUL N" in teal (the softer teal is too faint on sage), title, subtitle, size, and the
+  primary button ("Weiter: R", or "Los geht's"). If the card's button would be out of sight, the
+  tab opens scrolled to it, at once, with the row above still peeking in. Modules still being
+  written look the same. Every module has its own line icon, never a colour.
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
   The highlight is the screen's one yellow element, and it's only used here.
 - **Icon list** ("Was dich erwartet"): a teal line icon, then one line of text. No boxes, no
