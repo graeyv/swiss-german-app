@@ -39,5 +39,9 @@ export async function saveRound(path: string, correct: number, total: number): P
   const supabase = await createClient();
   const { error } = await supabase.from("lesson_rounds").insert({ path, correct, total });
   if (error) return { error: error.message };
+
+  // The Practice tab's lessons and the module's exercises show the latest round.
+  revalidatePath("/flashcards/lessons");
+  revalidatePath("/flashcards/lessons/[dialect]/[lesson]", "page");
   return {};
 }

@@ -114,7 +114,14 @@ topic in English); in the code and this guide they are lesson → section → ru
   below, so nothing in the list behaves differently. In Learn it continues with the next topic not
   read yet ("Konsonanten", "3 von 6 Themen gelesen", "Weiter: R"), or says "HIER BEGINNEN" and
   "Los geht's" before anything is read. It follows the topic read last, not the module looked at
-  last.
+  last. In Üben → Lektionen it suggests one thing to practise: a lesson read through but not
+  practised ("Konsonanten üben"), else the one most worth refreshing ("Konsonanten auffrischen ·
+  Zuletzt geübt vor 12 Tagen, 6 von 10 richtig"), else reading on. With everything read and
+  practised, it's a quiet card on mist with a check and no button. There's no schedule and no
+  "fällig": learners practise what they choose.
+- **Practice switch** (Üben tab): "Wortschatz | Lektionen" at the top, a pill on mist with the open
+  view in ivory. Each view is its own address. Below "Lektionen", the suggestion card and "ALLE
+  ÜBUNGEN": every module as a list row ("1 von 2 Lektionen geübt"), opening its lessons to practise.
 - **Module list** (Learn tab): under "ALLE MODULE", every module in order as an equal list row with
   its icon, "MODUL N", title and "N Lektionen · N Themen". The module read in last says "Zuletzt
   gelesen" instead of its size. Modules still being written look the same. Every module has its

@@ -131,6 +131,28 @@ export const en = {
     readAgain: (section: string) => `Read ${section} again`,
     finish: "Done",
     notSaved: (error: string) => `Your result wasn't saved: ${error}`,
+    // The Practice tab's two views: flashcards, and the lessons' exercises.
+    views: { label: "What to practise", words: "Vocabulary", lessons: "Lessons" },
+    allExercises: "All exercises",
+    exercises: "Exercises",
+    sectionsPractised: (practised: number, count: number) =>
+      `${practised} of ${many(count, "lesson", "lessons")} practised`,
+    ago: (days: number) => (days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`),
+    practised: (ago: string) => `Practised ${ago}`,
+    readNotPractised: "Read, not practised yet",
+    notRead: (count: number) => `${many(count, "topic", "topics")}, not read yet`,
+    // The card with the one thing suggested, such as "Next · Pronunciation".
+    next: (module: string) => `Next · ${module}`,
+    practiseSection: (section: string) => `Practise ${section}`,
+    allRead: (count: number) => `You've read all ${many(count, "topic", "topics")}.`,
+    refresh: (section: string) => `Brush up on ${section}`,
+    lastRound: (ago: string, correct: number, total: number) => `Last practised ${ago}, ${correct} of ${total} right.`,
+    start: "Practise",
+    allPractised: "All practised",
+    readFirst: "Read first",
+    readOn: (section: string) => `Go on with ${section}`,
+    left: (count: number) => `${many(count, "topic", "topics")} left to read.`,
+    allDone: "All read and practised",
   },
 
   conversations: {
