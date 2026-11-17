@@ -213,6 +213,11 @@ export const de: Dictionary = {
     notSaved: (error) => `Nicht gespeichert: ${error}`,
     saving: "Wird gespeichert…",
     save: "Änderungen speichern",
+    keepLearning: "Heute weiterlernen",
+    liftLimit: "Ohne Limit weiterlernen",
+    noLimit: "ohne Limit",
+    liftedUntilMidnight: "Ohne Limit bis Mitternacht",
+    liftNote: "Mehr neue Karten heute heisst mehr Wiederholungen in den nächsten Tagen.",
   },
 
   session: {

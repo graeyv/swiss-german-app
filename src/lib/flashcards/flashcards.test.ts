@@ -2,7 +2,15 @@ import { describe, expect, it } from "vitest";
 import { buildSeed } from "../../../scripts/build-flashcard-seed.mjs";
 import { payloadProblem } from "../../../scripts/lib/check-payload.mjs";
 import { CHEERS, pickCheer } from "./cheers";
-import { goalReached, presetId, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
+import {
+  goalReached,
+  LIFTED_NEW_CARDS,
+  presetId,
+  reviewLimit,
+  reviewProgress,
+  todaysQueue,
+  zurichDay,
+} from "./daily-plan";
 import { suggestedPace } from "../onboarding";
 import { buildDeckTree, type DeckRow, findDeck, sortByInterests } from "./decks";
 import { advanceQueue } from "./queue";
@@ -296,6 +304,17 @@ describe("todaysQueue", () => {
 
   it("lets learners without new cards catch up on everything", () => {
     expect(todaysQueue(0, summary)).toMatchObject({ dueNow: 43, waiting: 0, newLeft: 0 });
+  });
+
+  it("drops the limit of new cards once it's lifted for the day, but still caps reviews", () => {
+    expect(todaysQueue(2, summary, true)).toMatchObject({ dueNow: 3, waiting: 40, newLeft: LIFTED_NEW_CARDS });
+  });
+});
+
+describe("zurichDay", () => {
+  it("names the day on Zürich time, whatever the server's time zone", () => {
+    expect(zurichDay(new Date("2026-11-17T22:30:00Z"))).toBe("2026-11-17");
+    expect(zurichDay(new Date("2026-11-17T23:30:00Z"))).toBe("2026-11-18");
   });
 });
 

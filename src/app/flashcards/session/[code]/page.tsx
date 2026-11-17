@@ -78,9 +78,13 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
     <>
       <title>{t.title(found.deck.title)}</title>
       <ReviewSession
+        // A new session once the limit is lifted: the page then holds the topic's further cards.
+        key={today.lifted ? "lifted" : "limited"}
         cards={cards}
         cardFront={cardFront}
         autoplay={autoplay}
+        // The topic has more new cards than today's limit allows, so lifting it would bring them.
+        canLift={!today.lifted && found.deck.new_count > newLeft}
         locale={locale}
         goalReachedBefore={today.goalReached}
         emptyMessage={t.session.empty}

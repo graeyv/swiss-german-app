@@ -243,6 +243,12 @@ export const en = {
     notSaved: (error: string) => `Not saved: ${error}`,
     saving: "Saving…",
     save: "Save changes",
+    // Lifting today's limit of new cards, until midnight.
+    keepLearning: "Keep learning today",
+    liftLimit: "Keep learning without a limit",
+    noLimit: "no limit",
+    liftedUntilMidnight: "No limit until midnight",
+    liftNote: "More new cards today means more reviews in the next few days.",
   },
 
   session: {

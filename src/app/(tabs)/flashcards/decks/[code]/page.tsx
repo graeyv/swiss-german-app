@@ -31,7 +31,7 @@ export default function DeckPage({ params }: PageProps<"/flashcards/decks/[code]
 async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "params">) {
   const { code } = await params;
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
-  const { tree, limits } = await getToday(supabase);
+  const { tree, limits, lifted } = await getToday(supabase);
   const t = dictionary(locale);
 
   const found = findDeck(tree, code);
@@ -80,6 +80,8 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
                 <Subcategory
                   deck={child}
                   availability={deckAvailability(child, limits)}
+                  // Done for today, but with new cards that lifting the limit would bring.
+                  canLift={!lifted && child.new_count > 0}
                   locale={locale}
                 />
               </li>
@@ -129,7 +131,7 @@ function ShuffleButton({ deck, availability, locale }: DeckProps) {
 
 // Only the lowest level holds cards, so it offers flashcards and its word list. A subcategory
 // with its own subcategories opens its page instead, whatever its depth.
-function Subcategory({ deck, availability, locale }: DeckProps) {
+function Subcategory({ deck, availability, canLift, locale }: DeckProps & { canLift: boolean }) {
   const { newWords, due } = availability;
 
   // Still without cards: shown so the structure is visible, but there's nothing to open yet.
@@ -154,6 +156,7 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
         newWords={newWords}
         due={due}
         mixed={deck.kind === "vocabulary" && hasWordsAndPhrases(deck)}
+        canLift={canLift}
         locale={locale}
       />
     );

@@ -172,6 +172,12 @@ topic in English); in the code and this guide they are lesson → section → ru
   learner's dialect, in one quiet line in `teal-soft` under the Swiss German wherever it shows:
   large under the main form, small under it at the top of the back, and in the word list. Never on
   a front that would give the answer away.
+- **Lifting today's limit** of new cards: once today's goal is reached, a quiet ivory pill
+  "Heute weiterlernen" in the yellow goal card, and "Ohne Limit weiterlernen" where a topic is done
+  for today (its sheet, as the primary button, and the end of a session, as a secondary one), with
+  "Mehr neue Karten heute heisst mehr Wiederholungen in den nächsten Tagen" below. Until midnight,
+  the goal card shows "12 · ohne Limit" and a pill "Ohne Limit bis Mitternacht". Reviews of known
+  words stay limited.
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick

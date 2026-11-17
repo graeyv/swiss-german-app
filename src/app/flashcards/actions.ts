@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getToday } from "@/lib/flashcards/data";
-import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
+import { NEW_CARDS_RANGE, zurichDay } from "@/lib/flashcards/daily-plan";
 import { FSRS_MODEL, previewIntervals, scheduleReview } from "@/lib/flashcards/scheduling";
 import { getDictionary } from "@/lib/i18n/server";
 import type { CardFront, WordCard } from "@/lib/types";
@@ -90,6 +90,26 @@ export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?:
   if (data.length === 0) return { error: "Your profile is missing" };
 
   revalidateFlashcardPages();
+  return {};
+}
+
+// Lifts today's limit of new cards, until midnight on Zürich time. The next day it applies again.
+export async function liftDailyLimit(): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  // An update that matches no row isn't an error, so check that the profile was found.
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ limit_lifted_on: zurichDay(new Date()) })
+    .eq("id", claims.claims.sub)
+    .select("id");
+  if (error) return { error: error.message };
+  if (data.length === 0) return { error: "Your profile is missing" };
+
+  revalidateFlashcardPages();
+  revalidatePath("/flashcards/session/[code]", "page");
   return {};
 }
 

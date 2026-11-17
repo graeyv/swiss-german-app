@@ -8,6 +8,7 @@ import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i
 import type { CardFront, Flashcard, WordCard } from "@/lib/types";
 import { isTodaysGoalReached, type SavedReview, submitReview, updateAutoplay, updateCardFront } from "./actions";
 import { CARD_FACE, CardStack } from "./card-stack";
+import { LiftLimit } from "./lift-limit";
 import { type Grade, GradeButtons } from "./grade-buttons";
 import { StatusBadge } from "./status-badge";
 import { Icon } from "@/app/ui/icons";
@@ -18,6 +19,8 @@ type ReviewSessionProps = {
   cardFront: CardFront;
   // Whether a word's recording plays by itself as soon as its Swiss German shows.
   autoplay: boolean;
+  // Whether lifting today's limit would bring more new cards of this topic, offered at the end.
+  canLift: boolean;
   locale: Locale;
   // Whether today's goal was already met when the session started, so only the session that
   // completes it celebrates.
@@ -35,6 +38,7 @@ export function ReviewSession({
   cards,
   cardFront,
   autoplay: autoplayBefore,
+  canLift,
   locale,
   goalReachedBefore,
   emptyMessage,
@@ -119,6 +123,7 @@ export function ReviewSession({
         <Link href={backHref} className={`${primaryButton} text-center`}>
           {t.backTo(backLabel)}
         </Link>
+        {canLift && <LiftLimit label={dictionary(locale).goal.liftLimit} locale={locale} variant="secondary" />}
       </main>
     );
   }

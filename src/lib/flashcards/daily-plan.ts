@@ -23,6 +23,14 @@ export const PRESETS = [
   { id: "intensive", newCardsPerDay: 20 },
 ] as const;
 
+// With the limit lifted for the day, a session still holds at most this many new cards.
+export const LIFTED_NEW_CARDS = 100;
+
+// Today's date on Zürich time, such as "2026-11-17", as days run there for the daily goal.
+export function zurichDay(now: Date) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Zurich" }).format(now);
+}
+
 // Rule of thumb: once a pace settles, each new card a day brings up to about 10 reviews a day.
 const REVIEWS_PER_NEW_CARD = 10;
 const MIN_REVIEW_LIMIT = 20;
@@ -58,8 +66,10 @@ export function reviewProgress(newCardsPerDay: number, summary: FlashcardSummary
   return { done: summary.reviews_today, total: summary.reviews_today + stillDue };
 }
 
-// What today's limits leave. Words in their learning steps are never held back.
-export function todaysQueue(newCardsPerDay: number, summary: FlashcardSummary) {
+// What today's limits leave. Words in their learning steps are never held back. With the limit
+// lifted for the day, new cards aren't limited by the daily pace any more. Reviews still are:
+// reviewing a word before it's due teaches the schedule nothing.
+export function todaysQueue(newCardsPerDay: number, summary: FlashcardSummary, lifted = false) {
   const limit = reviewLimit(newCardsPerDay);
   const reviewsLeft =
     limit === null ? summary.due_review_count : Math.max(0, limit - summary.reviewed_today);
@@ -69,6 +79,6 @@ export function todaysQueue(newCardsPerDay: number, summary: FlashcardSummary) {
     dueNow: summary.due_learning_count + reviewsAllowed,
     waiting: summary.due_review_count - reviewsAllowed,
     reviewsLeft,
-    newLeft: Math.max(0, newCardsPerDay - summary.introduced_today),
+    newLeft: lifted ? LIFTED_NEW_CARDS : Math.max(0, newCardsPerDay - summary.introduced_today),
   };
 }
