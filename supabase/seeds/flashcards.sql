@@ -9,35 +9,7 @@ create temporary table seed_decks (
 ) on commit drop;
 
 insert into seed_decks (code, parent_code, kind, emoji, color, position, published) values
-  ('C04', null, 'vocabulary', '🏠', null, 1, true),
-  ('C04-T01', 'C04', 'vocabulary', '⏰', null, 1, true),
-  ('C04-T02', 'C04', 'vocabulary', '🍳', null, 2, true),
-  ('C04-T03', 'C04', 'vocabulary', '🧺', null, 3, true),
-  ('C04-T04', 'C04', 'vocabulary', '🛋️', null, 4, true),
-  ('C04-T05', 'C04', 'vocabulary', '🏢', null, 5, true),
-  ('C03', null, 'vocabulary', '☕', null, 2, true),
-  ('C03-T01', 'C03', 'vocabulary', '☕', null, 1, true),
-  ('C03-T02', 'C03', 'vocabulary', '🤝', null, 2, true),
-  ('C03-T03', 'C03', 'vocabulary', '💬', null, 3, true),
-  ('C03-T04', 'C03', 'vocabulary', '🥂', null, 4, true),
-  ('C03-T05', 'C03', 'vocabulary', '⚽', null, 5, true),
-  ('C03-T06', 'C03', 'vocabulary', '🏖️', null, 6, true),
-  ('C05', null, 'vocabulary', '💼', null, 3, true),
-  ('C05-T01', 'C05', 'vocabulary', '☕', null, 1, true),
-  ('C05-T02', 'C05', 'vocabulary', '📞', null, 2, true),
-  ('C05-T03', 'C05', 'vocabulary', '📋', null, 3, true),
-  ('C06', null, 'vocabulary', '🏦', null, 4, true),
-  ('C06-T01', 'C06', 'vocabulary', '🛒', null, 1, true),
-  ('C06-T02', 'C06', 'vocabulary', '💊', null, 2, true),
-  ('C06-T03', 'C06', 'vocabulary', '📮', null, 3, true),
-  ('C06-T04', 'C06', 'vocabulary', '💰', null, 4, true),
-  ('C06-T05', 'C06', 'vocabulary', '✂️', null, 5, true),
-  ('C06-T06', 'C06', 'vocabulary', '👕', null, 6, true),
-  ('C07', null, 'vocabulary', '🚋', null, 5, true),
-  ('C07-T01', 'C07', 'vocabulary', '🚋', null, 1, true),
-  ('C07-T02', 'C07', 'vocabulary', '🧭', null, 2, true),
-  ('C07-T03', 'C07', 'vocabulary', '🧳', null, 3, true),
-  ('C08', null, 'vocabulary', '🧭', null, 6, true),
+  ('C08', null, 'vocabulary', '🧭', null, 1, true),
   ('C08-T01', 'C08', 'vocabulary', '👋', null, 1, true),
   ('C08-T02', 'C08', 'vocabulary', '🏃', null, 2, true),
   ('C08-T03', 'C08', 'vocabulary', '🎨', null, 3, true),
@@ -45,6 +17,34 @@ insert into seed_decks (code, parent_code, kind, emoji, color, position, publish
   ('C08-T05', 'C08', 'vocabulary', '❓', null, 5, true),
   ('C08-T06', 'C08', 'vocabulary', '🔗', null, 6, true),
   ('C08-T07', 'C08', 'vocabulary', '🔢', null, 7, true),
+  ('C04', null, 'vocabulary', '🏠', null, 2, true),
+  ('C04-T01', 'C04', 'vocabulary', '⏰', null, 1, true),
+  ('C04-T02', 'C04', 'vocabulary', '🍳', null, 2, true),
+  ('C04-T03', 'C04', 'vocabulary', '🧺', null, 3, true),
+  ('C04-T04', 'C04', 'vocabulary', '🛋️', null, 4, true),
+  ('C04-T05', 'C04', 'vocabulary', '🏢', null, 5, true),
+  ('C03', null, 'vocabulary', '☕', null, 3, true),
+  ('C03-T01', 'C03', 'vocabulary', '☕', null, 1, true),
+  ('C03-T02', 'C03', 'vocabulary', '🤝', null, 2, true),
+  ('C03-T03', 'C03', 'vocabulary', '💬', null, 3, true),
+  ('C03-T04', 'C03', 'vocabulary', '🥂', null, 4, true),
+  ('C03-T05', 'C03', 'vocabulary', '⚽', null, 5, true),
+  ('C03-T06', 'C03', 'vocabulary', '🏖️', null, 6, true),
+  ('C05', null, 'vocabulary', '💼', null, 4, true),
+  ('C05-T01', 'C05', 'vocabulary', '☕', null, 1, true),
+  ('C05-T02', 'C05', 'vocabulary', '📞', null, 2, true),
+  ('C05-T03', 'C05', 'vocabulary', '📋', null, 3, true),
+  ('C06', null, 'vocabulary', '🏦', null, 5, true),
+  ('C06-T01', 'C06', 'vocabulary', '🛒', null, 1, true),
+  ('C06-T02', 'C06', 'vocabulary', '💊', null, 2, true),
+  ('C06-T03', 'C06', 'vocabulary', '📮', null, 3, true),
+  ('C06-T04', 'C06', 'vocabulary', '💰', null, 4, true),
+  ('C06-T05', 'C06', 'vocabulary', '✂️', null, 5, true),
+  ('C06-T06', 'C06', 'vocabulary', '👕', null, 6, true),
+  ('C07', null, 'vocabulary', '🚋', null, 6, true),
+  ('C07-T01', 'C07', 'vocabulary', '🚋', null, 1, true),
+  ('C07-T02', 'C07', 'vocabulary', '🧭', null, 2, true),
+  ('C07-T03', 'C07', 'vocabulary', '🧳', null, 3, true),
   ('G01', null, 'grammar', '🫵', 'purple', 7, true),
   ('G01-T01', 'G01', 'grammar', null, null, 1, true);
 
@@ -71,6 +71,14 @@ delete from public.deck_translations;
 insert into public.deck_translations (deck_id, locale, title, description)
 select d.id, t.locale, t.title, t.description
 from (values
+  ('C08', 'en', 'Building Blocks', 'Numbers, time & key words'),
+  ('C08-T01', 'en', 'Greetings & polite phrases', null),
+  ('C08-T02', 'en', 'Common verbs', null),
+  ('C08-T03', 'en', 'Common adjectives', null),
+  ('C08-T04', 'en', 'Essential nouns', null),
+  ('C08-T05', 'en', 'Pronouns & question words', null),
+  ('C08-T06', 'en', 'Connectors & prepositions', null),
+  ('C08-T07', 'en', 'Numbers, time & dates', null),
   ('C04', 'en', 'At Home', 'Living & household'),
   ('C04-T01', 'en', 'Morning routine', null),
   ('C04-T02', 'en', 'In the kitchen', null),
@@ -99,16 +107,16 @@ from (values
   ('C07-T01', 'en', 'Public transport', null),
   ('C07-T02', 'en', 'Asking for directions', null),
   ('C07-T03', 'en', 'Travelling', null),
-  ('C08', 'en', 'Building Blocks', 'Numbers, time & key words'),
-  ('C08-T01', 'en', 'Greetings & polite phrases', null),
-  ('C08-T02', 'en', 'Common verbs', null),
-  ('C08-T03', 'en', 'Common adjectives', null),
-  ('C08-T04', 'en', 'Essential nouns', null),
-  ('C08-T05', 'en', 'Pronouns & question words', null),
-  ('C08-T06', 'en', 'Connectors & prepositions', null),
-  ('C08-T07', 'en', 'Numbers, time & dates', null),
   ('G01', 'en', 'Pronouns', 'ich, du, mir, Si and the rest'),
   ('G01-T01', 'en', 'Personal pronouns', null),
+  ('C08', 'de', 'Bausteine', 'Zahlen, Zeit & Grundwörter'),
+  ('C08-T01', 'de', 'Grüssen & Höflichkeit', null),
+  ('C08-T02', 'de', 'Häufige Verben', null),
+  ('C08-T03', 'de', 'Häufige Adjektive', null),
+  ('C08-T04', 'de', 'Wichtige Nomen', null),
+  ('C08-T05', 'de', 'Pronomen & Fragewörter', null),
+  ('C08-T06', 'de', 'Verbindungswörter & Präpositionen', null),
+  ('C08-T07', 'de', 'Zahlen, Zeit & Daten', null),
   ('C04', 'de', 'Zuhause', 'Wohnen & Haushalt'),
   ('C04-T01', 'de', 'Morgenroutine', null),
   ('C04-T02', 'de', 'In der Küche', null),
@@ -136,18 +144,98 @@ from (values
   ('C07', 'de', 'Unterwegs', 'Tram, Zug & Wege'),
   ('C07-T01', 'de', 'Öffentlicher Verkehr', null),
   ('C07-T02', 'de', 'Nach dem Weg fragen', null),
-  ('C07-T03', 'de', 'Reisen', null),
-  ('C08', 'de', 'Bausteine', 'Zahlen, Zeit & Grundwörter'),
-  ('C08-T01', 'de', 'Grüssen & Höflichkeit', null),
-  ('C08-T02', 'de', 'Häufige Verben', null),
-  ('C08-T03', 'de', 'Häufige Adjektive', null),
-  ('C08-T04', 'de', 'Wichtige Nomen', null),
-  ('C08-T05', 'de', 'Pronomen & Fragewörter', null),
-  ('C08-T06', 'de', 'Verbindungswörter & Präpositionen', null),
-  ('C08-T07', 'de', 'Zahlen, Zeit & Daten', null)
+  ('C07-T03', 'de', 'Reisen', null)
 ) as t (deck_code, locale, title, description)
 join public.decks d on d.code = t.deck_code;
 
+
+insert into public.vocabulary_items (code, high_german, type) values
+  ('FC0101', 'Guten Tag', 'expression'),
+  ('FC0102', 'Hallo', 'word'),
+  ('FC0104', 'Guten Tag zusammen', 'expression'),
+  ('FC0105', 'Hallo zusammen', 'expression'),
+  ('FC0106', 'Guten Morgen', 'expression'),
+  ('FC0107', 'Guten Abend', 'expression'),
+  ('FC0108', 'Auf Wiedersehen', 'expression'),
+  ('FC0109', 'Tschüss', 'word'),
+  ('FC0110', 'Bis später', 'expression'),
+  ('FC0111', 'Danke', 'word'),
+  ('FC0112', 'Vielen Dank', 'expression'),
+  ('FC0113', 'Bitte', 'word'),
+  ('FC0114', 'Entschuldigung', 'word'),
+  ('FC0115', 'Wie geht''s?', 'sentence'),
+  ('FC0116', 'Wie geht es Ihnen?', 'sentence'),
+  ('FC0117', 'Gut, danke. Und Ihnen?', 'sentence'),
+  ('FC0118', 'Gut danke. Und dir?', 'expression'),
+  ('FC0119', 'Guten Appetit!', 'expression'),
+  ('FC0120', 'Schönen Tag noch!', 'expression'),
+  ('FC0121', 'Gern geschehen', 'expression')
+on conflict (code) do update
+  set high_german = excluded.high_german,
+      type = excluded.type;
+
+-- Forms are rewritten in full, so a dialect removed from a card disappears here too.
+delete from public.vocabulary_forms
+where vocabulary_id in (
+  select id from public.vocabulary_items where code in ('FC0101', 'FC0102', 'FC0104', 'FC0105', 'FC0106', 'FC0107', 'FC0108', 'FC0109', 'FC0110', 'FC0111', 'FC0112', 'FC0113', 'FC0114', 'FC0115', 'FC0116', 'FC0117', 'FC0118', 'FC0119', 'FC0120', 'FC0121')
+);
+
+insert into public.vocabulary_forms (vocabulary_id, dialect_id, swiss_german, variants, audio_path)
+select v.id, f.dialect_id, f.swiss_german, f.variants, f.audio_path
+from (values
+  ('FC0101', 'be', 'Grüessech', array[]::text[], null),
+  ('FC0102', 'be', 'Hallo', array['Tschou', 'Sälü'], null),
+  ('FC0104', 'be', 'Grüessech mitenang', array[]::text[], null),
+  ('FC0105', 'be', 'Hallo zäme', array['Tschou zäme', 'Sälü zäme'], null),
+  ('FC0106', 'be', 'Guete Morge', array[]::text[], null),
+  ('FC0107', 'be', 'Guete Aabe', array[]::text[], null),
+  ('FC0108', 'be', 'Uf Widerluege', array[]::text[], null),
+  ('FC0109', 'be', 'Tschüss', array['Tschou'], null),
+  ('FC0110', 'be', 'Bis speter', array[]::text[], null),
+  ('FC0111', 'be', 'Merci', array['Danke'], null),
+  ('FC0112', 'be', 'Merci viumau', array['Danke viumau'], null),
+  ('FC0113', 'be', 'Bitte', array[]::text[], null),
+  ('FC0114', 'be', 'Exgüsee', array['Sorry', 'Tschoudigung'], null),
+  ('FC0115', 'be', 'Wie geits?', array[]::text[], null),
+  ('FC0116', 'be', 'Wie geits nech?', array[]::text[], null),
+  ('FC0117', 'be', 'Guet, merci. U euch?', array[]::text[], null),
+  ('FC0118', 'be', 'Guet, merci. U dir?', array[]::text[], null),
+  ('FC0119', 'be', 'Ä Guete!', array[]::text[], null),
+  ('FC0120', 'be', 'Schöne Tag no!', array[]::text[], null),
+  ('FC0121', 'be', 'Gärn gscheh', array[]::text[], null)
+) as f (card_code, dialect_id, swiss_german, variants, audio_path)
+join public.vocabulary_items v on v.code = f.card_code;
+
+delete from public.vocabulary_translations
+where vocabulary_id in (
+  select id from public.vocabulary_items where code in ('FC0101', 'FC0102', 'FC0104', 'FC0105', 'FC0106', 'FC0107', 'FC0108', 'FC0109', 'FC0110', 'FC0111', 'FC0112', 'FC0113', 'FC0114', 'FC0115', 'FC0116', 'FC0117', 'FC0118', 'FC0119', 'FC0120', 'FC0121')
+);
+
+insert into public.vocabulary_translations (vocabulary_id, locale, meaning, notes)
+select v.id, t.locale, t.meaning, t.notes
+from (values
+  ('FC0101', 'en', 'Hello (formal)', 'The usual polite greeting used when adressing someone formally'),
+  ('FC0102', 'en', 'Hi', '"Informal: friends, family, colleagues you say ""du"" to."'),
+  ('FC0104', 'en', 'Hello everyone (formal)', 'To a group, such as when entering a small shop or a meeting.'),
+  ('FC0105', 'en', 'Hi everyone', 'Informal, to a group.'),
+  ('FC0106', 'en', 'Good morning', null),
+  ('FC0107', 'en', 'Good evening', null),
+  ('FC0108', 'en', 'Goodbye (formal)', null),
+  ('FC0109', 'en', 'Bye (informal)', null),
+  ('FC0110', 'en', 'See you later', null),
+  ('FC0111', 'en', 'Thank you', null),
+  ('FC0112', 'en', 'Thanks a lot', null),
+  ('FC0113', 'en', 'You''re welcome', null),
+  ('FC0114', 'en', 'Excuse me / Sorry', '"From French ""excusez-moi""."'),
+  ('FC0115', 'en', 'How are you? (informal)', null),
+  ('FC0116', 'en', 'How are you? (formal)', null),
+  ('FC0117', 'en', 'Fine, thanks. And you? (formal)', null),
+  ('FC0118', 'en', 'Fine, thanks. And you? (informal)', 'Said to everyone at the table before eating, also at work.'),
+  ('FC0119', 'en', 'Enjoy your meal!', 'Said to everyone at the table before eating.'),
+  ('FC0120', 'en', 'Have a nice day!', 'Often when leaving a shop.'),
+  ('FC0121', 'en', 'You''re welcome', null)
+) as t (card_code, locale, meaning, notes)
+join public.vocabulary_items v on v.code = t.card_code;
 
 insert into public.grammar_points (code, dialect_id) values
   ('GR001', null),
@@ -225,6 +313,35 @@ where not (code = any (array['GR001-E01', 'GR001-E02', 'GR001-E03', 'GR001-E04',
 
 delete from public.deck_items;
 
+
+-- Each word and grammar point gets its card when it's first inserted, from a trigger.
+insert into public.deck_items (deck_id, card_id, position)
+select d.id, c.id, i.position
+from (values
+  ('C08-T01', 'FC0101', 1),
+  ('C08-T01', 'FC0102', 2),
+  ('C08-T01', 'FC0104', 3),
+  ('C08-T01', 'FC0105', 4),
+  ('C08-T01', 'FC0106', 5),
+  ('C08-T01', 'FC0107', 6),
+  ('C08-T01', 'FC0108', 7),
+  ('C08-T01', 'FC0109', 8),
+  ('C08-T01', 'FC0110', 9),
+  ('C08-T01', 'FC0111', 10),
+  ('C08-T01', 'FC0112', 11),
+  ('C08-T01', 'FC0113', 12),
+  ('C08-T01', 'FC0114', 13),
+  ('C08-T01', 'FC0115', 14),
+  ('C08-T01', 'FC0116', 15),
+  ('C08-T01', 'FC0117', 16),
+  ('C08-T01', 'FC0118', 17),
+  ('C08-T01', 'FC0119', 18),
+  ('C08-T01', 'FC0120', 19),
+  ('C08-T01', 'FC0121', 20)
+) as i (deck_code, card_code, position)
+join public.decks d on d.code = i.deck_code
+join public.vocabulary_items v on v.code = i.card_code
+join public.cards c on c.vocabulary_id = v.id;
 
 insert into public.deck_items (deck_id, card_id, position)
 select d.id, c.id, i.position

@@ -1,4 +1,12 @@
 code	parent_code	title_en	emoji	description_en	color	kind	draft	title_de	description_de
+C08		Building Blocks	🧭	Numbers, time & key words				Bausteine	Zahlen, Zeit & Grundwörter
+C08-T01	C08	Greetings & polite phrases	👋					Grüssen & Höflichkeit	
+C08-T02	C08	Common verbs	🏃					Häufige Verben	
+C08-T03	C08	Common adjectives	🎨					Häufige Adjektive	
+C08-T04	C08	Essential nouns	📦					Wichtige Nomen	
+C08-T05	C08	Pronouns & question words	❓					Pronomen & Fragewörter	
+C08-T06	C08	Connectors & prepositions	🔗					Verbindungswörter & Präpositionen	
+C08-T07	C08	Numbers, time & dates	🔢					Zahlen, Zeit & Daten	
 C04		At Home	🏠	Living & household				Zuhause	Wohnen & Haushalt
 C04-T01	C04	Morning routine	⏰					Morgenroutine	
 C04-T02	C04	In the kitchen	🍳					In der Küche	
@@ -27,13 +35,5 @@ C07		Getting Around	🚋	Tram, train & directions				Unterwegs	Tram, Zug & Wege
 C07-T01	C07	Public transport	🚋					Öffentlicher Verkehr	
 C07-T02	C07	Asking for directions	🧭					Nach dem Weg fragen	
 C07-T03	C07	Travelling	🧳					Reisen	
-C08		Building Blocks	🧭	Numbers, time & key words				Bausteine	Zahlen, Zeit & Grundwörter
-C08-T01	C08	Greetings & polite phrases	👋					Grüssen & Höflichkeit	
-C08-T02	C08	Common verbs	🏃					Häufige Verben	
-C08-T03	C08	Common adjectives	🎨					Häufige Adjektive	
-C08-T04	C08	Essential nouns	📦					Wichtige Nomen	
-C08-T05	C08	Pronouns & question words	❓					Pronomen & Fragewörter	
-C08-T06	C08	Connectors & prepositions	🔗					Verbindungswörter & Präpositionen	
-C08-T07	C08	Numbers, time & dates	🔢					Zahlen, Zeit & Daten	
 G01		Pronouns	🫵	ich, du, mir, Si and the rest	purple	grammar	
 G01-T01	G01	Personal pronouns					
