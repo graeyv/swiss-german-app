@@ -1,6 +1,6 @@
 // Every text in the app's interface, in English. Every other language must provide the same
 // entries, which the type check enforces. Card content (words, decks) comes from the database.
-import { plural } from "./plural";
+import { plural, pluralForm } from "./plural";
 
 const many = (count: number, one: string, other: string) => plural("en", count, { one, other });
 
@@ -270,8 +270,9 @@ export const en = {
     notSaved: (error: string) => `Your answer wasn’t saved: ${error}. Choose again to retry.`,
     grades: { again: "Again", hard: "Hard", good: "Good", easy: "Easy" },
     statuses: { new: "New", learning: "Learning", review: "Review" },
-    newWordsLearned: (count: number) => many(count, "new card learned", "new cards learned"),
-    wordsReviewed: (count: number) => many(count, "card reviewed", "cards reviewed"),
+    // Under the number at the end of a session, which shows large above it.
+    newWordsLearned: (count: number) => pluralForm("en", count, { one: "new card learned", other: "new cards learned" }),
+    wordsReviewed: (count: number) => pluralForm("en", count, { one: "card reviewed", other: "cards reviewed" }),
     correct: "Correct!",
     notQuite: "Not quite",
     yourAnswer: "Your answer",
@@ -280,8 +281,9 @@ export const en = {
     saving: "Saving…",
     tryAgain: "Try again",
     answerNotSaved: (error: string) => `Your answer wasn’t saved: ${error}`,
-    goalReached: "Today’s goal reached!",
-    goalReachedNote: "That’s it for today. See you tomorrow.",
+    goalReached: "Today’s goal reached",
+    // This week's days, Monday first, as initials under the streak.
+    weekdays: ["M", "T", "W", "T", "F", "S", "S"],
     playPronunciation: "Play pronunciation",
     noRecording: "No recording yet",
   },

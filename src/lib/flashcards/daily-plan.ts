@@ -31,6 +31,19 @@ export function zurichDay(now: Date) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Zurich" }).format(now);
 }
 
+// This week, Monday to Sunday on Zürich time: whether the learner practised on each day, and which
+// day is today. today is a date such as "2026-11-17", practised the dates with a review.
+export function weekOf(today: string, practised: ReadonlySet<string>) {
+  const noon = new Date(`${today}T12:00:00Z`);
+  // Monday is 0.
+  const todayIndex = (noon.getUTCDay() + 6) % 7;
+  const days = Array.from({ length: 7 }, (_, index) => {
+    const day = new Date(noon.getTime() + (index - todayIndex) * 86_400_000).toISOString().slice(0, 10);
+    return practised.has(day);
+  });
+  return { days, today: todayIndex };
+}
+
 // Rule of thumb: once a pace settles, each new card a day brings up to about 10 reviews a day.
 const REVIEWS_PER_NEW_CARD = 10;
 const MIN_REVIEW_LIMIT = 20;

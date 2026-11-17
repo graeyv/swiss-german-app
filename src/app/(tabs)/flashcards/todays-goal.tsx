@@ -69,15 +69,15 @@ export function TodaysGoal({
   }
 
   return (
-    <section
-      className={`flex flex-col gap-4 rounded-2xl p-5 ${reached ? "bg-yellow" : "bg-mist"}`}
-    >
+    // On mist every day. A reached goal says so in a small yellow pill, the card's one yellow.
+    <section className="flex flex-col gap-4 rounded-2xl bg-mist p-5">
       <div className="flex items-center justify-between gap-4">
         <h2 className="flex items-center gap-2 text-lg font-bold tracking-tight">
           {t.heading}
           {reached && (
-            <span className="rounded-full bg-teal px-2.5 py-0.5 text-xs font-semibold text-ivory motion-safe:animate-pop">
-              🎉 {t.reached}
+            <span className="inline-flex items-center gap-1 rounded-full bg-yellow px-2.5 py-0.5 text-xs font-semibold motion-safe:animate-pop">
+              <Icon name="check" size={12} />
+              {t.reached}
             </span>
           )}
         </h2>
@@ -186,7 +186,7 @@ function Progress({ label, done, total, empty, value }: ProgressProps) {
         aria-valuemin={0}
         aria-valuemax={total}
         aria-valuenow={done}
-        className="h-2 overflow-hidden rounded-full bg-line"
+        className="h-2 overflow-hidden rounded-full bg-ivory"
       >
         <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${percent}%` }} />
       </div>

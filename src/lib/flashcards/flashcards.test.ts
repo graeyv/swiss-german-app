@@ -9,6 +9,7 @@ import {
   reviewLimit,
   reviewProgress,
   todaysQueue,
+  weekOf,
   zurichDay,
 } from "./daily-plan";
 import { suggestedPace } from "../onboarding";
@@ -308,6 +309,21 @@ describe("todaysQueue", () => {
 
   it("drops the limit of new cards once it's lifted for the day, but still caps reviews", () => {
     expect(todaysQueue(2, summary, true)).toMatchObject({ dueNow: 3, waiting: 40, newLeft: LIFTED_NEW_CARDS });
+  });
+});
+
+describe("weekOf", () => {
+  it("marks this week's days with practice, Monday first, and finds today", () => {
+    // 17 November 2026 is a Tuesday.
+    const practised = new Set(["2026-11-15", "2026-11-16", "2026-11-17"]);
+    expect(weekOf("2026-11-17", practised)).toEqual({
+      days: [true, true, false, false, false, false, false],
+      today: 1,
+    });
+  });
+
+  it("puts a Sunday at the end of the week", () => {
+    expect(weekOf("2026-11-22", new Set(["2026-11-22"])).today).toBe(6);
   });
 });
 

@@ -1,7 +1,7 @@
 // Every text in the app's interface, in Swiss Standard German: "ss" instead of "ß", and «»
 // quotation marks. Needs the same entries as en.ts, which the type check enforces.
 import type { Dictionary } from "./en";
-import { plural } from "./plural";
+import { plural, pluralForm } from "./plural";
 
 const many = (count: number, one: string, other: string) => plural("de", count, { one, other });
 
@@ -238,8 +238,9 @@ export const de: Dictionary = {
       `Deine Antwort wurde nicht gespeichert: ${error}. Wähle nochmals, um es erneut zu versuchen.`,
     grades: { again: "Nochmals", hard: "Schwer", good: "Gut", easy: "Einfach" },
     statuses: { new: "Neu", learning: "Am Lernen", review: "Wiederholung" },
-    newWordsLearned: (count) => many(count, "neue Karte gelernt", "neue Karten gelernt"),
-    wordsReviewed: (count) => many(count, "Karte wiederholt", "Karten wiederholt"),
+    // Under the number, which shows large above it.
+    newWordsLearned: (count) => pluralForm("de", count, { one: "neue Karte gelernt", other: "neue Karten gelernt" }),
+    wordsReviewed: (count) => pluralForm("de", count, { one: "Karte wiederholt", other: "Karten wiederholt" }),
     correct: "Richtig!",
     notQuite: "Nicht ganz",
     yourAnswer: "Deine Antwort",
@@ -248,8 +249,8 @@ export const de: Dictionary = {
     saving: "Wird gespeichert…",
     tryAgain: "Nochmals versuchen",
     answerNotSaved: (error) => `Deine Antwort wurde nicht gespeichert: ${error}`,
-    goalReached: "Tagesziel erreicht!",
-    goalReachedNote: "Das war’s für heute. Bis morgen!",
+    goalReached: "Tagesziel erreicht",
+    weekdays: ["M", "D", "M", "D", "F", "S", "S"],
     playPronunciation: "Aussprache abspielen",
     noRecording: "Noch keine Aufnahme",
   },

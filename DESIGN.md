@@ -172,8 +172,19 @@ topic in English); in the code and this guide they are lesson → section → ru
   learner's dialect, in one quiet line in `teal-soft` under the Swiss German wherever it shows:
   large under the main form, small under it at the top of the back, and in the word list. Never on
   a front that would give the answer away.
+- **Today's goal** (Üben → Wortschatz): a card on mist every day, with a bar for new cards and
+  one for reviews, on an ivory track. Once it's reached, a small yellow pill with a check says
+  "Erreicht": the card's one yellow. No emoji.
+- **End of a session**: calm, centred. A check on a mist circle draws itself, the cheer pops in,
+  and the numbers count up on mist, each with its word below ("neue Karten gelernt"). A session
+  that reaches today's goal gets a moment instead: a larger yellow circle springs in with a ring
+  and two waves of dots in yellow, sage and teal, its check drawing itself; "Tagesziel erreicht"
+  in a mist pill; then this week as seven circles with the weekday's initial, days with practice
+  teal with a check and today yellow, popping in last, and the streak below ("3 Tage in Folge").
+  About 1.5 s in all; the button works throughout. With reduced motion, everything shows as it
+  ends up, without dots or ring.
 - **Lifting today's limit** of new cards: once today's goal is reached, a quiet ivory pill
-  "Heute weiterlernen" in the yellow goal card, and "Ohne Limit weiterlernen" where a topic is done
+  "Heute weiterlernen" in the goal card, and "Ohne Limit weiterlernen" where a topic is done
   for today (its sheet, as the primary button, and the end of a session, as a secondary one), with
   "Mehr neue Karten heute heisst mehr Wiederholungen in den nächsten Tagen" below. Until midnight,
   the goal card shows "12 · ohne Limit" and a pill "Ohne Limit bis Mitternacht". Reviews of known
