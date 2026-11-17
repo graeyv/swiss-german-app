@@ -61,10 +61,15 @@ export async function getToday(supabase: Supabase) {
   };
 }
 
-export async function getCardFront(supabase: Supabase): Promise<CardFront> {
-  const { data, error } = await supabase.from("profiles").select("card_front").maybeSingle();
+// How the learner wants their cards: which side first, and whether a word's recording plays by
+// itself when its Swiss German shows.
+export async function getCardSettings(supabase: Supabase): Promise<{ cardFront: CardFront; autoplay: boolean }> {
+  const { data, error } = await supabase.from("profiles").select("card_front, autoplay_audio").maybeSingle();
   if (error) throw new Error(error.message);
-  return data?.card_front === "translation" ? "translation" : "swiss_german";
+  return {
+    cardFront: data?.card_front === "translation" ? "translation" : "swiss_german",
+    autoplay: data?.autoplay_audio ?? true,
+  };
 }
 
 type WordRow = {

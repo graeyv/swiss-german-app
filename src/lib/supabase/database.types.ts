@@ -234,6 +234,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          autoplay_audio: boolean
           card_front: string
           created_at: string
           dialect_id: string | null
@@ -246,6 +247,7 @@ export type Database = {
           swiss_german_level: string | null
         }
         Insert: {
+          autoplay_audio?: boolean
           card_front?: string
           created_at?: string
           dialect_id?: string | null
@@ -258,6 +260,7 @@ export type Database = {
           swiss_german_level?: string | null
         }
         Update: {
+          autoplay_audio?: boolean
           card_front?: string
           created_at?: string
           dialect_id?: string | null

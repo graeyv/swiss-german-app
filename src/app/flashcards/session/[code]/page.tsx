@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getCardFront, getToday, toWordCard } from "@/lib/flashcards/data";
+import { getCardSettings, getToday, toWordCard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
 import { alternate, composeSession } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases, typesOf, vocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
@@ -35,7 +35,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
 
-  const [today, cardFront] = await Promise.all([getToday(supabase), getCardFront(supabase)]);
+  const [today, { cardFront, autoplay }] = await Promise.all([getToday(supabase), getCardSettings(supabase)]);
   const { tree, limits } = today;
   const found = findDeck(tree, code);
   if (!found) notFound();
@@ -80,6 +80,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
       <ReviewSession
         cards={cards}
         cardFront={cardFront}
+        autoplay={autoplay}
         locale={locale}
         goalReachedBefore={today.goalReached}
         emptyMessage={t.session.empty}

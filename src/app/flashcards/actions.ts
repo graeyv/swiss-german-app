@@ -93,6 +93,26 @@ export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?:
   return {};
 }
 
+// Whether a word's recording plays by itself as soon as its Swiss German shows.
+export async function updateAutoplay(autoplay: boolean): Promise<{ error?: string }> {
+  if (typeof autoplay !== "boolean") return { error: "Unknown setting" };
+
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  // An update that matches no row isn't an error, so check that the profile was found.
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ autoplay_audio: autoplay })
+    .eq("id", claims.claims.sub)
+    .select("id");
+  if (error) return { error: error.message };
+  if (data.length === 0) return { error: "Your profile is missing" };
+  revalidatePath("/profile");
+  return {};
+}
+
 export async function updateCardFront(cardFront: CardFront): Promise<{ error?: string }> {
   if (cardFront !== "swiss_german" && cardFront !== "translation") {
     return { error: "Unknown card side" };

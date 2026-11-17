@@ -151,6 +151,12 @@ topic in English); in the code and this guide they are lesson → section → ru
   caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut → gleich"), with
   only a changed sound bold. On the right, a round play button per side, on mist, teal while it
   plays; the sides are named once above the buttons. Space between the words.
+- **Playing a recording** (`SoundBars`): every round play or speaker button is on mist, gives
+  under the finger when tapped (scale 90–95 %), and while the recording plays turns teal with three
+  bars bouncing in turn in place of its icon. Still with reduced motion.
+- **Pronunciation on a word card**: the speaker at the card's top right, as above. It plays by
+  itself the first time the Swiss German shows, unless the learner switched that off: a speaker in
+  the session's top bar, crossed out while words only play on tap, and "Aussprache" in Profil.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in
   semibold. The rule screen's one yellow element.
 - **Lesson round** (a section's exercises, such as the consonants): a full screen with a cross at

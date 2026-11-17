@@ -7,7 +7,7 @@ import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../actions";
 import { LogOutIcon } from "./icons";
-import { DialectSetting, DirectionSetting, LanguageSetting, PaceSetting, TopicsSetting } from "./settings";
+import { AudioSetting, DialectSetting, DirectionSetting, LanguageSetting, PaceSetting, TopicsSetting } from "./settings";
 
 export default function ProfilePage() {
   return (
@@ -25,7 +25,7 @@ async function Profile() {
     supabase.auth.getClaims(),
     supabase
       .from("profiles")
-      .select("created_at, new_cards_per_day, card_front, interests, dialect_id")
+      .select("created_at, new_cards_per_day, card_front, autoplay_audio, interests, dialect_id")
       .maybeSingle(),
     supabase.from("dialects").select("id, name").order("name"),
     supabase.rpc("profile_stats").single(),
@@ -83,6 +83,7 @@ async function Profile() {
           cardFront={profile.data?.card_front === "translation" ? "translation" : "swiss_german"}
           locale={locale}
         />
+        <AudioSetting autoplay={profile.data?.autoplay_audio ?? true} locale={locale} />
         <TopicsSetting topics={topics} interests={profile.data?.interests ?? []} locale={locale} />
       </Group>
 

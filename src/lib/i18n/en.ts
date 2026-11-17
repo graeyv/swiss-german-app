@@ -69,6 +69,10 @@ export const en = {
     cardDirection: "Card direction",
     cardDirectionNote: "Which side of a word card you see first. You can also swap it during a session.",
     directions: { swiss_german: "Swiss German first", translation: "English first" },
+    audio: "Pronunciation",
+    audioNote:
+      "Whether a word card plays the word by itself as soon as you see the Swiss German. You can also switch it at the top of a session.",
+    audioModes: { auto: "Play automatically", tap: "Only when tapped" },
     topics: "Topics",
     topicsNote: "Your topics come first in Practice.",
     topicsChosen: (count: number) => (count === 0 ? "None" : `${count} chosen`),
@@ -251,6 +255,10 @@ export const en = {
     showingSwissGermanFirst: "Showing Swiss German first. Show English first instead",
     showingTranslationFirst: "Showing English first. Show Swiss German first instead",
     tapToReveal: "Tap card to reveal",
+    // The speaker in a session's top bar, switching whether words play by themselves.
+    autoplay: "Play pronunciation automatically",
+    autoplayOn: "Plays the pronunciation automatically",
+    autoplayOff: "Plays the pronunciation only when tapped",
     // Before a word's other forms, such as "also: Salü · Hallo".
     also: "also",
     notSaved: (error: string) => `Your answer wasn’t saved: ${error}. Choose again to retry.`,

@@ -66,6 +66,10 @@ export const de: Dictionary = {
     cardDirectionNote:
       "Welche Seite einer Wortkarte du zuerst siehst. Du kannst sie auch während einer Sitzung wechseln.",
     directions: { swiss_german: "Schweizerdeutsch zuerst", translation: "Hochdeutsch zuerst" },
+    audio: "Aussprache",
+    audioNote:
+      "Ob eine Wortkarte das Wort von selbst abspielt, sobald du das Schweizerdeutsch siehst. Du kannst es auch während einer Sitzung oben umschalten.",
+    audioModes: { auto: "Automatisch abspielen", tap: "Nur auf Tippen" },
     topics: "Themen",
     topicsNote: "Deine Themen erscheinen beim Üben zuerst.",
     topicsChosen: (count) => (count === 0 ? "Keine" : `${count} gewählt`),
@@ -221,6 +225,9 @@ export const de: Dictionary = {
     showingSwissGermanFirst: "Zeigt zuerst Schweizerdeutsch. Stattdessen zuerst Hochdeutsch zeigen",
     showingTranslationFirst: "Zeigt zuerst Hochdeutsch. Stattdessen zuerst Schweizerdeutsch zeigen",
     tapToReveal: "Tippe auf die Karte, um sie umzudrehen",
+    autoplay: "Aussprache automatisch abspielen",
+    autoplayOn: "Spielt die Aussprache automatisch ab",
+    autoplayOff: "Spielt die Aussprache nur auf Tippen ab",
     also: "auch",
     notSaved: (error) =>
       `Deine Antwort wurde nicht gespeichert: ${error}. Wähle nochmals, um es erneut zu versuchen.`,
