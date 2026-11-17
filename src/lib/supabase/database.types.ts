@@ -504,43 +504,65 @@ export type Database = {
           },
         ]
       }
-      vocabulary_items: {
+      vocabulary_forms: {
         Row: {
           audio_path: string | null
-          code: string
           dialect_id: string
-          high_german: string
-          id: string
           swiss_german: string
-          type: string
+          variants: string[]
+          vocabulary_id: string
         }
         Insert: {
           audio_path?: string | null
-          code: string
           dialect_id: string
-          high_german: string
-          id?: string
           swiss_german: string
-          type?: string
+          variants?: string[]
+          vocabulary_id: string
         }
         Update: {
           audio_path?: string | null
-          code?: string
           dialect_id?: string
-          high_german?: string
-          id?: string
           swiss_german?: string
-          type?: string
+          variants?: string[]
+          vocabulary_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "vocabulary_items_dialect_id_fkey"
+            foreignKeyName: "vocabulary_forms_dialect_id_fkey"
             columns: ["dialect_id"]
             isOneToOne: false
             referencedRelation: "dialects"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vocabulary_forms_vocabulary_id_fkey"
+            columns: ["vocabulary_id"]
+            isOneToOne: false
+            referencedRelation: "vocabulary_items"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      vocabulary_items: {
+        Row: {
+          code: string
+          high_german: string
+          id: string
+          type: string
+        }
+        Insert: {
+          code: string
+          high_german: string
+          id?: string
+          type?: string
+        }
+        Update: {
+          code?: string
+          high_german?: string
+          id?: string
+          type?: string
+        }
+        Relationships: []
       }
       vocabulary_translations: {
         Row: {
@@ -611,6 +633,7 @@ export type Database = {
           state: number
           swiss_german: string
           type: string
+          variants: string[]
         }[]
       }
       due_flashcards: {
@@ -634,6 +657,7 @@ export type Database = {
           stability: number
           state: number
           swiss_german: string
+          variants: string[]
         }[]
       }
       flashcard_decks: {
@@ -708,6 +732,7 @@ export type Database = {
           meaning: string
           notes: string
           swiss_german: string
+          variants: string[]
         }[]
       }
       profile_stats: {
@@ -730,6 +755,14 @@ export type Database = {
           p_review_id: string
         }
         Returns: undefined
+      }
+      vocabulary_form: {
+        Args: { p_vocabulary_id: string }
+        Returns: {
+          audio_path: string
+          swiss_german: string
+          variants: string[]
+        }[]
       }
       vocabulary_text: {
         Args: { p_vocabulary_id: string }

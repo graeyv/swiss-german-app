@@ -137,8 +137,17 @@ describe("buildDeckTree", () => {
 
 describe("buildSeed", () => {
   const decks = "code\tparent_code\ttitle_en\ttitle_de\nC01\t\tLife\tLeben\nC01-T01\tC01\tGreetings\t\n";
-  const header =
-    "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\tnotes_en\tnotes_de\taudio_path\ttype\n";
+  const columns = [
+    "code", "deck_codes", "high_german", "meaning_en", "notes_en", "notes_de", "type",
+    "swiss_german_be", "variants_be", "audio_be", "swiss_german_zh", "audio_zh",
+  ];
+  const header = `${columns.join("\t")}\n`;
+  // A cards file with the header and one row per card, from just the columns a test cares about.
+  const cards = (...rows: Record<string, string>[]) =>
+    header + rows.map((row) => columns.map((column) => row[column] ?? "").join("\t") + "\n").join("");
+  const card = (fields: Record<string, string> = {}) => ({
+    code: "FC1", deck_codes: "C01-T01", high_german: "b", meaning_en: "c", swiss_german_zh: "a", ...fields,
+  });
 
   it("builds the deck structure without any words", () => {
     const seed = buildSeed(decks, header);
@@ -148,15 +157,46 @@ describe("buildSeed", () => {
   });
 
   it("escapes quotes and numbers cards per deck", () => {
-    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\tWie gaht's?\tWie geht's?\tHow?\t\t\t\n`);
+    const seed = buildSeed(decks, cards(card({ swiss_german_zh: "Wie gaht's?", high_german: "Wie geht's?" })));
     expect(seed).toContain("'Wie gaht''s?'");
     expect(seed).toContain("('C01-T01', 'FC1', 1)");
   });
 
   it("puts each word's card in its decks, not the word itself", () => {
-    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`);
+    const seed = buildSeed(decks, cards(card()));
     expect(seed).toContain("insert into public.deck_items (deck_id, card_id, position)");
     expect(seed).toContain("join public.cards c on c.vocabulary_id = v.id");
+  });
+
+  it("gives a card one form per dialect it has, with its recording", () => {
+    const seed = buildSeed(
+      decks,
+      cards(card({ swiss_german_be: "Merci vilmau", audio_be: "be/merci.mp3", swiss_german_zh: "Merci vilmal" })),
+    );
+    expect(seed).toContain("('FC1', 'b', 'word')");
+    expect(seed).toContain("('FC1', 'be', 'Merci vilmau', array[]::text[], 'be/merci.mp3')");
+    expect(seed).toContain("('FC1', 'zh', 'Merci vilmal', array[]::text[], null)");
+    const onlyBern = buildSeed(decks, cards(card({ swiss_german_be: "Tschou", swiss_german_zh: "" })));
+    expect(onlyBern).toContain("('FC1', 'be', 'Tschou', array[]::text[], null)");
+    expect(onlyBern).not.toContain("'zh'");
+  });
+
+  it("needs a form in at least one dialect, and audio and variants only with their form", () => {
+    expect(() => buildSeed(decks, cards(card({ swiss_german_zh: "" })))).toThrow(/no Swiss German/);
+    expect(() => buildSeed(decks, cards(card({ audio_be: "be/a.mp3" })))).toThrow(/audio_be but no swiss_german_be/);
+    expect(() => buildSeed(decks, cards(card({ variants_be: "Salü" })))).toThrow(/variants_be but no swiss_german_be/);
+  });
+
+  it("lists a form's variants, separated by semicolons", () => {
+    const seed = buildSeed(decks, cards(card({ swiss_german_be: "Tschou", variants_be: " Salü ;Hallo; " })));
+    expect(seed).toContain("('FC1', 'be', 'Tschou', array['Salü', 'Hallo'], null)");
+  });
+
+  it("rejects an unknown dialect and the old one-dialect columns", () => {
+    const unknown = "code\tdeck_codes\thigh_german\tmeaning_en\tswiss_german_xx\nFC1\tC01-T01\tb\tc\ta\n";
+    expect(() => buildSeed(decks, unknown)).toThrow(/unknown dialect: xx/);
+    const old = "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\nFC1\tC01-T01\tzh\ta\tb\tc\n";
+    expect(() => buildSeed(decks, old)).toThrow(/column per dialect/);
   });
 
   it("rejects unknown deck colours", () => {
@@ -165,37 +205,29 @@ describe("buildSeed", () => {
   });
 
   it("writes a translation row for each language with content, and requires English", () => {
-    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tHi\tPolite.\tHöflich.\t\t\n`);
+    const seed = buildSeed(decks, cards(card({ meaning_en: "Hi", notes_en: "Polite.", notes_de: "Höflich." })));
     expect(seed).toContain("('C01', 'en', 'Life', null)");
     expect(seed).toContain("('C01', 'de', 'Leben', null)");
     expect(seed).not.toContain("('C01-T01', 'de'");
     expect(seed).toContain("('FC1', 'en', 'Hi', 'Polite.')");
     expect(seed).toContain("('FC1', 'de', null, 'Höflich.')");
-    expect(() => buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\t\t\t\t\t\n`)).toThrow(/meaning_en/);
+    expect(() => buildSeed(decks, cards(card({ meaning_en: "" })))).toThrow(/meaning_en/);
   });
 
   it("rejects cards on a level with children", () => {
-    expect(() => buildSeed(decks, `${header}FC1\tC01\tzh\ta\tb\tc\t\t\t\n`)).toThrow(/lowest level/);
+    expect(() => buildSeed(decks, cards(card({ deck_codes: "C01" })))).toThrow(/lowest level/);
   });
 
   it("stores each card's type, a word unless it says otherwise", () => {
-    const seed = buildSeed(
-      decks,
-      `${header}FC1	C01-T01	zh	a	b	c				
-FC2	C01-T01	zh	d	e	f				Sentence
-`,
-    );
-    expect(seed).toContain("('FC1', 'zh', 'a', 'b', null, 'word')");
-    expect(seed).toContain("('FC2', 'zh', 'd', 'e', null, 'sentence')");
-    expect(() => buildSeed(decks, `${header}FC1	C01-T01	zh	a	b	c				Verb
-`)).toThrow(/unknown type/);
+    const seed = buildSeed(decks, cards(card(), card({ code: "FC2", high_german: "e", type: "Sentence" })));
+    expect(seed).toContain("('FC1', 'b', 'word')");
+    expect(seed).toContain("('FC2', 'e', 'sentence')");
+    expect(() => buildSeed(decks, cards(card({ type: "Verb" })))).toThrow(/unknown type/);
   });
 
   it("rejects unknown decks and duplicate codes", () => {
-    expect(() => buildSeed(decks, `${header}FC1\tC09\tzh\ta\tb\tc\t\t\t\n`)).toThrow(/unknown deck/);
-    expect(() =>
-      buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\nFC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`),
-    ).toThrow(/Duplicate/);
+    expect(() => buildSeed(decks, cards(card({ deck_codes: "C09" })))).toThrow(/unknown deck/);
+    expect(() => buildSeed(decks, cards(card(), card()))).toThrow(/Duplicate/);
   });
 });
 
@@ -204,7 +236,7 @@ describe("buildSeed with grammar", () => {
     "code\tparent_code\ttitle_en\tkind\tdraft\n" +
     "C01\t\tLife\t\t\nC01-T01\tC01\tGreetings\t\t\n" +
     "G01\t\tPronouns\tgrammar\tyes\nG01-T01\tG01\tPersonal\t\t\n";
-  const words = "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\nFC1\tC01-T01\tzh\ta\tb\tc\n";
+  const words = "code\tdeck_codes\tswiss_german_zh\thigh_german\tmeaning_en\nFC1\tC01-T01\ta\tb\tc\n";
   const points = "code\tdeck_codes\tdialect\ttitle_en\texplanation_en\nGR1\tG01-T01\t\tSi\tPolite.\n";
   const exerciseHeader = "code\tpoint\ttype\tlevel\tdialect\tpayload\n";
   const pick = '{"prompt":"Chönd ___ hälfe?","options":["Si","du"],"answer":0}';

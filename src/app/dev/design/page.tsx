@@ -15,6 +15,7 @@ import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule } from "@/lib/learn/lessons";
 import { devOnly } from "../exercises/data";
 import { GradePreview } from "./grade-preview";
+import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";
 import { ContinuePreview } from "./continue-preview";
 import { LearnPathWithProgress } from "./learn-preview";
@@ -32,6 +33,10 @@ export default function DevDesignPage() {
         <h1 className="text-title font-bold">Design</h1>
         <p className="text-body text-teal-soft">Alles aus DESIGN.md, so wie es auf den Screens aussieht.</p>
       </div>
+
+      <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
+        <VariantPreview />
+      </Part>
 
       <Part title="Lernen: weitermachen oder von vorne">
         <ContinuePreview />

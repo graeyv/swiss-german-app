@@ -100,6 +100,11 @@ async function WordList({ params, searchParams }: PageProps<"/flashcards/decks/[
               <tr key={word.card_id} className="align-top">
                 <td lang="gsw" className="px-4 py-3 font-semibold break-words">
                   {word.swiss_german}
+                  {word.variants && word.variants.length > 0 && (
+                    <span className="block text-xs font-normal text-teal-soft">
+                      {t.session.also}: {word.variants.join(" · ")}
+                    </span>
+                  )}
                 </td>
                 <td lang={locale} className="px-4 py-3 break-words">
                   {translationOf(word, locale)}

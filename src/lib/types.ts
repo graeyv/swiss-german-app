@@ -16,6 +16,8 @@ type CardBase = {
 export type WordCard = CardBase & {
   kind: "vocabulary";
   swiss_german: string;
+  // Other ways of saying it in the learner's dialect, shown under it: "auch: Salü · Hallo".
+  variants: string[];
   high_german: string;
   // In the learner's language, falling back to English.
   meaning: string;

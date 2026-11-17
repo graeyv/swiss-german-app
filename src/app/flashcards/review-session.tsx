@@ -323,6 +323,13 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
   }, [revealed, saving, onGrade]);
 
   const swissGerman = { text: card.swiss_german, lang: "gsw" };
+  // Other ways of saying it, in a quiet line under the Swiss German wherever that shows.
+  const variants = (size: "large" | "small") =>
+    card.variants.length > 0 && (
+      <span lang="gsw" className={`text-teal-soft ${size === "large" ? "text-lg" : "text-base"}`}>
+        {t.also}: {card.variants.join(" · ")}
+      </span>
+    );
   const translation = { text: translationOf(card, locale), lang: locale };
   const [prompt, answer] =
     front === "swiss_german" ? [swissGerman, translation] : [translation, swissGerman];
@@ -345,10 +352,11 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
               {/* Screen readers only read the side that is showing. */}
               <span aria-hidden={revealed} className={CARD_FACE}>
                 <StatusBadge status={card.status} t={t} />
-                <span className="flex flex-1 items-center justify-center px-2 text-center">
+                <span className="flex flex-1 flex-col items-center justify-center gap-2 px-2 text-center">
                   <span lang={prompt.lang} className="text-5xl font-bold tracking-tight break-words">
                     {prompt.text}
                   </span>
+                  {front === "swiss_german" && variants("large")}
                 </span>
                 <span className="mx-auto flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
                   <span aria-hidden>👆</span> {t.tapToReveal}
@@ -356,13 +364,17 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
               </span>
 
               <span aria-hidden={!revealed} className={`${CARD_FACE} rotate-y-180`}>
-                <span lang={prompt.lang} className="text-lg font-semibold text-muted">
-                  {prompt.text}
+                <span className="flex flex-col">
+                  <span lang={prompt.lang} className="text-lg font-semibold text-muted">
+                    {prompt.text}
+                  </span>
+                  {front === "swiss_german" && variants("small")}
                 </span>
                 <span className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
                   <span lang={answer.lang} className="text-4xl font-bold tracking-tight break-words">
                     {answer.text}
                   </span>
+                  {front === "translation" && variants("large")}
                   {/* Unless the translation already is Standard German, that follows as a second one. */}
                   {!texts.translationIsStandardGerman && (
                     <span className="text-muted">

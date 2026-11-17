@@ -71,6 +71,7 @@ export async function getCardFront(supabase: Supabase): Promise<CardFront> {
 type WordRow = {
   card_id: string;
   swiss_german: string;
+  variants: string[] | null;
   high_german: string;
   meaning: string;
   notes: string | null;
@@ -94,6 +95,7 @@ export async function toWordCard(
     kind: "vocabulary",
     card_id: word.card_id,
     swiss_german: word.swiss_german,
+    variants: word.variants ?? [],
     high_german: word.high_german,
     meaning: word.meaning,
     notes: word.notes,

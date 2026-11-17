@@ -4,6 +4,12 @@
 // Translated columns end in a language code, such as title_en or notes_de. English is
 // required, because it's what every other language falls back to. Adding a language means
 // adding its columns, such as meaning_fr, once it's in public.locales.
+//
+// A card is the same for every dialect, with a form per dialect: swiss_german_be and audio_be for
+// Bärndütsch, swiss_german_zh and audio_zh for Züritüütsch. variants_be and variants_zh hold other
+// ways of saying it in that dialect, separated by semicolons, such as "Salü; Hallo". A card needs at least one form, and
+// learners only see it in a dialect it has a form for. Adding a dialect means adding its
+// columns, once it's in public.dialects (supabase/seed.sql).
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { payloadProblem } from "./lib/check-payload.mjs";
@@ -14,6 +20,13 @@ const DECK_COLORS = ["pink", "blue", "green", "yellow", "purple", "orange"];
 const DECK_KINDS = ["vocabulary", "grammar"];
 // Matches the check on public.vocabulary_items.type. An empty type is a word.
 const CARD_TYPES = ["word", "sentence", "expression"];
+// The dialects in public.dialects, which supabase/seed.sql adds.
+const DIALECTS = ["be", "zh"];
+
+// The dialects the cards file has columns for, from columns such as swiss_german_be.
+function dialectsOf(cards) {
+  return Object.keys(cards[0] ?? {}).flatMap((key) => /^swiss_german_([a-z]{2})$/.exec(key)?.[1] ?? []);
+}
 
 // A card's type in lower case, so "Sentence" from a spreadsheet works too.
 const typeOf = (card) => card.type?.toLowerCase() || "word";
@@ -38,6 +51,11 @@ function quote(value) {
 // A list of codes for SQL, which may be empty.
 function codeArray(codes) {
   return codes.length ? `array[${codes.map(quote).join(", ")}]` : "array[]::text[]";
+}
+
+// A card's variants in a dialect, from a cell such as "Salü; Hallo".
+function variantsOf(cell) {
+  return (cell ?? "").split(";").map((variant) => variant.trim()).filter(Boolean);
 }
 
 function findDuplicate(values) {
@@ -132,9 +150,22 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
     }
   };
 
+  const dialects = dialectsOf(cards);
+  if (cards.length && ["dialect", "swiss_german", "audio_path"].some((column) => column in cards[0])) {
+    throw new Error("cards.tsv has a column per dialect now: swiss_german_be, audio_be and so on");
+  }
+  const unknownDialect = dialects.find((dialect) => !DIALECTS.includes(dialect));
+  if (unknownDialect) throw new Error(`cards.tsv has columns for an unknown dialect: ${unknownDialect}`);
   for (const card of cards) {
-    for (const column of ["code", "dialect", "swiss_german", "high_german", "meaning_en"]) {
+    for (const column of ["code", "high_german", "meaning_en"]) {
       if (!card[column]) throw new Error(`Card ${card.code} is missing ${column}`);
+    }
+    if (!dialects.some((dialect) => card[`swiss_german_${dialect}`])) {
+      throw new Error(`Card ${card.code} has no Swiss German in any dialect`);
+    }
+    for (const field of ["audio", "variants"]) {
+      const stray = dialects.find((dialect) => card[`${field}_${dialect}`] && !card[`swiss_german_${dialect}`]);
+      if (stray) throw new Error(`Card ${card.code} has ${field}_${stray} but no swiss_german_${stray}`);
     }
     if (!CARD_TYPES.includes(typeOf(card))) {
       throw new Error(`Card ${card.code} has an unknown type: ${card.type}`);
@@ -192,8 +223,15 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
       `  (${[deck.code, deck.parent_code, kindOf(deck), deck.emoji, deck.color].map(quote).join(", ")}, ${nextPosition(`deck:${deck.parent_code}`)}, ${!isDraft(deck)})`,
   );
   const cardRows = cards.map(
-    (card) =>
-      `  (${[card.code, card.dialect, card.swiss_german, card.high_german, card.audio_path, typeOf(card)].map(quote).join(", ")})`,
+    (card) => `  (${[card.code, card.high_german, typeOf(card)].map(quote).join(", ")})`,
+  );
+  const formRows = cards.flatMap((card) =>
+    dialects
+      .filter((dialect) => card[`swiss_german_${dialect}`])
+      .map(
+        (dialect) =>
+          `  (${[card.code, dialect, card[`swiss_german_${dialect}`]].map(quote).join(", ")}, ${codeArray(variantsOf(card[`variants_${dialect}`]))}, ${quote(card[`audio_${dialect}`])})`,
+      ),
   );
   const itemRows = cards.flatMap((card) =>
     card.deckCodes.map(
@@ -212,14 +250,24 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
   // Words are optional too, so content can hold only the deck structure for a while.
   const vocabularySql = cards.length
     ? `
-insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german, audio_path, type) values
+insert into public.vocabulary_items (code, high_german, type) values
 ${cardRows.join(",\n")}
 on conflict (code) do update
-  set dialect_id = excluded.dialect_id,
-      swiss_german = excluded.swiss_german,
-      high_german = excluded.high_german,
-      audio_path = excluded.audio_path,
+  set high_german = excluded.high_german,
       type = excluded.type;
+
+-- Forms are rewritten in full, so a dialect removed from a card disappears here too.
+delete from public.vocabulary_forms
+where vocabulary_id in (
+  select id from public.vocabulary_items where code in (${cards.map((card) => quote(card.code)).join(", ")})
+);
+
+insert into public.vocabulary_forms (vocabulary_id, dialect_id, swiss_german, variants, audio_path)
+select v.id, f.dialect_id, f.swiss_german, f.variants, f.audio_path
+from (values
+${formRows.join(",\n")}
+) as f (card_code, dialect_id, swiss_german, variants, audio_path)
+join public.vocabulary_items v on v.code = f.card_code;
 
 delete from public.vocabulary_translations
 where vocabulary_id in (

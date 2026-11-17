@@ -212,6 +212,8 @@ export const en = {
     showingSwissGermanFirst: "Showing Swiss German first. Show English first instead",
     showingTranslationFirst: "Showing English first. Show Swiss German first instead",
     tapToReveal: "Tap card to reveal",
+    // Before a word's other forms, such as "also: Salü · Hallo".
+    also: "also",
     notSaved: (error: string) => `Your answer wasn’t saved: ${error}. Choose again to retry.`,
     grades: { again: "Again", hard: "Hard", good: "Good", easy: "Easy" },
     statuses: { new: "New", learning: "Learning", review: "Review" },

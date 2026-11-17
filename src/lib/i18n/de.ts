@@ -190,6 +190,7 @@ export const de: Dictionary = {
     showingSwissGermanFirst: "Zeigt zuerst Schweizerdeutsch. Stattdessen zuerst Hochdeutsch zeigen",
     showingTranslationFirst: "Zeigt zuerst Hochdeutsch. Stattdessen zuerst Schweizerdeutsch zeigen",
     tapToReveal: "Tippe auf die Karte, um sie umzudrehen",
+    also: "auch",
     notSaved: (error) =>
       `Deine Antwort wurde nicht gespeichert: ${error}. Wähle nochmals, um es erneut zu versuchen.`,
     grades: { again: "Nochmals", hard: "Schwer", good: "Gut", easy: "Einfach" },

@@ -141,6 +141,10 @@ topic in English); in the code and this guide they are lesson → section → ru
   plays; the sides are named once above the buttons. Space between the words.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in
   semibold. The rule screen's one yellow element.
+- **Variants on a flashcard** ("auch: Salü · Hallo"): other ways of saying a word in the
+  learner's dialect, in one quiet line in `teal-soft` under the Swiss German wherever it shows:
+  large under the main form, small under it at the top of the back, and in the word list. Never on
+  a front that would give the answer away.
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick
