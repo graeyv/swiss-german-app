@@ -17,8 +17,6 @@ import { devOnly } from "../dev-only";
 import { GradePreview } from "./grade-preview";
 import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";
-import { ContinuePreview } from "./continue-preview";
-import { LearnPathWithProgress } from "./learn-preview";
 import { LogoPreview } from "./logo-preview";
 
 // Developer tool: everything DESIGN.md defines, in one place, to check the look at phone width
@@ -36,10 +34,6 @@ export default function DevDesignPage() {
 
       <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
         <VariantPreview />
-      </Part>
-
-      <Part title="Lernen: weitermachen oder von vorne">
-        <ContinuePreview />
       </Part>
 
       <Part title="Logo">
@@ -112,10 +106,6 @@ export default function DevDesignPage() {
 
           <Button>Los geht&apos;s</Button>
         </div>
-      </Part>
-
-      <Part title="Lernen-Tab später, mit gespeichertem Fortschritt">
-        <LearnPathWithProgress />
       </Part>
 
       <Part title="Buttons">
