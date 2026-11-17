@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { Icon, type IconName } from "@/app/ui/icons";
-import { BottomSheet } from "../../bottom-sheet";
-import type { DeckKind } from "@/lib/flashcards/decks";
+import { BottomSheet } from "@/app/ui/bottom-sheet";
 import { filterSearch, type VocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { Counts } from "../../counts";
@@ -12,7 +11,6 @@ import { FilterSwitch } from "../../filter-switch";
 
 type SubcategorySheetProps = {
   code: string;
-  kind: DeckKind;
   title: string;
   icon: IconName;
   newWords: number;
@@ -22,12 +20,11 @@ type SubcategorySheetProps = {
   locale: Locale;
 };
 
-// A lowest-level subcategory. Tapping it slides up a sheet to start flashcards or see the words,
-// or for grammar, to start practising or see the rules. A topic with words and sentences or
-// expressions first asks which of them to practise, all mixed unless the learner picks one.
+// A lowest-level subcategory. Tapping it slides up a sheet to start flashcards or see the words.
+// A topic with words and sentences or expressions first asks which of them to practise, all mixed
+// unless the learner picks one.
 export function SubcategorySheet({
   code,
-  kind,
   title,
   icon,
   newWords,
@@ -83,11 +80,11 @@ export function SubcategorySheet({
             </Link>
           )}
           <Link
-            href={`/flashcards/decks/${code}/${kind === "grammar" ? "rules" : "words"}`}
+            href={`/flashcards/decks/${code}/words`}
             onClick={close}
             className="w-full rounded-full border border-line px-6 py-3 text-center font-semibold transition-colors hover:border-accent"
           >
-            {kind === "grammar" ? t.seeRules : t.seeList}
+            {t.seeList}
           </Link>
         </div>
       </BottomSheet>

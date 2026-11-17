@@ -1,15 +1,15 @@
 "use client";
 
 import { type ReactNode, type RefObject, useRef, useState, useTransition } from "react";
-import { updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
+import { updateAutoplay, updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
 import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
 import type { CardFront } from "@/lib/types";
-import { BottomSheet } from "../flashcards/bottom-sheet";
+import { BottomSheet } from "@/app/ui/bottom-sheet";
 import { PaceOptions } from "../flashcards/pace-options";
 import { setLocale } from "../actions";
 import { updateDialect, updateInterests } from "./actions";
-import { DialectIcon, DirectionIcon, LanguageIcon, PaceIcon, TopicsIcon } from "./icons";
+import { AudioIcon, DialectIcon, DirectionIcon, LanguageIcon, PaceIcon, TopicsIcon } from "./icons";
 
 // Settings are rows that slide up a sheet to change them. Each sheet saves through a server
 // action, which refreshes the page, so the rows always show what's saved.
@@ -252,6 +252,33 @@ export function DirectionSetting({ cardFront, locale }: { cardFront: CardFront; 
           name={(direction) => t.directions[direction]}
           disabled={saving}
           onChoose={(direction) => save(() => updateCardFront(direction))}
+        />
+      </Sheet>
+    </>
+  );
+}
+
+const AUDIO_MODES = ["auto", "tap"] as const;
+
+// Whether word cards play their recording by itself, or only when the speaker is tapped.
+export function AudioSetting({ autoplay, locale }: { autoplay: boolean; locale: Locale }) {
+  const t = dictionary(locale).profile;
+  const sheet = useRef<HTMLDialogElement>(null);
+  const { error, saving, save } = useSave(sheet);
+  const mode = autoplay ? "auto" : "tap";
+
+  return (
+    <>
+      <Row icon={<AudioIcon />} label={t.audio} value={t.audioModes[mode]} onOpen={() => sheet.current?.showModal()} />
+      <Sheet sheet={sheet} title={t.audio} locale={locale} error={error}>
+        <p className="text-sm text-muted">{t.audioNote}</p>
+        <Choices
+          label={t.audio}
+          values={[...AUDIO_MODES]}
+          current={mode}
+          name={(value) => t.audioModes[value]}
+          disabled={saving}
+          onChoose={(value) => save(() => updateAutoplay(value === "auto"))}
         />
       </Sheet>
     </>

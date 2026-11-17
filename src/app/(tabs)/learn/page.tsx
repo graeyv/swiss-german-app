@@ -1,26 +1,13 @@
-import { cookies } from "next/headers";
-import Link from "next/link";
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { ButtonLink } from "@/app/ui/button";
-import { Icon, isIconName } from "@/app/ui/icons";
-import { ListRow } from "@/app/ui/list-row";
-import { Pill } from "@/app/ui/surface";
+import { isIconName } from "@/app/ui/icons";
+import { ListRow, ListRows } from "@/app/ui/list-row";
 import type { Dictionary } from "@/lib/i18n";
 import { getDictionary } from "@/lib/i18n/server";
-import { LAST_OPENED_COOKIE, parsePlace } from "@/lib/learn/last-opened";
-import {
-  type DialectLesson,
-  findRule,
-  isReady,
-  type Lesson,
-  LESSONS,
-  lessonHref,
-  lessonNumber,
-  type RulePlace,
-  topicCount,
-} from "@/lib/learn/lessons";
-import { ScrollIntoReach } from "./scroll-into-reach";
+import { type Lesson, LESSONS, lessonHref, lessonNumber, topicCount } from "@/lib/learn/lessons";
+import { type Continue, getReads, lastModule, readCount, whereToContinue } from "@/lib/learn/progress";
+import { createClient } from "@/lib/supabase/server";
 
 // Lessons on how Swiss German differs from Standard German. Every learner sees every lesson for
 // now, whatever their dialect, until there are lessons for more than one.
@@ -32,13 +19,14 @@ export default function LearnPage() {
   );
 }
 
-// All modules in order, the path through the track. The one the learner opened last is a large
-// card to continue with, in its place; far down the list, the page opens scrolled to it. Modules
-// still being written look like the others, counting their planned topics: the prototype shows the
-// whole track. Progress isn't saved yet, so nothing is marked as done.
+// A card to continue where the learner left off, then every module in order as an equal row. The
+// module read in last says so in its caption. Modules still being written look like the others,
+// counting their planned topics: the prototype shows the whole track.
 async function Learn() {
-  const [t, jar] = await Promise.all([getDictionary(), cookies()]);
-  const { current, resume, opened } = whereToContinue(jar.get(LAST_OPENED_COOKIE)?.value);
+  const [t, supabase] = await Promise.all([getDictionary(), createClient()]);
+  const reads = await getReads(supabase);
+  const next = whereToContinue(reads);
+  const last = lastModule(reads);
 
   return (
     <>
@@ -48,43 +36,25 @@ async function Learn() {
         <p className="text-subtitle font-semibold">{t.learn.intro}</p>
       </div>
 
-      <ol className="flex flex-col gap-3">
-        {LESSONS.map((entry) =>
-          entry === current ? (
-            <li key={`${entry.dialect}/${entry.lesson.id}`}>
-              <ScrollIntoReach>
-                <CurrentModule entry={entry} resume={resume} opened={opened} t={t} />
-              </ScrollIntoReach>
-            </li>
-          ) : (
+      {next && <ContinueCard next={next} read={reads.read} t={t} />}
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{t.learn.allModules}</h2>
+        <ListRows>
+          {LESSONS.map((entry) => (
             <ListRow
               key={`${entry.dialect}/${entry.lesson.id}`}
               href={lessonHref(entry.dialect, entry.lesson)}
               icon={isIconName(entry.lesson.icon) ? entry.lesson.icon : undefined}
               eyebrow={t.lesson.number(lessonNumber(entry))}
               title={entry.lesson.title}
-              caption={size(entry.lesson, t)}
+              caption={`${entry.dialect}/${entry.lesson.id}` === last ? t.learn.lastRead : size(entry.lesson, t)}
             />
-          ),
-        )}
-      </ol>
+          ))}
+        </ListRows>
+      </section>
     </>
   );
-}
-
-// The module opened last, and the topic in it, if any. Without one, or if it no longer exists,
-// the first module with content, which the learner hasn't opened.
-function whereToContinue(cookie: string | undefined): {
-  current?: DialectLesson;
-  resume?: RulePlace;
-  opened: boolean;
-} {
-  const place = parsePlace(cookie);
-  const last =
-    place && LESSONS.find(({ dialect, lesson }) => dialect === place.dialect && lesson.id === place.lesson);
-  if (!last) return { current: LESSONS.find(({ lesson }) => isReady(lesson)), opened: false };
-  const resume = place.section && place.rule ? findRule(last.lesson, place.section, place.rule) : undefined;
-  return { current: last, resume, opened: true };
 }
 
 // Such as "2 Lektionen · 10 Themen", or only the lessons while no topic is planned yet.
@@ -94,40 +64,23 @@ function size(lesson: Lesson, t: Dictionary) {
   return topics > 0 ? `${sections} · ${t.lesson.topics(topics)}` : sections;
 }
 
-type CurrentModuleProps = { entry: DialectLesson; resume?: RulePlace; opened: boolean; t: Dictionary };
-
-// Sage, so it stands out as where to continue, with a pill saying why it's large: opened last, or
-// for a new learner, where to start. The text opens the module's overview. The button goes back to
-// the topic the learner was at, or starts with the first one, or, for a module still being
-// written, opens its overview.
-function CurrentModule({ entry, resume, opened, t }: CurrentModuleProps) {
-  const { dialect, lesson } = entry;
-  const first = lesson.sections.find(isReady);
-  const [href, label] = resume
-    ? [lessonHref(dialect, lesson, resume.section, resume.rule), `${t.lesson.next}: ${resume.rule.title}`]
-    : first
-      ? [lessonHref(dialect, lesson, first, first.rules[0]), t.lesson.start]
-      : [lessonHref(dialect, lesson), t.lesson.next];
-
+// Sage, the Learn tab's one suggestion: the lesson to go on with, how much of it is read, and a
+// button straight to its next topic. "Hier beginnen" until the learner has read anything.
+function ContinueCard({ next, read, t }: { next: Continue; read: Set<string>; t: Dictionary }) {
+  const { entry, section, rule, started } = next;
   return (
     <div className="flex flex-col gap-4 rounded-3xl bg-sage p-6">
-      <Pill tone="ivory">
-        <Icon name="clock" size={16} />
-        {opened ? t.learn.lastOpened : t.learn.startHere}
-      </Pill>
-      <Link href={lessonHref(dialect, lesson)} className="flex flex-col gap-4">
-        {isIconName(lesson.icon) && <Icon name={lesson.icon} size={28} />}
-        <span className="flex flex-col gap-1">
-          {/* Teal rather than the softer teal of eyebrows, which is too faint on sage. */}
-          <span className="text-caption font-semibold tracking-[0.08em] uppercase">
-            {t.lesson.number(lessonNumber(entry))}
-          </span>
-          <span className="text-heading font-bold">{lesson.title}</span>
-          <span className="text-body">{lesson.subtitle}</span>
-          <span className="text-caption">{size(lesson, t)}</span>
+      <span className="flex flex-col gap-1">
+        {/* Teal rather than the softer teal of eyebrows, which is too faint on sage. */}
+        <span className="text-caption font-semibold tracking-[0.08em] uppercase">
+          {started ? t.learn.continue : t.learn.startHere} · {entry.lesson.title}
         </span>
-      </Link>
-      <ButtonLink href={href}>{label}</ButtonLink>
+        <span className="text-heading font-bold">{section.title}</span>
+        <span className="text-body">{t.learn.topicsRead(readCount(entry, section, read), section.rules.length)}</span>
+      </span>
+      <ButtonLink href={lessonHref(entry.dialect, entry.lesson, section, rule)}>
+        {started ? `${t.lesson.next}: ${rule.title}` : t.lesson.start}
+      </ButtonLink>
     </div>
   );
 }

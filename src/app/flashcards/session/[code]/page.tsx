@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getCardFront, getGrammarContent, getToday, toGrammarCard, toWordCard } from "@/lib/flashcards/data";
+import { getCardSettings, getToday, toWordCard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
 import { alternate, composeSession } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases, typesOf, vocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
@@ -35,7 +35,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
 
-  const [today, cardFront] = await Promise.all([getToday(supabase), getCardFront(supabase)]);
+  const [today, { cardFront, autoplay }] = await Promise.all([getToday(supabase), getCardSettings(supabase)]);
   const { tree, limits } = today;
   const found = findDeck(tree, code);
   if (!found) notFound();
@@ -62,23 +62,13 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
     { shuffle: shuffle === "1" },
   );
 
-  const grammarIds = entries.flatMap((entry) => {
-    const row = "due" in entry ? entry.due : entry.fresh;
-    return row.kind === "grammar" ? [row.card_id] : [];
-  });
-  const grammar = await getGrammarContent(supabase, grammarIds);
-
   const now = new Date();
   const cards = await Promise.all(
-    entries.map((entry) => {
-      const row = "due" in entry ? entry.due : entry.fresh;
-      const card = "due" in entry ? entry.due : null;
-      if (row.kind !== "grammar") return toWordCard(supabase, row, card, now, t);
-      const content = grammar.get(row.card_id);
-      // A rule without exercises for the learner's dialect isn't offered in the first place.
-      if (!content || content.exercises.length === 0) return null;
-      return toGrammarCard(row.card_id, content, card, card?.last_exercise_id ?? null, locale);
-    }),
+    entries.map((entry) =>
+      "due" in entry
+        ? toWordCard(supabase, entry.due, entry.due, now, t)
+        : toWordCard(supabase, entry.fresh, null, now, t),
+    ),
   );
 
   // Back to the category the learner came from: a subcategory's parent, or the deck itself.
@@ -88,8 +78,9 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
     <>
       <title>{t.title(found.deck.title)}</title>
       <ReviewSession
-        cards={cards.filter((card) => card !== null)}
+        cards={cards}
         cardFront={cardFront}
+        autoplay={autoplay}
         locale={locale}
         goalReachedBefore={today.goalReached}
         emptyMessage={t.session.empty}

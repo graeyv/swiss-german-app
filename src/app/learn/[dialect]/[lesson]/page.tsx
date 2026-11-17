@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ButtonLink } from "@/app/ui/button";
@@ -7,10 +6,18 @@ import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Pill } from "@/app/ui/surface";
 import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
-import { LAST_OPENED_COOKIE, parsePlace } from "@/lib/learn/last-opened";
-import { findLesson, findRule, isReady, lessonHref, lessonNumber, lessonParams } from "@/lib/learn/lessons";
+import {
+  exercisesHref,
+  findLesson,
+  hasExercises,
+  isReady,
+  lessonHref,
+  lessonNumber,
+  lessonParams,
+} from "@/lib/learn/lessons";
+import { getReads, readCount, whereToContinue } from "@/lib/learn/progress";
+import { createClient } from "@/lib/supabase/server";
 import { LessonLoading, LessonScreen } from "./lesson-screen";
-import { RememberPlace } from "./remember-place";
 
 export function generateStaticParams() {
   return lessonParams();
@@ -26,45 +33,55 @@ export default function LessonPage({ params }: PageProps<"/learn/[dialect]/[less
 }
 
 async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">, "params">) {
-  const [{ dialect, lesson: id }, jar] = await Promise.all([params, cookies()]);
+  const [{ dialect, lesson: id }, supabase] = await Promise.all([params, createClient()]);
   const found = findLesson(dialect, id);
   if (!found) notFound();
   const { lesson, language } = found;
   const t = dictionary(language);
   const ready = isReady(lesson);
   const first = lesson.sections.find(isReady);
-  // The topic the learner was at in this module, if they've been in it before.
-  const place = parsePlace(jar.get(LAST_OPENED_COOKIE)?.value);
-  const resume =
-    place?.dialect === dialect && place.lesson === lesson.id && place.section && place.rule
-      ? findRule(lesson, place.section, place.rule)
-      : undefined;
+  const reads = await getReads(supabase);
+  // The next topic not read yet in this module, once the learner has read any of it.
+  const anyRead = lesson.sections.some((section) => readCount(found, section, reads.read) > 0);
+  const resume = anyRead ? whereToContinue(reads, [found]) : undefined;
 
   return (
     <LessonScreen
       lang={language}
       back={{ href: "/learn", label: t.lesson.leave }}
       footer={
-        // Straight to the first topic, or back to the one the learner was at, with the choice to
-        // start over. The lists below are for looking one up. A lesson still being written has
-        // nothing to start yet.
-        first &&
-        (resume ? (
-          <div className="flex flex-col gap-3">
-            <ButtonLink href={lessonHref(dialect, lesson, resume.section, resume.rule)}>
-              {t.lesson.next}: {resume.rule.title}
-            </ButtonLink>
-            <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])} variant="secondary">
-              {t.lesson.fromStart}
-            </ButtonLink>
+        // Straight to the first topic, or on to the next one not read yet. Second, the module's
+        // exercises once it has any, or else starting over. The lists below are for looking one
+        // up. A lesson still being written has nothing to start yet.
+        first && (
+          <div className="flex w-full flex-col gap-3">
+            {resume ? (
+              <ButtonLink href={lessonHref(dialect, lesson, resume.section, resume.rule)}>
+                {t.lesson.next}: {resume.rule.title}
+              </ButtonLink>
+            ) : (
+              // Everything read: only starting over is left.
+              <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])}>
+                {anyRead ? t.lesson.fromStart : t.lesson.start}
+              </ButtonLink>
+            )}
+            {hasExercises(lesson) ? (
+              <ButtonLink href={exercisesHref(dialect, lesson)} variant="secondary" className="min-h-14">
+                <Icon name="puzzle" size={20} />
+                {t.practice.toExercises}
+              </ButtonLink>
+            ) : (
+              resume && (
+                <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])} variant="secondary">
+                  {t.lesson.fromStart}
+                </ButtonLink>
+              )
+            )}
           </div>
-        ) : (
-          <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])}>{t.lesson.start}</ButtonLink>
-        ))
+        )
       }
     >
       <title>{t.title(lesson.title)}</title>
-      <RememberPlace path={`${dialect}/${lesson.id}`} />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <Eyebrow>{t.lesson.number(lessonNumber(found))}</Eyebrow>
@@ -102,9 +119,11 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
               href={isReady(section) ? lessonHref(dialect, lesson, section) : undefined}
               title={section.title}
               caption={
-                isReady(section)
-                  ? t.lesson.topics(section.rules.length)
-                  : (section.planned?.join(" · ") ?? section.description)
+                !isReady(section)
+                  ? (section.planned?.join(" · ") ?? section.description)
+                  : readCount(found, section, reads.read) > 0
+                    ? t.learn.topicsRead(readCount(found, section, reads.read), section.rules.length)
+                    : t.lesson.topics(section.rules.length)
               }
             />
           ))}

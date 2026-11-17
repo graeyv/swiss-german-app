@@ -1,28 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useTransition } from "react";
 import { type Cheer, pickCheer } from "@/lib/flashcards/cheers";
-import { pickExercise } from "@/lib/flashcards/grammar";
 import { advanceQueue } from "@/lib/flashcards/queue";
 import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i18n";
 import type { CardFront, Flashcard, WordCard } from "@/lib/types";
-import {
-  isTodaysGoalReached,
-  type ReviewAnswer,
-  type SavedReview,
-  submitReview,
-  updateCardFront,
-} from "./actions";
+import { isTodaysGoalReached, type SavedReview, submitReview, updateAutoplay, updateCardFront } from "./actions";
 import { CARD_FACE, CardStack } from "./card-stack";
-import { ExerciseStage } from "./exercise-stage";
 import { type Grade, GradeButtons } from "./grade-buttons";
 import { StatusBadge } from "./status-badge";
 import { Icon } from "@/app/ui/icons";
+import { SoundBars } from "@/app/ui/sound-bars";
 
 type ReviewSessionProps = {
   cards: Flashcard[];
   cardFront: CardFront;
+  // Whether a word's recording plays by itself as soon as its Swiss German shows.
+  autoplay: boolean;
   locale: Locale;
   // Whether today's goal was already met when the session started, so only the session that
   // completes it celebrates.
@@ -39,6 +34,7 @@ const primaryButton =
 export function ReviewSession({
   cards,
   cardFront,
+  autoplay: autoplayBefore,
   locale,
   goalReachedBefore,
   emptyMessage,
@@ -56,19 +52,16 @@ export function ReviewSession({
   const [newLearned, setNewLearned] = useState(0);
   const [reviewed, setReviewed] = useState(0);
   const [front, setFront] = useState(cardFront);
+  const [autoplay, setAutoplay] = useState(autoplayBefore);
   // Picked when the last card is answered, for the end screen.
   const [cheer, setCheer] = useState<Cheer | null>(null);
   const [goalJustReached, setGoalJustReached] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  // A grammar answer, saved while the learner reads the feedback, until they continue.
-  const [saved, setSaved] = useState<SavedReview | null>(null);
   const [saving, startSaving] = useTransition();
 
   const activeQueue = queue ?? cards;
   const finished = queue !== null && queue.length === 0;
   const total = completed + activeQueue.length;
-  // Decks hold one kind of card, so a session does too.
-  const grammarSession = cards[0]?.kind === "grammar";
 
   // Next.js keeps visited routes hidden with their state. Leaving an unfinished session keeps
   // the learner's place, but a finished one must start over when reopened.
@@ -83,7 +76,6 @@ export function ReviewSession({
       setCheer(null);
       setGoalJustReached(false);
       setSaveError(null);
-      setSaved(null);
     };
   }, [finished]);
 
@@ -104,16 +96,10 @@ export function ReviewSession({
         {newLearned + reviewed > 0 && (
           <div className="flex divide-x divide-line rounded-2xl border border-line bg-surface">
             {newLearned > 0 && (
-              <Stat
-                value={newLearned}
-                label={grammarSession ? t.newRulesLearned(newLearned) : t.newWordsLearned(newLearned)}
-              />
+              <Stat value={newLearned} label={t.newWordsLearned(newLearned)} />
             )}
             {reviewed > 0 && (
-              <Stat
-                value={reviewed}
-                label={grammarSession ? t.rulesPractised(reviewed) : t.wordsReviewed(reviewed)}
-              />
+              <Stat value={reviewed} label={t.wordsReviewed(reviewed)} />
             )}
           </div>
         )}
@@ -149,24 +135,9 @@ export function ReviewSession({
     );
   }
 
-  // The card's next attempt, for when it comes back in this session. A grammar card picks
-  // another exercise, for where the answer left it in its schedule.
+  // The card's next attempt, for when it comes back in this session.
   function repeatOf(result: SavedReview): Flashcard {
-    if (card.kind === "vocabulary") {
-      return {
-        ...card,
-        status: "learning",
-        review_id: result.reviewId,
-        intervals: result.intervals ?? card.intervals,
-      };
-    }
-    const progress = { state: result.state, scheduled_days: result.scheduledDays };
-    return {
-      ...card,
-      status: "learning",
-      review_id: result.reviewId,
-      exercise: pickExercise(card.exercises, progress, card.exercise.id),
-    };
+    return { ...card, status: "learning", review_id: result.reviewId, intervals: result.intervals };
   }
 
   async function advance(result: SavedReview) {
@@ -183,38 +154,29 @@ export function ReviewSession({
       const reached = await isTodaysGoalReached().catch(() => false);
       setGoalJustReached(reached && !goalReachedBefore);
     }
-    setSaved(null);
     setQueue(next);
-  }
-
-  function save(answer: ReviewAnswer, then: (result: SavedReview) => unknown) {
-    setSaveError(null);
-    // Saving refreshes the page, whose cards would no longer include this one. The session keeps
-    // the queue it has from the first answer on, so a grammar card waits for Continue.
-    setQueue(activeQueue);
-    startSaving(async () => {
-      const result = await submitReview(card.review_id, card.card_id, answer);
-      if ("error" in result) {
-        setSaveError(result.error);
-        return;
-      }
-      await then(result);
-    });
   }
 
   // A word moves on as soon as its rating is saved.
   function grade(value: Grade) {
-    save({ grade: value }, advance);
+    setSaveError(null);
+    // Saving refreshes the page, whose cards would no longer include this one. The session keeps
+    // the queue it has from the first answer on.
+    setQueue(activeQueue);
+    startSaving(async () => {
+      const result = await submitReview(card.review_id, card.card_id, value);
+      if ("error" in result) {
+        setSaveError(result.error);
+        return;
+      }
+      await advance(result);
+    });
   }
 
-  // A grammar card waits for Continue, so the learner can read the feedback.
-  function answer(correct: boolean) {
-    if (card.kind !== "grammar") return;
-    save({ exerciseId: card.exercise.id, correct }, setSaved);
-  }
-
-  function continueSession() {
-    if (saved) startSaving(() => advance(saved));
+  // Takes effect straight away. Saving the choice for other sessions happens meanwhile.
+  function toggleAutoplay() {
+    setAutoplay(!autoplay);
+    void updateAutoplay(!autoplay);
   }
 
   // The card turns over straight away. Saving the choice for other sessions happens meanwhile.
@@ -250,42 +212,40 @@ export function ReviewSession({
         <p className="shrink-0 text-sm font-semibold tabular-nums">
           {completed} / {total}
         </p>
-        {card.kind === "vocabulary" && (
-          <button
-            onClick={swapFront}
-            aria-label={front === "swiss_german" ? t.showingSwissGermanFirst : t.showingTranslationFirst}
-            title={t.swap}
-            className="-mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
-          >
-            <Icon name="swap" size={20} />
-          </button>
-        )}
+        {/* A speaker, crossed out while recordings only play on tap. */}
+        <button
+          onClick={toggleAutoplay}
+          aria-pressed={autoplay}
+          aria-label={t.autoplay}
+          title={autoplay ? t.autoplayOn : t.autoplayOff}
+          className="relative flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-[color,transform] hover:text-foreground active:scale-90"
+        >
+          <Icon name="speaker" size={20} />
+          {!autoplay && (
+            <span aria-hidden className="absolute h-0.5 w-6 rotate-45 rounded-full bg-current ring-2 ring-background" />
+          )}
+        </button>
+        <button
+          onClick={swapFront}
+          aria-label={front === "swiss_german" ? t.showingSwissGermanFirst : t.showingTranslationFirst}
+          title={t.swap}
+          className="-mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
+        >
+          <Icon name="swap" size={20} />
+        </button>
       </header>
 
-      {card.kind === "vocabulary" ? (
-        <CardStage
-          key={card.review_id}
-          card={card}
-          front={front}
-          locale={locale}
-          stacked={activeQueue.length > 1}
-          saving={saving}
-          saveError={saveError}
-          onGrade={grade}
-        />
-      ) : (
-        <ExerciseStage
-          key={card.review_id}
-          card={card}
-          locale={locale}
-          saving={saving}
-          stacked={activeQueue.length > 1}
-          saved={saved !== null}
-          saveError={saveError}
-          onAnswer={answer}
-          onContinue={continueSession}
-        />
-      )}
+      <CardStage
+        key={card.review_id}
+        card={card}
+        front={front}
+        autoplay={autoplay}
+        locale={locale}
+        stacked={activeQueue.length > 1}
+        saving={saving}
+        saveError={saveError}
+        onGrade={grade}
+      />
     </main>
   );
 }
@@ -293,6 +253,7 @@ export function ReviewSession({
 type CardStageProps = {
   card: WordCard;
   front: CardFront;
+  autoplay: boolean;
   locale: Locale;
   // Whether more cards wait behind this one, shown as a stack.
   stacked: boolean;
@@ -302,10 +263,22 @@ type CardStageProps = {
 };
 
 // A word. Keyed by the card's attempt, so each card starts face down.
-function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }: CardStageProps) {
+function CardStage({ card, front, autoplay, locale, stacked, saving, saveError, onGrade }: CardStageProps) {
   const texts = dictionary(locale);
   const t = texts.session;
   const [revealed, setRevealed] = useState(false);
+  const recording = useRecording(card.audio_url);
+  // The Swiss German shows on the front, or once the card is turned when the translation comes
+  // first: hearing it earlier would give the answer away.
+  const heard = front === "swiss_german" || revealed;
+  // Plays once per card, the first time its Swiss German shows, when the learner wants that.
+  const played = useRef(false);
+  const { play } = recording;
+  useEffect(() => {
+    if (!autoplay || !heard || played.current) return;
+    played.current = true;
+    play();
+  }, [autoplay, heard, play]);
 
   // Space or Enter flips the card, and 1–4 grade it once it's revealed.
   useEffect(() => {
@@ -323,6 +296,13 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
   }, [revealed, saving, onGrade]);
 
   const swissGerman = { text: card.swiss_german, lang: "gsw" };
+  // Other ways of saying it, in a quiet line under the Swiss German wherever that shows.
+  const variants = (size: "large" | "small") =>
+    card.variants.length > 0 && (
+      <span lang="gsw" className={`text-teal-soft ${size === "large" ? "text-lg" : "text-base"}`}>
+        {t.also}: {card.variants.join(" · ")}
+      </span>
+    );
   const translation = { text: translationOf(card, locale), lang: locale };
   const [prompt, answer] =
     front === "swiss_german" ? [swissGerman, translation] : [translation, swissGerman];
@@ -345,10 +325,11 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
               {/* Screen readers only read the side that is showing. */}
               <span aria-hidden={revealed} className={CARD_FACE}>
                 <StatusBadge status={card.status} t={t} />
-                <span className="flex flex-1 items-center justify-center px-2 text-center">
+                <span className="flex flex-1 flex-col items-center justify-center gap-2 px-2 text-center">
                   <span lang={prompt.lang} className="text-5xl font-bold tracking-tight break-words">
                     {prompt.text}
                   </span>
+                  {front === "swiss_german" && variants("large")}
                 </span>
                 <span className="mx-auto flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
                   <span aria-hidden>👆</span> {t.tapToReveal}
@@ -356,13 +337,17 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
               </span>
 
               <span aria-hidden={!revealed} className={`${CARD_FACE} rotate-y-180`}>
-                <span lang={prompt.lang} className="text-lg font-semibold text-muted">
-                  {prompt.text}
+                <span className="flex flex-col">
+                  <span lang={prompt.lang} className="text-lg font-semibold text-muted">
+                    {prompt.text}
+                  </span>
+                  {front === "swiss_german" && variants("small")}
                 </span>
                 <span className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
                   <span lang={answer.lang} className="text-4xl font-bold tracking-tight break-words">
                     {answer.text}
                   </span>
+                  {front === "translation" && variants("large")}
                   {/* Unless the translation already is Standard German, that follows as a second one. */}
                   {!texts.translationIsStandardGerman && (
                     <span className="text-muted">
@@ -380,7 +365,7 @@ function CardStage({ card, front, locale, stacked, saving, saveError, onGrade }:
           </button>
 
           {/* Hearing the word first would give the answer away when the translation is the prompt. */}
-          {(front === "swiss_german" || revealed) && <AudioButton url={card.audio_url} t={t} />}
+          {heard && <AudioButton recording={recording} hasAudio={!!card.audio_url} t={t} />}
         </div>
       </CardStack>
 
@@ -406,16 +391,52 @@ function Stat({ value, label }: { value: number; label: string }) {
   );
 }
 
-function AudioButton({ url, t }: { url: string | null; t: Dictionary["session"] }) {
+// A word's recording: play it from the start, and whether it's playing now. It stops when the card
+// goes, so a word never plays over the next one.
+function useRecording(url: string | null) {
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => () => audio.current?.pause(), []);
+
+  const play = useCallback(() => {
+    if (!url) return;
+    audio.current ??= new Audio(url);
+    const element = audio.current;
+    element.onplaying = () => setPlaying(true);
+    element.onended = () => setPlaying(false);
+    element.onpause = () => setPlaying(false);
+    element.currentTime = 0;
+    // Browsers can refuse to play before the learner has tapped anything on the page.
+    element.play().catch(() => setPlaying(false));
+  }, [url]);
+
+  return { play, playing };
+}
+
+// Plays the word again. Like the play buttons in Learn, it turns teal with bouncing bars while the
+// word plays, and gives under the finger when tapped.
+function AudioButton({
+  recording,
+  hasAudio,
+  t,
+}: {
+  recording: ReturnType<typeof useRecording>;
+  hasAudio: boolean;
+  t: Dictionary["session"];
+}) {
+  const { play, playing } = recording;
   return (
     <button
-      onClick={() => url && void new Audio(url).play().catch(() => {})}
-      disabled={!url}
-      aria-label={url ? t.playPronunciation : t.noRecording}
-      title={url ? t.playPronunciation : t.noRecording}
-      className="absolute top-4 right-4 z-10 flex size-11 items-center justify-center rounded-full bg-accent/10 text-accent transition-colors enabled:hover:bg-accent/20 disabled:bg-line disabled:text-muted"
+      onClick={play}
+      disabled={!hasAudio}
+      aria-label={hasAudio ? t.playPronunciation : t.noRecording}
+      title={hasAudio ? t.playPronunciation : t.noRecording}
+      className={`absolute top-4 right-4 z-10 flex size-11 items-center justify-center rounded-full transition-[background-color,color,transform] active:scale-90 disabled:active:scale-100 ${
+        playing ? "bg-teal text-ivory" : hasAudio ? "bg-mist text-teal" : "bg-mist text-teal-soft"
+      }`}
     >
-      <Icon name="speaker" size={20} />
+      {playing ? <SoundBars /> : <Icon name="speaker" size={20} />}
     </button>
   );
 }

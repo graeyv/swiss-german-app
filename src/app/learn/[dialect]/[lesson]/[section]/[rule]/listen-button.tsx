@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/app/ui/icons";
+import { SoundBars } from "@/app/ui/sound-bars";
 
 type ListenButtonProps = {
   url: string | null;
@@ -55,15 +56,7 @@ export function ListenButton({ url, label, noRecordingLabel }: ListenButtonProps
       }`}
     >
       {playing ? (
-        <span aria-hidden className="flex h-4 items-center gap-0.5">
-          {[0, 150, 300].map((delay) => (
-            <span
-              key={delay}
-              style={{ animationDelay: `${delay}ms` }}
-              className="h-full w-0.5 rounded-full bg-current motion-safe:animate-sound-bar"
-            />
-          ))}
-        </span>
+        <SoundBars />
       ) : (
         <Icon name="play" size={16} className="ml-0.5" />
       )}

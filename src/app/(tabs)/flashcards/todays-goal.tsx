@@ -4,7 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import { updateDailyPlan } from "@/app/flashcards/actions";
 import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale } from "@/lib/i18n";
-import { BottomSheet } from "./bottom-sheet";
+import { BottomSheet } from "@/app/ui/bottom-sheet";
 import { PaceOptions } from "./pace-options";
 import { Icon } from "@/app/ui/icons";
 

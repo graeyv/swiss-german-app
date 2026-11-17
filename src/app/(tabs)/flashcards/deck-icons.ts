@@ -40,9 +40,6 @@ const ICONS: Record<string, IconName> = {
   "C08-T05": "question",
   "C08-T06": "link",
   "C08-T07": "calendar",
-  // Pronouns (grammar), which has no illustration, so its icon also heads its page.
-  G01: "users",
-  "G01-T01": "user",
 };
 
 export function deckIcon(code: string): IconName {

@@ -2,11 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getToday } from "@/lib/flashcards/data";
-import { type DeckNode, findDeck, overviewHref } from "@/lib/flashcards/decks";
+import { type DeckNode, findDeck } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TOPIC_ILLUSTRATIONS } from "@/app/topic-illustrations";
+import { ComingSoonPill } from "@/app/ui/coming-soon-pill";
 import { Icon } from "@/app/ui/icons";
 import { TopicBanner } from "@/app/ui/topic-banner";
 import { TopBar } from "@/app/top-bar";
@@ -44,7 +45,7 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
       <title>{t.title(deck.title)}</title>
 
       {/* Directly in the page's column, so it stays at the top while the page scrolls. */}
-      <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : overviewHref(deck.kind) }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
+      <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : "/flashcards" }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
 
       {/* The topic's illustration as a banner, or without one, the deck's icon. */}
       <div className="flex flex-col gap-6">
@@ -137,8 +138,8 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
       <div className="flex min-h-18 items-center gap-4 rounded-3xl bg-mist px-6 py-4">
         <Icon name={deckIcon(deck.code)} size={28} className="text-teal-soft" />
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-body font-bold">{deck.title}</span>
-          <span className="text-caption text-teal-soft">{dictionary(locale).flashcards.comingSoon}</span>
+          <span className="text-body font-bold text-teal-soft">{deck.title}</span>
+          <ComingSoonPill label={dictionary(locale).flashcards.comingSoon} />
         </span>
       </div>
     );
@@ -148,7 +149,6 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
     return (
       <SubcategorySheet
         code={deck.code}
-        kind={deck.kind}
         title={deck.title}
         icon={deckIcon(deck.code)}
         newWords={newWords}

@@ -95,7 +95,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`, `BottomSheet`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
 topic in English); in the code and this guide they are lesson → section → rule.
@@ -108,12 +108,24 @@ topic in English); in the code and this guide they are lesson → section → ru
   while the page scrolls (`TopBar`).
 - **Tab header** (Learn tab): the tab's name as title, below it one line in subtitle size and
   weight, full teal, saying what the tab is for. No marker.
-- **Module list** (Learn tab): every module in order, as list rows with its icon, "MODUL N",
-  title and "N Lektionen · N Themen". The module opened last is a sage card in its place instead:
-  icon, "MODUL N" in teal (the softer teal is too faint on sage), title, subtitle, size, and the
-  primary button ("Weiter: R", or "Los geht's"). If the card's button would be out of sight, the
-  tab opens scrolled to it, at once, with the row above still peeking in. Modules still being
-  written look the same. Every module has its own icon, never a colour.
+- **Suggestion card**: a tab's one suggestion, at the top: a sage card with an eyebrow in teal (the
+  softer teal is too faint on sage) saying why, such as "WEITERMACHEN · AUSSPRACHE", the title in
+  heading size, one short line, and the primary button. It's an action, not one of the items
+  below, so nothing in the list behaves differently. In Learn it continues with the next topic not
+  read yet ("Konsonanten", "3 von 6 Themen gelesen", "Weiter: R"), or says "HIER BEGINNEN" and
+  "Los geht's" before anything is read. It follows the topic read last, not the module looked at
+  last. In Üben → Lektionen it suggests one thing to practise: a lesson read through but not
+  practised ("Konsonanten üben"), else the one most worth refreshing ("Konsonanten auffrischen ·
+  Zuletzt geübt vor 12 Tagen, 6 von 10 richtig"), else reading on. With everything read and
+  practised, it's a quiet card on mist with a check and no button. There's no schedule and no
+  "fällig": learners practise what they choose.
+- **Practice switch** (Üben tab): "Wortschatz | Lektionen" at the top, a pill on mist with the open
+  view in ivory. Each view is its own address. Below "Lektionen", the suggestion card and "ALLE
+  ÜBUNGEN": every module as a list row ("1 von 2 Lektionen geübt"), opening its lessons to practise.
+- **Module list** (Learn tab): under "ALLE MODULE", every module in order as an equal list row with
+  its icon, "MODUL N", title and "N Lektionen · N Themen". The module read in last says "Zuletzt
+  gelesen" instead of its size. Modules still being written look the same. Every module has its
+  own icon, never a colour.
 - **Topic tile** (`TopicTile`, Flashcards and Conversations): the topics in a two-column grid, each
   a tile on mist with the topic's illustration across the top on `sage-light` (3:2), its title and
   caption below, and, in Flashcards, today's counts at the bottom. Conversations uses the
@@ -121,11 +133,13 @@ topic in English); in the code and this guide they are lesson → section → ru
   are short enough for one line at iPhone width (about 133 px), such as "Freizeit". A topic with
   nothing in it yet is inactive: its picture on mist instead of `sage-light`, its title in
   `teal-soft`, and under the title, instead of its size, a small ivory pill with a clock and
-  "Bald verfügbar" (12 px, on one line), so testers see it's not ready rather than broken.
+  "Bald verfügbar" (12 px, on one line), so testers see it's not ready rather than broken. The pill
+  is `ComingSoonPill`, and an empty subtopic or scene row shows it the same way: title in
+  `teal-soft`, the pill in place of its caption, and no arrow.
 - **Topic banner** (`TopicBanner`): the top of a topic's page, its illustration at 2:1, whole and
   centred on `sage-light` rather than cropped. Its title below in title size, then its subtopics
-  or scenes as list rows. A scene still to be written is a row without an arrow saying "Bald
-  verfügbar".
+  or scenes as list rows. A subtopic or scene with nothing in it yet is an inactive row, with the
+  "Bald verfügbar" pill and no arrow.
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
   The highlight is the screen's one yellow element, and it's only used here.
 - **Icon list** ("Was dich erwartet"): a filled icon in `teal-soft`, then one line of text. No boxes, no
@@ -137,8 +151,27 @@ topic in English); in the code and this guide they are lesson → section → ru
   caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut → gleich"), with
   only a changed sound bold. On the right, a round play button per side, on mist, teal while it
   plays; the sides are named once above the buttons. Space between the words.
+- **Playing a recording** (`SoundBars`): every round play or speaker button is on mist, gives
+  under the finger when tapped (scale 90–95 %), and while the recording plays turns teal with three
+  bars bouncing in turn in place of its icon. Still with reduced motion.
+- **Pronunciation on a word card**: the speaker at the card's top right, as above. It plays by
+  itself the first time the Swiss German shows, unless the learner switched that off: a speaker in
+  the session's top bar, crossed out while words only play on tap, and "Aussprache" in Profil.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in
   semibold. The rule screen's one yellow element.
+- **Lesson round** (a section's exercises, such as the consonants): a full screen with a cross at
+  the top left to leave, and one segment per exercise. After an answer, a row on sage or rose says
+  whether it was right, with the right answer after a wrong one, and below it a mist pill
+  "Regel nachlesen: CH". "Weiter" stays at the bottom. It ends on a yellow card: "Konsonanten
+  geübt" and how many were right the first time. Under 60 %, a line suggests reading the section
+  again, and "Konsonanten nochmals lesen" is the primary button.
+- **Rule sheet** (`BottomSheet`): a rule opened from an exercise, sliding up over it, so the
+  exercise keeps its place: "REGEL · KONSONANTEN", the title, the theory, the examples and Merke,
+  then "Zurück zur Übung". No back arrow and no lesson progress, as it isn't a step of the lesson.
+- **Variants on a flashcard** ("auch: Salü · Hallo"): other ways of saying a word in the
+  learner's dialect, in one quiet line in `teal-soft` under the Swiss German wherever it shows:
+  large under the main form, small under it at the top of the back, and in the word list. Never on
+  a front that would give the answer away.
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick

@@ -5,7 +5,6 @@ import { CHEERS, pickCheer } from "./cheers";
 import { goalReached, presetId, reviewLimit, reviewProgress, todaysQueue } from "./daily-plan";
 import { suggestedPace } from "../onboarding";
 import { buildDeckTree, type DeckRow, findDeck, sortByInterests } from "./decks";
-import { allowedLevels, gradeFromAnswer, grammarExercise, pickExercise } from "./grammar";
 import { advanceQueue } from "./queue";
 import { alternate, composeSession, deckAvailability } from "./session";
 import { type CardRow, formatInterval, previewIntervals, scheduleReview } from "./scheduling";
@@ -137,8 +136,17 @@ describe("buildDeckTree", () => {
 
 describe("buildSeed", () => {
   const decks = "code\tparent_code\ttitle_en\ttitle_de\nC01\t\tLife\tLeben\nC01-T01\tC01\tGreetings\t\n";
-  const header =
-    "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\tnotes_en\tnotes_de\taudio_path\ttype\n";
+  const columns = [
+    "code", "deck_codes", "high_german", "meaning_en", "notes_en", "notes_de", "type",
+    "swiss_german_be", "variants_be", "audio_be", "swiss_german_zh", "audio_zh",
+  ];
+  const header = `${columns.join("\t")}\n`;
+  // A cards file with the header and one row per card, from just the columns a test cares about.
+  const cards = (...rows: Record<string, string>[]) =>
+    header + rows.map((row) => columns.map((column) => row[column] ?? "").join("\t") + "\n").join("");
+  const card = (fields: Record<string, string> = {}) => ({
+    code: "FC1", deck_codes: "C01-T01", high_german: "b", meaning_en: "c", swiss_german_zh: "a", ...fields,
+  });
 
   it("builds the deck structure without any words", () => {
     const seed = buildSeed(decks, header);
@@ -148,15 +156,46 @@ describe("buildSeed", () => {
   });
 
   it("escapes quotes and numbers cards per deck", () => {
-    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\tWie gaht's?\tWie geht's?\tHow?\t\t\t\n`);
+    const seed = buildSeed(decks, cards(card({ swiss_german_zh: "Wie gaht's?", high_german: "Wie geht's?" })));
     expect(seed).toContain("'Wie gaht''s?'");
     expect(seed).toContain("('C01-T01', 'FC1', 1)");
   });
 
   it("puts each word's card in its decks, not the word itself", () => {
-    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`);
+    const seed = buildSeed(decks, cards(card()));
     expect(seed).toContain("insert into public.deck_items (deck_id, card_id, position)");
     expect(seed).toContain("join public.cards c on c.vocabulary_id = v.id");
+  });
+
+  it("gives a card one form per dialect it has, with its recording", () => {
+    const seed = buildSeed(
+      decks,
+      cards(card({ swiss_german_be: "Merci vilmau", audio_be: "be/merci.mp3", swiss_german_zh: "Merci vilmal" })),
+    );
+    expect(seed).toContain("('FC1', 'b', 'word')");
+    expect(seed).toContain("('FC1', 'be', 'Merci vilmau', array[]::text[], 'be/merci.mp3')");
+    expect(seed).toContain("('FC1', 'zh', 'Merci vilmal', array[]::text[], null)");
+    const onlyBern = buildSeed(decks, cards(card({ swiss_german_be: "Tschou", swiss_german_zh: "" })));
+    expect(onlyBern).toContain("('FC1', 'be', 'Tschou', array[]::text[], null)");
+    expect(onlyBern).not.toContain("'zh'");
+  });
+
+  it("needs a form in at least one dialect, and audio and variants only with their form", () => {
+    expect(() => buildSeed(decks, cards(card({ swiss_german_zh: "" })))).toThrow(/no Swiss German/);
+    expect(() => buildSeed(decks, cards(card({ audio_be: "be/a.mp3" })))).toThrow(/audio_be but no swiss_german_be/);
+    expect(() => buildSeed(decks, cards(card({ variants_be: "Salü" })))).toThrow(/variants_be but no swiss_german_be/);
+  });
+
+  it("lists a form's variants, separated by semicolons", () => {
+    const seed = buildSeed(decks, cards(card({ swiss_german_be: "Tschou", variants_be: " Salü ;Hallo; " })));
+    expect(seed).toContain("('FC1', 'be', 'Tschou', array['Salü', 'Hallo'], null)");
+  });
+
+  it("rejects an unknown dialect and the old one-dialect columns", () => {
+    const unknown = "code\tdeck_codes\thigh_german\tmeaning_en\tswiss_german_xx\nFC1\tC01-T01\tb\tc\ta\n";
+    expect(() => buildSeed(decks, unknown)).toThrow(/unknown dialect: xx/);
+    const old = "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\nFC1\tC01-T01\tzh\ta\tb\tc\n";
+    expect(() => buildSeed(decks, old)).toThrow(/column per dialect/);
   });
 
   it("rejects unknown deck colours", () => {
@@ -165,82 +204,47 @@ describe("buildSeed", () => {
   });
 
   it("writes a translation row for each language with content, and requires English", () => {
-    const seed = buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tHi\tPolite.\tHöflich.\t\t\n`);
+    const seed = buildSeed(decks, cards(card({ meaning_en: "Hi", notes_en: "Polite.", notes_de: "Höflich." })));
     expect(seed).toContain("('C01', 'en', 'Life', null)");
     expect(seed).toContain("('C01', 'de', 'Leben', null)");
     expect(seed).not.toContain("('C01-T01', 'de'");
     expect(seed).toContain("('FC1', 'en', 'Hi', 'Polite.')");
     expect(seed).toContain("('FC1', 'de', null, 'Höflich.')");
-    expect(() => buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\t\t\t\t\t\n`)).toThrow(/meaning_en/);
+    expect(() => buildSeed(decks, cards(card({ meaning_en: "" })))).toThrow(/meaning_en/);
   });
 
   it("rejects cards on a level with children", () => {
-    expect(() => buildSeed(decks, `${header}FC1\tC01\tzh\ta\tb\tc\t\t\t\n`)).toThrow(/lowest level/);
+    expect(() => buildSeed(decks, cards(card({ deck_codes: "C01" })))).toThrow(/lowest level/);
   });
 
   it("stores each card's type, a word unless it says otherwise", () => {
-    const seed = buildSeed(
-      decks,
-      `${header}FC1	C01-T01	zh	a	b	c				
-FC2	C01-T01	zh	d	e	f				Sentence
-`,
-    );
-    expect(seed).toContain("('FC1', 'zh', 'a', 'b', null, 'word')");
-    expect(seed).toContain("('FC2', 'zh', 'd', 'e', null, 'sentence')");
-    expect(() => buildSeed(decks, `${header}FC1	C01-T01	zh	a	b	c				Verb
-`)).toThrow(/unknown type/);
+    const seed = buildSeed(decks, cards(card(), card({ code: "FC2", high_german: "e", type: "Sentence" })));
+    expect(seed).toContain("('FC1', 'b', 'word')");
+    expect(seed).toContain("('FC2', 'e', 'sentence')");
+    expect(() => buildSeed(decks, cards(card({ type: "Verb" })))).toThrow(/unknown type/);
   });
 
   it("rejects unknown decks and duplicate codes", () => {
-    expect(() => buildSeed(decks, `${header}FC1\tC09\tzh\ta\tb\tc\t\t\t\n`)).toThrow(/unknown deck/);
-    expect(() =>
-      buildSeed(decks, `${header}FC1\tC01-T01\tzh\ta\tb\tc\t\t\t\nFC1\tC01-T01\tzh\ta\tb\tc\t\t\t\n`),
-    ).toThrow(/Duplicate/);
+    expect(() => buildSeed(decks, cards(card({ deck_codes: "C09" })))).toThrow(/unknown deck/);
+    expect(() => buildSeed(decks, cards(card(), card()))).toThrow(/Duplicate/);
   });
 });
 
-describe("buildSeed with grammar", () => {
+describe("buildSeed drafts", () => {
   const decks =
     "code\tparent_code\ttitle_en\tkind\tdraft\n" +
     "C01\t\tLife\t\t\nC01-T01\tC01\tGreetings\t\t\n" +
-    "G01\t\tPronouns\tgrammar\tyes\nG01-T01\tG01\tPersonal\t\t\n";
-  const words = "code\tdeck_codes\tdialect\tswiss_german\thigh_german\tmeaning_en\nFC1\tC01-T01\tzh\ta\tb\tc\n";
-  const points = "code\tdeck_codes\tdialect\ttitle_en\texplanation_en\nGR1\tG01-T01\t\tSi\tPolite.\n";
-  const exerciseHeader = "code\tpoint\ttype\tlevel\tdialect\tpayload\n";
-  const pick = '{"prompt":"Chönd ___ hälfe?","options":["Si","du"],"answer":0}';
-  const exercises = `${exerciseHeader}GR1-E1\tGR1\tpick\t1\tzh\t${pick}\n`;
+    "C02\t\tWork\t\tyes\nC02-T01\tC02\tMeetings\t\t\n";
+  const words = "code\tdeck_codes\tswiss_german_zh\thigh_german\tmeaning_en\nFC1\tC01-T01\ta\tb\tc\n";
 
-  it("gives decks their parent's kind, and keeps drafts and their children unpublished", () => {
-    const seed = buildSeed(decks, words, points, exercises);
+  it("keeps drafts and their children unpublished", () => {
+    const seed = buildSeed(decks, words);
     expect(seed).toContain("('C01-T01', 'C01', 'vocabulary', null, null, 1, true)");
-    expect(seed).toContain("('G01-T01', 'G01', 'grammar', null, null, 1, false)");
-    expect(seed).toContain("('G01-T01', 'GR1', 1)");
-    expect(seed).toContain(`('GR1-E1', 'GR1', 'pick', 1, 'zh', '${pick}')`);
+    expect(seed).toContain("('C02-T01', 'C02', 'vocabulary', null, null, 1, false)");
   });
 
-  it("works without any grammar", () => {
-    expect(buildSeed(decks, words)).toContain("where not (code = any (array[]::text[]))");
-  });
-
-  it("keeps words and grammar points to decks of their kind", () => {
-    const wordOnGrammar = words.replace("C01-T01", "G01-T01");
-    expect(() => buildSeed(decks, wordOnGrammar, points, exercises)).toThrow(/isn't a vocabulary deck/);
-    const pointOnWords = points.replace("G01-T01", "C01-T01");
-    expect(() => buildSeed(decks, words, pointOnWords, exercises)).toThrow(/isn't a grammar deck/);
-    const mixed = decks.replace("G01-T01\tG01\tPersonal\t\t", "G01-T01\tG01\tPersonal\tvocabulary\t");
-    expect(() => buildSeed(mixed, words, points, exercises)).toThrow(/its parent is grammar/);
-  });
-
-  it("checks each exercise and needs a level 1 one per grammar point", () => {
-    const build = (row: string) => () => buildSeed(decks, words, points, `${exercises}${row}\n`);
-    expect(build(`GR1-E2\tGR9\tpick\t1\tzh\t${pick}`)).toThrow(/unknown grammar point/);
-    expect(build(`GR1-E2\tGR1\tpick\t4\tzh\t${pick}`)).toThrow(/level 1, 2 or 3/);
-    expect(build(`GR1-E2\tGR1\tpick\t2\tzh\t{"prompt":`)).toThrow(/valid JSON/);
-    expect(build(`GR1-E2\tGR1\tpick\t2\tzh\t${pick.replace('"answer":0', '"answer":2')}`)).toThrow(
-      /GR1-E2: answer isn't the position/,
-    );
-    const onlyLevel2 = `${exerciseHeader}GR1-E1\tGR1\tpick\t2\tzh\t${pick}\n`;
-    expect(() => buildSeed(decks, words, points, onlyLevel2)).toThrow(/needs at least one level 1/);
+  it("only knows decks of words", () => {
+    expect(() => buildSeed(decks.replace("Life\t", "Life\tgrammar"), words)).toThrow(/unknown kind/);
   });
 });
 
@@ -269,68 +273,6 @@ describe("payloadProblem", () => {
     expect(payloadProblem("spot_error", { ...payload, wrong: [1, 3] })).toMatch(/next to each other/);
     expect(payloadProblem("spot_error", { ...payload, wrong: [4] })).toMatch(/positions/);
     expect(payloadProblem("spot_error", { ...payload, sentence: "Ich gseh di.", wrong: [2] })).toMatch(/same as the mistake/);
-  });
-});
-
-describe("pickExercise", () => {
-  const exercises = [
-    { id: "a", level: 1 },
-    { id: "b", level: 1 },
-    { id: "c", level: 2 },
-    { id: "d", level: 3 },
-  ];
-  const first = () => 0;
-
-  it("makes exercises harder as a rule comes back less often", () => {
-    expect(allowedLevels(null)).toEqual([1]);
-    expect(allowedLevels({ state: 1, scheduled_days: 0 })).toEqual([1]);
-    expect(allowedLevels({ state: 2, scheduled_days: 3 })).toEqual([1, 2]);
-    expect(allowedLevels({ state: 2, scheduled_days: 14 })).toEqual([2, 3]);
-    // Forgotten, so back to recognising it.
-    expect(allowedLevels({ state: 3, scheduled_days: 0 })).toEqual([1]);
-  });
-
-  it("picks among the levels the card is ready for, avoiding the last one shown", () => {
-    expect(pickExercise(exercises, null, null, first).id).toBe("a");
-    expect(pickExercise(exercises, null, "a", first).id).toBe("b");
-    expect(pickExercise(exercises, { state: 2, scheduled_days: 30 }, "c", first).id).toBe("d");
-  });
-
-  it("repeats the last exercise only when it's the only one, and falls back to any level", () => {
-    expect(pickExercise([{ id: "a", level: 1 }], null, "a").id).toBe("a");
-    expect(pickExercise([{ id: "a", level: 1 }], { state: 2, scheduled_days: 30 }, null).id).toBe("a");
-  });
-
-  it("rates a wrong answer Again and a right one Good", () => {
-    expect(gradeFromAnswer(false)).toBe(1);
-    expect(gradeFromAnswer(true)).toBe(3);
-  });
-});
-
-describe("grammarExercise", () => {
-  const row = {
-    id: "e1",
-    type: "pick" as const,
-    level: 2,
-    payload: {
-      context: { en: "Who is late?", de: "Wer ist spät dran?" },
-      prompt: "Mir sind spaat.",
-      options: [{ en: "we", de: "wir" }, { en: "me" }],
-      answer: 0,
-    },
-  };
-
-  it("shows translated text in the learner's language, falling back to English", () => {
-    const { task } = grammarExercise(row, "de");
-    expect(task).toEqual({
-      type: "pick",
-      context: "Wer ist spät dran?",
-      prompt: "Mir sind spaat.",
-      promptLang: "gsw",
-      options: ["wir", "me"],
-      answer: 0,
-    });
-    expect(grammarExercise(row, "en").task).toMatchObject({ context: "Who is late?", options: ["we", "me"] });
   });
 });
 

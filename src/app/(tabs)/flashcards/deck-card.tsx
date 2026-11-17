@@ -28,7 +28,7 @@ function DeckCard({ deck, limits, locale }: { deck: DeckNode; limits: TodaysLimi
     <TopicTile
       href={`/flashcards/decks/${deck.code}`}
       title={deck.title}
-      caption={deck.description ?? (deck.kind === "grammar" ? t.rules(deck.card_count) : t.words(deck.card_count))}
+      caption={deck.description ?? t.words(deck.card_count)}
       image={TOPIC_ILLUSTRATIONS[deck.code]}
       icon={deckIcon(deck.code)}
       comingSoon={deck.card_count === 0 ? t.comingSoon : undefined}
