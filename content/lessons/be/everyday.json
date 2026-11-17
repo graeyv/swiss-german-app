@@ -1,0 +1,34 @@
+{
+  "id": "everyday",
+  "title": "Im Alltag",
+  "subtitle": "So redet man in Bern",
+  "icon": "chat",
+  "description": "Wie man grüsst, jemanden anspricht und wann Berndeutsch oder Hochdeutsch gesprochen wird.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "greetings",
+      "title": "Grüessen und Abschied",
+      "description": "Grüessech, Hoi, Merci und Ade: wann man was sagt.",
+      "rules": []
+    },
+    {
+      "id": "ihrzen",
+      "title": "Ihrzen",
+      "description": "In Bern spricht man Leute höflich mit «Dir» an, nicht mit «Sie».",
+      "rules": []
+    },
+    {
+      "id": "dialect-or-standard",
+      "title": "Dialekt oder Hochdeutsch?",
+      "description": "Wann in der Schweiz Hochdeutsch gesprochen wird, und warum das keine Ablehnung ist.",
+      "rules": []
+    },
+    {
+      "id": "writing",
+      "title": "Schreiben im Chat",
+      "description": "Wie man Berndeutsch schreibt, wenn es keine feste Schreibweise gibt.",
+      "rules": []
+    }
+  ]
+}

@@ -2,15 +2,13 @@
 
 import { useState, useTransition } from "react";
 import { setLocale } from "@/app/(tabs)/actions";
-import { TINTS } from "@/app/(tabs)/flashcards/deck-card";
 import { PaceOptions } from "@/app/(tabs)/flashcards/pace-options";
 import { PRESETS } from "@/lib/flashcards/daily-plan";
-import type { DeckColor } from "@/lib/flashcards/decks";
 import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
 import { LEVELS, type Level, suggestedPace } from "@/lib/onboarding";
 import { finishOnboarding } from "./actions";
 
-type Topic = { code: string; title: string; emoji: string | null; color: DeckColor };
+type Topic = { code: string; title: string; emoji: string | null };
 
 type OnboardingFlowProps = {
   locale: Locale;
@@ -151,11 +149,11 @@ export function OnboardingFlow({ locale, topics, initialLevel, initialInterests 
                     key={topic.code}
                     aria-pressed={selected}
                     onClick={() => toggleTopic(topic.code)}
-                    className={`relative flex flex-col gap-3 rounded-2xl border-2 p-4 text-left transition-colors ${TINTS[topic.color]} ${
+                    className={`relative flex flex-col gap-3 rounded-2xl border-2 p-4 text-left transition-colors bg-mist ${
                       selected ? "border-accent" : "border-transparent"
                     }`}
                   >
-                    <span aria-hidden className="flex size-12 items-center justify-center rounded-xl bg-surface/70 text-2xl">
+                    <span aria-hidden className="flex size-12 items-center justify-center rounded-xl bg-ivory text-2xl">
                       {topic.emoji ?? "📚"}
                     </span>
                     <strong className="leading-snug font-semibold">{topic.title}</strong>

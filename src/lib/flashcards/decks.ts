@@ -2,8 +2,8 @@
 export const DECK_COLORS = ["pink", "blue", "green", "yellow", "purple", "orange"] as const;
 export type DeckColor = (typeof DECK_COLORS)[number];
 
-// Matches the check on public.decks.kind: decks of words, or of grammar rules.
-export type DeckKind = "vocabulary" | "grammar";
+// Matches the check on public.decks.kind: decks hold words.
+export type DeckKind = "vocabulary";
 
 // A row of the flashcard_decks database function.
 export type DeckRow = {
@@ -17,6 +17,8 @@ export type DeckRow = {
   color: DeckColor | null;
   deck_position: number;
   card_count: number;
+  // The part of card_count that are sentences or expressions rather than single words.
+  phrase_count: number;
   due_count: number;
   // The part of due_count that are words the learner already knows, which the daily limit caps.
   due_review_count: number;
@@ -26,11 +28,11 @@ export type DeckRow = {
 // color is never null here: a deck without its own takes its parent's.
 export type DeckNode = Omit<DeckRow, "color"> & { color: DeckColor; children: DeckNode[] };
 
-// Decks without cards stay hidden, so the tree can be filled in topic by topic.
+// Decks without cards show all the same, so learners see the whole structure and what's coming.
 export function buildDeckTree(rows: readonly DeckRow[]): DeckNode[] {
   const build = (parentId: string | null, parentColor: DeckColor): DeckNode[] =>
     rows
-      .filter((row) => row.parent_id === parentId && row.card_count > 0)
+      .filter((row) => row.parent_id === parentId)
       .sort((a, b) => a.deck_position - b.deck_position)
       .map((row) => {
         const color = row.color ?? parentColor;
@@ -62,9 +64,4 @@ export function findDeck(
     if (found) return { deck: found.deck, ancestors: [deck, ...found.ancestors] };
   }
   return null;
-}
-
-// The flashcards overview, showing decks of this kind.
-export function overviewHref(kind: DeckKind) {
-  return kind === "grammar" ? "/flashcards?kind=grammar" : "/flashcards";
 }

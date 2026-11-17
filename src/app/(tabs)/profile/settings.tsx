@@ -1,17 +1,15 @@
 "use client";
 
 import { type ReactNode, type RefObject, useRef, useState, useTransition } from "react";
-import { updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
-import type { DeckColor } from "@/lib/flashcards/decks";
+import { updateAutoplay, updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
 import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
 import type { CardFront } from "@/lib/types";
-import { BottomSheet } from "../flashcards/bottom-sheet";
-import { TINTS } from "../flashcards/deck-card";
+import { BottomSheet } from "@/app/ui/bottom-sheet";
 import { PaceOptions } from "../flashcards/pace-options";
 import { setLocale } from "../actions";
 import { updateDialect, updateInterests } from "./actions";
-import { DialectIcon, DirectionIcon, LanguageIcon, PaceIcon, TopicsIcon } from "./icons";
+import { AudioIcon, DialectIcon, DirectionIcon, LanguageIcon, PaceIcon, TopicsIcon } from "./icons";
 
 // Settings are rows that slide up a sheet to change them. Each sheet saves through a server
 // action, which refreshes the page, so the rows always show what's saved.
@@ -260,7 +258,34 @@ export function DirectionSetting({ cardFront, locale }: { cardFront: CardFront; 
   );
 }
 
-export type Topic = { code: string; title: string; emoji: string | null; color: DeckColor };
+const AUDIO_MODES = ["auto", "tap"] as const;
+
+// Whether word cards play their recording by itself, or only when the speaker is tapped.
+export function AudioSetting({ autoplay, locale }: { autoplay: boolean; locale: Locale }) {
+  const t = dictionary(locale).profile;
+  const sheet = useRef<HTMLDialogElement>(null);
+  const { error, saving, save } = useSave(sheet);
+  const mode = autoplay ? "auto" : "tap";
+
+  return (
+    <>
+      <Row icon={<AudioIcon />} label={t.audio} value={t.audioModes[mode]} onOpen={() => sheet.current?.showModal()} />
+      <Sheet sheet={sheet} title={t.audio} locale={locale} error={error}>
+        <p className="text-sm text-muted">{t.audioNote}</p>
+        <Choices
+          label={t.audio}
+          values={[...AUDIO_MODES]}
+          current={mode}
+          name={(value) => t.audioModes[value]}
+          disabled={saving}
+          onChoose={(value) => save(() => updateAutoplay(value === "auto"))}
+        />
+      </Sheet>
+    </>
+  );
+}
+
+export type Topic = { code: string; title: string; emoji: string | null };
 
 type TopicsSettingProps = { topics: Topic[]; interests: string[]; locale: Locale };
 
@@ -300,7 +325,7 @@ export function TopicsSetting({ topics, interests, locale }: TopicsSettingProps)
                 key={topic.code}
                 aria-pressed={selected}
                 onClick={() => toggle(topic.code)}
-                className={`flex min-h-14 items-center gap-2 rounded-2xl border-2 p-3 text-left transition-colors ${TINTS[topic.color]} ${
+                className={`flex min-h-14 items-center gap-2 rounded-2xl border-2 p-3 text-left transition-colors bg-mist ${
                   selected ? "border-accent" : "border-transparent"
                 }`}
               >

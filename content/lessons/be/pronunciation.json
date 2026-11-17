@@ -2,17 +2,16 @@
   "id": "pronunciation",
   "title": "Aussprache",
   "subtitle": "So klingt Berndeutsch",
+  "icon": "headphones",
   "description": "Entdecke die wichtigsten Unterschiede zwischen der Aussprache im Hochdeutschen und im Berndeutschen.",
   "expectations": [
     {
-      "icon": "sound",
-      "title": "Den Unterschied hören",
-      "text": "Dieselben Wörter auf Hochdeutsch und Berndeutsch im direkten Vergleich."
+      "icon": "headphones",
+      "title": "Den Unterschied hören"
     },
     {
-      "icon": "speak",
-      "title": "Die Laute selbst sprechen",
-      "text": "Mit einfachen Tipps, zum Beispiel für das gerollte R."
+      "icon": "mic",
+      "title": "Die Laute selbst sprechen"
     }
   ],
   "sections": [
@@ -74,8 +73,8 @@
                 "dialect": "K + ch"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/kunst_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/kunst_be.mp3"
               }
             },
             {
@@ -85,8 +84,8 @@
                 "dialect": "K + ch"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/dick_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/dick_be.mp3"
               }
             },
             {
@@ -96,8 +95,8 @@
                 "dialect": "K + ch"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/klicken_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/klicken_be.mp3"
               }
             }
           ],
@@ -115,8 +114,8 @@
                 "dialect": "Gerolltes R"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/wasser_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/wasser_be.mp3"
               }
             },
             {
@@ -126,8 +125,8 @@
                 "dialect": "Gerolltes R"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/bier_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/bier_be.mp3"
               }
             },
             {
@@ -137,8 +136,8 @@
                 "dialect": "Gerolltes R"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/rund_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/rund_be.mp3"
               }
             }
           ],
@@ -156,8 +155,8 @@
                 "dialect": "scharfes S"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/sonne_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/sonne_be.mp3"
               }
             },
             {
@@ -167,8 +166,8 @@
                 "dialect": "scharfes S"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/haus_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/haus_be.mp3"
               }
             },
             {
@@ -178,8 +177,8 @@
                 "dialect": "scharfes S"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/sicher_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/sicher_be.mp3"
               }
             }
           ],
@@ -197,8 +196,8 @@
                 "dialect": "scht"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/stadt_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/stadt_be.mp3"
               }
             },
             {
@@ -208,8 +207,8 @@
                 "dialect": "schp"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/spaet_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/spaet_be.mp3"
               }
             },
             {
@@ -219,8 +218,8 @@
                 "dialect": "scht"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/fest_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/fest_be.mp3"
               }
             },
             {
@@ -230,8 +229,8 @@
                 "dialect": "schp"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/knospe_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/knospe_be.mp3"
               }
             }
           ],
@@ -249,8 +248,8 @@
                 "dialect": "T mit schwachem Luftstoss"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/tante_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/tante_be.mp3"
               }
             },
             {
@@ -260,8 +259,8 @@
                 "dialect": "P mit schwachem Luftstoss"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/papagei_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/papagei_be.mp3"
               }
             },
             {
@@ -271,8 +270,8 @@
                 "dialect": "T und P mit schwachem Luftstoss"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/tempo_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/tempo_be.mp3"
               }
             }
           ],
@@ -297,8 +296,8 @@
                 "dialect": "Offenes O"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/boot_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/boot_be.mp3"
               }
             },
             {
@@ -308,8 +307,8 @@
                 "dialect": "Offenes O"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/offen_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/offen_be.mp3"
               }
             },
             {
@@ -319,8 +318,8 @@
                 "dialect": "Offenes O"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/obst_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/obst_be.mp3"
               }
             }
           ],
@@ -338,8 +337,8 @@
                 "dialect": "Offeneres Ä"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/kaese_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/kaese_be.mp3"
               }
             },
             {
@@ -349,8 +348,8 @@
                 "dialect": "Offeneres Ä"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/maedchen_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/maedchen_be.mp3"
               }
             },
             {
@@ -360,8 +359,8 @@
                 "dialect": "Offeneres Ä"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/baeren_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/baeren_be.mp3"
               }
             }
           ],
@@ -379,8 +378,8 @@
                 "dialect": "Offenes Ö"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/oel_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/oel_be.mp3"
               }
             },
             {
@@ -390,8 +389,8 @@
                 "dialect": "Offenes Ö"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/loeffel_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/loeffel_be.mp3"
               }
             },
             {
@@ -401,8 +400,8 @@
                 "dialect": "Offenes Ö"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/schoen_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/schoen_be.mp3"
               }
             }
           ],
@@ -420,8 +419,8 @@
                 "dialect": "Kurzes Ü"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/tuer_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/tuer_be.mp3"
               }
             },
             {
@@ -431,8 +430,8 @@
                 "dialect": "Kurzes Ü"
               },
               "audio": {
-                "standardGerman": null,
-                "dialect": null
+                "standardGerman": "/audio/lessons/be/pronunciation/glueck_de.mp3",
+                "dialect": "/audio/lessons/be/pronunciation/glueck_be.mp3"
               }
             },
             {
@@ -443,7 +442,7 @@
               },
               "audio": {
                 "standardGerman": null,
-                "dialect": null
+                "dialect": "/audio/lessons/be/pronunciation/mueed_be.mp3"
               }
             }
           ],

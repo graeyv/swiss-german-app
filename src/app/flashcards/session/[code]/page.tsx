@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getCardFront, getGrammarContent, getToday, toGrammarCard, toWordCard } from "@/lib/flashcards/data";
+import { getCardSettings, getToday, toWordCard } from "@/lib/flashcards/data";
 import { findDeck } from "@/lib/flashcards/decks";
-import { composeSession } from "@/lib/flashcards/session";
+import { alternate, composeSession } from "@/lib/flashcards/session";
+import { hasWordsAndPhrases, typesOf, vocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
@@ -27,47 +28,47 @@ export default function SessionPage({ params, searchParams }: PageProps<"/flashc
 }
 
 async function Session({ params, searchParams }: PageProps<"/flashcards/session/[code]">) {
-  const [{ code }, { shuffle }] = await Promise.all([params, searchParams]);
+  const [{ code }, { shuffle, cards: only }] = await Promise.all([params, searchParams]);
+  // Words only, or sentences and expressions only, when the learner chose that for the topic.
+  const filter = vocabularyFilter(only);
+  const types = typesOf(filter);
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
 
-  const [today, cardFront] = await Promise.all([getToday(supabase), getCardFront(supabase)]);
+  const [today, { cardFront, autoplay }] = await Promise.all([getToday(supabase), getCardSettings(supabase)]);
   const { tree, limits } = today;
   const found = findDeck(tree, code);
   if (!found) notFound();
 
   const { newLeft, reviewsLeft } = limits;
-  const [due, fresh] = await Promise.all([
-    supabase.rpc("due_flashcards", { p_limit: MAX_DUE_CARDS, p_deck_code: code }),
-    supabase.rpc("new_flashcards", { p_deck_code: code, p_limit: newLeft }),
+  // Mixing words and sentences, new ones take turns, so sentences don't wait until every word
+  // of the topic is learned.
+  const mixed = filter === "all" && hasWordsAndPhrases(found.deck);
+  const newCards = (p_types: string[] | undefined) =>
+    supabase.rpc("new_flashcards", { p_deck_code: code, p_limit: newLeft, p_types });
+  const [due, fresh, freshPhrases] = await Promise.all([
+    supabase.rpc("due_flashcards", { p_limit: MAX_DUE_CARDS, p_deck_code: code, p_types: types }),
+    newCards(mixed ? typesOf("words") : types),
+    mixed ? newCards(typesOf("phrases")) : null,
   ]);
   if (due.error) throw new Error(due.error.message);
   if (fresh.error) throw new Error(fresh.error.message);
+  if (freshPhrases?.error) throw new Error(freshPhrases.error.message);
 
   const entries = composeSession(
     due.data,
-    fresh.data,
+    freshPhrases ? alternate(fresh.data, freshPhrases.data, newLeft) : fresh.data,
     reviewsLeft,
     { shuffle: shuffle === "1" },
   );
 
-  const grammarIds = entries.flatMap((entry) => {
-    const row = "due" in entry ? entry.due : entry.fresh;
-    return row.kind === "grammar" ? [row.card_id] : [];
-  });
-  const grammar = await getGrammarContent(supabase, grammarIds);
-
   const now = new Date();
   const cards = await Promise.all(
-    entries.map((entry) => {
-      const row = "due" in entry ? entry.due : entry.fresh;
-      const card = "due" in entry ? entry.due : null;
-      if (row.kind !== "grammar") return toWordCard(supabase, row, card, now, t);
-      const content = grammar.get(row.card_id);
-      // A rule without exercises for the learner's dialect isn't offered in the first place.
-      if (!content || content.exercises.length === 0) return null;
-      return toGrammarCard(row.card_id, content, card, card?.last_exercise_id ?? null, locale);
-    }),
+    entries.map((entry) =>
+      "due" in entry
+        ? toWordCard(supabase, entry.due, entry.due, now, t)
+        : toWordCard(supabase, entry.fresh, null, now, t),
+    ),
   );
 
   // Back to the category the learner came from: a subcategory's parent, or the deck itself.
@@ -77,8 +78,9 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
     <>
       <title>{t.title(found.deck.title)}</title>
       <ReviewSession
-        cards={cards.filter((card) => card !== null)}
+        cards={cards}
         cardFront={cardFront}
+        autoplay={autoplay}
         locale={locale}
         goalReachedBefore={today.goalReached}
         emptyMessage={t.session.empty}

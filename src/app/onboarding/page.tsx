@@ -36,7 +36,7 @@ async function Onboarding() {
         locale={locale}
         topics={tree
           .filter((deck) => deck.kind === "vocabulary")
-          .map(({ code, title, emoji, color }) => ({ code, title, emoji, color }))}
+          .map(({ code, title, emoji }) => ({ code, title, emoji }))}
         initialLevel={isLevel(profile.data?.swiss_german_level) ? profile.data.swiss_german_level : null}
         initialInterests={profile.data?.interests ?? []}
       />

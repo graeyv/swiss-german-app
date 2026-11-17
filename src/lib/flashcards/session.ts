@@ -16,6 +16,18 @@ export function deckAvailability(deck: DeckCounts, { newLeft, reviewsLeft }: Tod
 
 export type SessionEntry<Due, New> = { due: Due } | { fresh: New };
 
+// New words and new sentences taking turns, each in deck order, up to the limit. Once one runs
+// out, the other fills the rest. A mixed session then meets sentences early, wherever they sit
+// in the content.
+export function alternate<T>(words: readonly T[], phrases: readonly T[], limit: number): T[] {
+  const result: T[] = [];
+  for (let i = 0; result.length < limit && (i < words.length || i < phrases.length); i++) {
+    if (i < words.length) result.push(words[i]);
+    if (i < phrases.length && result.length < limit) result.push(phrases[i]);
+  }
+  return result;
+}
+
 // Due cards arrive most overdue first and new words in deck order. A normal session keeps that
 // order, due cards before new words. Shuffle mixes them all.
 export function composeSession<Due extends { state: number }, New>(

@@ -1,7 +1,8 @@
-// Checks a grammar exercise's payload against its task in src/lib/exercises/tasks.ts, so a typo
-// in content/grammar_exercises.tsv fails the content build instead of breaking a session.
+// Checks an exercise in a lesson file (content/lessons) against its task in
+// src/lib/exercises/tasks.ts, so a typo fails the tests (src/lib/learn/lessons.test.ts) instead of
+// breaking a round.
 
-// Matches the check on public.grammar_exercises.type.
+// The task types the round can show.
 export const EXERCISE_TYPES = ["pick", "build", "spot_error"];
 
 // Matches sentenceWords in src/lib/exercises/tasks.ts.

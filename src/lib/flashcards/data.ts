@@ -5,8 +5,8 @@
 // the row types in this folder, which say which columns can be empty.
 import { randomUUID } from "node:crypto";
 import type { createClient } from "@/lib/supabase/server";
-import type { Dictionary, Locale } from "@/lib/i18n";
-import type { CardFront, Flashcard, GrammarCard, WordCard } from "@/lib/types";
+import type { Dictionary } from "@/lib/i18n";
+import type { CardFront, Flashcard, WordCard } from "@/lib/types";
 import {
   DEFAULT_NEW_CARDS,
   type FlashcardSummary,
@@ -14,7 +14,6 @@ import {
   todaysQueue,
 } from "./daily-plan";
 import { buildDeckTree, DECK_COLORS, type DeckColor, type DeckRow, sortByInterests } from "./decks";
-import { type ExerciseRow, grammarExercise, pickExercise } from "./grammar";
 import { type CardRow, previewIntervals } from "./scheduling";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -24,7 +23,7 @@ async function getDeckTree(supabase: Supabase) {
   if (error) throw new Error(error.message);
   const rows: DeckRow[] = data.map((row) => ({
     ...row,
-    kind: row.kind === "grammar" ? "grammar" : "vocabulary",
+    kind: "vocabulary",
     color: DECK_COLORS.includes(row.color as DeckColor) ? (row.color as DeckColor) : null,
   }));
   return buildDeckTree(rows);
@@ -62,15 +61,21 @@ export async function getToday(supabase: Supabase) {
   };
 }
 
-export async function getCardFront(supabase: Supabase): Promise<CardFront> {
-  const { data, error } = await supabase.from("profiles").select("card_front").maybeSingle();
+// How the learner wants their cards: which side first, and whether a word's recording plays by
+// itself when its Swiss German shows.
+export async function getCardSettings(supabase: Supabase): Promise<{ cardFront: CardFront; autoplay: boolean }> {
+  const { data, error } = await supabase.from("profiles").select("card_front, autoplay_audio").maybeSingle();
   if (error) throw new Error(error.message);
-  return data?.card_front === "translation" ? "translation" : "swiss_german";
+  return {
+    cardFront: data?.card_front === "translation" ? "translation" : "swiss_german",
+    autoplay: data?.autoplay_audio ?? true,
+  };
 }
 
 type WordRow = {
   card_id: string;
   swiss_german: string;
+  variants: string[] | null;
   high_german: string;
   meaning: string;
   notes: string | null;
@@ -94,6 +99,7 @@ export async function toWordCard(
     kind: "vocabulary",
     card_id: word.card_id,
     swiss_german: word.swiss_german,
+    variants: word.variants ?? [],
     high_german: word.high_german,
     meaning: word.meaning,
     notes: word.notes,
@@ -103,43 +109,5 @@ export async function toWordCard(
     status: statusOf(card),
     review_id: randomUUID(),
     intervals: await previewIntervals(card, word.card_id, now, t.intervals),
-  };
-}
-
-export type GrammarContent = { title: string; exercises: ExerciseRow[] };
-
-// Each grammar card's rule and the exercises the learner can be shown, by card.
-export async function getGrammarContent(supabase: Supabase, cardIds: string[]) {
-  const content = new Map<string, GrammarContent>();
-  if (cardIds.length === 0) return content;
-  const { data, error } = await supabase.rpc("grammar_content", { p_card_ids: cardIds });
-  if (error) throw new Error(error.message);
-  for (const row of data) {
-    content.set(row.card_id, {
-      title: row.title,
-      exercises: row.exercises as unknown as ExerciseRow[],
-    });
-  }
-  return content;
-}
-
-// A grammar rule ready for a session, showing an exercise it's ready for. card is null for a
-// new rule, and lastExerciseId the exercise it showed last time.
-export function toGrammarCard(
-  cardId: string,
-  content: GrammarContent,
-  card: CardRow | null,
-  lastExerciseId: string | null,
-  locale: Locale,
-): GrammarCard {
-  const exercises = content.exercises.map((row) => grammarExercise(row, locale));
-  return {
-    kind: "grammar",
-    card_id: cardId,
-    title: content.title,
-    exercises,
-    exercise: pickExercise(exercises, card, lastExerciseId),
-    status: statusOf(card),
-    review_id: randomUUID(),
   };
 }

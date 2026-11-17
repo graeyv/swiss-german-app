@@ -17,7 +17,7 @@ export const en = {
   home: {
     headline: "Understand your Swiss neighbours, not just their signs.",
     intro:
-      "Short lessons in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
+      "Short modules in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
     start: "Start learning",
   },
 
@@ -31,11 +31,22 @@ export const en = {
     confirmEmail: "Check your email to confirm your account.",
   },
 
+  learn: {
+    intro: "How Swiss German differs from Standard German.",
+    // Above the card to continue: whether the learner has read anything yet, then the module.
+    continue: "Continue",
+    startHere: "Start here",
+    topicsRead: (read: number, count: number) => `${read} of ${many(count, "topic", "topics")} read`,
+    allModules: "All modules",
+    // In place of a module's size, on the one the learner read in last.
+    lastRead: "Read last",
+  },
+
   nav: {
     label: "Main",
     learn: "Learn",
     practice: "Practice",
-    immerse: "Immerse",
+    conversations: "Conversations",
     profile: "Profile",
   },
 
@@ -44,8 +55,8 @@ export const en = {
     learningSince: (date: string) => `Learning since ${date}`,
     progress: "Progress",
     streak: (count: number) => many(count, "day in a row", "days in a row"),
-    wordsLearned: (count: number) => many(count, "word learned", "words learned"),
-    rulesLearned: (count: number) => many(count, "rule learned", "rules learned"),
+    // Words and sentences, beside the grammar rules learned.
+    wordsLearned: (count: number) => many(count, "card learned", "cards learned"),
     languages: "Languages",
     iSpeak: "I speak",
     iSpeakNote: "Hoi uses this language for everything, including translations.",
@@ -58,6 +69,10 @@ export const en = {
     cardDirection: "Card direction",
     cardDirectionNote: "Which side of a word card you see first. You can also swap it during a session.",
     directions: { swiss_german: "Swiss German first", translation: "English first" },
+    audio: "Pronunciation",
+    audioNote:
+      "Whether a word card plays the word by itself as soon as you see the Swiss German. You can also switch it at the top of a session.",
+    audioModes: { auto: "Play automatically", tap: "Only when tapped" },
     topics: "Topics",
     topicsNote: "Your topics come first in Practice.",
     topicsChosen: (count: number) => (count === 0 ? "None" : `${count} chosen`),
@@ -69,13 +84,17 @@ export const en = {
   },
 
   lesson: {
-    leave: "Leave lesson",
-    number: (number: number) => `Lesson ${number}`,
+    leave: "Leave module",
+    number: (number: number) => `Module ${number}`,
     expect: "What to expect",
-    topicsHeading: "Topics",
+    topicsHeading: "Lessons",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
+    // A module's lessons (sections in the code), such as "Consonants" and "Vowels".
+    sections: (count: number) => many(count, "lesson", "lessons"),
     start: "Let’s go",
+    // Beside "Next: R" on a module the learner has been in before.
+    fromStart: "Start over",
     next: "Next",
     done: "Done",
     // Where a topic is in its section, such as "Consonants · 2 / 6".
@@ -84,12 +103,87 @@ export const en = {
     // Marks a word that sounds the same in Standard German and the dialect.
     same: "same",
     // For screen readers, in place of the Standard German side of a dialect-only word.
-    dialectOnly: "No Standard German word",
+    onlyIn: (variety: string) => `only in ${variety}`,
+    becomes: "becomes",
     standardGerman: "Standard German",
     // By dialect id. A dialect without a name here shows its id.
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
     play: (variety: string) => `Listen in ${variety}`,
     noRecording: "No recording yet",
+    comingSoon: "Coming soon",
+    // On the overview of a lesson that's still being written.
+    inTheMaking: "This module is still being written. Here's what it will cover.",
+  },
+
+  // A lesson's exercises, done at the end of a section such as the consonants.
+  practice: {
+    practise: (section: string, count: number) => `Practise ${section} · ${many(count, "exercise", "exercises")}`,
+    later: "Later",
+    // On a module's page, as the second choice after reading on.
+    toExercises: "Go to the exercises",
+    leave: "Leave exercises",
+    progress: (position: number, count: number) => `Exercise ${position} of ${count}`,
+    // Opens the rule an exercise is about, after a wrong answer.
+    readRule: (rule: string) => `Read the rule: ${rule}`,
+    rule: (section: string) => `Rule · ${section}`,
+    backToExercise: "Back to the exercise",
+    done: (section: string) => `${section} practised`,
+    score: (correct: number, total: number) => `${correct} of ${total} right the first time.`,
+    // After a round with under 60 % right.
+    weak: "Still a bit shaky. Read the lesson again and it'll stick better.",
+    readAgain: (section: string) => `Read ${section} again`,
+    finish: "Done",
+    notSaved: (error: string) => `Your result wasn't saved: ${error}`,
+    // The Practice tab's two views: flashcards, and the lessons' exercises.
+    views: { label: "What to practise", words: "Vocabulary", lessons: "Lessons" },
+    allExercises: "All exercises",
+    exercises: "Exercises",
+    sectionsPractised: (practised: number, count: number) =>
+      `${practised} of ${many(count, "lesson", "lessons")} practised`,
+    ago: (days: number) => (days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`),
+    practised: (ago: string) => `Practised ${ago}`,
+    readNotPractised: "Read, not practised yet",
+    notRead: (count: number) => `${many(count, "topic", "topics")}, not read yet`,
+    // The card with the one thing suggested, such as "Next · Pronunciation".
+    next: (module: string) => `Next · ${module}`,
+    practiseSection: (section: string) => `Practise ${section}`,
+    allRead: (count: number) => `You've read all ${many(count, "topic", "topics")}.`,
+    refresh: (section: string) => `Brush up on ${section}`,
+    lastRound: (ago: string, correct: number, total: number) => `Last practised ${ago}, ${correct} of ${total} right.`,
+    start: "Practise",
+    allPractised: "All practised",
+    readFirst: "Read first",
+    readOn: (section: string) => `Go on with ${section}`,
+    left: (count: number) => `${many(count, "topic", "topics")} left to read.`,
+    allDone: "All read and practised",
+  },
+
+  conversations: {
+    // How many scenes a topic has, such as "5 scenes".
+    scenes: (count: number) => many(count, "scene", "scenes"),
+    // On a scene that is still to be written.
+    comingSoon: "Coming soon",
+    play: "Play",
+    pause: "Pause",
+    back5: "Back 5 seconds",
+    forward5: "Forward 5 seconds",
+    restart: "From the start",
+    // Scrolls the transcript back to the line being spoken, after the learner scrolled away.
+    followAgain: "Back to current line",
+    // The playback speed, such as "Speed: 0.75×", switched with each tap.
+    speed: (rate: string) => `Speed: ${rate}`,
+    progress: "Position in the conversation",
+    noRecording: "No recording yet",
+    // The transcript stays hidden until the conversation has been heard once: listening is the
+    // skill being trained.
+    listenFirst: "Listen once without reading along. The transcript unlocks afterwards.",
+    showAnyway: "Show it anyway",
+    transcript: "Transcript",
+    showTranscript: "Show transcript",
+    hideTranscript: "Hide transcript",
+    showTranslation: "Show translation",
+    hideTranslation: "Hide translation",
+    playLine: (speaker: string) => `Play ${speaker}’s line`,
   },
 
   exercises: {
@@ -106,24 +200,26 @@ export const en = {
     topics: "Topics",
     subcategories: "Subcategories",
     words: (count: number) => many(count, "word", "words"),
+    // Sentences include expressions, such as "Hoi zäme": learners don't need the difference.
+    phrases: (count: number) => many(count, "sentence", "sentences"),
+    // Practising or listing a topic's words and its sentences together or apart.
+    filterLabel: "Which cards",
+    filters: { all: "All", words: "Words", phrases: "Sentences" },
     newCount: (count: number) => `${count} new`,
     reviewCount: (count: number) => many(count, "review", "reviews"),
     doneForToday: "Done for today",
+    // On a topic that has no cards yet.
+    comingSoon: "Coming soon",
     nothingLeft: "Nothing left for today",
-    startFlashcards: "Start flashcards",
-    seeWordList: "See word list",
-    shuffle: "Shuffle learning in this category",
+    // Starts a topic's session, of words and sentences or of grammar.
+    practise: "Practise",
+    // The list of a topic's words and sentences.
+    seeList: "See list",
+    // The button's label, and what screen readers hear, naming the category.
+    shuffleAll: "Shuffle all",
+    shuffle: (deck: string) => `Shuffle all of ${deck}`,
     allDone: "All done for today",
-    comeBackTomorrow: (deck: string) => `Come back tomorrow for more ${deck}.`,
-    wordListTitle: (deck: string) => `${deck} words`,
-    kindLabel: "What to practise",
-    vocabulary: "Vocabulary",
-    grammar: "Grammar",
-    rules: (count: number) => many(count, "rule", "rules"),
-    startPractice: "Start practising",
-    seeRules: "See rules",
-    ruleListTitle: (deck: string) => `${deck} rules`,
-    newRule: "New",
+    listTitle: (deck: string) => `${deck} list`,
     swissGerman: "Swiss German",
     translation: "English",
   },
@@ -133,7 +229,8 @@ export const en = {
     reached: "Reached",
     edit: "Edit",
     editLabel: "Edit daily goal",
-    newWords: "New words",
+    // Words and sentences alike: they share the daily goal.
+    newWords: "New cards",
     cardsReviewed: "Cards reviewed",
     nothingToReview: "Nothing to review",
     sheetTitle: "Choose your daily learning pace",
@@ -158,13 +255,17 @@ export const en = {
     showingSwissGermanFirst: "Showing Swiss German first. Show English first instead",
     showingTranslationFirst: "Showing English first. Show Swiss German first instead",
     tapToReveal: "Tap card to reveal",
+    // The speaker in a session's top bar, switching whether words play by themselves.
+    autoplay: "Play pronunciation automatically",
+    autoplayOn: "Plays the pronunciation automatically",
+    autoplayOff: "Plays the pronunciation only when tapped",
+    // Before a word's other forms, such as "also: Salü · Hallo".
+    also: "also",
     notSaved: (error: string) => `Your answer wasn’t saved: ${error}. Choose again to retry.`,
     grades: { again: "Again", hard: "Hard", good: "Good", easy: "Easy" },
     statuses: { new: "New", learning: "Learning", review: "Review" },
-    newWordsLearned: (count: number) => many(count, "new word learned", "new words learned"),
-    wordsReviewed: (count: number) => many(count, "word reviewed", "words reviewed"),
-    newRulesLearned: (count: number) => many(count, "new rule learned", "new rules learned"),
-    rulesPractised: (count: number) => many(count, "rule practised", "rules practised"),
+    newWordsLearned: (count: number) => many(count, "new card learned", "new cards learned"),
+    wordsReviewed: (count: number) => many(count, "card reviewed", "cards reviewed"),
     correct: "Correct!",
     notQuite: "Not quite",
     yourAnswer: "Your answer",

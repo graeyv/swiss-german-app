@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 import { getLocale } from "@/lib/i18n/server";
 import { dictionary } from "@/lib/i18n";
-import { ImmerseIcon, LearnIcon, PracticeIcon, ProfileIcon } from "./tab-icons";
+import { ConversationsIcon, LearnIcon, PracticeIcon, ProfileIcon } from "./tab-icons";
 import { TabLink } from "./tab-link";
+import { Logo } from "@/app/ui/logo";
 
 const TABS = [
   { href: "/learn", label: "learn", icon: <LearnIcon /> },
   { href: "/flashcards", label: "practice", icon: <PracticeIcon /> },
-  { href: "/immerse", label: "immerse", icon: <ImmerseIcon /> },
+  { href: "/conversations", label: "conversations", icon: <ConversationsIcon /> },
   { href: "/profile", label: "profile", icon: <ProfileIcon /> },
 ] as const;
 
@@ -38,7 +39,9 @@ async function Header() {
 
   return (
     <header className="flex flex-col gap-6">
-      <p className="font-semibold text-accent">Hoi</p>
+      <p>
+        <Logo />
+      </p>
       <nav aria-label={t.nav.label} className="hidden gap-6 border-b border-line md:flex">
         {TABS.map((tab) => (
           <TabLink key={tab.href} href={tab.href} label={t.nav[tab.label]} icon={tab.icon} placement="top" />

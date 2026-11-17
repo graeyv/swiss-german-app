@@ -1,8 +1,13 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { ButtonLink } from "@/app/ui/button";
+import { isIconName } from "@/app/ui/icons";
+import { ListRow, ListRows } from "@/app/ui/list-row";
+import type { Dictionary } from "@/lib/i18n";
 import { getDictionary } from "@/lib/i18n/server";
-import { LESSONS, lessonNumber } from "@/lib/learn/lessons";
+import { type Lesson, LESSONS, lessonHref, lessonNumber, topicCount } from "@/lib/learn/lessons";
+import { type Continue, getReads, lastModule, readCount, whereToContinue } from "@/lib/learn/progress";
+import { createClient } from "@/lib/supabase/server";
 
 // Lessons on how Swiss German differs from Standard German. Every learner sees every lesson for
 // now, whatever their dialect, until there are lessons for more than one.
@@ -14,44 +19,68 @@ export default function LearnPage() {
   );
 }
 
+// A card to continue where the learner left off, then every module in order as an equal row. The
+// module read in last says so in its caption. Modules still being written look like the others,
+// counting their planned topics: the prototype shows the whole track.
 async function Learn() {
-  const t = await getDictionary();
+  const [t, supabase] = await Promise.all([getDictionary(), createClient()]);
+  const reads = await getReads(supabase);
+  const next = whereToContinue(reads);
+  const last = lastModule(reads);
 
   return (
     <>
       <title>{t.title(t.nav.learn)}</title>
-      <h1 className="text-2xl font-bold tracking-tight">{t.nav.learn}</h1>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-title font-bold">{t.nav.learn}</h1>
+        <p className="text-subtitle font-semibold">{t.learn.intro}</p>
+      </div>
 
-      <ol className="flex flex-col gap-3">
-        {LESSONS.map((entry) => {
-          const { dialect, lesson } = entry;
-          const number = lessonNumber(entry);
-          return (
-            <li key={`${dialect}/${lesson.id}`}>
-              <Link
-                href={`/learn/${dialect}/${lesson.id}`}
-                className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-accent"
-              >
-                <span
-                  aria-hidden
-                  className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-lg font-bold text-accent-foreground tabular-nums"
-                >
-                  {number}
-                </span>
-                <span className="flex flex-1 flex-col gap-1">
-                  {/* Screen readers hear "Lesson 1" before the title. */}
-                  <span className="sr-only">{t.lesson.number(number)}</span>
-                  <span className="font-semibold">{lesson.title}</span>
-                  <span className="text-sm text-muted">{lesson.subtitle}</span>
-                </span>
-                <span aria-hidden className="text-muted">
-                  →
-                </span>
-              </Link>
-            </li>
-          );
-        })}
-      </ol>
+      {next && <ContinueCard next={next} read={reads.read} t={t} />}
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{t.learn.allModules}</h2>
+        <ListRows>
+          {LESSONS.map((entry) => (
+            <ListRow
+              key={`${entry.dialect}/${entry.lesson.id}`}
+              href={lessonHref(entry.dialect, entry.lesson)}
+              icon={isIconName(entry.lesson.icon) ? entry.lesson.icon : undefined}
+              eyebrow={t.lesson.number(lessonNumber(entry))}
+              title={entry.lesson.title}
+              caption={`${entry.dialect}/${entry.lesson.id}` === last ? t.learn.lastRead : size(entry.lesson, t)}
+            />
+          ))}
+        </ListRows>
+      </section>
     </>
+  );
+}
+
+// Such as "2 Lektionen · 10 Themen", or only the lessons while no topic is planned yet.
+function size(lesson: Lesson, t: Dictionary) {
+  const sections = t.lesson.sections(lesson.sections.length);
+  const topics = topicCount(lesson);
+  return topics > 0 ? `${sections} · ${t.lesson.topics(topics)}` : sections;
+}
+
+// Sage, the Learn tab's one suggestion: the lesson to go on with, how much of it is read, and a
+// button straight to its next topic. "Hier beginnen" until the learner has read anything.
+function ContinueCard({ next, read, t }: { next: Continue; read: Set<string>; t: Dictionary }) {
+  const { entry, section, rule, started } = next;
+  return (
+    <div className="flex flex-col gap-4 rounded-3xl bg-sage p-6">
+      <span className="flex flex-col gap-1">
+        {/* Teal rather than the softer teal of eyebrows, which is too faint on sage. */}
+        <span className="text-caption font-semibold tracking-[0.08em] uppercase">
+          {started ? t.learn.continue : t.learn.startHere} · {entry.lesson.title}
+        </span>
+        <span className="text-heading font-bold">{section.title}</span>
+        <span className="text-body">{t.learn.topicsRead(readCount(entry, section, read), section.rules.length)}</span>
+      </span>
+      <ButtonLink href={lessonHref(entry.dialect, entry.lesson, section, rule)}>
+        {started ? `${t.lesson.next}: ${rule.title}` : t.lesson.start}
+      </ButtonLink>
+    </div>
   );
 }

@@ -1,17 +1,34 @@
-// Turns the flashcard content in content/ into supabase/seeds/flashcards.sql: decks.tsv,
-// cards.tsv (words), grammar_points.tsv and grammar_exercises.tsv.
+// Turns the flashcard content in content/ into supabase/seeds/flashcards.sql: decks.tsv and
+// cards.tsv (words).
 //
 // Translated columns end in a language code, such as title_en or notes_de. English is
 // required, because it's what every other language falls back to. Adding a language means
 // adding its columns, such as meaning_fr, once it's in public.locales.
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+//
+// A card is the same for every dialect, with a form per dialect: swiss_german_be and audio_be for
+// Bärndütsch, swiss_german_zh and audio_zh for Züritüütsch. variants_be and variants_zh hold other
+// ways of saying it in that dialect, separated by semicolons, such as "Salü; Hallo". A card needs at least one form, and
+// learners only see it in a dialect it has a form for. Adding a dialect means adding its
+// columns, once it's in public.dialects (supabase/seed.sql).
+import { readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { payloadProblem } from "./lib/check-payload.mjs";
 
 // Matches the check on public.decks.color.
 const DECK_COLORS = ["pink", "blue", "green", "yellow", "purple", "orange"];
 // Matches the check on public.decks.kind.
-const DECK_KINDS = ["vocabulary", "grammar"];
+const DECK_KINDS = ["vocabulary"];
+// Matches the check on public.vocabulary_items.type. An empty type is a word.
+const CARD_TYPES = ["word", "sentence", "expression"];
+// The dialects in public.dialects, which supabase/seed.sql adds.
+const DIALECTS = ["be", "zh"];
+
+// The dialects the cards file has columns for, from columns such as swiss_german_be.
+function dialectsOf(cards) {
+  return Object.keys(cards[0] ?? {}).flatMap((key) => /^swiss_german_([a-z]{2})$/.exec(key)?.[1] ?? []);
+}
+
+// A card's type in lower case, so "Sentence" from a spreadsheet works too.
+const typeOf = (card) => card.type?.toLowerCase() || "word";
 
 function parseTsv(text, name) {
   const [header, ...lines] = text.replace(/^﻿/, "").split(/\r?\n/).filter((line) => line.trim());
@@ -33,6 +50,11 @@ function quote(value) {
 // A list of codes for SQL, which may be empty.
 function codeArray(codes) {
   return codes.length ? `array[${codes.map(quote).join(", ")}]` : "array[]::text[]";
+}
+
+// A card's variants in a dialect, from a cell such as "Salü; Hallo".
+function variantsOf(cell) {
+  return (cell ?? "").split(";").map((variant) => variant.trim()).filter(Boolean);
 }
 
 function findDuplicate(values) {
@@ -62,11 +84,9 @@ const withDeckCodes = (row) => ({
   deckCodes: row.deck_codes.split(",").map((code) => code.trim()).filter(Boolean),
 });
 
-export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExercisesTsv = "") {
+export function buildSeed(decksTsv, cardsTsv) {
   const decks = parseTsv(decksTsv, "decks.tsv");
   const cards = parseTsv(cardsTsv, "cards.tsv").map(withDeckCodes);
-  const points = parseTsv(grammarPointsTsv, "grammar_points.tsv").map(withDeckCodes);
-  const exercises = parseTsv(grammarExercisesTsv, "grammar_exercises.tsv");
 
   const decksByCode = new Map(decks.map((deck) => [deck.code, deck]));
   const parentCodes = new Set(decks.map((deck) => deck.parent_code).filter(Boolean));
@@ -75,10 +95,6 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
   if (duplicateDeck) throw new Error(`Duplicate deck code: ${duplicateDeck}`);
   const duplicateCard = findDuplicate(cards.map((card) => card.code));
   if (duplicateCard) throw new Error(`Duplicate card code: ${duplicateCard}`);
-  const duplicatePoint = findDuplicate(points.map((point) => point.code));
-  if (duplicatePoint) throw new Error(`Duplicate grammar point code: ${duplicatePoint}`);
-  const duplicateExercise = findDuplicate(exercises.map((exercise) => exercise.code));
-  if (duplicateExercise) throw new Error(`Duplicate exercise code: ${duplicateExercise}`);
 
   for (const deck of decks) {
     if (!deck.code || !deck.title_en) {
@@ -114,7 +130,7 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
   const isDraft = (deck) =>
     deck.draft === "yes" || (!!deck.parent_code && isDraft(decksByCode.get(deck.parent_code)));
 
-  // Cards and grammar points sit on the lowest level of decks of their kind.
+  // Cards sit on the lowest level of decks of their kind.
   const checkDecks = (row, label, kind) => {
     if (row.deckCodes.length === 0) throw new Error(`${label} has no deck`);
     for (const code of row.deckCodes) {
@@ -127,48 +143,27 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
     }
   };
 
+  const dialects = dialectsOf(cards);
+  if (cards.length && ["dialect", "swiss_german", "audio_path"].some((column) => column in cards[0])) {
+    throw new Error("cards.tsv has a column per dialect now: swiss_german_be, audio_be and so on");
+  }
+  const unknownDialect = dialects.find((dialect) => !DIALECTS.includes(dialect));
+  if (unknownDialect) throw new Error(`cards.tsv has columns for an unknown dialect: ${unknownDialect}`);
   for (const card of cards) {
-    for (const column of ["code", "dialect", "swiss_german", "high_german", "meaning_en"]) {
+    for (const column of ["code", "high_german", "meaning_en"]) {
       if (!card[column]) throw new Error(`Card ${card.code} is missing ${column}`);
     }
+    if (!dialects.some((dialect) => card[`swiss_german_${dialect}`])) {
+      throw new Error(`Card ${card.code} has no Swiss German in any dialect`);
+    }
+    for (const field of ["audio", "variants"]) {
+      const stray = dialects.find((dialect) => card[`${field}_${dialect}`] && !card[`swiss_german_${dialect}`]);
+      if (stray) throw new Error(`Card ${card.code} has ${field}_${stray} but no swiss_german_${stray}`);
+    }
+    if (!CARD_TYPES.includes(typeOf(card))) {
+      throw new Error(`Card ${card.code} has an unknown type: ${card.type}`);
+    }
     checkDecks(card, `Card ${card.code}`, "vocabulary");
-  }
-
-  const pointsByCode = new Map(points.map((point) => [point.code, point]));
-  for (const point of points) {
-    for (const column of ["code", "title_en", "explanation_en"]) {
-      if (!point[column]) throw new Error(`Grammar point ${point.code} is missing ${column}`);
-    }
-    checkDecks(point, `Grammar point ${point.code}`, "grammar");
-  }
-
-  const payloads = new Map();
-  for (const exercise of exercises) {
-    const label = `Exercise ${exercise.code}`;
-    for (const column of ["code", "point", "type", "level", "payload"]) {
-      if (!exercise[column]) throw new Error(`${label} is missing ${column}`);
-    }
-    const point = pointsByCode.get(exercise.point);
-    if (!point) throw new Error(`${label} has an unknown grammar point: ${exercise.point}`);
-    if (!["1", "2", "3"].includes(exercise.level)) throw new Error(`${label} needs level 1, 2 or 3`);
-    if (point.dialect && exercise.dialect && exercise.dialect !== point.dialect) {
-      throw new Error(`${label} is for ${exercise.dialect}, but its grammar point is only for ${point.dialect}`);
-    }
-    let payload;
-    try {
-      payload = JSON.parse(exercise.payload);
-    } catch {
-      throw new Error(`${label} has a payload that isn't valid JSON`);
-    }
-    const problem = payloadProblem(exercise.type, payload);
-    if (problem) throw new Error(`${label}: ${problem}`);
-    payloads.set(exercise.code, JSON.stringify(payload));
-  }
-  // The first time a learner meets a rule, they get an exercise that only asks them to recognise it.
-  for (const point of points) {
-    if (!exercises.some((exercise) => exercise.point === point.code && exercise.level === "1")) {
-      throw new Error(`Grammar point ${point.code} needs at least one level 1 exercise`);
-    }
   }
 
   // Position counts within each parent, or each deck, following the order of the file.
@@ -184,79 +179,77 @@ export function buildSeed(decksTsv, cardsTsv, grammarPointsTsv = "", grammarExer
       `  (${[deck.code, deck.parent_code, kindOf(deck), deck.emoji, deck.color].map(quote).join(", ")}, ${nextPosition(`deck:${deck.parent_code}`)}, ${!isDraft(deck)})`,
   );
   const cardRows = cards.map(
-    (card) =>
-      `  (${[card.code, card.dialect, card.swiss_german, card.high_german, card.audio_path].map(quote).join(", ")})`,
+    (card) => `  (${[card.code, card.high_german, typeOf(card)].map(quote).join(", ")})`,
+  );
+  const formRows = cards.flatMap((card) =>
+    dialects
+      .filter((dialect) => card[`swiss_german_${dialect}`])
+      .map(
+        (dialect) =>
+          `  (${[card.code, dialect, card[`swiss_german_${dialect}`]].map(quote).join(", ")}, ${codeArray(variantsOf(card[`variants_${dialect}`]))}, ${quote(card[`audio_${dialect}`])})`,
+      ),
   );
   const itemRows = cards.flatMap((card) =>
     card.deckCodes.map(
       (code) => `  (${quote(code)}, ${quote(card.code)}, ${nextPosition(`item:${code}`)})`,
     ),
   );
-  const pointItemRows = points.flatMap((point) =>
-    point.deckCodes.map(
-      (code) => `  (${quote(code)}, ${quote(point.code)}, ${nextPosition(`item:${code}`)})`,
-    ),
-  );
   const deckTranslationRows = translationRows(decks, ["title", "description"], (deck) => deck.code);
   const cardTranslationRows = translationRows(cards, ["meaning", "notes"], (card) => card.code);
-  const pointTranslationRows = translationRows(points, ["title", "explanation"], (point) => point.code);
 
-  const grammarSql = points.length
+  // Words are optional too, so content can hold only the deck structure for a while.
+  const vocabularySql = cards.length
     ? `
-insert into public.grammar_points (code, dialect_id) values
-${points.map((point) => `  (${quote(point.code)}, ${quote(point.dialect)})`).join(",\n")}
+insert into public.vocabulary_items (code, high_german, type) values
+${cardRows.join(",\n")}
 on conflict (code) do update
-  set dialect_id = excluded.dialect_id;
+  set high_german = excluded.high_german,
+      type = excluded.type;
 
-delete from public.grammar_point_translations
-where grammar_point_id in (
-  select id from public.grammar_points where code = any (${codeArray(points.map((point) => point.code))})
+-- Forms are rewritten in full, so a dialect removed from a card disappears here too.
+delete from public.vocabulary_forms
+where vocabulary_id in (
+  select id from public.vocabulary_items where code in (${cards.map((card) => quote(card.code)).join(", ")})
 );
 
-insert into public.grammar_point_translations (grammar_point_id, locale, title, explanation)
-select g.id, t.locale, t.title, t.explanation
+insert into public.vocabulary_forms (vocabulary_id, dialect_id, swiss_german, variants, audio_path)
+select v.id, f.dialect_id, f.swiss_german, f.variants, f.audio_path
 from (values
-${pointTranslationRows.join(",\n")}
-) as t (point_code, locale, title, explanation)
-join public.grammar_points g on g.code = t.point_code;
+${formRows.join(",\n")}
+) as f (card_code, dialect_id, swiss_german, variants, audio_path)
+join public.vocabulary_items v on v.code = f.card_code;
 
-insert into public.grammar_exercises (code, grammar_point_id, type, level, dialect_id, payload)
-select e.code, g.id, e.type, e.level, e.dialect_id, e.payload::jsonb
+delete from public.vocabulary_translations
+where vocabulary_id in (
+  select id from public.vocabulary_items where code in (${cards.map((card) => quote(card.code)).join(", ")})
+);
+
+insert into public.vocabulary_translations (vocabulary_id, locale, meaning, notes)
+select v.id, t.locale, t.meaning, t.notes
 from (values
-${exercises
-  .map(
-    (exercise) =>
-      `  (${[exercise.code, exercise.point, exercise.type].map(quote).join(", ")}, ${exercise.level}, ${quote(exercise.dialect)}, ${quote(payloads.get(exercise.code))})`,
-  )
-  .join(",\n")}
-) as e (code, point_code, type, level, dialect_id, payload)
-join public.grammar_points g on g.code = e.point_code
-on conflict (code) do update
-  set grammar_point_id = excluded.grammar_point_id,
-      type = excluded.type,
-      level = excluded.level,
-      dialect_id = excluded.dialect_id,
-      payload = excluded.payload;
+${cardTranslationRows.join(",\n")}
+) as t (card_code, locale, meaning, notes)
+join public.vocabulary_items v on v.code = t.card_code;
 `
     : "";
 
-  const pointItemsSql = pointItemRows.length
+  const itemsSql = itemRows.length
     ? `
+-- Each word gets its card when it's first inserted, from a trigger.
 insert into public.deck_items (deck_id, card_id, position)
 select d.id, c.id, i.position
 from (values
-${pointItemRows.join(",\n")}
-) as i (deck_code, point_code, position)
+${itemRows.join(",\n")}
+) as i (deck_code, card_code, position)
 join public.decks d on d.code = i.deck_code
-join public.grammar_points g on g.code = i.point_code
-join public.cards c on c.grammar_point_id = g.id;
+join public.vocabulary_items v on v.code = i.card_code
+join public.cards c on c.vocabulary_id = v.id;
 `
     : "";
 
   return `-- Generated by scripts/build-flashcard-seed.mjs from content/. Edit those files instead.
--- Safe to run more than once. Words and grammar points dropped from content/ stay in the
--- database without a deck, because deleting them would delete learners' review history.
--- Dropped exercises are deleted: reviews that showed one keep their place in the log.
+-- Safe to run more than once. Words dropped from content/ stay in the database without a deck,
+-- because deleting them would delete learners' review history.
 begin;
 
 create temporary table seed_decks (
@@ -293,55 +286,16 @@ ${deckTranslationRows.join(",\n")}
 ) as t (deck_code, locale, title, description)
 join public.decks d on d.code = t.deck_code;
 
-insert into public.vocabulary_items (code, dialect_id, swiss_german, high_german, audio_path) values
-${cardRows.join(",\n")}
-on conflict (code) do update
-  set dialect_id = excluded.dialect_id,
-      swiss_german = excluded.swiss_german,
-      high_german = excluded.high_german,
-      audio_path = excluded.audio_path;
-
-delete from public.vocabulary_translations
-where vocabulary_id in (
-  select id from public.vocabulary_items where code in (${cards.map((card) => quote(card.code)).join(", ")})
-);
-
-insert into public.vocabulary_translations (vocabulary_id, locale, meaning, notes)
-select v.id, t.locale, t.meaning, t.notes
-from (values
-${cardTranslationRows.join(",\n")}
-) as t (card_code, locale, meaning, notes)
-join public.vocabulary_items v on v.code = t.card_code;
-${grammarSql}
-delete from public.grammar_exercises
-where not (code = any (${codeArray(exercises.map((exercise) => exercise.code))}));
-
+${vocabularySql}
 delete from public.deck_items;
 
--- Each word and grammar point gets its card when it's first inserted, from a trigger.
-insert into public.deck_items (deck_id, card_id, position)
-select d.id, c.id, i.position
-from (values
-${itemRows.join(",\n")}
-) as i (deck_code, card_code, position)
-join public.decks d on d.code = i.deck_code
-join public.vocabulary_items v on v.code = i.card_code
-join public.cards c on c.vocabulary_id = v.id;
-${pointItemsSql}
+${itemsSql}
 commit;
 `;
 }
 
-// The grammar files are optional, so content can start with words only.
-const readOptional = (path) => (existsSync(path) ? readFileSync(path, "utf8") : "");
-
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const seed = buildSeed(
-    readFileSync("content/decks.tsv", "utf8"),
-    readFileSync("content/cards.tsv", "utf8"),
-    readOptional("content/grammar_points.tsv"),
-    readOptional("content/grammar_exercises.tsv"),
-  );
+  const seed = buildSeed(readFileSync("content/decks.tsv", "utf8"), readFileSync("content/cards.tsv", "utf8"));
   writeFileSync("supabase/seeds/flashcards.sql", seed);
   console.log("Wrote supabase/seeds/flashcards.sql");
 }

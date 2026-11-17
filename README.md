@@ -26,17 +26,17 @@ Docker isn't required: these steps use a hosted Supabase project.
 | Path | Purpose |
 | --- | --- |
 | `src/proxy.ts` | Refreshes the session and protects the pages that need an account |
-| `src/app/(tabs)` | Learn, Practice, Immerse and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
+| `src/app/(tabs)` | Learn, Practice, Conversations and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
 | `src/app/onboarding` | First-run questions: language, Swiss German level, topics and pace |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
-| `src/app/exercises` | Exercise components for grammar flashcards: pick, build, spot the error |
+| `src/app/exercises` | Exercise components for the lessons' rounds: pick, build, spot the error |
 | `src/lib/exercises` | The shape of each exercise and how its answer is checked |
 | `src/lib/flashcards` | FSRS scheduling, sessions, daily limits, the deck tree, and loading it all (`data.ts`) |
 | `src/lib/supabase/database.types.ts` | Database types, generated with `npm run db:types` |
 | `src/lib/types.ts` | Flashcard types |
 | `src/lib/i18n` | Every interface text in English (`en.ts`) and Swiss Standard German (`de.ts`) |
 | `content` | Flashcard decks and cards, as tab-separated files, and Learn lessons as JSON |
-| `src/lib/learn` | The shape of a Learn lesson, and the list of lessons |
+| `src/lib/learn` | The shape of a Learn lesson, the list of lessons, what's read and what the Practice tab suggests |
 | `supabase/migrations` | Database schema and access policies |
 | `supabase/seed.sql` | The dialects |
 | `supabase/seeds/flashcards.sql` | Generated from `content` |
@@ -52,6 +52,45 @@ Each lesson is a JSON file in `content/lessons/<dialect>/`, in the shape of `Les
 `src/lib/learn/lessons.ts`. Add a new file to `LESSONS` there. The type check flags a file that
 doesn't fit the shape. A lesson has sections, each section has rules, and each rule has examples
 that compare a word's Standard German and dialect pronunciation, with a recording of each.
+
+#### Exercises
+
+A rule can have `exercises`. They're practised together at the end of their section, in a round
+of up to two per rule, from the section's last topic or from Practice › Lektionen. Learners
+practise whenever they like: there's no schedule, and each round's result is saved
+(`lesson_rounds`) for the Practice tab to suggest what to refresh. A section without exercises
+has no round, and a module without any doesn't lead to them.
+
+Each exercise has an `id`, unique in its lesson file, a `type`, and the task's fields from
+`src/lib/exercises/tasks.ts`:
+
+- `pick`: `{"context"?, "prompt", "options", "answer"}`. `answer` is the position of the right
+  option, counting from 0, and each `___` in the prompt shows as a gap.
+- `build`: `{"prompt", "tiles", "answer"}`. `answer` lists the words in order, and the other tiles
+  are distractors.
+- `spot_error`: `{"context"?, "sentence", "wrong", "options", "answer"}`. `wrong` lists the
+  positions of the wrong words in the sentence, counting from 0.
+
+`npm test` checks every exercise (`src/lib/learn/lessons.test.ts`), so a typo fails there instead
+of breaking a round.
+
+### Conversations
+
+Topics and their situations are in `content/conversations/topics.json`, in the shape of `Topic` in
+`src/lib/conversations.ts`. Each situation is one dialogue with a single recording:
+
+- Each line has a `start`: the second in the recording where it begins. A line ends where the
+  next one starts. Lines with a start can be tapped to replay them and are highlighted while
+  they're spoken. Until a situation has a recording, `audio` is `null` and the transcript shows
+  straight away.
+- To add a recording, set a label in Audacity at the start of each line, named after its speaker,
+  and export them (*File › Export Other › Export Labels*). Then run
+  `npm run conversations:times -- <situation> <labels.txt> <recording.mp3>`. It checks that the
+  labels match the lines and their speakers, copies the recording to
+  `public/audio/conversations/<dialect>/<situation>.mp3` and writes the times and `audio`.
+- `title` and `scene` take a text per interface language, with English required. Each line has
+  its Swiss German, Standard German and English.
+- `color` is one of the deck colours: pink, blue, green, yellow, purple or orange.
 
 ### Flashcards
 
@@ -71,39 +110,12 @@ regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project
   to the word, so a shared word is only learned once.
 - **Codes are permanent.** A card's `code` is what keeps learners' history, so fix a spelling by
   editing the row, not by adding a new code.
-- `audio_path` is an object path in the `lesson-audio` bucket. The `type` column isn't used by the
-  app yet.
-- **Kind**: a deck holds words (`vocabulary`, the default) or grammar rules (`grammar`). Set `kind`
-  on a top-level deck, and the decks below it take it.
+- `audio_path` is an object path in the `lesson-audio` bucket.
+- **Type**: a card is a `word` (the default when empty), a `sentence` or an `expression`. A topic
+  with words as well as sentences or expressions lets learners practise and list them apart.
 - **Drafts**: `draft` set to `yes` keeps a deck and everything below it hidden from learners.
 
 Scheduling uses FSRS-6 through `ts-fsrs`, which needs Node 24 or later.
-
-#### Grammar
-
-Each grammar rule is one card, with its own schedule. Every time it's due, the learner gets one of
-its exercises, and the answer decides the rating. Learners find grammar decks under Flashcards ›
-Grammar. A new rule counts toward the day's new cards, like a word. Rules go in `content/grammar_points.tsv` and their
-exercises in `content/grammar_exercises.tsv`, and `npm run db:content` loads them too.
-
-- **Grammar points** have a `code`, `deck_codes` (grammar decks only), `title_en` and
-  `explanation_en`, translated like other columns. Keep each rule to one decision the learner has to
-  make. Leave `dialect` empty for a rule of every dialect.
-- **Exercises** belong to a `point` and have a `type`, a `level` and a `payload` in JSON. Level 1
-  recognises the rule, 2 uses it with help, 3 uses it freely. Every rule needs a level 1 exercise,
-  and about 6–10 exercises in all, so learners rarely see the same one twice. `dialect` says who
-  sees the exercise. Leave it empty for every dialect.
-- **Payloads** follow the tasks in `src/lib/exercises/tasks.ts`:
-  - `pick`: `{"context"?, "prompt", "options", "answer"}`. `answer` is the position of the right
-    option, counting from 0, and each `___` in the prompt shows as a gap.
-  - `build`: `{"prompt", "tiles", "answer"}`. `answer` lists the words in order, and the other tiles
-    are distractors.
-  - `spot_error`: `{"context"?, "sentence", "wrong", "options", "answer"}`. `wrong` lists the
-    positions of the wrong words in the sentence, counting from 0.
-- **Text in the learner's language**, such as a context, a prompt to translate or an option that's a
-  meaning, can be translations instead: `{"en": "To a friend", "de": "Zu einem Freund"}`.
-- The build checks every payload, and an exercise removed from the file is deleted. A rule removed
-  from the file stays in the database, so learners keep their history.
 
 ## Database changes
 
