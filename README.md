@@ -104,8 +104,10 @@ regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project
   word count instead.
 - **Translated columns** end in a language code: `title_en` and `description_en` for decks,
   `meaning_en` and `notes_en` for cards. English is required. Other languages are optional, column
-  by column (`title_de`, `notes_fr`, …), and fall back to English where they're empty. German
-  learners see each card's `high_german` as its meaning, so cards need no `meaning_de`.
+  by column (`title_de`, `notes_fr`, …), and fall back to English where they're empty, except a
+  card's notes: a learner only sees notes in their own language, so a card without `notes_de`
+  shows German learners none. German learners see each card's `high_german` as its meaning, so
+  cards need no `meaning_de`.
 - **Cards** can sit in several decks: separate `deck_codes` with commas. Learners' progress belongs
   to the word, so a shared word is only learned once.
 - **Codes are permanent.** A card's `code` is what keeps learners' history, so fix a spelling by
