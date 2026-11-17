@@ -1,21 +1,21 @@
 code	deck_codes	high_german	meaning_en	notes_en	type	swiss_german_be	variants_be	audio_be	swiss_german_zh	variants_zh	audio_zh
-FC0101	C08-T01	Guten Tag	Hello (formal)	The usual polite greeting used when adressing someone formally	expression	Grüessech					
-FC0102	C08-T01	Hallo	Hi	"Informal: friends, family, colleagues you say ""du"" to."	word	Hallo	Tschou; Sälü				
-FC0104	C08-T01	Guten Tag zusammen	Hello everyone (formal)	To a group, such as when entering a small shop or a meeting.	expression	Grüessech mitenang					
-FC0105	C08-T01	Hallo zusammen	Hi everyone	Informal, to a group.	expression	Hallo zäme	Tschou zäme; Sälü zäme				
-FC0106	C08-T01	Guten Morgen	Good morning		expression	Guete Morge					
-FC0107	C08-T01	Guten Abend	Good evening		expression	Guete Aabe					
-FC0108	C08-T01	Auf Wiedersehen	Goodbye (formal)		expression	Uf Widerluege					
-FC0109	C08-T01	Tschüss	Bye (informal)		word	Tschüss	Tschou				
-FC0110	C08-T01	Bis später	See you later		expression	Bis speter					
-FC0111	C08-T01	Danke	Thank you		word	Merci	Danke				
-FC0112	C08-T01	Vielen Dank	Thanks a lot		expression	Merci viumau	Danke viumau				
-FC0113	C08-T01	Bitte	You're welcome		word	Bitte					
-FC0114	C08-T01	Entschuldigung	Excuse me / Sorry	"From French ""excusez-moi""."	word	Exgüsee	Sorry; Tschoudigung				
-FC0115	C08-T01	Wie geht's?	How are you? (informal)		sentence	Wie geits?					
-FC0116	C08-T01	Wie geht es Ihnen?	How are you? (formal)		sentence	Wie geits nech?					
-FC0117	C08-T01	Gut, danke. Und Ihnen?	Fine, thanks. And you? (formal)		sentence	Guet, merci. U euch?					
-FC0118	C08-T01	Gut danke. Und dir?	Fine, thanks. And you? (informal)	Said to everyone at the table before eating, also at work.	expression	Guet, merci. U dir?					
-FC0119	C08-T01	Guten Appetit!	Enjoy your meal!	Said to everyone at the table before eating.	expression	Ä Guete!					
-FC0120	C08-T01	Schönen Tag noch!	Have a nice day!	Often when leaving a shop.	expression	Schöne Tag no!					
-FC0121	C08-T01	Gern geschehen	You're welcome		expression	Gärn gscheh					
+FC0101	C08-T01	Guten Tag	Hello (formal)	The usual polite greeting used when adressing someone formally	expression	Grüessech		flashcards/be/FC0101.mp3			
+FC0102	C08-T01	Hallo	Hi	"Informal: friends, family, colleagues you say ""du"" to."	word	Hallo	Tschou; Sälü	flashcards/be/FC0102.mp3			
+FC0104	C08-T01	Guten Tag zusammen	Hello everyone (formal)	To a group, such as when entering a small shop or a meeting.	expression	Grüessech mitenang		flashcards/be/FC0104.mp3			
+FC0105	C08-T01	Hallo zusammen	Hi everyone	Informal, to a group.	expression	Hallo zäme	Tschou zäme; Sälü zäme	flashcards/be/FC0105.mp3			
+FC0106	C08-T01	Guten Morgen	Good morning		expression	Guete Morge		flashcards/be/FC0106.mp3			
+FC0107	C08-T01	Guten Abend	Good evening		expression	Guete Aabe		flashcards/be/FC0107.mp3			
+FC0108	C08-T01	Auf Wiedersehen	Goodbye (formal)		expression	Uf Widerluege		flashcards/be/FC0108.mp3			
+FC0109	C08-T01	Tschüss	Bye (informal)		word	Tschüss	Tschou	flashcards/be/FC0109.mp3			
+FC0110	C08-T01	Bis später	See you later		expression	Bis speter		flashcards/be/FC0110.mp3			
+FC0111	C08-T01	Danke	Thank you		word	Merci	Danke	flashcards/be/FC0111.mp3			
+FC0112	C08-T01	Vielen Dank	Thanks a lot		expression	Merci viumau	Danke viumau	flashcards/be/FC0112.mp3			
+FC0113	C08-T01	Bitte	You're welcome		word	Bitte		flashcards/be/FC0113.mp3			
+FC0114	C08-T01	Entschuldigung	Excuse me / Sorry	"From French ""excusez-moi""."	word	Exgüsee	Sorry; Tschoudigung	flashcards/be/FC0114.mp3			
+FC0115	C08-T01	Wie geht's?	How are you? (informal)		sentence	Wie geits?		flashcards/be/FC0115.mp3			
+FC0116	C08-T01	Wie geht es Ihnen?	How are you? (formal)		sentence	Wie geits nech?		flashcards/be/FC0116.mp3			
+FC0117	C08-T01	Gut, danke. Und Ihnen?	Fine, thanks. And you? (formal)		sentence	Guet, merci. U euch?		flashcards/be/FC0117.mp3			
+FC0118	C08-T01	Gut danke. Und dir?	Fine, thanks. And you? (informal)	Said to everyone at the table before eating, also at work.	expression	Guet, merci. U dir?		flashcards/be/FC0118.mp3			
+FC0119	C08-T01	Guten Appetit!	Enjoy your meal!	Said to everyone at the table before eating.	expression	Ä Guete!		flashcards/be/FC0119.mp3			
+FC0120	C08-T01	Schönen Tag noch!	Have a nice day!	Often when leaving a shop.	expression	Schöne Tag no!		flashcards/be/FC0120.mp3			
+FC0121	C08-T01	Gern geschehen	You're welcome		expression	Gärn gscheh		flashcards/be/FC0121.mp3			

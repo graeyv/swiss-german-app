@@ -178,26 +178,26 @@ where vocabulary_id in (
 insert into public.vocabulary_forms (vocabulary_id, dialect_id, swiss_german, variants, audio_path)
 select v.id, f.dialect_id, f.swiss_german, f.variants, f.audio_path
 from (values
-  ('FC0101', 'be', 'Grüessech', array[]::text[], null),
-  ('FC0102', 'be', 'Hallo', array['Tschou', 'Sälü'], null),
-  ('FC0104', 'be', 'Grüessech mitenang', array[]::text[], null),
-  ('FC0105', 'be', 'Hallo zäme', array['Tschou zäme', 'Sälü zäme'], null),
-  ('FC0106', 'be', 'Guete Morge', array[]::text[], null),
-  ('FC0107', 'be', 'Guete Aabe', array[]::text[], null),
-  ('FC0108', 'be', 'Uf Widerluege', array[]::text[], null),
-  ('FC0109', 'be', 'Tschüss', array['Tschou'], null),
-  ('FC0110', 'be', 'Bis speter', array[]::text[], null),
-  ('FC0111', 'be', 'Merci', array['Danke'], null),
-  ('FC0112', 'be', 'Merci viumau', array['Danke viumau'], null),
-  ('FC0113', 'be', 'Bitte', array[]::text[], null),
-  ('FC0114', 'be', 'Exgüsee', array['Sorry', 'Tschoudigung'], null),
-  ('FC0115', 'be', 'Wie geits?', array[]::text[], null),
-  ('FC0116', 'be', 'Wie geits nech?', array[]::text[], null),
-  ('FC0117', 'be', 'Guet, merci. U euch?', array[]::text[], null),
-  ('FC0118', 'be', 'Guet, merci. U dir?', array[]::text[], null),
-  ('FC0119', 'be', 'Ä Guete!', array[]::text[], null),
-  ('FC0120', 'be', 'Schöne Tag no!', array[]::text[], null),
-  ('FC0121', 'be', 'Gärn gscheh', array[]::text[], null)
+  ('FC0101', 'be', 'Grüessech', array[]::text[], 'flashcards/be/FC0101.mp3'),
+  ('FC0102', 'be', 'Hallo', array['Tschou', 'Sälü'], 'flashcards/be/FC0102.mp3'),
+  ('FC0104', 'be', 'Grüessech mitenang', array[]::text[], 'flashcards/be/FC0104.mp3'),
+  ('FC0105', 'be', 'Hallo zäme', array['Tschou zäme', 'Sälü zäme'], 'flashcards/be/FC0105.mp3'),
+  ('FC0106', 'be', 'Guete Morge', array[]::text[], 'flashcards/be/FC0106.mp3'),
+  ('FC0107', 'be', 'Guete Aabe', array[]::text[], 'flashcards/be/FC0107.mp3'),
+  ('FC0108', 'be', 'Uf Widerluege', array[]::text[], 'flashcards/be/FC0108.mp3'),
+  ('FC0109', 'be', 'Tschüss', array['Tschou'], 'flashcards/be/FC0109.mp3'),
+  ('FC0110', 'be', 'Bis speter', array[]::text[], 'flashcards/be/FC0110.mp3'),
+  ('FC0111', 'be', 'Merci', array['Danke'], 'flashcards/be/FC0111.mp3'),
+  ('FC0112', 'be', 'Merci viumau', array['Danke viumau'], 'flashcards/be/FC0112.mp3'),
+  ('FC0113', 'be', 'Bitte', array[]::text[], 'flashcards/be/FC0113.mp3'),
+  ('FC0114', 'be', 'Exgüsee', array['Sorry', 'Tschoudigung'], 'flashcards/be/FC0114.mp3'),
+  ('FC0115', 'be', 'Wie geits?', array[]::text[], 'flashcards/be/FC0115.mp3'),
+  ('FC0116', 'be', 'Wie geits nech?', array[]::text[], 'flashcards/be/FC0116.mp3'),
+  ('FC0117', 'be', 'Guet, merci. U euch?', array[]::text[], 'flashcards/be/FC0117.mp3'),
+  ('FC0118', 'be', 'Guet, merci. U dir?', array[]::text[], 'flashcards/be/FC0118.mp3'),
+  ('FC0119', 'be', 'Ä Guete!', array[]::text[], 'flashcards/be/FC0119.mp3'),
+  ('FC0120', 'be', 'Schöne Tag no!', array[]::text[], 'flashcards/be/FC0120.mp3'),
+  ('FC0121', 'be', 'Gärn gscheh', array[]::text[], 'flashcards/be/FC0121.mp3')
 ) as f (card_code, dialect_id, swiss_german, variants, audio_path)
 join public.vocabulary_items v on v.code = f.card_code;
 
