@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { payloadProblem } from "../../../scripts/lib/check-payload.mjs";
 import { isIconName } from "@/app/ui/icons";
 import { isReady, LESSONS, lessonNumber, nextSection, roundExercises, sectionParams, topicCount } from "./lessons";
 
@@ -48,6 +49,17 @@ describe("lessons", () => {
       "a:a2",
       "c:c1",
     ]);
+  });
+
+  it("has only exercises the round can show, each with an id unique in its lesson", () => {
+    for (const { lesson } of LESSONS) {
+      const exercises = lesson.sections.flatMap((section) => section.rules.flatMap((rule) => rule.exercises ?? []));
+      const ids = exercises.map((exercise) => exercise.id);
+      expect(new Set(ids).size, `${lesson.id} has a duplicate exercise id`).toBe(ids.length);
+      for (const { id, type, ...payload } of exercises) {
+        expect(payloadProblem(type, payload), `${lesson.id}, exercise ${id}`).toBeNull();
+      }
+    }
   });
 
   it("goes on to the next section that's ready", () => {

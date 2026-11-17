@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getToday } from "@/lib/flashcards/data";
-import { type DeckNode, findDeck, overviewHref } from "@/lib/flashcards/decks";
+import { type DeckNode, findDeck } from "@/lib/flashcards/decks";
 import { deckAvailability } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
@@ -45,7 +45,7 @@ async function Deck({ params }: Pick<PageProps<"/flashcards/decks/[code]">, "par
       <title>{t.title(deck.title)}</title>
 
       {/* Directly in the page's column, so it stays at the top while the page scrolls. */}
-      <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : overviewHref(deck.kind) }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
+      <TopBar back={{ href: parent ? `/flashcards/decks/${parent.code}` : "/flashcards" }} backText={parent?.title ?? t.flashcards.title} className="-mt-6 -mb-4" />
 
       {/* The topic's illustration as a banner, or without one, the deck's icon. */}
       <div className="flex flex-col gap-6">
@@ -149,7 +149,6 @@ function Subcategory({ deck, availability, locale }: DeckProps) {
     return (
       <SubcategorySheet
         code={deck.code}
-        kind={deck.kind}
         title={deck.title}
         icon={deckIcon(deck.code)}
         newWords={newWords}

@@ -66,11 +66,21 @@ export type Lesson = {
 // language get lessons of their own.
 export type DialectLesson = { dialect: string; language: Locale; lesson: Lesson };
 
-const pronunciation: Lesson = bePronunciation;
-const relatedWords: Lesson = beRelatedWords;
-const newWords: Lesson = beNewWords;
-const grammar: Lesson = beGrammar;
-const everyday: Lesson = beEveryday;
+// A lesson file as JSON reads it, where an exercise's type is any string. The type check covers
+// everything else, and lessons.test.ts checks each exercise against its task.
+type LessonFile = Omit<Lesson, "sections"> & {
+  sections: (Omit<Section, "rules"> & {
+    rules: (Omit<Rule, "exercises"> & { exercises?: ({ id: string; type: string } & Record<string, unknown>)[] })[];
+  })[];
+};
+
+const fromFile = (file: LessonFile) => file as Lesson;
+
+const pronunciation = fromFile(bePronunciation);
+const relatedWords = fromFile(beRelatedWords);
+const newWords = fromFile(beNewWords);
+const grammar = fromFile(beGrammar);
+const everyday = fromFile(beEveryday);
 
 // In the order learners should take them. Lessons still being written are listed too, so learners
 // see where the track leads.

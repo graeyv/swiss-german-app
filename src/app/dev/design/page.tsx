@@ -13,7 +13,7 @@ import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { findLesson, findRule } from "@/lib/learn/lessons";
-import { devOnly } from "../exercises/data";
+import { devOnly } from "../dev-only";
 import { GradePreview } from "./grade-preview";
 import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";

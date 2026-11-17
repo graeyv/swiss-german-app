@@ -3,19 +3,11 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useState, useTransition } from "react";
 import { type Cheer, pickCheer } from "@/lib/flashcards/cheers";
-import { pickExercise } from "@/lib/flashcards/grammar";
 import { advanceQueue } from "@/lib/flashcards/queue";
 import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i18n";
 import type { CardFront, Flashcard, WordCard } from "@/lib/types";
-import {
-  isTodaysGoalReached,
-  type ReviewAnswer,
-  type SavedReview,
-  submitReview,
-  updateCardFront,
-} from "./actions";
+import { isTodaysGoalReached, type SavedReview, submitReview, updateCardFront } from "./actions";
 import { CARD_FACE, CardStack } from "./card-stack";
-import { ExerciseStage } from "./exercise-stage";
 import { type Grade, GradeButtons } from "./grade-buttons";
 import { StatusBadge } from "./status-badge";
 import { Icon } from "@/app/ui/icons";
@@ -60,15 +52,11 @@ export function ReviewSession({
   const [cheer, setCheer] = useState<Cheer | null>(null);
   const [goalJustReached, setGoalJustReached] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  // A grammar answer, saved while the learner reads the feedback, until they continue.
-  const [saved, setSaved] = useState<SavedReview | null>(null);
   const [saving, startSaving] = useTransition();
 
   const activeQueue = queue ?? cards;
   const finished = queue !== null && queue.length === 0;
   const total = completed + activeQueue.length;
-  // Decks hold one kind of card, so a session does too.
-  const grammarSession = cards[0]?.kind === "grammar";
 
   // Next.js keeps visited routes hidden with their state. Leaving an unfinished session keeps
   // the learner's place, but a finished one must start over when reopened.
@@ -83,7 +71,6 @@ export function ReviewSession({
       setCheer(null);
       setGoalJustReached(false);
       setSaveError(null);
-      setSaved(null);
     };
   }, [finished]);
 
@@ -104,16 +91,10 @@ export function ReviewSession({
         {newLearned + reviewed > 0 && (
           <div className="flex divide-x divide-line rounded-2xl border border-line bg-surface">
             {newLearned > 0 && (
-              <Stat
-                value={newLearned}
-                label={grammarSession ? t.newRulesLearned(newLearned) : t.newWordsLearned(newLearned)}
-              />
+              <Stat value={newLearned} label={t.newWordsLearned(newLearned)} />
             )}
             {reviewed > 0 && (
-              <Stat
-                value={reviewed}
-                label={grammarSession ? t.rulesPractised(reviewed) : t.wordsReviewed(reviewed)}
-              />
+              <Stat value={reviewed} label={t.wordsReviewed(reviewed)} />
             )}
           </div>
         )}
@@ -149,24 +130,9 @@ export function ReviewSession({
     );
   }
 
-  // The card's next attempt, for when it comes back in this session. A grammar card picks
-  // another exercise, for where the answer left it in its schedule.
+  // The card's next attempt, for when it comes back in this session.
   function repeatOf(result: SavedReview): Flashcard {
-    if (card.kind === "vocabulary") {
-      return {
-        ...card,
-        status: "learning",
-        review_id: result.reviewId,
-        intervals: result.intervals ?? card.intervals,
-      };
-    }
-    const progress = { state: result.state, scheduled_days: result.scheduledDays };
-    return {
-      ...card,
-      status: "learning",
-      review_id: result.reviewId,
-      exercise: pickExercise(card.exercises, progress, card.exercise.id),
-    };
+    return { ...card, status: "learning", review_id: result.reviewId, intervals: result.intervals };
   }
 
   async function advance(result: SavedReview) {
@@ -183,38 +149,23 @@ export function ReviewSession({
       const reached = await isTodaysGoalReached().catch(() => false);
       setGoalJustReached(reached && !goalReachedBefore);
     }
-    setSaved(null);
     setQueue(next);
-  }
-
-  function save(answer: ReviewAnswer, then: (result: SavedReview) => unknown) {
-    setSaveError(null);
-    // Saving refreshes the page, whose cards would no longer include this one. The session keeps
-    // the queue it has from the first answer on, so a grammar card waits for Continue.
-    setQueue(activeQueue);
-    startSaving(async () => {
-      const result = await submitReview(card.review_id, card.card_id, answer);
-      if ("error" in result) {
-        setSaveError(result.error);
-        return;
-      }
-      await then(result);
-    });
   }
 
   // A word moves on as soon as its rating is saved.
   function grade(value: Grade) {
-    save({ grade: value }, advance);
-  }
-
-  // A grammar card waits for Continue, so the learner can read the feedback.
-  function answer(correct: boolean) {
-    if (card.kind !== "grammar") return;
-    save({ exerciseId: card.exercise.id, correct }, setSaved);
-  }
-
-  function continueSession() {
-    if (saved) startSaving(() => advance(saved));
+    setSaveError(null);
+    // Saving refreshes the page, whose cards would no longer include this one. The session keeps
+    // the queue it has from the first answer on.
+    setQueue(activeQueue);
+    startSaving(async () => {
+      const result = await submitReview(card.review_id, card.card_id, value);
+      if ("error" in result) {
+        setSaveError(result.error);
+        return;
+      }
+      await advance(result);
+    });
   }
 
   // The card turns over straight away. Saving the choice for other sessions happens meanwhile.
@@ -250,42 +201,26 @@ export function ReviewSession({
         <p className="shrink-0 text-sm font-semibold tabular-nums">
           {completed} / {total}
         </p>
-        {card.kind === "vocabulary" && (
-          <button
-            onClick={swapFront}
-            aria-label={front === "swiss_german" ? t.showingSwissGermanFirst : t.showingTranslationFirst}
-            title={t.swap}
-            className="-mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
-          >
-            <Icon name="swap" size={20} />
-          </button>
-        )}
+        <button
+          onClick={swapFront}
+          aria-label={front === "swiss_german" ? t.showingSwissGermanFirst : t.showingTranslationFirst}
+          title={t.swap}
+          className="-mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-foreground"
+        >
+          <Icon name="swap" size={20} />
+        </button>
       </header>
 
-      {card.kind === "vocabulary" ? (
-        <CardStage
-          key={card.review_id}
-          card={card}
-          front={front}
-          locale={locale}
-          stacked={activeQueue.length > 1}
-          saving={saving}
-          saveError={saveError}
-          onGrade={grade}
-        />
-      ) : (
-        <ExerciseStage
-          key={card.review_id}
-          card={card}
-          locale={locale}
-          saving={saving}
-          stacked={activeQueue.length > 1}
-          saved={saved !== null}
-          saveError={saveError}
-          onAnswer={answer}
-          onContinue={continueSession}
-        />
-      )}
+      <CardStage
+        key={card.review_id}
+        card={card}
+        front={front}
+        locale={locale}
+        stacked={activeQueue.length > 1}
+        saving={saving}
+        saveError={saveError}
+        onGrade={grade}
+      />
     </main>
   );
 }

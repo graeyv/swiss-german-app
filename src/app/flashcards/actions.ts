@@ -5,23 +5,17 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getToday } from "@/lib/flashcards/data";
 import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
-import { gradeFromAnswer } from "@/lib/flashcards/grammar";
 import { FSRS_MODEL, previewIntervals, scheduleReview } from "@/lib/flashcards/scheduling";
 import { getDictionary } from "@/lib/i18n/server";
 import type { CardFront, WordCard } from "@/lib/types";
-
-// A word is rated by the learner. A grammar card is answered, and the answer decides the grade.
-export type ReviewAnswer = { grade: 1 | 2 | 3 | 4 } | { exerciseId: string; correct: boolean };
+import type { Grade } from "./grade-buttons";
 
 export type SavedReview = {
   dueAt: string;
   // For the card's next attempt, if it comes back in this session.
   reviewId: string;
-  // Where the card now is in its schedule, which the next exercise depends on.
-  state: number;
-  scheduledDays: number;
-  // Interval previews for rating a word again. Null for grammar cards, which aren't rated.
-  intervals: WordCard["intervals"] | null;
+  // Interval previews for rating the word again.
+  intervals: WordCard["intervals"];
 };
 
 // The overview and deck pages show today's counts, and the profile the learner's progress and
@@ -36,16 +30,13 @@ function revalidateFlashcardPages() {
 const CARD_COLUMNS =
   "state, schedule_status, stability, difficulty, due_at, last_review_at, reps, lapses, learning_step, scheduled_days";
 
+// A word's rating, from 1 (Again) to 4 (Easy), saved with its next due date.
 export async function submitReview(
   reviewId: string,
   cardId: string,
-  answer: ReviewAnswer,
+  grade: Grade,
 ): Promise<SavedReview | { error: string }> {
-  const rated = "grade" in answer;
-  if (rated ? ![1, 2, 3, 4].includes(answer.grade) : typeof answer.correct !== "boolean") {
-    return { error: "Unknown answer" };
-  }
-  const grade = rated ? answer.grade : gradeFromAnswer(answer.correct);
+  if (![1, 2, 3, 4].includes(grade)) return { error: "Unknown answer" };
 
   const supabase = await createClient();
   const { data: row, error: readError } = await supabase
@@ -58,7 +49,6 @@ export async function submitReview(
   const now = new Date();
   const { card, log } = await scheduleReview(row, cardId, grade, now);
 
-  // The database checks that the exercise is one of the card's.
   const { error } = await supabase.rpc("save_review", {
     p_review_id: reviewId,
     p_card_id: cardId,
@@ -66,7 +56,6 @@ export async function submitReview(
     p_model: FSRS_MODEL,
     p_card: card,
     p_log: log,
-    ...(rated ? {} : { p_exercise_id: answer.exerciseId, p_correct: answer.correct }),
   });
   if (error) return { error: error.message };
 
@@ -74,11 +63,7 @@ export async function submitReview(
   return {
     dueAt: card.due_at,
     reviewId: randomUUID(),
-    state: card.state,
-    scheduledDays: card.scheduled_days,
-    intervals: rated
-      ? await previewIntervals(card, cardId, now, (await getDictionary()).intervals)
-      : null,
+    intervals: await previewIntervals(card, cardId, now, (await getDictionary()).intervals),
   };
 }
 

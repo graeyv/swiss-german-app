@@ -2,8 +2,8 @@
 export const DECK_COLORS = ["pink", "blue", "green", "yellow", "purple", "orange"] as const;
 export type DeckColor = (typeof DECK_COLORS)[number];
 
-// Matches the check on public.decks.kind: decks of words, or of grammar rules.
-export type DeckKind = "vocabulary" | "grammar";
+// Matches the check on public.decks.kind: decks hold words.
+export type DeckKind = "vocabulary";
 
 // A row of the flashcard_decks database function.
 export type DeckRow = {
@@ -64,9 +64,4 @@ export function findDeck(
     if (found) return { deck: found.deck, ancestors: [deck, ...found.ancestors] };
   }
   return null;
-}
-
-// The flashcards overview, showing decks of this kind.
-export function overviewHref(kind: DeckKind) {
-  return kind === "grammar" ? "/flashcards?kind=grammar" : "/flashcards";
 }

@@ -41,31 +41,21 @@ export type Database = {
     Tables: {
       cards: {
         Row: {
-          grammar_point_id: string | null
           id: string
           kind: string
           vocabulary_id: string | null
         }
         Insert: {
-          grammar_point_id?: string | null
           id?: string
           kind: string
           vocabulary_id?: string | null
         }
         Update: {
-          grammar_point_id?: string | null
           id?: string
           kind?: string
           vocabulary_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "cards_grammar_point_id_fkey"
-            columns: ["grammar_point_id"]
-            isOneToOne: true
-            referencedRelation: "grammar_points"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "cards_vocabulary_id_fkey"
             columns: ["vocabulary_id"]
@@ -199,113 +189,6 @@ export type Database = {
           name?: string
         }
         Relationships: []
-      }
-      grammar_exercises: {
-        Row: {
-          code: string
-          dialect_id: string | null
-          grammar_point_id: string
-          id: string
-          level: number
-          payload: Json
-          type: string
-        }
-        Insert: {
-          code: string
-          dialect_id?: string | null
-          grammar_point_id: string
-          id?: string
-          level: number
-          payload: Json
-          type: string
-        }
-        Update: {
-          code?: string
-          dialect_id?: string | null
-          grammar_point_id?: string
-          id?: string
-          level?: number
-          payload?: Json
-          type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "grammar_exercises_dialect_id_fkey"
-            columns: ["dialect_id"]
-            isOneToOne: false
-            referencedRelation: "dialects"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "grammar_exercises_grammar_point_id_fkey"
-            columns: ["grammar_point_id"]
-            isOneToOne: false
-            referencedRelation: "grammar_points"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      grammar_point_translations: {
-        Row: {
-          explanation: string | null
-          grammar_point_id: string
-          locale: string
-          title: string | null
-        }
-        Insert: {
-          explanation?: string | null
-          grammar_point_id: string
-          locale: string
-          title?: string | null
-        }
-        Update: {
-          explanation?: string | null
-          grammar_point_id?: string
-          locale?: string
-          title?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "grammar_point_translations_grammar_point_id_fkey"
-            columns: ["grammar_point_id"]
-            isOneToOne: false
-            referencedRelation: "grammar_points"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "grammar_point_translations_locale_fkey"
-            columns: ["locale"]
-            isOneToOne: false
-            referencedRelation: "locales"
-            referencedColumns: ["code"]
-          },
-        ]
-      }
-      grammar_points: {
-        Row: {
-          code: string
-          dialect_id: string | null
-          id: string
-        }
-        Insert: {
-          code: string
-          dialect_id?: string | null
-          id?: string
-        }
-        Update: {
-          code?: string
-          dialect_id?: string | null
-          id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "grammar_points_dialect_id_fkey"
-            columns: ["dialect_id"]
-            isOneToOne: false
-            referencedRelation: "dialects"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       lesson_rounds: {
         Row: {
@@ -459,10 +342,8 @@ export type Database = {
       review_log: {
         Row: {
           card_id: string
-          correct: boolean | null
           difficulty: number
           due_at: string
-          exercise_id: string | null
           id: string
           introduced: boolean
           last_review_at: string | null
@@ -478,10 +359,8 @@ export type Database = {
         }
         Insert: {
           card_id: string
-          correct?: boolean | null
           difficulty: number
           due_at: string
-          exercise_id?: string | null
           id: string
           introduced: boolean
           last_review_at?: string | null
@@ -497,10 +376,8 @@ export type Database = {
         }
         Update: {
           card_id?: string
-          correct?: boolean | null
           difficulty?: number
           due_at?: string
-          exercise_id?: string | null
           id?: string
           introduced?: boolean
           last_review_at?: string | null
@@ -520,13 +397,6 @@ export type Database = {
             columns: ["card_id"]
             isOneToOne: false
             referencedRelation: "cards"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "review_log_exercise_id_fkey"
-            columns: ["exercise_id"]
-            isOneToOne: false
-            referencedRelation: "grammar_exercises"
             referencedColumns: ["id"]
           },
         ]
@@ -650,16 +520,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      deck_grammar_points: {
-        Args: { p_deck_code: string }
-        Returns: {
-          card_id: string
-          due_at: string
-          explanation: string
-          state: number
-          title: string
-        }[]
-      }
       deck_text: {
         Args: { p_deck_id: string }
         Returns: {
@@ -691,7 +551,6 @@ export type Database = {
           high_german: string
           kind: string
           lapses: number
-          last_exercise_id: string
           last_review_at: string
           learning_step: number
           meaning: string
@@ -735,26 +594,9 @@ export type Database = {
           reviews_today: number
         }[]
       }
-      grammar_content: {
-        Args: { p_card_ids: string[] }
-        Returns: {
-          card_id: string
-          exercises: Json
-          explanation: string
-          title: string
-        }[]
-      }
-      grammar_text: {
-        Args: { p_grammar_point_id: string }
-        Returns: {
-          explanation: string
-          title: string
-        }[]
-      }
       learner_cards: {
         Args: never
         Returns: {
-          grammar_point_id: string | null
           id: string
           kind: string
           vocabulary_id: string | null
@@ -783,7 +625,6 @@ export type Database = {
       profile_stats: {
         Args: never
         Returns: {
-          rules_learned: number
           streak: number
           words_learned: number
         }[]
@@ -792,8 +633,6 @@ export type Database = {
         Args: {
           p_card: Json
           p_card_id: string
-          p_correct?: boolean
-          p_exercise_id?: string
           p_expected_reps: number
           p_log: Json
           p_model: string

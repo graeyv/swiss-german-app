@@ -66,10 +66,9 @@ async function Profile() {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{t.profile.progress}</h2>
-        <div className="grid grid-cols-3 divide-x divide-line rounded-2xl border border-line bg-surface">
+        <div className="grid grid-cols-2 divide-x divide-line rounded-2xl border border-line bg-surface">
           <Stat icon="🔥" value={stats.data.streak} label={t.profile.streak(stats.data.streak)} />
           <Stat icon="📚" value={stats.data.words_learned} label={t.profile.wordsLearned(stats.data.words_learned)} />
-          <Stat icon="🧩" value={stats.data.rules_learned} label={t.profile.rulesLearned(stats.data.rules_learned)} />
         </div>
       </section>
 
