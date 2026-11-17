@@ -108,12 +108,17 @@ topic in English); in the code and this guide they are lesson → section → ru
   while the page scrolls (`TopBar`).
 - **Tab header** (Learn tab): the tab's name as title, below it one line in subtitle size and
   weight, full teal, saying what the tab is for. No marker.
-- **Module list** (Learn tab): every module in order, as list rows with its icon, "MODUL N",
-  title and "N Lektionen · N Themen". The module opened last is a sage card in its place instead:
-  icon, "MODUL N" in teal (the softer teal is too faint on sage), title, subtitle, size, and the
-  primary button ("Weiter: R", or "Los geht's"). If the card's button would be out of sight, the
-  tab opens scrolled to it, at once, with the row above still peeking in. Modules still being
-  written look the same. Every module has its own icon, never a colour.
+- **Suggestion card**: a tab's one suggestion, at the top: a sage card with an eyebrow in teal (the
+  softer teal is too faint on sage) saying why, such as "WEITERMACHEN · AUSSPRACHE", the title in
+  heading size, one short line, and the primary button. It's an action, not one of the items
+  below, so nothing in the list behaves differently. In Learn it continues with the next topic not
+  read yet ("Konsonanten", "3 von 6 Themen gelesen", "Weiter: R"), or says "HIER BEGINNEN" and
+  "Los geht's" before anything is read. It follows the topic read last, not the module looked at
+  last.
+- **Module list** (Learn tab): under "ALLE MODULE", every module in order as an equal list row with
+  its icon, "MODUL N", title and "N Lektionen · N Themen". The module read in last says "Zuletzt
+  gelesen" instead of its size. Modules still being written look the same. Every module has its
+  own icon, never a colour.
 - **Topic tile** (`TopicTile`, Flashcards and Conversations): the topics in a two-column grid, each
   a tile on mist with the topic's illustration across the top on `sage-light` (3:2), its title and
   caption below, and, in Flashcards, today's counts at the bottom. Conversations uses the

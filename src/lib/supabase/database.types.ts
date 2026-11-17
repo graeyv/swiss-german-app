@@ -307,6 +307,33 @@ export type Database = {
           },
         ]
       }
+      lesson_rounds: {
+        Row: {
+          correct: number
+          id: number
+          path: string
+          practised_at: string
+          total: number
+          user_id: string
+        }
+        Insert: {
+          correct: number
+          id?: never
+          path: string
+          practised_at?: string
+          total: number
+          user_id?: string
+        }
+        Update: {
+          correct?: number
+          id?: never
+          path?: string
+          practised_at?: string
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       locales: {
         Row: {
           code: string
@@ -503,6 +530,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      rule_reads: {
+        Row: {
+          path: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          path: string
+          read_at?: string
+          user_id?: string
+        }
+        Update: {
+          path?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       vocabulary_forms: {
         Row: {

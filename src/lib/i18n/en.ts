@@ -33,9 +33,13 @@ export const en = {
 
   learn: {
     intro: "How Swiss German differs from Standard German.",
-    // On the large module card: why it's large.
-    lastOpened: "Opened last",
+    // Above the card to continue: whether the learner has read anything yet, then the module.
+    continue: "Continue",
     startHere: "Start here",
+    topicsRead: (read: number, count: number) => `${read} of ${many(count, "topic", "topics")} read`,
+    allModules: "All modules",
+    // In place of a module's size, on the one the learner read in last.
+    lastRead: "Read last",
   },
 
   nav: {

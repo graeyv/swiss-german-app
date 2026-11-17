@@ -32,8 +32,11 @@ export const de: Dictionary = {
 
   learn: {
     intro: "Was Schweizerdeutsch vom Hochdeutschen unterscheidet.",
-    lastOpened: "Zuletzt geöffnet",
+    continue: "Weitermachen",
     startHere: "Hier beginnen",
+    topicsRead: (read, count) => `${read} von ${many(count, "Thema", "Themen")} gelesen`,
+    allModules: "Alle Module",
+    lastRead: "Zuletzt gelesen",
   },
 
   nav: {
