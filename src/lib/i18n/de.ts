@@ -105,6 +105,7 @@ export const de: Dictionary = {
   practice: {
     practise: (section, count) => `${section} üben · ${many(count, "Übung", "Übungen")}`,
     later: "Später",
+    toExercises: "Zu den Übungen",
     leave: "Übung verlassen",
     progress: (position, count) => `Übung ${position} von ${count}`,
     readRule: (rule) => `Regel nachlesen: ${rule}`,

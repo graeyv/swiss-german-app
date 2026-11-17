@@ -6,7 +6,15 @@ import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Pill } from "@/app/ui/surface";
 import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
-import { findLesson, isReady, lessonHref, lessonNumber, lessonParams } from "@/lib/learn/lessons";
+import {
+  exercisesHref,
+  findLesson,
+  hasExercises,
+  isReady,
+  lessonHref,
+  lessonNumber,
+  lessonParams,
+} from "@/lib/learn/lessons";
 import { getReads, readCount, whereToContinue } from "@/lib/learn/progress";
 import { createClient } from "@/lib/supabase/server";
 import { LessonLoading, LessonScreen } from "./lesson-screen";
@@ -42,25 +50,35 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
       lang={language}
       back={{ href: "/learn", label: t.lesson.leave }}
       footer={
-        // Straight to the first topic, or on to the next one not read yet, with the choice to start
-        // over. The lists below are for looking one up. A lesson still being written has nothing
-        // to start yet.
-        first &&
-        (resume ? (
-          <div className="flex flex-col gap-3">
-            <ButtonLink href={lessonHref(dialect, lesson, resume.section, resume.rule)}>
-              {t.lesson.next}: {resume.rule.title}
-            </ButtonLink>
-            <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])} variant="secondary">
-              {t.lesson.fromStart}
-            </ButtonLink>
+        // Straight to the first topic, or on to the next one not read yet. Second, the module's
+        // exercises once it has any, or else starting over. The lists below are for looking one
+        // up. A lesson still being written has nothing to start yet.
+        first && (
+          <div className="flex w-full flex-col gap-3">
+            {resume ? (
+              <ButtonLink href={lessonHref(dialect, lesson, resume.section, resume.rule)}>
+                {t.lesson.next}: {resume.rule.title}
+              </ButtonLink>
+            ) : (
+              // Everything read: only starting over is left.
+              <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])}>
+                {anyRead ? t.lesson.fromStart : t.lesson.start}
+              </ButtonLink>
+            )}
+            {hasExercises(lesson) ? (
+              <ButtonLink href={exercisesHref(dialect, lesson)} variant="secondary" className="min-h-14">
+                <Icon name="puzzle" size={20} />
+                {t.practice.toExercises}
+              </ButtonLink>
+            ) : (
+              resume && (
+                <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])} variant="secondary">
+                  {t.lesson.fromStart}
+                </ButtonLink>
+              )
+            )}
           </div>
-        ) : (
-          // Everything read: only starting over is left.
-          <ButtonLink href={lessonHref(dialect, lesson, first, first.rules[0])}>
-            {anyRead ? t.lesson.fromStart : t.lesson.start}
-          </ButtonLink>
-        ))
+        )
       }
     >
       <title>{t.title(lesson.title)}</title>

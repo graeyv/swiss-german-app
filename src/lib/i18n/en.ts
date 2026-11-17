@@ -116,6 +116,8 @@ export const en = {
   practice: {
     practise: (section: string, count: number) => `Practise ${section} · ${many(count, "exercise", "exercises")}`,
     later: "Later",
+    // On a module's page, as the second choice after reading on.
+    toExercises: "Go to the exercises",
     leave: "Leave exercises",
     progress: (position: number, count: number) => `Exercise ${position} of ${count}`,
     // Opens the rule an exercise is about, after a wrong answer.

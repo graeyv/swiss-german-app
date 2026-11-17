@@ -146,6 +146,16 @@ export function roundExercises(section: Section): { ruleId: string; exercise: Le
   );
 }
 
+// Whether any section of a lesson has exercises to practise.
+export function hasExercises(lesson: Lesson) {
+  return lesson.sections.some((section) => roundExercises(section).length > 0);
+}
+
+// A module's exercises, in the Practice tab.
+export function exercisesHref(dialect: string, lesson: Lesson) {
+  return `/flashcards/lessons/${dialect}/${lesson.id}`;
+}
+
 // Where a section's round is, and its path in lesson_rounds, such as "be/pronunciation/consonants".
 export function practiceHref(dialect: string, lesson: Lesson, section: Section) {
   return `${lessonHref(dialect, lesson, section)}/practice`;

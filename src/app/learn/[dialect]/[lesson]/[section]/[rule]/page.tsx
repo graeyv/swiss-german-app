@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ButtonLink } from "@/app/ui/button";
+import { Icon } from "@/app/ui/icons";
 import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
-import { findLesson, findRule, lessonHref, ruleParams } from "@/lib/learn/lessons";
+import { findLesson, findRule, lessonHref, practiceHref, roundExercises, ruleParams } from "@/lib/learn/lessons";
 import { rulePath } from "@/lib/learn/progress";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
 import { ExampleList } from "./example-list";
@@ -37,6 +38,9 @@ async function RuleView({
   const t = dictionary(language);
   const dialectName = t.lesson.dialects[dialect] ?? dialect;
   const nextHref = next && lessonHref(dialect, lesson, next.section, next.rule);
+  // The section's last topic leads to its exercises, if it has any.
+  const exercises = roundExercises(section).length;
+  const lastWithExercises = place.position === place.count && exercises > 0;
 
   return (
     <LessonScreen
@@ -51,7 +55,18 @@ async function RuleView({
         label: t.lesson.position(section.title, place.position, place.count),
       }}
       footer={
-        nextHref ? (
+        lastWithExercises ? (
+          // The end of a section with exercises: practising it comes first, going on later.
+          <div className="flex w-full flex-col gap-3">
+            <ButtonLink href={`${practiceHref(dialect, lesson, section)}?from=learn`}>
+              <Icon name="puzzle" size={20} />
+              {t.practice.practise(section.title, exercises)}
+            </ButtonLink>
+            <ButtonLink href={nextHref ?? lessonHref(dialect, lesson)} variant="secondary" className="min-h-14">
+              {t.practice.later}
+            </ButtonLink>
+          </div>
+        ) : nextHref ? (
           // Within a section the next topic is named, and at its end the next section.
           <ButtonLink href={nextHref}>
             {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}

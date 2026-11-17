@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { dictionary } from "@/lib/i18n";
 import {
+  exercisesHref,
   findLesson,
   findSection,
   lessonHref,
@@ -57,7 +58,7 @@ async function Practice({
         round={round}
         // Leaving or finishing goes back where the round was started: the section in Learn, or
         // the module's exercises in the Practice tab.
-        back={fromLearn ? lessonHref(dialect, lesson, section) : `/flashcards/lessons/${dialect}/${lesson.id}`}
+        back={fromLearn ? lessonHref(dialect, lesson, section) : exercisesHref(dialect, lesson)}
         readAgain={lessonHref(dialect, lesson, section)}
         // From Learn, a good round leads on to the next section.
         next={
