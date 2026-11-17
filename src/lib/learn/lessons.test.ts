@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { isIconName } from "@/app/ui/icons";
-import { isReady, LESSONS, lessonNumber, sectionParams, topicCount } from "./lessons";
+import { isReady, LESSONS, lessonNumber, nextSection, roundExercises, sectionParams, topicCount } from "./lessons";
 
 describe("lessons", () => {
   it("numbers the lessons of a dialect in order", () => {
@@ -29,5 +29,30 @@ describe("lessons", () => {
 
   it("builds pages only for sections that are ready", () => {
     expect(sectionParams().map(({ section }) => section)).toEqual(["consonants", "vowels"]);
+  });
+
+  it("takes up to two exercises of each rule for a section's round, in order", () => {
+    const pick = (id: string) => ({ id, type: "pick" as const, prompt: "?", options: ["a", "b"], answer: 0 });
+    const section = {
+      id: "s",
+      title: "S",
+      description: "",
+      rules: [
+        { id: "a", title: "A", theory: "", examples: [], takeaway: "", exercises: [pick("a1"), pick("a2"), pick("a3")] },
+        { id: "b", title: "B", theory: "", examples: [], takeaway: "" },
+        { id: "c", title: "C", theory: "", examples: [], takeaway: "", exercises: [pick("c1")] },
+      ],
+    };
+    expect(roundExercises(section).map(({ ruleId, exercise }) => `${ruleId}:${exercise.id}`)).toEqual([
+      "a:a1",
+      "a:a2",
+      "c:c1",
+    ]);
+  });
+
+  it("goes on to the next section that's ready", () => {
+    const { lesson } = LESSONS.find(({ lesson }) => lesson.id === "pronunciation")!;
+    expect(nextSection(lesson, lesson.sections[0])?.id).toBe("vowels");
+    expect(nextSection(lesson, lesson.sections[1])).toBeUndefined();
   });
 });

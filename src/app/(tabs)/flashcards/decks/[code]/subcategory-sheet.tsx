@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { Icon, type IconName } from "@/app/ui/icons";
-import { BottomSheet } from "../../bottom-sheet";
+import { BottomSheet } from "@/app/ui/bottom-sheet";
 import type { DeckKind } from "@/lib/flashcards/decks";
 import { filterSearch, type VocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
 import { dictionary, type Locale } from "@/lib/i18n";

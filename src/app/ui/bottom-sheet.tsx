@@ -28,7 +28,8 @@ export function BottomSheet({ ref, label, children }: BottomSheetProps) {
         if (event.target === event.currentTarget) event.currentTarget.close();
       }}
       // border-0, so lines between the rows of a list the sheet sits in don't reach it.
-      className="mx-auto mt-auto mb-0 w-full max-w-xl rounded-t-3xl border-0 bg-surface p-0 text-foreground transition-transform duration-300 backdrop:bg-black/40 starting:open:translate-y-full motion-reduce:transition-none"
+      // At most most of the screen, scrolling inside when longer, such as a rule with its examples.
+      className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-xl overflow-y-auto overscroll-contain rounded-t-3xl border-0 bg-surface p-0 text-foreground transition-transform duration-300 backdrop:bg-black/40 starting:open:translate-y-full motion-reduce:transition-none"
     >
       <div className="flex flex-col gap-5 px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         <span aria-hidden className="mx-auto h-1.5 w-10 rounded-full bg-line" />

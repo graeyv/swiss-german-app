@@ -6,6 +6,7 @@ import beGrammar from "../../../content/lessons/be/grammar.json";
 import beNewWords from "../../../content/lessons/be/new-words.json";
 import bePronunciation from "../../../content/lessons/be/pronunciation.json";
 import beRelatedWords from "../../../content/lessons/be/related-words.json";
+import type { Task } from "@/lib/exercises/tasks";
 import type { Locale } from "@/lib/i18n";
 
 // The same thing in Standard German and in the dialect.
@@ -20,6 +21,10 @@ export type Example = {
   audio: Comparison<string | null>;
 };
 
+// An exercise on a rule: one of the tasks in src/lib/exercises/tasks.ts, with an id unique in its
+// lesson file, such as "ch-1".
+export type LessonExercise = Task & { id: string };
+
 export type Rule = {
   id: string;
   title: string;
@@ -27,6 +32,8 @@ export type Rule = {
   examples: Example[];
   // The rule in one sentence, to remember.
   takeaway: string;
+  // Practised together with the other rules of its section, at the end of the section.
+  exercises?: LessonExercise[];
 };
 
 // A section without rules is still being written. Its planned topics, if already known, are
@@ -126,6 +133,31 @@ export function findRule(lesson: Lesson, sectionId: string, ruleId: string): Rul
 
 export function lessonHref(dialect: string, lesson: Lesson, section?: Section, rule?: Rule) {
   return [`/learn/${dialect}/${lesson.id}`, section?.id, rule?.id].filter(Boolean).join("/");
+}
+
+// The most exercises of one rule in a round, so a section's round stays short, about ten.
+const PER_RULE = 2;
+
+// A section's round: up to two exercises of each rule, in the section's order, each with the rule
+// it practises, for "Regel nachlesen".
+export function roundExercises(section: Section): { ruleId: string; exercise: LessonExercise }[] {
+  return section.rules.flatMap((rule) =>
+    (rule.exercises ?? []).slice(0, PER_RULE).map((exercise) => ({ ruleId: rule.id, exercise })),
+  );
+}
+
+// Where a section's round is, and its path in lesson_rounds, such as "be/pronunciation/consonants".
+export function practiceHref(dialect: string, lesson: Lesson, section: Section) {
+  return `${lessonHref(dialect, lesson, section)}/practice`;
+}
+
+export function sectionPath(dialect: string, lessonId: string, sectionId: string) {
+  return `${dialect}/${lessonId}/${sectionId}`;
+}
+
+// The next section with something to read in the same lesson, if any.
+export function nextSection(lesson: Lesson, section: Section): Section | undefined {
+  return lesson.sections.slice(lesson.sections.indexOf(section) + 1).find(isReady);
 }
 
 // Every lesson, section and rule page, so they're all built ahead of time and open instantly.

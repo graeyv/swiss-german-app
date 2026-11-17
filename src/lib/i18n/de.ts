@@ -102,6 +102,22 @@ export const de: Dictionary = {
     inTheMaking: "An diesem Modul arbeiten wir noch. Das wird es behandeln.",
   },
 
+  practice: {
+    practise: (section, count) => `${section} üben · ${many(count, "Übung", "Übungen")}`,
+    later: "Später",
+    leave: "Übung verlassen",
+    progress: (position, count) => `Übung ${position} von ${count}`,
+    readRule: (rule) => `Regel nachlesen: ${rule}`,
+    rule: (section) => `Regel · ${section}`,
+    backToExercise: "Zurück zur Übung",
+    done: (section) => `${section} geübt`,
+    score: (correct, total) => `${correct} von ${total} auf Anhieb richtig.`,
+    weak: "Noch etwas wackelig. Lies die Lektion nochmals, dann sitzt es besser.",
+    readAgain: (section) => `${section} nochmals lesen`,
+    finish: "Fertig",
+    notSaved: (error) => `Dein Ergebnis wurde nicht gespeichert: ${error}`,
+  },
+
   conversations: {
     scenes: (count) => many(count, "Szene", "Szenen"),
     comingSoon: "Bald verfügbar",

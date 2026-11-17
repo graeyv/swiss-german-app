@@ -112,6 +112,25 @@ export const en = {
     inTheMaking: "This module is still being written. Here's what it will cover.",
   },
 
+  // A lesson's exercises, done at the end of a section such as the consonants.
+  practice: {
+    practise: (section: string, count: number) => `Practise ${section} · ${many(count, "exercise", "exercises")}`,
+    later: "Later",
+    leave: "Leave exercises",
+    progress: (position: number, count: number) => `Exercise ${position} of ${count}`,
+    // Opens the rule an exercise is about, after a wrong answer.
+    readRule: (rule: string) => `Read the rule: ${rule}`,
+    rule: (section: string) => `Rule · ${section}`,
+    backToExercise: "Back to the exercise",
+    done: (section: string) => `${section} practised`,
+    score: (correct: number, total: number) => `${correct} of ${total} right the first time.`,
+    // After a round with under 60 % right.
+    weak: "Still a bit shaky. Read the lesson again and it'll stick better.",
+    readAgain: (section: string) => `Read ${section} again`,
+    finish: "Done",
+    notSaved: (error: string) => `Your result wasn't saved: ${error}`,
+  },
+
   conversations: {
     // How many scenes a topic has, such as "5 scenes".
     scenes: (count: number) => many(count, "scene", "scenes"),

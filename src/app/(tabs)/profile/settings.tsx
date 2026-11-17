@@ -5,7 +5,7 @@ import { updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
 import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
 import type { CardFront } from "@/lib/types";
-import { BottomSheet } from "../flashcards/bottom-sheet";
+import { BottomSheet } from "@/app/ui/bottom-sheet";
 import { PaceOptions } from "../flashcards/pace-options";
 import { setLocale } from "../actions";
 import { updateDialect, updateInterests } from "./actions";

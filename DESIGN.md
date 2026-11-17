@@ -95,7 +95,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`, `BottomSheet`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
 topic in English); in the code and this guide they are lesson → section → rule.
@@ -146,6 +146,15 @@ topic in English); in the code and this guide they are lesson → section → ru
   plays; the sides are named once above the buttons. Space between the words.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in
   semibold. The rule screen's one yellow element.
+- **Lesson round** (a section's exercises, such as the consonants): a full screen with a cross at
+  the top left to leave, and one segment per exercise. After an answer, a row on sage or rose says
+  whether it was right, with the right answer after a wrong one, and below it a mist pill
+  "Regel nachlesen: CH". "Weiter" stays at the bottom. It ends on a yellow card: "Konsonanten
+  geübt" and how many were right the first time. Under 60 %, a line suggests reading the section
+  again, and "Konsonanten nochmals lesen" is the primary button.
+- **Rule sheet** (`BottomSheet`): a rule opened from an exercise, sliding up over it, so the
+  exercise keeps its place: "REGEL · KONSONANTEN", the title, the theory, the examples and Merke,
+  then "Zurück zur Übung". No back arrow and no lesson progress, as it isn't a step of the lesson.
 - **Variants on a flashcard** ("auch: Salü · Hallo"): other ways of saying a word in the
   learner's dialect, in one quiet line in `teal-soft` under the Swiss German wherever it shows:
   large under the main form, small under it at the top of the back, and in the word list. Never on
