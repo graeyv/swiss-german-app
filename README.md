@@ -119,6 +119,21 @@ regenerates `supabase/seeds/flashcards.sql` and applies it to the linked project
 
 Scheduling uses FSRS-6 through `ts-fsrs`, which needs Node 24 or later.
 
+## Testing your own progress
+
+Put your account's email in `.env.local` as `DEV_EMAIL=you@example.com`. It isn't committed.
+
+```sh
+npm run next-day                         # your account, one day later
+npm run next-day -- 3                    # three days later
+npm run next-day -- 0.01                 # about 15 minutes, to skip a learning step
+npm run next-day -- 1 someone@example.com  # another account
+npm run dev:reset-progress -- you@example.com  # forget an account's flashcard progress
+```
+
+`next-day` moves everything the account did into the past: reviews, topics read, lesson rounds
+and a lifted limit. Cards fall due and today's goal starts over, as if the time had passed.
+
 ## Database changes
 
 ```sh
