@@ -32,6 +32,12 @@ export default function DevDesignPage() {
         <p className="text-body text-teal-soft">Alles aus DESIGN.md, so wie es auf den Screens aussieht.</p>
       </div>
 
+      <Part title="Aussprache-Übungen (Prototyp)">
+        <ListRows>
+          <ListRow href="/dev/design/pronunciation" icon="mic" title="Konsonanten üben" caption="Platzhalter-Wörter · 8 Übungen" />
+        </ListRows>
+      </Part>
+
       <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
         <VariantPreview />
       </Part>
