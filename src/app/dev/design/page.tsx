@@ -268,6 +268,7 @@ const ICONS: IconName[] = [
   "cross",
   "headphones",
   "mic",
+  "speaking",
   "bulb",
   "again",
   "hard",
