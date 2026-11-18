@@ -5,7 +5,7 @@ import { isIconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import type { Dictionary } from "@/lib/i18n";
 import { getDictionary } from "@/lib/i18n/server";
-import { type Lesson, LESSONS, lessonHref, lessonNumber, topicCount } from "@/lib/learn/lessons";
+import { isReady, type Lesson, LESSONS, lessonHref, lessonNumber, topicCount } from "@/lib/learn/lessons";
 import { type Continue, getReads, lastModule, readCount, whereToContinue } from "@/lib/learn/progress";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,8 +20,8 @@ export default function LearnPage() {
 }
 
 // A card to continue where the learner left off, then every module in order as an equal row. The
-// module read in last says so in its caption. Modules still being written look like the others,
-// counting their planned topics: the prototype shows the whole track.
+// module read in last says so in its caption. A module still being written has the "Bald
+// verfügbar" pill, but still opens, so learners see what it will cover.
 async function Learn() {
   const [t, supabase] = await Promise.all([getDictionary(), createClient()]);
   const reads = await getReads(supabase);
@@ -45,6 +45,7 @@ async function Learn() {
             <ListRow
               key={`${entry.dialect}/${entry.lesson.id}`}
               href={lessonHref(entry.dialect, entry.lesson)}
+              comingSoon={isReady(entry.lesson) ? undefined : t.lesson.comingSoon}
               icon={isIconName(entry.lesson.icon) ? entry.lesson.icon : undefined}
               eyebrow={t.lesson.number(lessonNumber(entry))}
               title={entry.lesson.title}

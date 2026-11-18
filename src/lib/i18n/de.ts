@@ -91,6 +91,7 @@ export const de: Dictionary = {
     start: "Los geht’s",
     fromStart: "Von vorne",
     next: "Weiter",
+    previous: "Zurück",
     done: "Fertig",
     position: (section, position, count) => `${section} · ${position} / ${count}`,
     remember: "Merke",

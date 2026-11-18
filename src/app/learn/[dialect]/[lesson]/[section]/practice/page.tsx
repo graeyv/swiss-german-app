@@ -56,10 +56,10 @@ async function Practice({
         sectionTitle={section.title}
         rules={section.rules}
         round={round}
-        // Leaving or finishing goes back where the round was started: the section in Learn, or
+        // Leaving or finishing goes back where the round was started: the module in Learn, or
         // the module's exercises in the Practice tab.
-        back={fromLearn ? lessonHref(dialect, lesson, section) : exercisesHref(dialect, lesson)}
-        readAgain={lessonHref(dialect, lesson, section)}
+        back={fromLearn ? lessonHref(dialect, lesson) : exercisesHref(dialect, lesson)}
+        readAgain={lessonHref(dialect, lesson, section, section.rules[0])}
         // From Learn, a good round leads on to the next section.
         next={
           fromLearn && next ? { href: lessonHref(dialect, lesson, next, next.rules[0]), title: next.title } : undefined

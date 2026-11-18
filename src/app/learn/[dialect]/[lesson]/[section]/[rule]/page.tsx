@@ -34,10 +34,23 @@ async function RuleView({
   const place = found && findRule(found.lesson, sectionId, ruleId);
   if (!found || !place) notFound();
   const { lesson, language } = found;
-  const { section, rule, next } = place;
+  const { section, rule, previous, next } = place;
   const t = dictionary(language);
   const dialectName = t.lesson.dialects[dialect] ?? dialect;
   const nextHref = next && lessonHref(dialect, lesson, next.section, next.rule);
+  // Back to the topic before, also from the first vowel to the last consonant. Like "Weiter", it
+  // replaces this page in the history, so the phone's back gesture leads out of the reading.
+  const back = previous && (
+    <ButtonLink
+      href={lessonHref(dialect, lesson, previous.section, previous.rule)}
+      replace
+      variant="secondary"
+      className="min-h-14"
+    >
+      <Icon name="back" size={20} />
+      {t.lesson.previous}
+    </ButtonLink>
+  );
   // The section's last topic leads to its exercises, if it has any.
   const exercises = roundExercises(section).length;
   const lastWithExercises = place.position === place.count && exercises > 0;
@@ -45,9 +58,11 @@ async function RuleView({
   return (
     <LessonScreen
       lang={language}
+      // Up to the module, which lists every topic, named so it's clear where it leads.
       back={{
-        href: lessonHref(dialect, lesson, section),
-        label: t.lesson.back(section.title),
+        href: lessonHref(dialect, lesson),
+        label: t.lesson.back(lesson.title),
+        text: lesson.title,
       }}
       progress={{
         position: place.position,
@@ -62,17 +77,31 @@ async function RuleView({
               <Icon name="puzzle" size={20} />
               {t.practice.practise(section.title, exercises)}
             </ButtonLink>
-            <ButtonLink href={nextHref ?? lessonHref(dialect, lesson)} variant="secondary" className="min-h-14">
-              {t.practice.later}
-            </ButtonLink>
+            <div className={`grid gap-3 ${back ? "grid-cols-2" : ""}`}>
+              {back}
+              <ButtonLink
+                href={nextHref ?? lessonHref(dialect, lesson)}
+                replace={Boolean(nextHref)}
+                variant="secondary"
+                className="min-h-14"
+              >
+                {t.practice.later}
+              </ButtonLink>
+            </div>
           </div>
-        ) : nextHref ? (
-          // Within a section the next topic is named, and at its end the next section.
-          <ButtonLink href={nextHref}>
-            {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}
-          </ButtonLink>
         ) : (
-          <ButtonLink href={lessonHref(dialect, lesson)}>{t.lesson.done}</ButtonLink>
+          // Back beside the main button, smaller, so going on stays the main thing.
+          <div className={`grid w-full gap-3 ${back ? "grid-cols-[1fr_2fr]" : ""}`}>
+            {back}
+            {nextHref ? (
+              // Within a section the next topic is named, and at its end the next section.
+              <ButtonLink href={nextHref} replace>
+                {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}
+              </ButtonLink>
+            ) : (
+              <ButtonLink href={lessonHref(dialect, lesson)}>{t.lesson.done}</ButtonLink>
+            )}
+          </div>
         )
       }
     >

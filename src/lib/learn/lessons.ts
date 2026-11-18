@@ -119,11 +119,12 @@ export function findSection(lesson: Lesson, id: string): Section | undefined {
 // A rule with the section it belongs to.
 export type RuleInSection = { section: Section; rule: Rule };
 
-// Where a rule sits: its place in its section, and the rule after it in the whole lesson, so the
-// learner can go from the last consonant straight on to the first vowel.
+// Where a rule sits: its place in its section, and the rules before and after it in the whole
+// lesson, so the learner can go from the last consonant straight on to the first vowel, and back.
 export type RulePlace = RuleInSection & {
   position: number;
   count: number;
+  previous?: RuleInSection;
   next?: RuleInSection;
 };
 
@@ -137,6 +138,7 @@ export function findRule(lesson: Lesson, sectionId: string, ruleId: string): Rul
     rule,
     position: section.rules.indexOf(rule) + 1,
     count: section.rules.length,
+    previous: all[index - 1],
     next: all[index + 1],
   };
 }

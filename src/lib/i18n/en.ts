@@ -96,6 +96,7 @@ export const en = {
     // Beside "Next: R" on a module the learner has been in before.
     fromStart: "Start over",
     next: "Next",
+    previous: "Back",
     done: "Done",
     // Where a topic is in its section, such as "Consonants · 2 / 6".
     position: (section: string, position: number, count: number) => `${section} · ${position} / ${count}`,

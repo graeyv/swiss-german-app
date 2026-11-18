@@ -105,7 +105,9 @@ topic in English); in the code and this guide they are lesson → section → ru
   colour or without the bubble. The app icon and favicon are the same bubble on teal
   (`src/app/icon.png`, `apple-icon.png`, `public/icons/`).
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
-  while the page scrolls (`TopBar`).
+  while the page scrolls (`TopBar`). Where it skips a level, it names where it leads instead, in
+  small semibold text: "‹ Aussprache" on a topic, which goes up to its module, and "‹ Lektionen"
+  in the practice tab.
 - **Tab header** (Learn tab): the tab's name as title, below it one line in subtitle size and
   weight, full teal, saying what the tab is for. No marker.
 - **Suggestion card**: a tab's one suggestion, at the top: a sage card with an eyebrow in teal (the
@@ -124,7 +126,9 @@ topic in English); in the code and this guide they are lesson → section → ru
   ÜBUNGEN": every module as a list row ("1 von 2 Lektionen geübt"), opening its lessons to practise.
 - **Module list** (Learn tab): under "ALLE MODULE", every module in order as an equal list row with
   its icon, "MODUL N", title and "N Lektionen · N Themen". The module read in last says "Zuletzt
-  gelesen" instead of its size. Modules still being written look the same. Every module has its
+  gelesen" instead of its size. A module still being written has the "Bald verfügbar" pill
+  (see Topic tile) in place of its size, but keeps its arrow and still opens, so learners see what
+  it will cover. Every module has its
   own icon, never a colour.
 - **Topic tile** (`TopicTile`, Flashcards and Conversations): the topics in a two-column grid, each
   a tile on mist with the topic's illustration across the top on `sage-light` (3:2), its title and
@@ -139,7 +143,8 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Topic banner** (`TopicBanner`): the top of a topic's page, its illustration at 2:1, whole and
   centred on `sage-light` rather than cropped. Its title below in title size, then its subtopics
   or scenes as list rows. A subtopic or scene with nothing in it yet is an inactive row, with the
-  "Bald verfügbar" pill and no arrow.
+  "Bald verfügbar" pill and no arrow. So is a lesson still being written, in its module's list in
+  Learn, and a module or lesson without exercises in Üben → Lektionen.
 - **Lesson header**: eyebrow, title, subtitle on a hand-drawn yellow highlight, body text.
   The highlight is the screen's one yellow element, and it's only used here.
 - **Icon list** ("Was dich erwartet"): a filled icon in `teal-soft`, then one line of text. No boxes, no
@@ -147,6 +152,17 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **List row** ("Konsonanten"): a rounded row on mist, optionally led by a filled icon in
   `teal-soft`, bold title, caption below, teal arrow (→) on the right. The whole row is the tap
   target. Flashcard subtopics are list rows too, each with its own icon (`deck-icons.ts`).
+- **Module page** (Learn): the lesson header, then under "Lektionen" each lesson as a card on
+  mist with its title, "2 von 6 Themen gelesen" and an arrow pointing right (`down`, turned).
+  Tapping it unfolds its topics inside the same card and turns the arrow down; several can be
+  open. The topics are numbered in order, each a circle before its title: teal with a check once
+  read, sage for the next one, ivory for the rest, and an arrow on the right. The lesson read in
+  last is open when the page opens, so coming back from a topic shows where the learner is. No
+  page per lesson. A lesson still being written is a card with the "Bald verfügbar" pill.
+- **Reading a topic**: "‹ Aussprache" at the top left, the lesson's progress beside it. At the
+  bottom, "Zurück" to the topic before as a secondary button, a third of the width, beside
+  "Weiter: S". Both replace the page rather than adding one, so the phone's back gesture leads out
+  of the reading instead of through every topic. The first topic has no "Zurück".
 - **Example list** (a rule's words): no cards, no colour. Each word in subtitle size, below it one
   caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut → gleich"), with
   only a changed sound bold. On the right, a round play button per side, on mist, teal while it
