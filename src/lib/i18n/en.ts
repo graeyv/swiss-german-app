@@ -368,6 +368,23 @@ export const en = {
         no: "Not really",
       },
     },
+    // The second question. Dialect names stay in dialect, so they aren't here.
+    dialect: {
+      question: "Which dialect would you like to learn?",
+      regions: { zh: "Zurich and around", be: "Bern and around", bs: "Basel and around" } as Record<string, string>,
+      soon: { beforeLaunch: "Coming before launch", later: "Coming later" },
+      notSure: "Not sure?",
+      switchLater: "You can switch later",
+      help: {
+        title: "Which dialect?",
+        points: [
+          "Swiss German isn't one language but many dialects. They sound different, but their speakers understand each other well.",
+          "Learn the dialect of the region where you live, work or know people. It's the one you'll hear every day.",
+          "Once you know one dialect, you'll soon understand the others too.",
+        ],
+        understood: "Got it",
+      },
+    },
     level: {
       heading: "How familiar are you with Swiss German?",
       options: {

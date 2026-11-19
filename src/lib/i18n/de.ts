@@ -320,6 +320,22 @@ export const de: Dictionary = {
         no: "Nicht wirklich",
       },
     },
+    dialect: {
+      question: "Welchen Dialekt möchtest du lernen?",
+      regions: { zh: "Zürich und Umgebung", be: "Bern und Umgebung", bs: "Basel und Umgebung" },
+      soon: { beforeLaunch: "Kommt vor dem Launch", later: "Kommt später" },
+      notSure: "Nicht sicher?",
+      switchLater: "Du kannst später wechseln",
+      help: {
+        title: "Welcher Dialekt?",
+        points: [
+          "Schweizerdeutsch ist nicht eine Sprache, sondern viele Dialekte. Sie klingen verschieden, verstehen sich aber gut.",
+          "Lerne den Dialekt der Region, in der du lebst, arbeitest oder Leute kennst. Den hörst du jeden Tag.",
+          "Wer einen Dialekt kann, versteht auch die anderen bald.",
+        ],
+        understood: "Verstanden",
+      },
+    },
     level: {
       heading: "Wie gut kennst du Schweizerdeutsch?",
       options: {

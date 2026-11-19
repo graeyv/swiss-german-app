@@ -263,6 +263,14 @@ topic in English); in the code and this guide they are lesson → section → ru
   quick test in a sheet: one Standard German sentence, "Verstehst du diesen Satz?", and "Ja, gut"
   or "Not really", which choose the answer and put a small yellow "Empfohlen" tag on its edge,
   the screen's one yellow. Under it, always, "Du kannst später wechseln · You can switch later".
+- **Choosing the dialect** (onboarding's second question): "Welchen Dialekt möchtest du lernen?"
+  in title size, then a card on mist per dialect: its canton's flag as it is (square, 48 px, no
+  frame), the name in dialect ("Bärndütsch") in subtitle size, and "Bern und Umgebung" below, or
+  for a dialect not ready yet the name in `teal-soft` with a "Kommt vor dem Launch" or "Kommt
+  später" pill and no check. The chosen one is on sage with a teal check; while only one is
+  ready, it's chosen from the start. Below, "Nicht sicher?" opens three points on which to pick,
+  and "Du kannst später wechseln", as on the track question. The flags are in `public/flags/`;
+  they're cantonal emblems, whose use Swiss law restricts.
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick

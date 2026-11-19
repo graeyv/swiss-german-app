@@ -5,8 +5,10 @@ import { setLocale } from "@/app/(tabs)/actions";
 import { PaceOptions } from "@/app/(tabs)/flashcards/pace-options";
 import { PRESETS } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale } from "@/lib/i18n";
+import { defaultDialect } from "@/lib/dialects";
 import { LEVELS, type Level, suggestedPace } from "@/lib/onboarding";
 import { finishOnboarding } from "./actions";
+import { DialectStep } from "./dialect-step";
 import { TrackStep, type TrackModule } from "./track-step";
 
 type Topic = { code: string; title: string; emoji: string | null };
@@ -20,7 +22,7 @@ type OnboardingFlowProps = {
   tracks: Record<Locale, TrackModule[]>;
 };
 
-const STEPS = ["track", "level", "topics", "pace"] as const;
+const STEPS = ["track", "dialect", "level", "topics", "pace"] as const;
 
 const primaryButton =
   "w-full rounded-full bg-accent px-6 py-4 text-lg font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50";
@@ -31,8 +33,9 @@ function optionClass(selected: boolean) {
   }`;
 }
 
-// Four short questions, one per screen. Every one can be skipped, and the app has a sensible
-// default for each: skipping the first keeps the track of the browser's language.
+// Five short questions, one per screen. Every one can be skipped, and the app has a sensible
+// default for each: skipping the first keeps the track of the browser's language, and the dialect
+// is the only one ready while there's just one.
 export function OnboardingFlow({ locale, topics, initialLevel, initialInterests, tracks }: OnboardingFlowProps) {
   const t = dictionary(locale).onboarding;
   const [step, setStep] = useState(0);
@@ -43,6 +46,7 @@ export function OnboardingFlow({ locale, topics, initialLevel, initialInterests,
   // The track answered, and the one the quick test recommended, if it was done.
   const [track, setTrack] = useState<Locale | null>(null);
   const [recommendedTrack, setRecommendedTrack] = useState<Locale | null>(null);
+  const [dialect, setDialect] = useState<string | null>(defaultDialect);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -64,6 +68,7 @@ export function OnboardingFlow({ locale, topics, initialLevel, initialInterests,
       // Only returns when saving failed: success redirects to the flashcards.
       const result = await finishOnboarding({
         level,
+        dialect,
         interests: [...interests],
         newCardsPerDay: pace ?? recommendedNewCards,
       });
@@ -117,6 +122,8 @@ export function OnboardingFlow({ locale, topics, initialLevel, initialInterests,
             }}
           />
         )}
+
+        {current === "dialect" && <DialectStep locale={locale} chosen={dialect} onChoose={setDialect} />}
 
         {current === "level" && (
           <>
