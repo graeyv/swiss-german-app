@@ -61,7 +61,9 @@ section's own, from the section's last topic or from Practice › Lektionen. A m
 `mixed` round, `{"title", "exercises"}`, over all its sections: its round is
 `/learn/<dialect>/<module>/mixed/practice`, listed last among the module's exercises, and suggested
 once every section is read; the end of the module's last topic leads to it. Aussprache has only
-this round, titled after the module, since its words mix consonants and vowels. A module with a
+this round, titled after the module, since its words mix consonants and vowels. Its
+`"accent": true` names the examples' side "Berner Akzent": they're Standard German words said with
+the accent. A module with a
 single round opens it straight from the Practice tab. Learners practise whenever they like: there's no schedule, and each
 round's result is saved (`lesson_rounds`) for the Practice tab to suggest what to refresh. Every
 exercise counts towards it. Practising only the mistakes afterwards saves the whole round's new

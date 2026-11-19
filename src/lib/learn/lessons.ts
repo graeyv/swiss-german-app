@@ -67,6 +67,9 @@ export type Lesson = {
   expectations: Expectation[];
   sections: Section[];
   mixed?: MixedRound;
+  // Whether its examples are Standard German words said with the dialect's accent, such as the
+  // pronunciation's, so their side is named after the accent: "Berner Akzent".
+  accent?: boolean;
 };
 
 // A lesson, with the dialect it teaches and the language it's written in. The lesson's screens

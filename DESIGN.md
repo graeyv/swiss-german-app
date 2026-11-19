@@ -166,7 +166,9 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Example list** (a rule's words): no cards, no colour. Each word in subtitle size, below it one
   caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut → gleich"), with
   only a changed sound bold. On the right, a round play button per side, on mist, teal while it
-  plays; the sides are named once above the buttons. Space between the words.
+  plays; the sides are named once above the buttons: "Hochdeutsch" and, in the pronunciation,
+  "Berner Akzent", since its words are Standard German said with the accent (a word only
+  Berndeutsch has, such as "müed", says "nur Berndeutsch"). Space between the words.
 - **Playing a recording** (`SoundBars`): every round play or speaker button is on mist, gives
   under the finger when tapped (scale 90–95 %), and while the recording plays turns teal with three
   bars bouncing in turn in place of its icon. Still with reduced motion.
@@ -192,8 +194,12 @@ topic in English); in the code and this guide they are lesson → section → ru
   result shows, so practice doesn't look lost: "Geübt heute · 9 von 10 richtig" in its row in
   Üben, and "Zuletzt geübt heute · 9 von 10 richtig" in `teal-soft` under its button at the end
   of the module's last topic. A tap still starts the round straight away.
-- **Pronunciation exercises** (`src/app/exercises/pronunciation`), in a lesson round, each with
-  one line saying what to do, and its own buttons at the bottom:
+- **Pronunciation exercises** (`src/app/exercises/pronunciation`), in a lesson round. They're
+  Standard German words said with the dialect's accent, not Berndeutsch words, and say so: each
+  starts with the eyebrow "HOCHDEUTSCH MIT BERNER AKZENT" and one line saying what to do ("Lies
+  das Wort mit Berner Akzent."). The round's first exercise adds, once, in `teal-soft`: "Die
+  Wörter bleiben hochdeutsch. So übst du zuerst nur die Laute, ohne neue Wörter." The play
+  buttons are "Hochdeutsch" and "Berner Akzent". Each has its own buttons at the bottom:
   - **Spotting letters**: the word in title size, one tile per letter on mist (bracketed letters
     such as "Ch" one tile), narrow enough for "Tätowieren" on one line. A tapped tile turns teal.
     "Prüfen" stays inactive until a tile is tapped: every word has letters that sound different.

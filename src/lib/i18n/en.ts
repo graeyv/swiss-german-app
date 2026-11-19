@@ -109,6 +109,11 @@ export const en = {
     standardGerman: "Standard German",
     // By dialect id. A dialect without a name here shows its id.
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
+    // The accent of each dialect, for pronouncing Standard German with it.
+    accents: { be: "Bernese", zh: "Zurich" } as Record<string, string>,
+    // A rule's examples said with the accent, named above their buttons.
+    accentName: (accent: string) => `${accent} accent`,
+    playAccent: (accent: string) => `Listen with a ${accent} accent`,
     play: (variety: string) => `Listen in ${variety}`,
     noRecording: "No recording yet",
     comingSoon: "Coming soon",
@@ -209,13 +214,18 @@ export const en = {
 
   // The pronunciation exercises: spotting letters, and saying words and sentences oneself.
   pronunciation: {
-    letters: (dialect: string) => `Tap the letters that sound different in ${dialect}.`,
+    // What the pronunciation exercises are: Standard German words, said with the dialect's accent.
+    frame: (accent: string) => `Standard German with a ${accent} accent`,
+    // Once, on the round's first exercise.
+    why: "The words stay Standard German, so you practise only the sounds first, without new words.",
+    letters: (accent: string) => `Which letters sound different with a ${accent} accent?`,
+    accent: (accent: string) => `${accent} accent`,
     right: "Right",
     // letters joined with "and", such as "K and ST".
     and: " and ",
     wrongChanged: (count: number, letters: string) => `Not quite: ${letters} ${count > 1 ? "sound" : "sounds"} different`,
-    say: (dialect: string) => `Read the word the way it sounds in ${dialect}. Then listen to it.`,
-    repeat: "Listen to the sentence, then say it after.",
+    say: (accent: string) => `Read the word with a ${accent} accent. Then listen to it.`,
+    repeat: (accent: string) => `Listen, then say the sentence after with a ${accent} accent.`,
     tip: "Tip: what to listen for?",
     record: "Record",
     stop: "Done",

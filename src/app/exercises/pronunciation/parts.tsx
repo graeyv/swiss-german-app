@@ -4,6 +4,7 @@ import { type ReactNode, useEffect, useRef } from "react";
 import { Button, TextButton } from "@/app/ui/button";
 import { Icon } from "@/app/ui/icons";
 import { SoundBars } from "@/app/ui/sound-bars";
+import { Eyebrow } from "@/app/ui/text";
 import { letterTiles } from "@/lib/exercises/pronunciation";
 import type { Dictionary } from "@/lib/i18n";
 import type { Player, Recorder } from "./audio";
@@ -19,6 +20,28 @@ export function MarkedWord({ word, underline = true, small = false }: { word: st
       {tile.text}
     </span>
   ));
+}
+
+// What to do, under what the exercises are: "HOCHDEUTSCH MIT BERNER AKZENT". The round's first
+// exercise also says why, once.
+export function Instruction({
+  accent,
+  first,
+  t,
+  children,
+}: {
+  accent: string;
+  first: boolean;
+  t: Dictionary["pronunciation"];
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-1">
+      <Eyebrow>{t.frame(accent)}</Eyebrow>
+      <p className="text-body">{children}</p>
+      {first && <p className="text-caption text-teal-soft">{t.why}</p>}
+    </div>
+  );
 }
 
 // Underlines the letters to watch, before the learner says it.

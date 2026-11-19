@@ -68,6 +68,8 @@ async function Practice({
       <PracticeRound
         lang={language}
         dialectName={t.lesson.dialects[dialect] ?? dialect}
+        accent={t.lesson.accents[dialect] ?? t.lesson.dialects[dialect] ?? dialect}
+        examplesWithAccent={lesson.accent === true}
         path={sectionPath(dialect, lesson.id, section.id)}
         sectionTitle={section.title}
         rules={rules}

@@ -132,7 +132,12 @@ async function RuleView({
         <p className="text-body">{rule.theory}</p>
       </div>
 
-      <ExampleList examples={rule.examples} dialectName={dialectName} t={t.lesson} />
+      <ExampleList
+        examples={rule.examples}
+        dialectName={dialectName}
+        accent={lesson.accent ? (t.lesson.accents[dialect] ?? dialectName) : undefined}
+        t={t.lesson}
+      />
 
       <Takeaway label={t.lesson.remember}>{rule.takeaway}</Takeaway>
     </LessonScreen>

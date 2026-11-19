@@ -16,7 +16,7 @@ import {
   type SayTask,
 } from "@/lib/exercises/pronunciation";
 import { useRecorder, usePlayer } from "./audio";
-import { Compare, Footer, MarkedWord, RecordButton, SelfCheck, Tip } from "./parts";
+import { Compare, Footer, Instruction, MarkedWord, RecordButton, SelfCheck, Tip } from "./parts";
 
 // The longest a recording takes: a word, and a sentence.
 const WORD_MS = 4000;
@@ -25,7 +25,10 @@ const SENTENCE_MS = 8000;
 export type PronunciationProps<T = PronunciationTask> = {
   task: T;
   texts: Dictionary;
-  dialectName: string;
+  // The dialect's accent, such as "Berner".
+  accent: string;
+  // Whether it's the round's first exercise, which says why the words stay Standard German.
+  first: boolean;
   // The rule that explains marked letters, such as "R", with a way to open it. Undefined if none.
   ruleFor: (letters: string) => { title: string; open: () => void } | undefined;
   // When the exercise is done: whether it was right the first time, or sounded the same.
@@ -42,7 +45,7 @@ export function PronunciationExercise({ task, ...props }: PronunciationProps) {
 
 // Tap the letters that sound different. Checked, the word plays in Standard German and
 // then in the dialect, and each marked letter leads to its rule.
-function Letters({ task, texts, dialectName, ruleFor, onDone }: PronunciationProps<LettersTask>) {
+function Letters({ task, texts, accent, first, ruleFor, onDone }: PronunciationProps<LettersTask>) {
   const t = texts.pronunciation;
   const tiles = letterTiles(task.word);
   const [tapped, setTapped] = useState<number[]>([]);
@@ -53,7 +56,7 @@ function Letters({ task, texts, dialectName, ruleFor, onDone }: PronunciationPro
   const right = isLettersRight(task, tapped);
   const clips = [
     { key: "standardGerman", label: texts.lesson.standardGerman, url: task.audio?.standardGerman ?? null },
-    { key: "dialect", label: dialectName, url: task.audio?.dialect ?? null },
+    { key: "dialect", label: t.accent(accent), url: task.audio?.dialect ?? null },
   ];
   // One link per rule, in the word's order.
   const rules = marked
@@ -79,7 +82,9 @@ function Letters({ task, texts, dialectName, ruleFor, onDone }: PronunciationPro
   return (
     <>
       <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
-        <p className="text-body">{t.letters(dialectName)}</p>
+        <Instruction accent={accent} first={first} t={t}>
+          {t.letters(accent)}
+        </Instruction>
         {/* Narrow enough for a long word, such as "Tätowieren", on one line. */}
         <div className="flex flex-wrap justify-center gap-0.5 pt-4">
           {tiles.map((tile, position) => (
@@ -156,7 +161,7 @@ function Letters({ task, texts, dialectName, ruleFor, onDone }: PronunciationPro
 // on, "Noch nicht" records again at once, as often as the learner likes, and "Trotzdem weiter"
 // goes on without it. A tip underlines the
 // letters to watch, and once the learner has said it they stay underlined.
-function Say({ task, texts, dialectName, onDone }: PronunciationProps<SayTask>) {
+function Say({ task, texts, accent, first, onDone }: PronunciationProps<SayTask>) {
   const t = texts.pronunciation;
   const [tip, setTip] = useState(false);
   const [tries, setTries] = useState(0);
@@ -175,7 +180,9 @@ function Say({ task, texts, dialectName, onDone }: PronunciationProps<SayTask>) 
   return (
     <>
       <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
-        <p className="text-body">{t.say(dialectName)}</p>
+        <Instruction accent={accent} first={first} t={t}>
+          {t.say(accent)}
+        </Instruction>
         <p className="flex min-h-16 items-center justify-center pt-4 text-title font-bold">
           <MarkedWord word={task.word} underline={tip || comparing} />
         </p>
@@ -215,7 +222,7 @@ function Say({ task, texts, dialectName, onDone }: PronunciationProps<SayTask>) 
 
 // Hear the sentence, say it after, then hear both and judge it, as with a word. Its letters to
 // watch are underlined behind a tip, and once the learner has said it.
-function Repeat({ task, texts, onDone }: PronunciationProps<RepeatTask>) {
+function Repeat({ task, texts, accent, first, onDone }: PronunciationProps<RepeatTask>) {
   const t = texts.pronunciation;
   const model = task.audio ?? null;
   // Without a recording yet, there's nothing to hear first.
@@ -237,7 +244,9 @@ function Repeat({ task, texts, onDone }: PronunciationProps<RepeatTask>) {
   return (
     <>
       <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
-        <p className="text-body">{t.repeat}</p>
+        <Instruction accent={accent} first={first} t={t}>
+          {t.repeat(accent)}
+        </Instruction>
         <p className="pt-4 text-center text-heading font-bold">
           <MarkedWord word={task.sentence} underline={tip || comparing} small />
         </p>

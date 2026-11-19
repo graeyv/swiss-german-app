@@ -21,6 +21,10 @@ import { ExampleList } from "../[rule]/example-list";
 type PracticeRoundProps = {
   lang: Locale;
   dialectName: string;
+  // The dialect's accent, such as "Berner", for the pronunciation exercises.
+  accent: string;
+  // Whether the rules' examples are said with the accent, as in the pronunciation.
+  examplesWithAccent: boolean;
   // The section's path in lesson_rounds, such as "be/pronunciation/consonants".
   path: string;
   sectionTitle: string;
@@ -68,6 +72,8 @@ export function PracticeRound(props: PracticeRoundProps) {
 function Round({
   lang,
   dialectName,
+  accent,
+  examplesWithAccent,
   path,
   sectionTitle,
   rules,
@@ -175,6 +181,9 @@ function Round({
           key={round[index].exercise.id}
           texts={texts}
           dialectName={dialectName}
+          accent={accent}
+          examplesWithAccent={examplesWithAccent}
+          first={index === 0}
           exercise={round[index].exercise}
           rule={rules.find(({ rule }) => rule.id === round[index].ruleId)}
           rules={rules}
@@ -191,6 +200,9 @@ function Round({
 type ExerciseProps = {
   texts: ReturnType<typeof dictionary>;
   dialectName: string;
+  accent: string;
+  examplesWithAccent: boolean;
+  first: boolean;
   exercise: LessonExercise;
   // The rule the exercise practises, if one.
   rule?: RuleRef;
@@ -205,7 +217,20 @@ type ExerciseProps = {
 // One exercise: the task, then whether it was right, with the right answer and a way to the rule
 // after a wrong one. "Weiter" waits at the bottom, within thumb reach. A pronunciation exercise
 // brings its own buttons, and leads to the rules of the letters it marks.
-function Exercise({ texts, dialectName, exercise, rule, rules, answer, onAnswer, onContinue, onDone }: ExerciseProps) {
+function Exercise({
+  texts,
+  dialectName,
+  accent,
+  examplesWithAccent,
+  first,
+  exercise,
+  rule,
+  rules,
+  answer,
+  onAnswer,
+  onContinue,
+  onDone,
+}: ExerciseProps) {
   const t = texts.practice;
   const sheet = useRef<HTMLDialogElement>(null);
   // The rule in the sheet.
@@ -230,7 +255,12 @@ function Exercise({ texts, dialectName, exercise, rule, rules, answer, onAnswer,
             <p className="text-body">{shown.rule.theory}</p>
           </div>
           {shown.rule.examples.length > 0 && (
-            <ExampleList examples={shown.rule.examples} dialectName={dialectName} t={texts.lesson} />
+            <ExampleList
+              examples={shown.rule.examples}
+              dialectName={dialectName}
+              accent={examplesWithAccent ? accent : undefined}
+              t={texts.lesson}
+            />
           )}
           <Takeaway label={texts.lesson.remember}>{shown.rule.takeaway}</Takeaway>
           <Button onClick={() => sheet.current?.close()}>{t.backToExercise}</Button>
@@ -245,7 +275,8 @@ function Exercise({ texts, dialectName, exercise, rule, rules, answer, onAnswer,
         <PronunciationExercise
           task={exercise}
           texts={texts}
-          dialectName={dialectName}
+          accent={accent}
+          first={first}
           ruleFor={(letters) => {
             const found = ruleForLetters(
               rules.map((ref) => ref.rule),
