@@ -136,6 +136,8 @@ export const en = {
     weak: "Still a bit shaky. Read the lesson again and it'll stick better.",
     readAgain: (section: string) => `Read ${section} again`,
     finish: "Done",
+    // Going on without answering an exercise.
+    skip: "Skip",
     again: "Practise again",
     // Only the exercises that were wrong.
     againMistakes: (count: number) => `Practise ${many(count, "mistake", "mistakes")}`,

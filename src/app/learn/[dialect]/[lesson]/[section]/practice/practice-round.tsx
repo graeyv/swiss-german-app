@@ -8,7 +8,7 @@ import { PronunciationExercise } from "@/app/exercises/pronunciation/pronunciati
 import { TaskView } from "@/app/exercises/task-view";
 import { answerClass, AnswerMark } from "@/app/ui/answer";
 import { BottomSheet } from "@/app/ui/bottom-sheet";
-import { Button, ButtonLink } from "@/app/ui/button";
+import { Button, ButtonLink, TextButton } from "@/app/ui/button";
 import { Icon } from "@/app/ui/icons";
 import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow } from "@/app/ui/text";
@@ -287,10 +287,12 @@ function Exercise({ texts, dialectName, exercise, rule, rules, answer, onAnswer,
         )}
       </div>
 
-      <footer className="sticky bottom-0 -mx-6 bg-ivory px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <footer className="sticky bottom-0 -mx-6 flex flex-col gap-3 bg-ivory px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         <Button disabled={answer === null} onClick={onContinue}>
           {texts.session.continue}
         </Button>
+        {/* Going on without an answer, as not right. */}
+        {answer === null && <TextButton onClick={() => onDone(false)}>{t.skip}</TextButton>}
       </footer>
 
       {ruleSheet}
@@ -433,7 +435,7 @@ function ReviewRow({ exercise, right, texts }: { exercise: LessonExercise; right
           : t.notSameYet
         : t.changed(letters.length, listOf(letters, t.and));
   } else if (exercise.type === "repeat") {
-    title = exercise.sentence;
+    title = <MarkedWord word={exercise.sentence} small />;
     caption = right ? t.soundedSame : t.notSameYet;
   } else {
     title = answerText(exercise);

@@ -210,8 +210,11 @@ topic in English); in the code and this guide they are lesson → section → ru
     learner likes), and a quiet text button "Trotzdem weiter", `teal-soft` and underlined, that
     goes on without it. One button per job, all there from the start. Without a microphone:
     "Gesagt, anhören".
-  - **Repeating a sentence**: the sentence in heading size, "Anhören" first, then as above.
+  - **Repeating a sentence**: the sentence in heading size, its letters to watch underlined in
+    sage with a thinner line behind the same tip, "Anhören" first, then as above.
   - A recording still to come is an inactive play button with "Aufnahme folgt".
+  - Until an exercise is answered, "Überspringen" under its main button goes on without it, as
+    not right. This holds for every exercise in a round.
 - **Rule sheet** (`BottomSheet`): a rule opened from an exercise, sliding up over it, so the
   exercise keeps its place: "REGEL · KONSONANTEN", the title, the theory, the examples and Merke,
   then "Zurück zur Übung". No back arrow and no lesson progress, as it isn't a step of the lesson.
@@ -243,6 +246,9 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Primary button** ("Los geht's"): teal pill, ivory text, at the bottom within thumb reach,
   above the home indicator. One per screen.
 - **Secondary button**: mist pill, teal text.
+- **Text button** (`TextButton`): a quiet way on beside the main buttons, such as "Überspringen"
+  under an exercise's main button, or "Trotzdem weiter": caption size, semibold, `teal-soft`,
+  underlined, centred, and 44 px high to tap. Never for the main action.
 - **Selected tab** in the tab bar: yellow behind the icon, teal icon and label. Other tabs teal
   without background.
 - **Progress bar**: track in mist, fill in teal.

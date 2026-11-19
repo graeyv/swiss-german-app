@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { answerClass, AnswerMark } from "@/app/ui/answer";
-import { Button } from "@/app/ui/button";
+import { Button, TextButton } from "@/app/ui/button";
 import { Icon } from "@/app/ui/icons";
 import type { Dictionary } from "@/lib/i18n";
 import {
@@ -16,7 +16,7 @@ import {
   type SayTask,
 } from "@/lib/exercises/pronunciation";
 import { useRecorder, usePlayer } from "./audio";
-import { Compare, Footer, MarkedWord, RecordButton, SelfCheck } from "./parts";
+import { Compare, Footer, MarkedWord, RecordButton, SelfCheck, Tip } from "./parts";
 
 // The longest a recording takes: a word, and a sentence.
 const WORD_MS = 4000;
@@ -132,16 +132,20 @@ function Letters({ task, texts, dialectName, ruleFor, onDone }: PronunciationPro
         {checked ? (
           <Button onClick={() => onDone(right)}>{texts.session.continue}</Button>
         ) : (
-          // Every word has letters that sound different, so there's nothing to check before one is tapped.
-          <Button
-            disabled={tapped.length === 0}
-            onClick={() => {
-              setChecked(true);
-              player.play(clips);
-            }}
-          >
-            {texts.exercises.check}
-          </Button>
+          <>
+            {/* Every word has letters that sound different, so there's nothing to check before one is tapped. */}
+            <Button
+              disabled={tapped.length === 0}
+              onClick={() => {
+                setChecked(true);
+                player.play(clips);
+              }}
+            >
+              {texts.exercises.check}
+            </Button>
+            {/* Going on without an answer, as not right. */}
+            <TextButton onClick={() => onDone(false)}>{texts.practice.skip}</TextButton>
+          </>
         )}
       </Footer>
     </>
@@ -176,16 +180,7 @@ function Say({ task, texts, dialectName, onDone }: PronunciationProps<SayTask>) 
           <MarkedWord word={task.word} underline={tip || comparing} />
         </p>
 
-        {!comparing && !tip && (
-          <button
-            type="button"
-            onClick={() => setTip(true)}
-            className="flex min-h-11 items-center gap-2 self-center rounded-full bg-mist px-4 text-caption font-semibold transition-transform active:scale-95"
-          >
-            <Icon name="bulb" size={16} />
-            {t.tip}
-          </button>
-        )}
+        {!comparing && !tip && <Tip onTip={() => setTip(true)} t={t} />}
         {!comparing && recorder.state === "denied" && (
           <p className="text-center text-caption text-teal-soft">{t.noMicrophone}</p>
         )}
@@ -208,19 +203,24 @@ function Say({ task, texts, dialectName, onDone }: PronunciationProps<SayTask>) 
         {comparing && recorder.state !== "recording" ? (
           <SelfCheck recorder={recorder} onAnswer={onDone} onRecorded={recorded} t={t} />
         ) : (
-          <RecordButton recorder={recorder} maxMs={WORD_MS} onRecorded={recorded} t={t} />
+          <>
+            <RecordButton recorder={recorder} maxMs={WORD_MS} onRecorded={recorded} t={t} />
+            {recorder.state !== "recording" && <TextButton onClick={() => onDone(false)}>{texts.practice.skip}</TextButton>}
+          </>
         )}
       </Footer>
     </>
   );
 }
 
-// Hear the sentence, say it after, then hear both and judge it, as with a word.
+// Hear the sentence, say it after, then hear both and judge it, as with a word. Its letters to
+// watch are underlined behind a tip, and once the learner has said it.
 function Repeat({ task, texts, onDone }: PronunciationProps<RepeatTask>) {
   const t = texts.pronunciation;
   const model = task.audio ?? null;
   // Without a recording yet, there's nothing to hear first.
   const [listened, setListened] = useState(!model);
+  const [tip, setTip] = useState(false);
   const [tries, setTries] = useState(0);
   const player = usePlayer();
   const recorder = useRecorder(SENTENCE_MS);
@@ -238,7 +238,10 @@ function Repeat({ task, texts, onDone }: PronunciationProps<RepeatTask>) {
     <>
       <div className="flex flex-1 flex-col gap-6 pt-4 pb-8">
         <p className="text-body">{t.repeat}</p>
-        <p className="pt-4 text-center text-heading font-bold">{task.sentence}</p>
+        <p className="pt-4 text-center text-heading font-bold">
+          <MarkedWord word={task.sentence} underline={tip || comparing} small />
+        </p>
+        {!comparing && !tip && /\[/.test(task.sentence) && <Tip onTip={() => setTip(true)} t={t} />}
         {listened && (
           <Compare
             player={player}
@@ -269,6 +272,10 @@ function Repeat({ task, texts, onDone }: PronunciationProps<RepeatTask>) {
           <SelfCheck recorder={recorder} onAnswer={onDone} onRecorded={recorded} t={t} />
         ) : (
           <RecordButton recorder={recorder} maxMs={SENTENCE_MS} onRecorded={recorded} t={t} />
+        )}
+        {/* Until it's recorded, going on without it, as not right. */}
+        {!comparing && recorder.state !== "recording" && (
+          <TextButton onClick={() => onDone(false)}>{texts.practice.skip}</TextButton>
         )}
       </Footer>
     </>

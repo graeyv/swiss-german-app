@@ -121,6 +121,7 @@ export const de: Dictionary = {
     weak: "Noch etwas wackelig. Lies die Lektion nochmals, dann sitzt es besser.",
     readAgain: (section) => `${section} nochmals lesen`,
     finish: "Fertig",
+    skip: "Überspringen",
     again: "Nochmals üben",
     againMistakes: (count) => `${count} Fehler üben`,
     review: "Deine Antworten",

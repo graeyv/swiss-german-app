@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef } from "react";
-import { Button } from "@/app/ui/button";
+import { Button, TextButton } from "@/app/ui/button";
 import { Icon } from "@/app/ui/icons";
 import { SoundBars } from "@/app/ui/sound-bars";
 import { letterTiles } from "@/lib/exercises/pronunciation";
@@ -11,7 +11,7 @@ import type { Player, Recorder } from "./audio";
 // The parts the pronunciation exercises share. See DESIGN.md.
 
 // A word as it's written, with its bracketed letters underlined in sage, unless underline is off.
-// small: for a word in body size, such as in the round's review.
+// small: a thinner line, for text in body or heading size, such as a sentence or the round's review.
 export function MarkedWord({ word, underline = true, small = false }: { word: string; underline?: boolean; small?: boolean }) {
   const line = small ? "decoration-2 underline-offset-4" : "decoration-4 underline-offset-8";
   return letterTiles(word).map((tile, position) => (
@@ -19,6 +19,20 @@ export function MarkedWord({ word, underline = true, small = false }: { word: st
       {tile.text}
     </span>
   ));
+}
+
+// Underlines the letters to watch, before the learner says it.
+export function Tip({ onTip, t }: { onTip: () => void; t: Dictionary["pronunciation"] }) {
+  return (
+    <button
+      type="button"
+      onClick={onTip}
+      className="flex min-h-11 items-center gap-2 self-center rounded-full bg-mist px-4 text-caption font-semibold transition-transform active:scale-95"
+    >
+      <Icon name="bulb" size={16} />
+      {t.tip}
+    </button>
+  );
 }
 
 // The buttons at the bottom of an exercise, within thumb reach.
@@ -148,13 +162,7 @@ export function SelfCheck({
         <Icon name="mic" size={20} />
         {t.notYet}
       </Button>
-      <button
-        type="button"
-        onClick={() => onAnswer(false)}
-        className="min-h-11 self-center px-4 text-caption font-semibold text-teal-soft underline underline-offset-4"
-      >
-        {t.skip}
-      </button>
+      <TextButton onClick={() => onAnswer(false)}>{t.skip}</TextButton>
     </>
   );
 }

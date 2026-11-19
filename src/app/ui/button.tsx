@@ -20,6 +20,18 @@ export function Button({ variant, className, type = "button", ...props }: Button
   return <button type={type} className={buttonClass(variant, className)} {...props} />;
 }
 
+// A quiet way on beside the main buttons, such as "Überspringen": underlined text in teal-soft,
+// centred, still 44 px high to tap.
+export function TextButton({ className = "", type = "button", ...props }: ComponentProps<"button">) {
+  return (
+    <button
+      type={type}
+      className={`min-h-11 self-center px-4 text-caption font-semibold text-teal-soft underline underline-offset-4 ${className}`}
+      {...props}
+    />
+  );
+}
+
 type ButtonLinkProps = ComponentProps<typeof Link> & { variant?: Variant };
 
 export function ButtonLink({ variant, className, ...props }: ButtonLinkProps) {

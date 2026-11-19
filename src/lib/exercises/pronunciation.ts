@@ -21,7 +21,7 @@ export type SayTask = {
   audio?: Recording;
 };
 
-// Hear a sentence, then say it after.
+// Hear a sentence, then say it after. Its letters to watch are in brackets too, if any.
 export type RepeatTask = {
   type: "repeat";
   sentence: string;

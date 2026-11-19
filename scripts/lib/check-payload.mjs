@@ -10,6 +10,9 @@ export const EXERCISE_TYPES = ["pick", "build", "spot_error", "letters", "say", 
 // "[Ch]a[r]a[k]te[r]": no empty or nested brackets, and no spaces.
 const MARKED_WORD = /^(?:[^\s[\]]|\[[^\s[\]]+\])+$/;
 
+// A sentence, with any letters to watch in square brackets, as in a word.
+const MARKED_SENTENCE = /^(?:[^[\]]|\[[^\s[\]]+\])+$/;
+
 // A recording's path in public/, or null until it's recorded.
 function isRecording(value) {
   return value === null || (typeof value === "string" && value.startsWith("/"));
@@ -106,7 +109,9 @@ export function payloadProblem(type, payload) {
   }
 
   if (type === "repeat") {
-    if (!isSwissGerman(payload.sentence)) return "sentence isn't text";
+    if (!isSwissGerman(payload.sentence) || !MARKED_SENTENCE.test(payload.sentence)) {
+      return "sentence needs text, with any letters to watch in [brackets]";
+    }
     if ("audio" in payload && !isRecording(payload.audio)) return "audio is a path or null";
     return null;
   }

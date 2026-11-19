@@ -457,7 +457,7 @@
       {
         "id": "charakter",
         "type": "letters",
-        "word": "[Ch]a[r]a[k]te[r]",
+        "word": "[Ch]a[r]a[k][t]e[r]",
         "audio": {
           "standardGerman": null,
           "dialect": null
@@ -466,7 +466,7 @@
       {
         "id": "wurst",
         "type": "letters",
-        "word": "Wur[st]",
+        "word": "Wu[r][st]",
         "audio": {
           "standardGerman": null,
           "dialect": null
@@ -475,7 +475,7 @@
       {
         "id": "taetowieren",
         "type": "letters",
-        "word": "[T][ä]towie[r]en",
+        "word": "[T][ä][t][o]wie[r]en",
         "audio": {
           "standardGerman": null,
           "dialect": null
@@ -484,7 +484,7 @@
       {
         "id": "tueroel",
         "type": "letters",
-        "word": "T[ü]r[ö]l",
+        "word": "[T][ü][r][ö]l",
         "audio": {
           "standardGerman": null,
           "dialect": null
@@ -517,13 +517,13 @@
       {
         "id": "maedchen",
         "type": "repeat",
-        "sentence": "Das Mädchen kauft ein Stück Käse, fünf Brötchen und frisches Gemüse.",
+        "sentence": "Da[s] M[ä]d[ch]en [K]auft ein Stü[ck] [K][ä][s]e, fünf B[r][ö][t][ch]en und f[r]isches Gemü[s]e.",
         "audio": null
       },
       {
         "id": "gaeste",
         "type": "repeat",
-        "sentence": "Die Gäste sitzen draussen, essen Äpfel und hören dem Musiker zu.",
+        "sentence": "Die G[ä][st]e [s]itzen d[r]aussen, essen [Ä]pfel und h[ö][r]en dem Mu[s]i[k]e[r] zu.",
         "audio": null
       }
     ]

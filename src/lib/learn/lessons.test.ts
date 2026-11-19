@@ -84,8 +84,9 @@ describe("lessons", () => {
       const rules = lesson.sections.flatMap((section) => section.rules);
       for (const unit of practiceUnits(lesson)) {
         for (const exercise of unit.exercises ?? []) {
-          if (exercise.type !== "letters" && exercise.type !== "say") continue;
-          for (const tile of letterTiles(exercise.word).filter(({ marked }) => marked)) {
+          const text = exercise.type === "letters" || exercise.type === "say" ? exercise.word : exercise.type === "repeat" ? exercise.sentence : null;
+          if (!text) continue;
+          for (const tile of letterTiles(text).filter(({ marked }) => marked)) {
             expect(ruleForLetters(rules, tile.text), `${lesson.id}, ${exercise.id}: ${tile.text}`).toBeDefined();
           }
         }

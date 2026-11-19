@@ -90,6 +90,7 @@ until they're recorded; until then their play buttons say "Aufnahme folgt".
   sounded the same. A tip underlines the bracketed letters, and after recording they stay
   underlined.
 - `repeat`: `{"sentence", "audio"?}`. The learner hears the sentence, records it and judges it.
+  Its letters to watch can be bracketed too, and a tip underlines them, as for `say`.
 
 Learners can record themselves as often as they like. Saying counts as right when they say it
 sounded the same. Their recordings stay in the browser.
