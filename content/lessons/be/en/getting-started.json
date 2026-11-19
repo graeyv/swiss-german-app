@@ -1,45 +1,111 @@
 {
   "id": "getting-started",
   "title": "Getting started",
-  "subtitle": "Your first words in Bernese German",
+  "subtitle": "Your first steps in Swiss German",
   "icon": "wave",
-  "description": "Pronunciation, greetings, introductions, basic expressions, yes and no, and numbers.",
-  "expectations": [],
+  "description": "Discover how Swiss German sounds and learn the first words and expressions you'll need in everyday life.",
+  "expectations": [
+    {
+      "icon": "link",
+      "title": "Understand how Swiss German relates to Standard German"
+    },
+    {
+      "icon": "headphones",
+      "title": "Hear and recognise Swiss German sounds and pronunciation"
+    },
+    {
+      "icon": "chat",
+      "title": "Start communicating with your first words, greetings and everyday expressions"
+    }
+  ],
   "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "description": "Before learning individual words, discover how Swiss German relates to Standard German, how people write it, and how its spelling connects to pronunciation.",
+      "planned": [
+        "Two forms of German",
+        "Speaking vs. writing",
+        "How is Swiss German written?",
+        "One word, different spellings",
+        "Your learning convention",
+        "Letters don't always sound the same",
+        "What you will learn next"
+      ],
+      "rules": []
+    },
     {
       "id": "pronunciation",
       "title": "Pronunciation",
-      "description": "How Bernese German sounds, and how to say it.",
+      "description": "Learn the sounds of your dialect and discover how to pronounce words naturally.",
+      "planned": [
+        "A, E, I, O, U",
+        "Ä",
+        "Ö",
+        "Ü",
+        "Short and long vowels",
+        "CH",
+        "SCH",
+        "R",
+        "ST and SP",
+        "EI and IE",
+        "AU",
+        "UE and ÜE",
+        "Word stress",
+        "Sentence rhythm and intonation",
+        "Connected speech"
+      ],
       "rules": []
     },
     {
-      "id": "greetings",
-      "title": "Greetings",
-      "description": "Saying hello and goodbye, formally and informally.",
+      "id": "greetings-and-introductions",
+      "title": "Greetings & introductions",
+      "description": "Say hello and introduce yourself.",
+      "planned": [
+        "Saying hello and goodbye",
+        "Introducing yourself",
+        "Asking someone's name",
+        "Asking where someone is from",
+        "Formal and informal greetings"
+      ],
       "rules": []
     },
     {
-      "id": "introductions",
-      "title": "Introductions",
-      "description": "Saying who you are, and asking others.",
-      "rules": []
-    },
-    {
-      "id": "basic-expressions",
-      "title": "Basic expressions",
-      "description": "Please, thank you, sorry and other words you need every day.",
+      "id": "everyday-expressions",
+      "title": "Everyday expressions",
+      "description": "Learn useful words and phrases.",
+      "planned": [
+        "Please and thank you",
+        "Apologies",
+        "Asking someone to repeat",
+        "Saying you don't understand",
+        "Common reactions"
+      ],
       "rules": []
     },
     {
       "id": "yes-and-no",
-      "title": "Yes and no",
-      "description": "Agreeing, disagreeing and everything in between.",
+      "title": "Yes & no",
+      "description": "Agree, disagree and respond.",
+      "planned": [
+        "Saying yes and no",
+        "Agreeing and disagreeing",
+        "Expressing uncertainty",
+        "Giving short responses"
+      ],
       "rules": []
     },
     {
       "id": "numbers",
       "title": "Numbers",
-      "description": "Counting, prices, times and phone numbers.",
+      "description": "Count and use numbers.",
+      "planned": [
+        "Numbers 0–20",
+        "Numbers 20–100",
+        "Phone numbers",
+        "Prices",
+        "Age and dates"
+      ],
       "rules": []
     }
   ]

@@ -87,7 +87,7 @@ export const en = {
   lesson: {
     leave: "Leave module",
     number: (number: number) => `Module ${number}`,
-    expect: "What to expect",
+    expect: "What you'll learn",
     topicsHeading: "Lessons",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
