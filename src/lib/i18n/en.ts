@@ -347,7 +347,6 @@ export const en = {
     step: (current: number, total: number) => `Step ${current} of ${total}`,
     back: "Back",
     next: "Next",
-    skip: "Skip",
     // The first question, which sets the learner's track and the app's language. It's shown in
     // German and English together, and each answer in its own language.
     track: {
@@ -385,29 +384,27 @@ export const en = {
         understood: "Got it",
       },
     },
-    level: {
-      heading: "How familiar are you with Swiss German?",
-      options: {
-        new: { label: "I’m just starting", hint: "Swiss German is new to me" },
-        few_words: { label: "I know a few words", hint: "Like Grüezi and Merci" },
-        understands: { label: "I understand a fair amount", hint: "But I don’t speak it yet" },
-        speaks: { label: "I can hold a simple conversation", hint: "And want to get better" },
-      },
-    },
-    topics: {
-      heading: "Which topics interest you?",
-      intro: "Pick as many as you like. We’ll show them first.",
-    },
+    // The last screen: how Hoi works, then the pace.
     pace: {
       heading: "How Hoi works",
-      points: [
-        { icon: "📚", text: "You learn a few new words every day." },
-        { icon: "🔁", text: "Hoi brings each word back just before you’d forget it." },
-        { icon: "⏱️", text: "A few minutes a day is enough." },
-      ],
-      choose: "Choose your pace",
+      // The three main tabs, named as in the tab bar.
+      tabs: [
+        { id: "learn", text: (dialect: string) => `Short lessons: how ${dialect} sounds and works.` },
+        { id: "practice", text: () => "A few words every day, and exercises on the lessons." },
+        { id: "talk", text: () => "Real everyday dialogues to listen to." },
+      ] as { id: "learn" | "practice" | "talk"; text: (dialect: string) => string }[],
+      remember: {
+        title: "Words that stick",
+        text: "Hoi shows you each word again just before you'd forget it.",
+        // When one word comes back, as an example.
+        reviews: ["Today", "Tomorrow", "3 days", "1 week", "1 month"],
+      },
+      choose: "How many new words a day?",
+      chooseNote: "Choose your pace. More new words also means more reviews.",
+      perDay: "a day",
       recommended: "Recommended",
-      finish: "Start learning",
+      changeLater: "You can change this in your profile at any time",
+      finish: "Let's go",
       saving: "Saving…",
       notSaved: (error: string) => `Not saved: ${error}`,
     },

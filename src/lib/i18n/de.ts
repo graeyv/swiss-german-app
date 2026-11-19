@@ -302,7 +302,6 @@ export const de: Dictionary = {
     step: (current, total) => `Schritt ${current} von ${total}`,
     back: "Zurück",
     next: "Weiter",
-    skip: "Überspringen",
     track: {
       question: "Sprichst du Hochdeutsch?",
       answer: "Ja, ich spreche Hochdeutsch",
@@ -336,29 +335,24 @@ export const de: Dictionary = {
         understood: "Verstanden",
       },
     },
-    level: {
-      heading: "Wie gut kennst du Schweizerdeutsch?",
-      options: {
-        new: { label: "Ich fange gerade an", hint: "Schweizerdeutsch ist neu für mich" },
-        few_words: { label: "Ich kenne ein paar Wörter", hint: "Wie Grüezi und Merci" },
-        understands: { label: "Ich verstehe schon einiges", hint: "Aber ich spreche es noch nicht" },
-        speaks: { label: "Ich kann ein einfaches Gespräch führen", hint: "Und möchte besser werden" },
-      },
-    },
-    topics: {
-      heading: "Welche Themen interessieren dich?",
-      intro: "Wähle so viele, wie du möchtest. Wir zeigen sie dir zuerst.",
-    },
     pace: {
       heading: "So funktioniert Hoi",
-      points: [
-        { icon: "📚", text: "Du lernst jeden Tag ein paar neue Wörter." },
-        { icon: "🔁", text: "Hoi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest." },
-        { icon: "⏱️", text: "Ein paar Minuten am Tag reichen." },
+      tabs: [
+        { id: "learn", text: (dialect) => `Kurze Lektionen: wie ${dialect} klingt und funktioniert.` },
+        { id: "practice", text: () => "Jeden Tag ein paar Wörter, dazu Übungen zu den Lektionen." },
+        { id: "talk", text: () => "Echte Dialoge aus dem Alltag zum Zuhören." },
       ],
-      choose: "Wähle dein Tempo",
+      remember: {
+        title: "Wörter, die bleiben",
+        text: "Hoi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest.",
+        reviews: ["Heute", "Morgen", "3 Tage", "1 Woche", "1 Monat"],
+      },
+      choose: "Wie viele neue Wörter am Tag?",
+      chooseNote: "Wähle dein Tempo. Mehr neue Wörter heisst auch mehr Wiederholungen.",
+      perDay: "pro Tag",
       recommended: "Empfohlen",
-      finish: "Los geht’s",
+      changeLater: "Du kannst das jederzeit im Profil ändern",
+      finish: "Los geht's",
       saving: "Wird gespeichert…",
       notSaved: (error) => `Nicht gespeichert: ${error}`,
     },

@@ -265,12 +265,20 @@ topic in English); in the code and this guide they are lesson → section → ru
   the screen's one yellow. Under it, always, "Du kannst später wechseln · You can switch later".
 - **Choosing the dialect** (onboarding's second question): "Welchen Dialekt möchtest du lernen?"
   in title size, then a card on mist per dialect: its canton's flag (square, 48 px, rounded
-  corners, no frame), the name in dialect ("Bärndütsch") in subtitle size, and "Bern und Umgebung" below, or
+  corners, no frame), the name in dialect ("Bärndütsch") in bold body size, and "Bern und Umgebung" below, or
   for a dialect not ready yet the name in `teal-soft` with a "Kommt vor dem Launch" or "Kommt
   später" pill and no check. The chosen one is on sage with a teal check; while only one is
   ready, it's chosen from the start. Below, "Nicht sicher?" opens three points on which to pick,
   and "Du kannst später wechseln", as on the track question. The flags are in `public/flags/`;
   they're cantonal emblems, whose use Swiss law restricts.
+- **How Hoi works** (onboarding's last screen): "So funktioniert Hoi", the three main tabs as an
+  icon list (icon in `teal-soft`, name in bold, one line below), and "Wörter, die bleiben": one
+  sentence and one word's reviews as small teal dots on a thin sage-light line (Heute, Morgen,
+  3 Tage, 1 Woche, 1 Monat), the gaps growing and the labels taking turns below and above. All of
+  that only informs, so it's plain text without cards. Then the one choice, "Wie viele neue Wörter
+  am Tag?": three cards on mist (5, 10, 20 "pro Tag", Locker, Stetig, Intensiv), each with a check
+  circle at the bottom like every onboarding choice, "Stetig" chosen and tagged "Empfohlen" in
+  yellow. Below, "Du kannst das jederzeit im Profil ändern", and "Los geht's" at the bottom.
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick
