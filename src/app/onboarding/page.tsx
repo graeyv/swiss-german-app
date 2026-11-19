@@ -3,9 +3,15 @@ import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { getToday } from "@/lib/flashcards/data";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
+import { lessonsFor } from "@/lib/learn/lessons";
 import { isLevel } from "@/lib/onboarding";
 import { createClient } from "@/lib/supabase/server";
 import { OnboardingFlow } from "./onboarding-flow";
+
+// A track's modules, for the first question.
+function modulesOf(language: "de" | "en") {
+  return lessonsFor(language).map(({ lesson }) => ({ title: lesson.title, icon: lesson.icon }));
+}
 
 export default function OnboardingPage() {
   return (
@@ -39,6 +45,7 @@ async function Onboarding() {
           .map(({ code, title, emoji }) => ({ code, title, emoji }))}
         initialLevel={isLevel(profile.data?.swiss_german_level) ? profile.data.swiss_german_level : null}
         initialInterests={profile.data?.interests ?? []}
+        tracks={{ de: modulesOf("de"), en: modulesOf("en") }}
       />
     </>
   );

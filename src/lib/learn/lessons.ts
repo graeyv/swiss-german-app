@@ -33,13 +33,30 @@ export type Example = {
 // unique in its lesson file, such as "ch-1".
 export type LessonExercise = (Task | PronunciationTask) & { id: string };
 
+// A point in a list: a line of text, or a term in bold with what it is, such as "CH" and "a
+// distinctive sound that is uncommon in English".
+export type Point = string | { term: string; text: string };
+
+// A list under the theory, with an optional heading, such as "Everyday conversations".
+export type PointList = { heading?: string; items: Point[] };
+
+// A phrase in the dialect with what it means, and optionally how Standard German says it. audio:
+// its recording, null until recorded; without the field, the phrase has no play button.
+export type Phrase = { dialect: string; meaning: string; standardGerman?: string; audio?: string | null };
+
 export type Rule = {
   id: string;
   title: string;
   theory: string;
+  // Lists after the theory, when it's easier to read in points.
+  points?: PointList[];
+  // Phrases that show the rule, such as "Wie gaht's?". For words to compare by their sound, use
+  // examples.
+  phrases?: Phrase[];
   examples: Example[];
-  // The rule in one sentence, to remember.
-  takeaway: string;
+  // The rule in one sentence, to remember. A topic that only leads on, such as one saying what
+  // comes next, has none.
+  takeaway?: string;
   // Practised together with the other rules of its section, at the end of the section.
   exercises?: LessonExercise[];
 };

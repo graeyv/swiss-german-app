@@ -102,6 +102,8 @@ export const en = {
     // Where a topic is in its section, such as "Consonants · 2 / 6".
     position: (section: string, position: number, count: number) => `${section} · ${position} / ${count}`,
     remember: "Remember",
+    // A play button beside a phrase.
+    listen: "Listen",
     // Marks a word that sounds the same in Standard German and the dialect.
     same: "same",
     // For screen readers, in place of the Standard German side of a dialect-only word.
@@ -346,9 +348,25 @@ export const en = {
     back: "Back",
     next: "Next",
     skip: "Skip",
-    language: {
-      heading: "Which language do you prefer?",
-      intro: "Hoi will use it for everything. You can change it at any time.",
+    // The first question, which sets the learner's track and the app's language. It's shown in
+    // German and English together, and each answer in its own language.
+    track: {
+      question: "Do you speak German?",
+      answer: "No, I'll learn in English",
+      what: "You learn Swiss German from the very start.",
+      path: "Your path",
+      modules: (count: number) => many(count, "module", "modules"),
+      recommended: "Recommended",
+      notSure: "Not sure?",
+      switchLater: "You can switch later",
+      // A sentence of Standard German to read, for the unsure.
+      test: {
+        heading: "Quick test",
+        sentence: "Gestern habe ich mit meinen Nachbarn über das Wetter gesprochen.",
+        question: "Do you understand this sentence?",
+        yes: "Yes, easily",
+        no: "Not really",
+      },
     },
     level: {
       heading: "How familiar are you with Swiss German?",

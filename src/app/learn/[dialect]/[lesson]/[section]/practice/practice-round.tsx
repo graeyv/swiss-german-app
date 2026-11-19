@@ -10,13 +10,12 @@ import { answerClass, AnswerMark } from "@/app/ui/answer";
 import { BottomSheet } from "@/app/ui/bottom-sheet";
 import { Button, ButtonLink, TextButton } from "@/app/ui/button";
 import { Icon } from "@/app/ui/icons";
-import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow } from "@/app/ui/text";
 import { isPronunciationTask, listOf, markedLetters, ruleForLetters } from "@/lib/exercises/pronunciation";
 import { answerText, isCorrect, type Response } from "@/lib/exercises/tasks";
 import { type Dictionary, dictionary, type Locale } from "@/lib/i18n";
 import type { LessonExercise, Rule } from "@/lib/learn/lessons";
-import { ExampleList } from "../[rule]/example-list";
+import { RuleBody } from "../[rule]/rule-body";
 
 type PracticeRoundProps = {
   lang: Locale;
@@ -254,15 +253,12 @@ function Exercise({
             </div>
             <p className="text-body">{shown.rule.theory}</p>
           </div>
-          {shown.rule.examples.length > 0 && (
-            <ExampleList
-              examples={shown.rule.examples}
-              dialectName={dialectName}
-              accent={examplesWithAccent ? accent : undefined}
-              t={texts.lesson}
-            />
-          )}
-          <Takeaway label={texts.lesson.remember}>{shown.rule.takeaway}</Takeaway>
+          <RuleBody
+            rule={shown.rule}
+            dialectName={dialectName}
+            accent={examplesWithAccent ? accent : undefined}
+            t={texts.lesson}
+          />
           <Button onClick={() => sheet.current?.close()}>{t.backToExercise}</Button>
         </div>
       )}

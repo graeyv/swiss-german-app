@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ButtonLink } from "@/app/ui/button";
 import { Icon } from "@/app/ui/icons";
-import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import {
@@ -17,9 +16,9 @@ import {
 } from "@/lib/learn/lessons";
 import { rulePath } from "@/lib/learn/progress";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
-import { ExampleList } from "./example-list";
 import { LastResult } from "./last-result";
 import { MarkRead } from "./mark-read";
+import { RuleBody } from "./rule-body";
 
 export function generateStaticParams() {
   return ruleParams();
@@ -132,14 +131,12 @@ async function RuleView({
         <p className="text-body">{rule.theory}</p>
       </div>
 
-      <ExampleList
-        examples={rule.examples}
+      <RuleBody
+        rule={rule}
         dialectName={dialectName}
         accent={lesson.accent ? (t.lesson.accents[dialect] ?? dialectName) : undefined}
         t={t.lesson}
       />
-
-      <Takeaway label={t.lesson.remember}>{rule.takeaway}</Takeaway>
     </LessonScreen>
   );
 }

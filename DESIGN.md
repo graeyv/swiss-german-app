@@ -169,6 +169,15 @@ topic in English); in the code and this guide they are lesson → section → ru
   plays; the sides are named once above the buttons: "Hochdeutsch" and, in the pronunciation,
   "Berner Akzent", since its words are Standard German said with the accent (a word only
   Berndeutsch has, such as "müed", says "nur Berndeutsch"). Space between the words.
+- **Points** (a topic's lists, after its theory): an optional heading in body size, bold, then
+  each point on its own line with a small `teal-soft` dot, 12 px apart. A point with a term (such
+  as "CH" or "Vowels") is a row on mist instead, the term bold and what it is below as a caption,
+  so terms stand apart from the heading.
+- **Phrases** (a topic's example phrases): like the example list, without columns. Each phrase in
+  the dialect in subtitle size, below it its meaning as a caption and, if given, "Standard German:
+  Wie geht es dir?", and on the right a play button once it has a recording to come.
+- A topic's "Merke" is optional: a topic that only leads on, such as "What you will learn next",
+  ends on its points.
 - **Playing a recording** (`SoundBars`): every round play or speaker button is on mist, gives
   under the finger when tapped (scale 90–95 %), and while the recording plays turns teal with three
   bars bouncing in turn in place of its icon. Still with reduced motion.
@@ -245,6 +254,15 @@ topic in English); in the code and this guide they are lesson → section → ru
   "Mehr neue Karten heute heisst mehr Wiederholungen in den nächsten Tagen" below. Until midnight,
   the goal card shows "12 · ohne Limit" and a pill "Ohne Limit bis Mitternacht". Reviews of known
   words stay limited.
+- **Choosing the track** (onboarding's first question): "Sprichst du Hochdeutsch?" in title size,
+  with "Do you speak German?" below in subtitle size and `teal-soft`, as the learner may read
+  either. Two answer cards on mist, each in its own language: an icon on an ivory circle, the
+  answer in bold, one line on what it means, and a check circle on the right. The chosen card
+  turns sage with a teal check, and unfolds its path on an ivory panel inside it ("DEIN LERNWEG ·
+  5 Module", each module with its icon). Below, a mist pill "Nicht sicher? · Not sure?" opens a
+  quick test in a sheet: one Standard German sentence, "Verstehst du diesen Satz?", and "Ja, gut"
+  or "Not really", which choose the answer and put a small yellow "Empfohlen" tag on its edge,
+  the screen's one yellow. Under it, always, "Du kannst später wechseln · You can switch later".
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick

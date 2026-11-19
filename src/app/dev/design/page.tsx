@@ -32,6 +32,12 @@ export default function DevDesignPage() {
         <p className="text-body text-teal-soft">Alles aus DESIGN.md, so wie es auf den Screens aussieht.</p>
       </div>
 
+      <Part title="Englischer Track: erste Lektion (Entwurf)">
+        <ListRows>
+          <ListRow href="/dev/design/introduction" icon="wave" title="Getting started · Introduction" caption="7 Themen aus dem Curriculum-Entwurf" />
+        </ListRows>
+      </Part>
+
       <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
         <VariantPreview />
       </Part>

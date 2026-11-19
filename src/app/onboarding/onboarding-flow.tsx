@@ -4,9 +4,10 @@ import { useState, useTransition } from "react";
 import { setLocale } from "@/app/(tabs)/actions";
 import { PaceOptions } from "@/app/(tabs)/flashcards/pace-options";
 import { PRESETS } from "@/lib/flashcards/daily-plan";
-import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
+import { dictionary, type Locale } from "@/lib/i18n";
 import { LEVELS, type Level, suggestedPace } from "@/lib/onboarding";
 import { finishOnboarding } from "./actions";
+import { TrackStep, type TrackModule } from "./track-step";
 
 type Topic = { code: string; title: string; emoji: string | null };
 
@@ -15,9 +16,11 @@ type OnboardingFlowProps = {
   topics: Topic[];
   initialLevel: Level | null;
   initialInterests: string[];
+  // Each track's modules, for the first question.
+  tracks: Record<Locale, TrackModule[]>;
 };
 
-const STEPS = ["language", "level", "topics", "pace"] as const;
+const STEPS = ["track", "level", "topics", "pace"] as const;
 
 const primaryButton =
   "w-full rounded-full bg-accent px-6 py-4 text-lg font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50";
@@ -29,14 +32,17 @@ function optionClass(selected: boolean) {
 }
 
 // Four short questions, one per screen. Every one can be skipped, and the app has a sensible
-// default for each.
-export function OnboardingFlow({ locale, topics, initialLevel, initialInterests }: OnboardingFlowProps) {
+// default for each: skipping the first keeps the track of the browser's language.
+export function OnboardingFlow({ locale, topics, initialLevel, initialInterests, tracks }: OnboardingFlowProps) {
   const t = dictionary(locale).onboarding;
   const [step, setStep] = useState(0);
   const [level, setLevel] = useState<Level | null>(initialLevel);
   const [interests, setInterests] = useState<ReadonlySet<string>>(new Set(initialInterests));
   // Null until the learner picks a pace; until then, the one suggested for their level.
   const [pace, setPace] = useState<number | null>(null);
+  // The track answered, and the one the quick test recommended, if it was done.
+  const [track, setTrack] = useState<Locale | null>(null);
+  const [recommendedTrack, setRecommendedTrack] = useState<Locale | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -97,24 +103,19 @@ export function OnboardingFlow({ locale, topics, initialLevel, initialInterests 
       </header>
 
       <section className="flex flex-1 flex-col gap-6">
-        {current === "language" && (
-          <>
-            <Heading title={t.language.heading} intro={t.language.intro} />
-            <div className="flex flex-col gap-3">
-              {LOCALES.map((option) => (
-                <button
-                  key={option}
-                  aria-pressed={option === locale}
-                  disabled={pending}
-                  // Switching straight away shows the rest of onboarding in that language.
-                  onClick={() => startTransition(async () => void (await setLocale(option)))}
-                  className={optionClass(option === locale)}
-                >
-                  <span className="text-lg font-semibold">{dictionary(option).languageName}</span>
-                </button>
-              ))}
-            </div>
-          </>
+        {current === "track" && (
+          <TrackStep
+            modules={tracks}
+            chosen={track}
+            recommended={recommendedTrack}
+            pending={pending}
+            onChoose={(choice, recommended) => {
+              setTrack(choice);
+              if (recommended) setRecommendedTrack(choice);
+              // Switching straight away shows the rest of the onboarding in that language.
+              if (choice !== locale) startTransition(async () => void (await setLocale(choice)));
+            }}
+          />
         )}
 
         {current === "level" && (
@@ -207,7 +208,7 @@ export function OnboardingFlow({ locale, topics, initialLevel, initialInterests 
             {pending ? t.pace.saving : t.pace.finish}
           </button>
         ) : (
-          <button onClick={next} disabled={pending} className={primaryButton}>
+          <button onClick={next} disabled={pending || (current === "track" && !track)} className={primaryButton}>
             {t.next}
           </button>
         )}

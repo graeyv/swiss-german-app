@@ -95,6 +95,7 @@ export const de: Dictionary = {
     done: "Fertig",
     position: (section, position, count) => `${section} · ${position} / ${count}`,
     remember: "Merke",
+    listen: "Anhören",
     same: "gleich",
     onlyIn: (variety) => `nur ${variety}`,
     becomes: "wird zu",
@@ -302,9 +303,22 @@ export const de: Dictionary = {
     back: "Zurück",
     next: "Weiter",
     skip: "Überspringen",
-    language: {
-      heading: "Welche Sprache bevorzugst du?",
-      intro: "Hoi verwendet sie überall. Du kannst sie jederzeit ändern.",
+    track: {
+      question: "Sprichst du Hochdeutsch?",
+      answer: "Ja, ich spreche Hochdeutsch",
+      what: "Du lernst, was Schweizerdeutsch anders macht.",
+      path: "Dein Lernweg",
+      modules: (count) => many(count, "Modul", "Module"),
+      recommended: "Empfohlen",
+      notSure: "Nicht sicher?",
+      switchLater: "Du kannst später wechseln",
+      test: {
+        heading: "Kurzer Test",
+        sentence: "Gestern habe ich mit meinen Nachbarn über das Wetter gesprochen.",
+        question: "Verstehst du diesen Satz?",
+        yes: "Ja, gut",
+        no: "Nicht wirklich",
+      },
     },
     level: {
       heading: "Wie gut kennst du Schweizerdeutsch?",
