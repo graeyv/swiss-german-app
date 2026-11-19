@@ -40,9 +40,9 @@ export function DialectStep({ locale, chosen, onChoose }: DialectStepProps) {
                 selected ? "bg-sage" : "bg-mist"
               }`}
             >
-              {/* The canton's flag, square like the cantons' own, as it is. */}
+              {/* The canton's flag, square like the cantons' own, with rounded corners. */}
               {/* eslint-disable-next-line @next/next/no-img-element -- a small, local SVG */}
-              <img src={dialect.flag} alt="" className="size-12 shrink-0" />
+              <img src={dialect.flag} alt="" className="size-12 shrink-0 rounded-xl" />
               <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span lang="gsw" className={`text-subtitle font-bold ${ready ? "" : "text-teal-soft"}`}>
                   {dialect.name}

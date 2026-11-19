@@ -264,8 +264,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   or "Not really", which choose the answer and put a small yellow "Empfohlen" tag on its edge,
   the screen's one yellow. Under it, always, "Du kannst später wechseln · You can switch later".
 - **Choosing the dialect** (onboarding's second question): "Welchen Dialekt möchtest du lernen?"
-  in title size, then a card on mist per dialect: its canton's flag as it is (square, 48 px, no
-  frame), the name in dialect ("Bärndütsch") in subtitle size, and "Bern und Umgebung" below, or
+  in title size, then a card on mist per dialect: its canton's flag (square, 48 px, rounded
+  corners, no frame), the name in dialect ("Bärndütsch") in subtitle size, and "Bern und Umgebung" below, or
   for a dialect not ready yet the name in `teal-soft` with a "Kommt vor dem Launch" or "Kommt
   später" pill and no check. The chosen one is on sage with a teal check; while only one is
   ready, it's chosen from the start. Below, "Nicht sicher?" opens three points on which to pick,
