@@ -450,5 +450,82 @@
         }
       ]
     }
-  ]
+  ],
+  "mixed": {
+    "title": "Aussprache",
+    "exercises": [
+      {
+        "id": "charakter",
+        "type": "letters",
+        "word": "[Ch]a[r]a[k]te[r]",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "wurst",
+        "type": "letters",
+        "word": "Wur[st]",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "taetowieren",
+        "type": "letters",
+        "word": "[T][ä]towie[r]en",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "tueroel",
+        "type": "letters",
+        "word": "T[ü]r[ö]l",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "treppe",
+        "type": "say",
+        "word": "[T][r]e[pp]e",
+        "audio": null
+      },
+      {
+        "id": "kasper",
+        "type": "say",
+        "word": "[K]a[sp]e[r]",
+        "audio": null
+      },
+      {
+        "id": "voegel",
+        "type": "say",
+        "word": "V[ö]gel",
+        "audio": null
+      },
+      {
+        "id": "zaehne",
+        "type": "say",
+        "word": "Z[ä]hne",
+        "audio": null
+      },
+      {
+        "id": "maedchen",
+        "type": "repeat",
+        "sentence": "Das Mädchen kauft ein Stück Käse, fünf Brötchen und frisches Gemüse.",
+        "audio": null
+      },
+      {
+        "id": "gaeste",
+        "type": "repeat",
+        "sentence": "Die Gäste sitzen draussen, essen Äpfel und hören dem Musiker zu.",
+        "audio": null
+      }
+    ]
+  }
 }

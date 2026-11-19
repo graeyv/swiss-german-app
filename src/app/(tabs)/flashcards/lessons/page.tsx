@@ -6,7 +6,7 @@ import { ListRow, ListRows } from "@/app/ui/list-row";
 import { type Dictionary, dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { exercisesHref, hasExercises, LESSONS, lessonHref, practiceHref } from "@/lib/learn/lessons";
-import { getReads, readCount } from "@/lib/learn/progress";
+import { getReads, isReadThrough, readCount, topicsOf } from "@/lib/learn/progress";
 import { getRounds, practiceSections, roundOf, type Suggestion, suggest } from "@/lib/learn/suggestion";
 import { createClient } from "@/lib/supabase/server";
 import { PracticeSwitch } from "../practice-switch";
@@ -47,13 +47,22 @@ async function LessonExercises() {
             }
             const own = sections.filter((item) => item.entry === entry);
             const practised = own.filter((item) => roundOf(rounds, item)).length;
+            const only = own.length === 1 ? roundOf(rounds, own[0]) : undefined;
+            const caption =
+              own.length > 1
+                ? t.practice.sectionsPractised(practised, own.length)
+                : only
+                  ? t.practice.practisedScore(t.practice.ago(only.daysAgo), only.correct, only.total)
+                  : isReadThrough(entry, own[0].section, reads.read)
+                    ? t.practice.readNotPractised
+                    : t.practice.mixedAfter;
             return (
               <ListRow
                 key={key}
                 href={exercisesHref(entry.dialect, entry.lesson)}
                 icon={icon}
                 title={entry.lesson.title}
-                caption={t.practice.sectionsPractised(practised, own.length)}
+                caption={caption}
               />
             );
           })}
@@ -90,7 +99,7 @@ function SuggestionCard({ suggestion, reads, t }: { suggestion: Suggestion; read
     action = t.practice.start;
     if (suggestion.kind === "practise") {
       title = t.practice.practiseSection(section.title);
-      caption = t.practice.allRead(section.rules.length);
+      caption = t.practice.allRead(topicsOf(entry, section));
     } else {
       const { daysAgo, correct, total } = suggestion.round;
       title = t.practice.refresh(section.title);

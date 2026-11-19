@@ -5,10 +5,20 @@ import { Icon } from "@/app/ui/icons";
 import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
-import { findLesson, findRule, lessonHref, practiceHref, roundExercises, ruleParams } from "@/lib/learn/lessons";
+import {
+  findLesson,
+  findRule,
+  lessonHref,
+  mixedSection,
+  practiceHref,
+  roundExercises,
+  ruleParams,
+  sectionPath,
+} from "@/lib/learn/lessons";
 import { rulePath } from "@/lib/learn/progress";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
 import { ExampleList } from "./example-list";
+import { LastResult } from "./last-result";
 import { MarkRead } from "./mark-read";
 
 export function generateStaticParams() {
@@ -51,9 +61,12 @@ async function RuleView({
       {t.lesson.previous}
     </ButtonLink>
   );
-  // The section's last topic leads to its exercises, if it has any.
-  const exercises = roundExercises(section).length;
-  const lastWithExercises = place.position === place.count && exercises > 0;
+  // The section's last topic leads to its exercises, if it has any, and the module's last topic to
+  // the module's round, such as "Aussprache üben".
+  const moduleRound = !next ? mixedSection(lesson) : undefined;
+  const round = moduleRound ?? (place.position === place.count ? section : undefined);
+  const exercises = round ? roundExercises(round).length : 0;
+  const lastWithExercises = round !== undefined && exercises > 0;
 
   return (
     <LessonScreen
@@ -73,10 +86,14 @@ async function RuleView({
         lastWithExercises ? (
           // The end of a section with exercises: practising it comes first, going on later.
           <div className="flex w-full flex-col gap-3">
-            <ButtonLink href={`${practiceHref(dialect, lesson, section)}?from=learn`}>
+            <ButtonLink href={`${practiceHref(dialect, lesson, round)}?from=learn`}>
               <Icon name="puzzle" size={20} />
-              {t.practice.practise(section.title, exercises)}
+              {t.practice.practise(round.title, exercises)}
             </ButtonLink>
+            {/* The rest of the page is the same for everyone, so only this waits for the learner. */}
+            <Suspense fallback={null}>
+              <LastResult path={sectionPath(dialect, lesson.id, round.id)} t={t.practice} />
+            </Suspense>
             <div className={`grid gap-3 ${back ? "grid-cols-2" : ""}`}>
               {back}
               <ButtonLink

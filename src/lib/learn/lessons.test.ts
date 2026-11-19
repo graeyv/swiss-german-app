@@ -1,7 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { payloadProblem } from "../../../scripts/lib/check-payload.mjs";
 import { isIconName } from "@/app/ui/icons";
-import { isReady, LESSONS, lessonNumber, nextSection, roundExercises, sectionParams, topicCount } from "./lessons";
+import { letterTiles, ruleForLetters } from "@/lib/exercises/pronunciation";
+import {
+  isReady,
+  LESSONS,
+  lessonNumber,
+  nextSection,
+  practiceParams,
+  practiceUnits,
+  roundExercises,
+  sectionParams,
+  topicCount,
+} from "./lessons";
 
 describe("lessons", () => {
   it("numbers the lessons of a dialect in order", () => {
@@ -53,13 +64,39 @@ describe("lessons", () => {
 
   it("has only exercises the round can show, each with an id unique in its lesson", () => {
     for (const { lesson } of LESSONS) {
-      const exercises = lesson.sections.flatMap((section) => section.rules.flatMap((rule) => rule.exercises ?? []));
+      const exercises = [
+        ...lesson.sections.flatMap((section) => [
+          ...section.rules.flatMap((rule) => rule.exercises ?? []),
+          ...(section.exercises ?? []),
+        ]),
+        ...(lesson.mixed?.exercises ?? []),
+      ];
       const ids = exercises.map((exercise) => exercise.id);
       expect(new Set(ids).size, `${lesson.id} has a duplicate exercise id`).toBe(ids.length);
       for (const { id, type, ...payload } of exercises) {
         expect(payloadProblem(type, payload), `${lesson.id}, exercise ${id}`).toBeNull();
       }
     }
+  });
+
+  it("explains every letter a pronunciation exercise marks with a rule of its lesson", () => {
+    for (const { lesson } of LESSONS) {
+      const rules = lesson.sections.flatMap((section) => section.rules);
+      for (const unit of practiceUnits(lesson)) {
+        for (const exercise of unit.exercises ?? []) {
+          if (exercise.type !== "letters" && exercise.type !== "say") continue;
+          for (const tile of letterTiles(exercise.word).filter(({ marked }) => marked)) {
+            expect(ruleForLetters(rules, tile.text), `${lesson.id}, ${exercise.id}: ${tile.text}`).toBeDefined();
+          }
+        }
+      }
+    }
+  });
+
+  it("practises pronunciation in one round over the whole module", () => {
+    const { lesson } = LESSONS.find(({ lesson }) => lesson.id === "pronunciation")!;
+    expect(practiceUnits(lesson).map(({ id }) => id)).toEqual(["mixed"]);
+    expect(practiceParams().map(({ section }) => section)).toEqual(["mixed"]);
   });
 
   it("goes on to the next section that's ready", () => {

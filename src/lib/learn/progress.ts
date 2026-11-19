@@ -1,5 +1,5 @@
 import type { createClient } from "@/lib/supabase/server";
-import { type DialectLesson, isReady, LESSONS, type Rule, type Section } from "./lessons";
+import { type DialectLesson, isReady, LESSONS, MIXED, type Rule, type Section } from "./lessons";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
 
@@ -31,6 +31,17 @@ export async function getReads(supabase: Supabase): Promise<Reads> {
 // How many topics of a section the learner has read.
 export function readCount(entry: DialectLesson, section: Section, read: Set<string>) {
   return section.rules.filter((rule) => read.has(rulePath(entry.dialect, entry.lesson.id, section.id, rule.id))).length;
+}
+
+// The topics a round covers: its section's, or for the mixed round all of the lesson's.
+export function topicsOf(entry: DialectLesson, section: Section) {
+  return section.id === MIXED ? entry.lesson.sections.flatMap((each) => each.rules).length : section.rules.length;
+}
+
+// Whether the learner has read every topic a round covers.
+export function isReadThrough(entry: DialectLesson, section: Section, read: Set<string>) {
+  if (section.id !== MIXED) return readCount(entry, section, read) === section.rules.length;
+  return entry.lesson.sections.filter(isReady).every((each) => readCount(entry, each, read) === each.rules.length);
 }
 
 export type Continue = {

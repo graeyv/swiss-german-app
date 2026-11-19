@@ -29,7 +29,7 @@ Docker isn't required: these steps use a hosted Supabase project.
 | `src/app/(tabs)` | Learn, Practice, Conversations and Profile tabs: a bar along the bottom on phones, tabs under the header on wider screens |
 | `src/app/onboarding` | First-run questions: language, Swiss German level, topics and pace |
 | `src/app/flashcards` | Full-screen review sessions and saving reviews |
-| `src/app/exercises` | Exercise components for the lessons' rounds: pick, build, spot the error |
+| `src/app/exercises` | Exercise components for the lessons' rounds: pick, build, spot the error, and the pronunciation ones |
 | `src/lib/exercises` | The shape of each exercise and how its answer is checked |
 | `src/lib/flashcards` | FSRS scheduling, sessions, daily limits, the deck tree, and loading it all (`data.ts`) |
 | `src/lib/supabase/database.types.ts` | Database types, generated with `npm run db:types` |
@@ -55,11 +55,18 @@ that compare a word's Standard German and dialect pronunciation, with a recordin
 
 #### Exercises
 
-A rule can have `exercises`. They're practised together at the end of their section, in a round
-of up to two per rule, from the section's last topic or from Practice › Lektionen. Learners
-practise whenever they like: there's no schedule, and each round's result is saved
-(`lesson_rounds`) for the Practice tab to suggest what to refresh. A section without exercises
-has no round, and a module without any doesn't lead to them.
+A rule can have `exercises`, and so can a section, for exercises on the section as a whole. They're
+practised together at the end of their section, in a round of up to two per rule and then the
+section's own, from the section's last topic or from Practice › Lektionen. A module can also have a
+`mixed` round, `{"title", "exercises"}`, over all its sections: its round is
+`/learn/<dialect>/<module>/mixed/practice`, listed last among the module's exercises, and suggested
+once every section is read; the end of the module's last topic leads to it. Aussprache has only
+this round, titled after the module, since its words mix consonants and vowels. A module with a
+single round opens it straight from the Practice tab. Learners practise whenever they like: there's no schedule, and each
+round's result is saved (`lesson_rounds`) for the Practice tab to suggest what to refresh. Every
+exercise counts towards it. Practising only the mistakes afterwards saves the whole round's new
+result, so fixed mistakes count. A section without exercises has no round, and a module without any
+doesn't lead to them.
 
 Each exercise has an `id`, unique in its lesson file, a `type`, and the task's fields from
 `src/lib/exercises/tasks.ts`:
@@ -70,6 +77,22 @@ Each exercise has an `id`, unique in its lesson file, a `type`, and the task's f
   are distractors.
 - `spot_error`: `{"context"?, "sentence", "wrong", "options", "answer"}`. `wrong` lists the
   positions of the wrong words in the sentence, counting from 0.
+
+The pronunciation exercises, in `src/lib/exercises/pronunciation.ts`, write a High German word as
+usual, with the letters that sound different in square brackets: `"[Ch]a[r]a[k]te[r]"`. Each
+bracketed group needs a rule of the module whose title names it (`k` and `ck` belong to "K und CK",
+`pp` to "T und P"), for the rule the exercise leads to. Recordings are paths in `public/`, or `null`
+until they're recorded; until then their play buttons say "Aufnahme folgt".
+
+- `letters`: `{"word", "audio"?: {"standardGerman", "dialect"}}`. The learner taps the bracketed
+  letters. Every word needs at least one.
+- `say`: `{"word", "audio"?}`. The learner records the word, then hears it and judges whether it
+  sounded the same. A tip underlines the bracketed letters, and after recording they stay
+  underlined.
+- `repeat`: `{"sentence", "audio"?}`. The learner hears the sentence, records it and judges it.
+
+Learners can record themselves as often as they like. Saying counts as right when they say it
+sounded the same. Their recordings stay in the browser.
 
 `npm test` checks every exercise (`src/lib/learn/lessons.test.ts`), so a typo fails there instead
 of breaking a round.

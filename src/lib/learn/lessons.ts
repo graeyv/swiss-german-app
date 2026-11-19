@@ -6,6 +6,7 @@ import beGrammar from "../../../content/lessons/be/grammar.json";
 import beNewWords from "../../../content/lessons/be/new-words.json";
 import bePronunciation from "../../../content/lessons/be/pronunciation.json";
 import beRelatedWords from "../../../content/lessons/be/related-words.json";
+import type { PronunciationTask } from "@/lib/exercises/pronunciation";
 import type { Task } from "@/lib/exercises/tasks";
 import type { Locale } from "@/lib/i18n";
 
@@ -21,9 +22,9 @@ export type Example = {
   audio: Comparison<string | null>;
 };
 
-// An exercise on a rule: one of the tasks in src/lib/exercises/tasks.ts, with an id unique in its
-// lesson file, such as "ch-1".
-export type LessonExercise = Task & { id: string };
+// An exercise: one of the tasks in src/lib/exercises/tasks.ts or pronunciation.ts, with an id
+// unique in its lesson file, such as "ch-1".
+export type LessonExercise = (Task | PronunciationTask) & { id: string };
 
 export type Rule = {
   id: string;
@@ -44,7 +45,13 @@ export type Section = {
   description: string;
   rules: Rule[];
   planned?: string[];
+  // Exercises on the section as a whole rather than one rule, such as the pronunciation ones,
+  // practised after the rules' own.
+  exercises?: LessonExercise[];
 };
+
+// A lesson's round across all its sections, after them: "Gemischt".
+export type MixedRound = { title: string; exercises: LessonExercise[] };
 
 // One thing the learner can expect from a lesson, in one line, shown before they start. The icon is
 // one of the app's icons, such as "headphones" or "mic" (src/app/ui/icons.tsx).
@@ -59,6 +66,7 @@ export type Lesson = {
   description: string;
   expectations: Expectation[];
   sections: Section[];
+  mixed?: MixedRound;
 };
 
 // A lesson, with the dialect it teaches and the language it's written in. The lesson's screens
@@ -68,10 +76,13 @@ export type DialectLesson = { dialect: string; language: Locale; lesson: Lesson 
 
 // A lesson file as JSON reads it, where an exercise's type is any string. The type check covers
 // everything else, and lessons.test.ts checks each exercise against its task.
-type LessonFile = Omit<Lesson, "sections"> & {
-  sections: (Omit<Section, "rules"> & {
-    rules: (Omit<Rule, "exercises"> & { exercises?: ({ id: string; type: string } & Record<string, unknown>)[] })[];
+type ExerciseFile = { id: string; type: string } & Record<string, unknown>;
+type LessonFile = Omit<Lesson, "sections" | "mixed"> & {
+  sections: (Omit<Section, "rules" | "exercises"> & {
+    rules: (Omit<Rule, "exercises"> & { exercises?: ExerciseFile[] })[];
+    exercises?: ExerciseFile[];
   })[];
+  mixed?: { title: string; exercises: ExerciseFile[] };
 };
 
 const fromFile = (file: LessonFile) => file as Lesson;
@@ -151,20 +162,49 @@ export function lessonHref(dialect: string, lesson: Lesson, section?: Section, r
 const PER_RULE = 2;
 
 // A section's round: up to two exercises of each rule, in the section's order, each with the rule
-// it practises, for "Regel nachlesen".
-export function roundExercises(section: Section): { ruleId: string; exercise: LessonExercise }[] {
-  return section.rules.flatMap((rule) =>
-    (rule.exercises ?? []).slice(0, PER_RULE).map((exercise) => ({ ruleId: rule.id, exercise })),
-  );
+// it practises, for "Regel nachlesen". Then the section's own exercises, which have no one rule.
+export function roundExercises(section: Section): { ruleId?: string; exercise: LessonExercise }[] {
+  return [
+    ...section.rules.flatMap((rule) =>
+      (rule.exercises ?? []).slice(0, PER_RULE).map((exercise) => ({ ruleId: rule.id, exercise })),
+    ),
+    ...(section.exercises ?? []).map((exercise) => ({ exercise })),
+  ];
+}
+
+// The mixed round's id, in its address and its path in lesson_rounds: "be/pronunciation/mixed".
+export const MIXED = "mixed";
+
+// A lesson's mixed round as a section without topics of its own, so it's practised, saved and
+// suggested like the others.
+export function mixedSection(lesson: Lesson): Section | undefined {
+  if (!lesson.mixed) return undefined;
+  return { id: MIXED, title: lesson.mixed.title, description: "", rules: [], exercises: lesson.mixed.exercises };
+}
+
+// What a lesson has to practise, in order: its sections with exercises, then its mixed round.
+export function practiceUnits(lesson: Lesson): Section[] {
+  const mixed = mixedSection(lesson);
+  return [...lesson.sections.filter((section) => roundExercises(section).length > 0), ...(mixed ? [mixed] : [])];
+}
+
+export function findPracticeUnit(lesson: Lesson, id: string): Section | undefined {
+  return practiceUnits(lesson).find((section) => section.id === id);
 }
 
 // Whether any section of a lesson has exercises to practise.
 export function hasExercises(lesson: Lesson) {
-  return lesson.sections.some((section) => roundExercises(section).length > 0);
+  return practiceUnits(lesson).length > 0;
 }
 
-// A module's exercises, in the Practice tab.
+// A module's exercises, in the Practice tab: the list of its rounds, or with only one, that round.
 export function exercisesHref(dialect: string, lesson: Lesson) {
+  const units = practiceUnits(lesson);
+  return units.length === 1 ? practiceHref(dialect, lesson, units[0]) : exercisesListHref(dialect, lesson);
+}
+
+// The list of a module's rounds, in the Practice tab.
+export function exercisesListHref(dialect: string, lesson: Lesson) {
   return `/flashcards/lessons/${dialect}/${lesson.id}`;
 }
 
@@ -192,6 +232,13 @@ export function sectionParams() {
     lesson.sections
       .filter(isReady)
       .map((section) => ({ dialect, lesson: lesson.id, section: section.id })),
+  );
+}
+
+// Every round's page.
+export function practiceParams() {
+  return LESSONS.flatMap(({ dialect, lesson }) =>
+    practiceUnits(lesson).map((section) => ({ dialect, lesson: lesson.id, section: section.id })),
   );
 }
 

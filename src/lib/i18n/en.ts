@@ -129,11 +129,17 @@ export const en = {
     rule: (section: string) => `Rule · ${section}`,
     backToExercise: "Back to the exercise",
     done: (section: string) => `${section} practised`,
+    // After practising the mistakes, for the whole round.
+    scoreNow: (correct: number, total: number) => `Now ${correct} of ${total} right.`,
     score: (correct: number, total: number) => `${correct} of ${total} right the first time.`,
     // After a round with under 60 % right.
     weak: "Still a bit shaky. Read the lesson again and it'll stick better.",
     readAgain: (section: string) => `Read ${section} again`,
     finish: "Done",
+    again: "Practise again",
+    // Only the exercises that were wrong.
+    againMistakes: (count: number) => `Practise ${many(count, "mistake", "mistakes")}`,
+    review: "Your answers",
     notSaved: (error: string) => `Your result wasn't saved: ${error}`,
     // The Practice tab's two views: flashcards, and the lessons' exercises.
     views: { label: "What to practise", words: "Vocabulary", lessons: "Lessons" },
@@ -143,6 +149,10 @@ export const en = {
       `${practised} of ${many(count, "lesson", "lessons")} practised`,
     ago: (days: number) => (days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`),
     practised: (ago: string) => `Practised ${ago}`,
+    practisedScore: (ago: string, correct: number, total: number) => `Practised ${ago} · ${correct} of ${total} right`,
+    // Under the button that starts a round practised before.
+    lastResult: (ago: string, correct: number, total: number) => `Last practised ${ago} · ${correct} of ${total} right`,
+    mixedAfter: "Best after all the lessons",
     readNotPractised: "Read, not practised yet",
     notRead: (count: number) => `${many(count, "topic", "topics")}, not read yet`,
     // The card with the one thing suggested, such as "Next · Pronunciation".
@@ -193,6 +203,34 @@ export const en = {
     findMistake: "Tap the mistake:",
     replaceWith: (word: string) => `Replace “${word}” with:`,
     gap: "gap",
+  },
+
+  // The pronunciation exercises: spotting letters, and saying words and sentences oneself.
+  pronunciation: {
+    letters: (dialect: string) => `Tap the letters that sound different in ${dialect}.`,
+    right: "Right",
+    // letters joined with "and", such as "K and ST".
+    and: " and ",
+    wrongChanged: (count: number, letters: string) => `Not quite: ${letters} ${count > 1 ? "sound" : "sounds"} different`,
+    say: (dialect: string) => `Read the word the way it sounds in ${dialect}. Then listen to it.`,
+    repeat: "Listen to the sentence, then say it after.",
+    tip: "Tip: what to listen for?",
+    record: "Record",
+    stop: "Done",
+    recording: "Recording",
+    listen: "Listen",
+    you: "You",
+    model: "How it sounds",
+    noRecording: "Recording to come",
+    sameQuestion: "Did it sound the same?",
+    yes: "Yes, it sounded the same",
+    notYet: "Not yet, again",
+    skip: "Go on anyway",
+    soundedSame: "Sounded the same",
+    notSameYet: "Didn't sound the same yet",
+    changed: (count: number, letters: string) => `${letters} ${count > 1 ? "sound" : "sounds"} different`,
+    noMicrophone: "Without a microphone: say it out loud, then listen.",
+    said: "Said it, listen",
   },
 
   flashcards: {

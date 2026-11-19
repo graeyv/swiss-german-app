@@ -1,6 +1,6 @@
 import type { createClient } from "@/lib/supabase/server";
-import { type DialectLesson, isReady, LESSONS, roundExercises, type Section, sectionPath } from "./lessons";
-import { type Continue, type Reads, readCount, whereToContinue } from "./progress";
+import { type DialectLesson, isReady, LESSONS, practiceUnits, type Section, sectionPath } from "./lessons";
+import { type Continue, isReadThrough, type Reads, whereToContinue } from "./progress";
 
 // What the Practice tab suggests for the lessons' exercises. There's no schedule: learners
 // practise what they choose, and the app suggests one thing, from what's read and how the latest
@@ -29,13 +29,11 @@ export async function getRounds(supabase: Supabase, now: Date): Promise<Rounds> 
   return rounds;
 }
 
-// A section with exercises, with the module it's in.
+// A section with exercises, or a lesson's mixed round, with the module it's in.
 export type PracticeSection = { entry: DialectLesson; section: Section };
 
 export function practiceSections(lessons: DialectLesson[] = LESSONS): PracticeSection[] {
-  return lessons.flatMap((entry) =>
-    entry.lesson.sections.filter((section) => roundExercises(section).length > 0).map((section) => ({ entry, section })),
-  );
+  return lessons.flatMap((entry) => practiceUnits(entry.lesson).map((section) => ({ entry, section })));
 }
 
 export function roundOf(rounds: Rounds, { entry, section }: PracticeSection) {
@@ -65,7 +63,7 @@ export function suggest(reads: Reads, rounds: Rounds, lessons: DialectLesson[] =
   if (sections.length === 0) return null;
 
   const readThrough = sections.find(
-    (item) => !roundOf(rounds, item) && readCount(item.entry, item.section, reads.read) === item.section.rules.length,
+    (item) => !roundOf(rounds, item) && isReadThrough(item.entry, item.section, reads.read),
   );
   if (readThrough) return { kind: "practise", ...readThrough };
 

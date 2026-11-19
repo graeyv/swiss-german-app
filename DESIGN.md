@@ -180,7 +180,38 @@ topic in English); in the code and this guide they are lesson → section → ru
   whether it was right, with the right answer after a wrong one, and below it a mist pill
   "Regel nachlesen: CH". "Weiter" stays at the bottom. It ends on a yellow card: "Konsonanten
   geübt" and how many were right the first time. Under 60 %, a line suggests reading the section
-  again, and "Konsonanten nochmals lesen" is the primary button.
+  again, and "Konsonanten nochmals lesen" is the primary button. Below, "DEINE ANTWORTEN": every
+  exercise as a row on mist with a check or a brick cross, the solution in bold (a word with its
+  letters that sound different underlined), and one caption line, such as "CH, R und K klingen
+  anders" or "Klang noch nicht gleich". At the bottom, "3 Fehler üben" starts again with only the
+  exercises that were wrong, or "Nochmals üben" with the whole round when all were right, as a
+  secondary button beside "Fertig", or below it when "Fertig" is the main action. A round of
+  mistakes ends on the whole round's new score, "Jetzt 9 von 10 richtig.", which is saved, and
+  can be repeated until nothing is wrong. Leaving
+  the round's page always starts it afresh next time. Where a practised round starts, its last
+  result shows, so practice doesn't look lost: "Geübt heute · 9 von 10 richtig" in its row in
+  Üben, and "Zuletzt geübt heute · 9 von 10 richtig" in `teal-soft` under its button at the end
+  of the module's last topic. A tap still starts the round straight away.
+- **Pronunciation exercises** (`src/app/exercises/pronunciation`), in a lesson round, each with
+  one line saying what to do, and its own buttons at the bottom:
+  - **Spotting letters**: the word in title size, one tile per letter on mist (bracketed letters
+    such as "Ch" one tile), narrow enough for "Tätowieren" on one line. A tapped tile turns teal.
+    "Prüfen" stays inactive until a tile is tapped: every word has letters that sound different.
+    Checked, the right
+    tiles turn sage, missed ones rose, wrongly tapped ones rose and struck through, and a row on
+    sage or rose says "Nicht ganz: T, Ä und R klingen anders". Below, the word in Standard German
+    and the dialect, played one after the other, and a "Regel nachlesen" pill per rule.
+  - **Saying a word**: the word in title size, and a mist pill "Tipp: worauf achten?" that
+    underlines the letters to watch in sage. "Aufnehmen" at the bottom, then a bar filling up and
+    "Fertig". Then the learner's recording ("Du", a microphone) and the dialect's ("So klingt's", a
+    speaker) play one after the other, as round play buttons, the letters now underlined. At the
+    bottom, together so they read as one: "Klang es gleich?" in subtitle size, "Ja, klang gleich"
+    (primary, goes on), "Noch nicht, nochmals" (secondary, records again at once, as often as the
+    learner likes), and a quiet text button "Trotzdem weiter", `teal-soft` and underlined, that
+    goes on without it. One button per job, all there from the start. Without a microphone:
+    "Gesagt, anhören".
+  - **Repeating a sentence**: the sentence in heading size, "Anhören" first, then as above.
+  - A recording still to come is an inactive play button with "Aufnahme folgt".
 - **Rule sheet** (`BottomSheet`): a rule opened from an exercise, sliding up over it, so the
   exercise keeps its place: "REGEL · KONSONANTEN", the title, the theory, the examples and Merke,
   then "Zurück zur Übung". No back arrow and no lesson progress, as it isn't a step of the lesson.
