@@ -4,13 +4,13 @@ import { ButtonLink } from "@/app/ui/button";
 import { isIconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import type { Dictionary } from "@/lib/i18n";
-import { getDictionary } from "@/lib/i18n/server";
-import { isReady, type Lesson, LESSONS, lessonHref, lessonNumber, topicCount } from "@/lib/learn/lessons";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { isReady, type Lesson, lessonHref, lessonNumber, lessonsFor, topicCount } from "@/lib/learn/lessons";
 import { type Continue, getReads, lastModule, readCount, whereToContinue } from "@/lib/learn/progress";
 import { createClient } from "@/lib/supabase/server";
 
-// Lessons on how Swiss German differs from Standard German. Every learner sees every lesson for
-// now, whatever their dialect, until there are lessons for more than one.
+// The lessons of the learner's track: the one in their language. Every learner sees every
+// dialect's lessons for now, until there are lessons for more than one.
 export default function LearnPage() {
   return (
     <Suspense fallback={<LoadingPlaceholder />}>
@@ -23,9 +23,10 @@ export default function LearnPage() {
 // module read in last says so in its caption. A module still being written has the "Bald
 // verfügbar" pill, but still opens, so learners see what it will cover.
 async function Learn() {
-  const [t, supabase] = await Promise.all([getDictionary(), createClient()]);
+  const [t, locale, supabase] = await Promise.all([getDictionary(), getLocale(), createClient()]);
+  const lessons = lessonsFor(locale);
   const reads = await getReads(supabase);
-  const next = whereToContinue(reads);
+  const next = whereToContinue(reads, lessons);
   const last = lastModule(reads);
 
   return (
@@ -41,7 +42,7 @@ async function Learn() {
       <section className="flex flex-col gap-3">
         <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{t.learn.allModules}</h2>
         <ListRows>
-          {LESSONS.map((entry) => (
+          {lessons.map((entry) => (
             <ListRow
               key={`${entry.dialect}/${entry.lesson.id}`}
               href={lessonHref(entry.dialect, entry.lesson)}

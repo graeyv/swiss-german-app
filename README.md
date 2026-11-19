@@ -48,7 +48,7 @@ content. Only migrations, the seed files and the service role can.
 
 ### Learn lessons
 
-Each lesson is a JSON file in `content/lessons/<dialect>/`, in the shape of `Lesson` in
+Each lesson is a JSON file in `content/lessons/<dialect>/<language>/`, in the shape of `Lesson` in
 `src/lib/learn/lessons.ts`. Add a new file to `LESSONS` there. The type check flags a file that
 doesn't fit the shape. A lesson has sections, each section has rules, and each rule has examples
 that compare a word's Standard German and dialect pronunciation, with a recording of each.

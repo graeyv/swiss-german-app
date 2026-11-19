@@ -6,6 +6,7 @@ import {
   isReady,
   LESSONS,
   lessonNumber,
+  lessonsFor,
   nextSection,
   practiceParams,
   practiceUnits,
@@ -15,8 +16,14 @@ import {
 } from "./lessons";
 
 describe("lessons", () => {
-  it("numbers the lessons of a dialect in order", () => {
-    expect(LESSONS.filter(({ dialect }) => dialect === "be").map(lessonNumber)).toEqual([1, 2, 3, 4, 5]);
+  it("numbers the lessons of each track in order", () => {
+    expect(lessonsFor("de").map(lessonNumber)).toEqual([1, 2, 3, 4, 5]);
+    expect(lessonsFor("en").map(lessonNumber)).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  it("has unique lesson ids within a dialect, across its tracks", () => {
+    const ids = LESSONS.filter(({ dialect }) => dialect === "be").map(({ lesson }) => lesson.id);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
   it("has unique ids and only icons the app knows", () => {

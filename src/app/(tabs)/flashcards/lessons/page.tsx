@@ -5,7 +5,7 @@ import { Icon, isIconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { type Dictionary, dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
-import { exercisesHref, hasExercises, LESSONS, lessonHref, practiceHref } from "@/lib/learn/lessons";
+import { exercisesHref, hasExercises, lessonHref, lessonsFor, practiceHref } from "@/lib/learn/lessons";
 import { getReads, isReadThrough, readCount, topicsOf } from "@/lib/learn/progress";
 import { getRounds, practiceSections, roundOf, type Suggestion, suggest } from "@/lib/learn/suggestion";
 import { createClient } from "@/lib/supabase/server";
@@ -25,8 +25,10 @@ async function LessonExercises() {
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
   const [reads, rounds] = await Promise.all([getReads(supabase), getRounds(supabase, new Date())]);
-  const suggestion = suggest(reads, rounds);
-  const sections = practiceSections();
+  // The learner's track, in their language, mirroring Learn.
+  const lessons = lessonsFor(locale);
+  const suggestion = suggest(reads, rounds, lessons);
+  const sections = practiceSections(lessons);
 
   return (
     <>
@@ -39,7 +41,7 @@ async function LessonExercises() {
       <section className="flex flex-col gap-3">
         <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{t.practice.allExercises}</h2>
         <ListRows>
-          {LESSONS.map((entry) => {
+          {lessons.map((entry) => {
             const icon = isIconName(entry.lesson.icon) ? entry.lesson.icon : undefined;
             const key = `${entry.dialect}/${entry.lesson.id}`;
             if (!hasExercises(entry.lesson)) {

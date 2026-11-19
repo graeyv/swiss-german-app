@@ -1,0 +1,46 @@
+{
+  "id": "getting-started",
+  "title": "Getting started",
+  "subtitle": "Your first words in Bernese German",
+  "icon": "wave",
+  "description": "Pronunciation, greetings, introductions, basic expressions, yes and no, and numbers.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "pronunciation",
+      "title": "Pronunciation",
+      "description": "How Bernese German sounds, and how to say it.",
+      "rules": []
+    },
+    {
+      "id": "greetings",
+      "title": "Greetings",
+      "description": "Saying hello and goodbye, formally and informally.",
+      "rules": []
+    },
+    {
+      "id": "introductions",
+      "title": "Introductions",
+      "description": "Saying who you are, and asking others.",
+      "rules": []
+    },
+    {
+      "id": "basic-expressions",
+      "title": "Basic expressions",
+      "description": "Please, thank you, sorry and other words you need every day.",
+      "rules": []
+    },
+    {
+      "id": "yes-and-no",
+      "title": "Yes and no",
+      "description": "Agreeing, disagreeing and everything in between.",
+      "rules": []
+    },
+    {
+      "id": "numbers",
+      "title": "Numbers",
+      "description": "Counting, prices, times and phone numbers.",
+      "rules": []
+    }
+  ]
+}

@@ -32,7 +32,8 @@ export const en = {
   },
 
   learn: {
-    intro: "How Swiss German differs from Standard German.",
+    // The English track starts from nothing, rather than from Standard German.
+    intro: "Swiss German, step by step.",
     // Above the card to continue: whether the learner has read anything yet, then the module.
     continue: "Continue",
     startHere: "Start here",

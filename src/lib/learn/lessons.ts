@@ -1,11 +1,18 @@
-// Learn lessons explain how Swiss German differs from Standard German. Each lesson is a JSON file
-// in content/lessons/<dialect>/, so its text can change without touching the code. Assigning a file
-// to Lesson below makes the type check catch a file that doesn't have this shape.
-import beEveryday from "../../../content/lessons/be/everyday.json";
-import beGrammar from "../../../content/lessons/be/grammar.json";
-import beNewWords from "../../../content/lessons/be/new-words.json";
-import bePronunciation from "../../../content/lessons/be/pronunciation.json";
-import beRelatedWords from "../../../content/lessons/be/related-words.json";
+// Learn lessons teach Swiss German, in a track per language: for German speakers, how it differs
+// from Standard German; for English speakers, from the start. Each lesson is a JSON file in
+// content/lessons/<dialect>/<language>/, so its text can change without touching the code.
+// Assigning a file to Lesson below makes the type check catch a file that doesn't have this shape.
+import beEveryday from "../../../content/lessons/be/de/everyday.json";
+import beGrammar from "../../../content/lessons/be/de/grammar.json";
+import beNewWords from "../../../content/lessons/be/de/new-words.json";
+import bePronunciation from "../../../content/lessons/be/de/pronunciation.json";
+import beRelatedWords from "../../../content/lessons/be/de/related-words.json";
+import beBecomingFluent from "../../../content/lessons/be/en/becoming-fluent.json";
+import beBuildingSentences from "../../../content/lessons/be/en/building-sentences.json";
+import beEverydayCommunication from "../../../content/lessons/be/en/everyday-communication.json";
+import beExpandingYourGrammar from "../../../content/lessons/be/en/expanding-your-grammar.json";
+import beGettingStarted from "../../../content/lessons/be/en/getting-started.json";
+import beTalkingAboutYourLife from "../../../content/lessons/be/en/talking-about-your-life.json";
 import type { PronunciationTask } from "@/lib/exercises/pronunciation";
 import type { Task } from "@/lib/exercises/tasks";
 import type { Locale } from "@/lib/i18n";
@@ -96,15 +103,27 @@ const newWords = fromFile(beNewWords);
 const grammar = fromFile(beGrammar);
 const everyday = fromFile(beEveryday);
 
-// In the order learners should take them. Lessons still being written are listed too, so learners
-// see where the track leads.
+// Every track, each in the order learners should take it. Lessons still being written are listed
+// too, so learners see where the track leads. Lesson ids are unique within a dialect, across its
+// tracks, as the addresses and saved progress only name the dialect and the lesson.
 export const LESSONS: DialectLesson[] = [
   { dialect: "be", language: "de", lesson: pronunciation },
   { dialect: "be", language: "de", lesson: relatedWords },
   { dialect: "be", language: "de", lesson: newWords },
   { dialect: "be", language: "de", lesson: grammar },
   { dialect: "be", language: "de", lesson: everyday },
+  { dialect: "be", language: "en", lesson: fromFile(beGettingStarted) },
+  { dialect: "be", language: "en", lesson: fromFile(beBuildingSentences) },
+  { dialect: "be", language: "en", lesson: fromFile(beExpandingYourGrammar) },
+  { dialect: "be", language: "en", lesson: fromFile(beEverydayCommunication) },
+  { dialect: "be", language: "en", lesson: fromFile(beTalkingAboutYourLife) },
+  { dialect: "be", language: "en", lesson: fromFile(beBecomingFluent) },
 ];
+
+// The track for learners of a language: the lessons written in it.
+export function lessonsFor(language: Locale): DialectLesson[] {
+  return LESSONS.filter((entry) => entry.language === language);
+}
 
 // How many topics a lesson has, counting the planned ones of sections still being written.
 export function topicCount(lesson: Lesson): number {
@@ -116,10 +135,10 @@ export function isReady(item: Section | Lesson): boolean {
   return "rules" in item ? item.rules.length > 0 : item.sections.some(isReady);
 }
 
-// A lesson's number in its dialect, counting from 1 in the order above. It comes from that order,
+// A lesson's number in its track, counting from 1 in the order above. It comes from that order,
 // so the lesson files don't have to keep their own numbers in step.
 export function lessonNumber(entry: DialectLesson): number {
-  return LESSONS.filter(({ dialect }) => dialect === entry.dialect).indexOf(entry) + 1;
+  return LESSONS.filter(({ dialect, language }) => dialect === entry.dialect && language === entry.language).indexOf(entry) + 1;
 }
 
 export function findLesson(dialect: string, id: string): DialectLesson | undefined {
