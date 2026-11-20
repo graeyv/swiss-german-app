@@ -3,15 +3,15 @@
   "title": "Bevor du startest",
   "subtitle": "Was du über Schweizerdeutsch wissen solltest",
   "icon": "wave",
-  "description": "Drei Dinge, die dir den Einstieg leichter machen: welchen Dialekt du lernst, wie man ihn schreibt und wann man ihn spricht.",
+  "description": "Drei Dinge, die dir den Einstieg leichter machen: wie sich die Dialekte unterscheiden, wie man sie schreibt und wann man sie spricht.",
   "expectations": [
     {
       "icon": "pin",
-      "title": "Wissen, welchen Dialekt du lernst"
+      "title": "Verstehen, wie sich die Dialekte unterscheiden"
     },
     {
       "icon": "learn",
-      "title": "Schweizerdeutsch lesen, auch ohne feste Schreibweise"
+      "title": "Wissen, warum Schweizerdeutsch so unterschiedlich geschrieben wird"
     },
     {
       "icon": "chat",
@@ -27,7 +27,7 @@
         {
           "id": "dialekte",
           "title": "Ein Land, viele Dialekte",
-          "theory": "Schweizerdeutsch ist keine einheitliche Sprache, sondern eine Gruppe alemannischer Dialekte. Zürich, Bern und Basel klingen deutlich verschieden, und oft unterscheiden sich auch einzelne Wörter.",
+          "theory": "Schweizerdeutsch ist keine einheitliche Sprache, sondern eine Gruppe alemannischer Dialekte, fast jede Region hat ihren eigenen. Zürich, Bern und Basel zum Beispiel klingen deutlich verschieden, und oft unterscheiden sich auch einzelne Wörter.",
           "phrasesHeading": "«Ich weiss es nicht» in drei Dialekten",
           "phrases": [
             {
@@ -47,33 +47,33 @@
             }
           ],
           "examples": [],
-          "takeaway": "Du lernst Bärndütsch. Wer einen Dialekt versteht, versteht die anderen bald auch."
+          "takeaway": "Du musst nicht alle Dialekte lernen. Wer einen gut versteht, versteht die anderen bald auch: Schweizerinnen und Schweizer aus verschiedenen Regionen verstehen sich problemlos."
         },
         {
           "id": "schreibweise",
           "title": "Geschrieben, wie man spricht",
-          "theory": "Schweizerdeutsch hat keine feste Schreibweise. Man schreibt meist so, wie man spricht, und in Chats und Nachrichten oft ganz unterschiedlich.",
+          "theory": "Schweizerdeutsch wird vor allem gesprochen. Wer es schreibt, schreibt meist so, wie er spricht. Anders als das Hochdeutsche hat es keine festen Rechtschreibregeln, deshalb kann dasselbe Wort ganz verschieden geschrieben werden.",
           "points": [
             {
-              "heading": "Lies nicht mit hochdeutschen Augen",
+              "heading": "«Gestern habe ich deinen Vater gesehen.» in drei Schreibweisen",
               "items": [
                 {
-                  "term": "ie",
-                  "text": "Zwei Laute nacheinander, kein langes i: «lieb» klingt wie «li-eb»."
+                  "term": "I ha geschter dy fattr xee",
+                  "text": "Phonetisch: so geschrieben, wie es klingt"
                 },
                 {
-                  "term": "y",
-                  "text": "Ein langes, geschlossenes i: «Zyt» heisst «Zeit»."
+                  "term": "I ha gester di Vater gseh",
+                  "text": "Nah an der hochdeutschen Schreibweise"
                 },
                 {
-                  "term": "uu, ii, ää",
-                  "text": "Doppelte Vokale sind lang: «Huus» heisst «Haus»."
+                  "term": "I ha geschter di Vater gsee",
+                  "text": "Eine Mischung aus beidem"
                 }
               ]
             }
           ],
           "examples": [],
-          "takeaway": "In Hoi ist jedes Wort immer gleich geschrieben und hat eine Aufnahme. So lernst du Schrift und Klang zusammen."
+          "takeaway": "Lass dich von den verschiedenen Schreibweisen nicht verwirren. Es gibt nicht die eine richtige, und Schweizerdeutsch wird ohnehin vor allem gesprochen. Mit der Zeit erkennst du die Varianten."
         },
         {
           "id": "dialekt-oder-hochdeutsch",
