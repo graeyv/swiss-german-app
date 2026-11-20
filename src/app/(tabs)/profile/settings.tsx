@@ -2,10 +2,12 @@
 
 import { type ReactNode, type RefObject, useRef, useState, useTransition } from "react";
 import { updateAutoplay, updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
+import { DIALECT_OPTIONS } from "@/lib/dialects";
 import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
 import type { CardFront } from "@/lib/types";
 import { BottomSheet } from "@/app/ui/bottom-sheet";
+import { DialectChoices } from "@/app/ui/dialect-choices";
 import { PaceOptions } from "../flashcards/pace-options";
 import { setLocale } from "../actions";
 import { updateDialect, updateInterests } from "./actions";
@@ -168,7 +170,11 @@ export function DialectSetting({ dialects, current, locale }: DialectSettingProp
   const t = dictionary(locale).profile;
   const sheet = useRef<HTMLDialogElement>(null);
   const { error, saving, save } = useSave(sheet);
-  const nameOf = (id: string) => dialects.find((dialect) => dialect.id === id)?.name ?? id;
+  // Named as in onboarding; a dialect Hoi no longer lists keeps its name from the database.
+  const nameOf = (id: string) =>
+    DIALECT_OPTIONS.find((dialect) => dialect.id === id)?.name ??
+    dialects.find((dialect) => dialect.id === id)?.name ??
+    id;
 
   return (
     <>
@@ -180,11 +186,10 @@ export function DialectSetting({ dialects, current, locale }: DialectSettingProp
       />
       <Sheet sheet={sheet} title={t.dialect} locale={locale} error={error}>
         <p className="text-sm text-muted">{t.dialectNote}</p>
-        <Choices
-          label={t.dialect}
-          values={dialects.map((dialect) => dialect.id)}
-          current={current ?? ""}
-          name={nameOf}
+        {/* As in onboarding: dialects without content yet are shown, inactive, with when they come. */}
+        <DialectChoices
+          locale={locale}
+          chosen={current}
           disabled={saving}
           onChoose={(id) => save(() => updateDialect(id))}
         />

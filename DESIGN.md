@@ -289,7 +289,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   später" pill and no check. The chosen one is on sage with a teal check; while only one is
   ready, it's chosen from the start. Below, "Nicht sicher?" opens three points on which to pick,
   and "Du kannst später wechseln", as on the track question. The flags are in `public/flags/`;
-  they're cantonal emblems, whose use Swiss law restricts.
+  they're cantonal emblems, whose use Swiss law restricts. The profile's dialect sheet shows the
+  same cards (`DialectChoices`), so only a ready dialect can be chosen there too.
 - **How Hoi works** (onboarding's last screen): "So funktioniert Hoi", the three main tabs as an
   icon list (icon in `teal-soft`, name in bold, one line below), and "Wörter, die bleiben": one
   sentence and one word's reviews as small teal dots on a thin sage-light line (Heute, Morgen,

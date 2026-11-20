@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { isReadyDialect } from "@/lib/dialects";
 import { createClient } from "@/lib/supabase/server";
 
 type Result = { error?: string };
@@ -26,7 +27,8 @@ export async function updateInterests(codes: string[]): Promise<Result> {
 
 // The dialect whose words and grammar the learner practises.
 export async function updateDialect(dialectId: string): Promise<Result> {
-  if (typeof dialectId !== "string") return { error: "Unknown dialect" };
+  // Only dialects with content to learn, as in onboarding.
+  if (typeof dialectId !== "string" || !isReadyDialect(dialectId)) return { error: "Unknown dialect" };
 
   const supabase = await createClient();
   const { data: dialect, error } = await supabase
