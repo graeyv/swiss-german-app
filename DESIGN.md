@@ -161,7 +161,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   page per lesson. A lesson still being written is a card with the "Bald verfügbar" pill.
 - **Reading a topic**: "‹ Aussprache" at the top left, the lesson's progress beside it. At the
   bottom, "Zurück" to the topic before as a secondary button, a third of the width, beside
-  "Weiter: S". Both replace the page rather than adding one, so the phone's back gesture leads out
+  "Weiter", which doesn't name what comes next. Both replace the page rather than adding one, so the phone's back gesture leads out
   of the reading instead of through every topic. The first topic has no "Zurück".
 - **Example list** (a rule's words): no cards, no colour. Each word in subtitle size, below it one
   caption line on what happens to the sound ("Ich-Laut → **Ach-Laut**", "Ach-Laut → gleich"), with

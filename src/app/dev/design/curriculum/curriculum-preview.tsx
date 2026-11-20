@@ -236,7 +236,7 @@ function Topic({
           {back}
           {next ? (
             <ButtonLink href={topicHref(track, lesson, next.section.id, next.position)} replace>
-              {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}
+              {t.lesson.next}
             </ButtonLink>
           ) : (
             <ButtonLink href={moduleHref(track, lesson)}>{t.lesson.done}</ButtonLink>

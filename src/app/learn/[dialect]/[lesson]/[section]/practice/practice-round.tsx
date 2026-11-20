@@ -425,7 +425,7 @@ function Finished({
             ) : (
               next && (
                 <ButtonLink href={next.href}>
-                  {texts.lesson.next}: {next.title}
+                  {texts.lesson.next}
                 </ButtonLink>
               )
             )}

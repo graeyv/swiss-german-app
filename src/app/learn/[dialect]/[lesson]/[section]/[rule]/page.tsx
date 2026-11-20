@@ -110,9 +110,9 @@ async function RuleView({
           <div className={`grid w-full gap-3 ${back ? "grid-cols-[1fr_2fr]" : ""}`}>
             {back}
             {nextHref ? (
-              // Within a section the next topic is named, and at its end the next section.
+              // Just "Weiter": the next topic speaks for itself.
               <ButtonLink href={nextHref} replace>
-                {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}
+                {t.lesson.next}
               </ButtonLink>
             ) : (
               <ButtonLink href={lessonHref(dialect, lesson)}>{t.lesson.done}</ButtonLink>
