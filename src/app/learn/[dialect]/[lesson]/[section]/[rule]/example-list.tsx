@@ -6,18 +6,23 @@ type ExampleListProps = {
   examples: Example[];
   // The dialect's name, such as "Berndeutsch".
   dialectName: string;
+  // The dialect's accent, such as "Berner", when the examples are Standard German words said with
+  // it. Their side is then "Berner Akzent" rather than "Berndeutsch".
+  accent?: string;
   t: Dictionary["lesson"];
 };
 
 // A rule's examples, as a quiet list: each word with one line on what happens to its sound, and a
 // play button for each side. The sides are named once, above their buttons. No colour and no
 // lines: space separates the words, so the rule and its takeaway stay what stands out.
-export function ExampleList({ examples, dialectName, t }: ExampleListProps) {
+export function ExampleList({ examples, dialectName, accent, t }: ExampleListProps) {
+  const side = accent ? t.accentName(accent) : dialectName;
+  const play = accent ? t.playAccent(accent) : t.play(dialectName);
   return (
     <div className="flex flex-col gap-3">
       <div aria-hidden className="flex justify-end gap-3 text-xs font-semibold text-teal-soft">
         <span className="w-20 text-center">{t.standardGerman}</span>
-        <span className="w-20 text-center">{dialectName}</span>
+        <span className="w-20 text-center">{side}</span>
       </div>
       <ul className="flex flex-col gap-6">
         {examples.map((example) => (
@@ -40,7 +45,7 @@ export function ExampleList({ examples, dialectName, t }: ExampleListProps) {
             <span className="flex w-20 justify-center">
               <ListenButton
                 url={example.audio.dialect}
-                label={`${t.play(dialectName)}: ${example.word}`}
+                label={`${play}: ${example.word}`}
                 noRecordingLabel={t.noRecording}
               />
             </span>
@@ -53,7 +58,7 @@ export function ExampleList({ examples, dialectName, t }: ExampleListProps) {
 
 // What happens to the sound: "Ich-Laut → Ach-Laut", "Ach-Laut → gleich", or "Kurzes Ü, nur
 // Berndeutsch" for a word Standard German doesn't have. Only a changed sound is bold.
-function SoundLine({ example, dialectName, t }: Omit<ExampleListProps, "examples"> & { example: Example }) {
+function SoundLine({ example, dialectName, t }: Pick<ExampleListProps, "dialectName" | "t"> & { example: Example }) {
   const { standardGerman, dialect } = example.pronunciation;
   return (
     <p className="text-caption text-teal-soft">

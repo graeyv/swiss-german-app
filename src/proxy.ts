@@ -56,7 +56,9 @@ export async function proxy(request: NextRequest) {
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   );
   if (isProtected && !isLoggedIn) return withLocale(redirectTo("/login", request, response));
-  if (pathname === "/login" && isLoggedIn) return withLocale(redirectTo("/learn", request, response));
+  // The welcome page and login are for visitors: the logged in go straight to Learn, also when the
+  // installed app opens at its start page.
+  if ((pathname === "/" || pathname === "/login") && isLoggedIn) return withLocale(redirectTo("/learn", request, response));
 
   return withLocale(response);
 }

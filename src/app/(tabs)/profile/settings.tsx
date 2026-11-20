@@ -2,10 +2,13 @@
 
 import { type ReactNode, type RefObject, useRef, useState, useTransition } from "react";
 import { updateAutoplay, updateCardFront, updateDailyPlan } from "@/app/flashcards/actions";
+import { DIALECT_OPTIONS } from "@/lib/dialects";
 import { presetId } from "@/lib/flashcards/daily-plan";
-import { dictionary, type Locale, LOCALES } from "@/lib/i18n";
+import { dictionary, type Locale } from "@/lib/i18n";
+import { Icon } from "@/app/ui/icons";
 import type { CardFront } from "@/lib/types";
 import { BottomSheet } from "@/app/ui/bottom-sheet";
+import { DialectChoices } from "@/app/ui/dialect-choices";
 import { PaceOptions } from "../flashcards/pace-options";
 import { setLocale } from "../actions";
 import { updateDialect, updateInterests } from "./actions";
@@ -129,31 +132,58 @@ function Choices<Value extends string>({
   );
 }
 
-// The language Hoi speaks to the learner. Each language is listed in its own name.
-export function LanguageSetting({ locale }: { locale: Locale }) {
+// The tracks in the order shown, German first, as in onboarding's first question.
+const TRACKS: Locale[] = ["de", "en"];
+
+// The learner's track, which also sets Hoi's language, so each is named by its language. Each track
+// is a card in its own language, as in onboarding. Below, in both languages so that whoever is about to switch can read it: their
+// progress stays.
+export function TrackSetting({ locale, modules }: { locale: Locale; modules: Record<Locale, number> }) {
   const t = dictionary(locale).profile;
   const sheet = useRef<HTMLDialogElement>(null);
   const { error, saving, save } = useSave(sheet);
-  const nameOf = (option: Locale) => dictionary(option).languageName;
 
   return (
     <>
-      <Row
-        icon={<LanguageIcon />}
-        label={t.iSpeak}
-        value={nameOf(locale)}
-        onOpen={() => sheet.current?.showModal()}
-      />
-      <Sheet sheet={sheet} title={t.iSpeak} locale={locale} error={error}>
-        <p className="text-sm text-muted">{t.iSpeakNote}</p>
-        <Choices
-          label={t.iSpeak}
-          values={LOCALES}
-          current={locale}
-          name={nameOf}
-          disabled={saving}
-          onChoose={(option) => save(() => setLocale(option))}
-        />
+      <Row icon={<LanguageIcon />} label={t.track} value={dictionary(locale).languageName} onOpen={() => sheet.current?.showModal()} />
+      <Sheet sheet={sheet} title={t.track} locale={locale} error={error}>
+        <div role="group" aria-label={t.track} className="flex flex-col gap-3">
+          {TRACKS.map((option) => {
+            const texts = dictionary(option);
+            const selected = option === locale;
+            return (
+              <button
+                key={option}
+                type="button"
+                lang={option}
+                aria-pressed={selected}
+                disabled={saving}
+                onClick={() => (selected ? sheet.current?.close() : save(() => setLocale(option)))}
+                className={`flex items-center gap-4 rounded-3xl p-4 text-left transition-[background-color,transform] active:scale-[0.98] disabled:active:scale-100 ${
+                  selected ? "bg-sage" : "bg-mist"
+                }`}
+              >
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className="text-body font-bold">{texts.languageName}</span>
+                  <span className={`text-caption ${selected ? "" : "text-teal-soft"}`}>
+                    {texts.onboarding.track.what} {texts.onboarding.track.modules(modules[option])}.
+                  </span>
+                </span>
+                <span
+                  className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
+                    selected ? "bg-teal text-ivory" : "bg-ivory"
+                  }`}
+                >
+                  {selected && <Icon name="check" size={16} />}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        <p className="flex flex-col text-center text-caption text-teal-soft">
+          <span lang="de">{dictionary("de").profile.progressKept}</span>
+          <span lang="en">{dictionary("en").profile.progressKept}</span>
+        </p>
       </Sheet>
     </>
   );
@@ -168,7 +198,11 @@ export function DialectSetting({ dialects, current, locale }: DialectSettingProp
   const t = dictionary(locale).profile;
   const sheet = useRef<HTMLDialogElement>(null);
   const { error, saving, save } = useSave(sheet);
-  const nameOf = (id: string) => dialects.find((dialect) => dialect.id === id)?.name ?? id;
+  // Named as in onboarding; a dialect Hoi no longer lists keeps its name from the database.
+  const nameOf = (id: string) =>
+    DIALECT_OPTIONS.find((dialect) => dialect.id === id)?.name ??
+    dialects.find((dialect) => dialect.id === id)?.name ??
+    id;
 
   return (
     <>
@@ -180,11 +214,10 @@ export function DialectSetting({ dialects, current, locale }: DialectSettingProp
       />
       <Sheet sheet={sheet} title={t.dialect} locale={locale} error={error}>
         <p className="text-sm text-muted">{t.dialectNote}</p>
-        <Choices
-          label={t.dialect}
-          values={dialects.map((dialect) => dialect.id)}
-          current={current ?? ""}
-          name={nameOf}
+        {/* As in onboarding: dialects without content yet are shown, inactive, with when they come. */}
+        <DialectChoices
+          locale={locale}
+          chosen={current}
           disabled={saving}
           onChoose={(id) => save(() => updateDialect(id))}
         />

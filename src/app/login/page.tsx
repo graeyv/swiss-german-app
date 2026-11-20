@@ -1,28 +1,37 @@
+import Link from "next/link";
 import { Suspense } from "react";
+import { Logo } from "@/app/ui/logo";
 import { getLocale } from "@/lib/i18n/server";
 import { dictionary } from "@/lib/i18n";
 import { LoginForm } from "./login-form";
 
-export default function LoginPage() {
+// Logging in, or with ?new, creating an account, which the welcome page's "Los geht's" opens.
+export default function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
-    <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-6 py-16">
+    <main className="mx-auto flex min-h-dvh w-full max-w-sm flex-col gap-8 px-6 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <header>
+        <Link href="/" className="inline-flex min-h-11 items-center">
+          <Logo />
+        </Link>
+      </header>
       {/* The texts follow the language cookie, which is only known per request. */}
       <Suspense>
-        <Login />
+        <Login searchParams={searchParams} />
       </Suspense>
     </main>
   );
 }
 
-async function Login() {
+async function Login({ searchParams }: Pick<PageProps<"/login">, "searchParams">) {
   const locale = await getLocale();
+  const signUp = "new" in (await searchParams);
   const t = dictionary(locale);
 
   return (
-    <>
-      <title>{t.title(t.login.title)}</title>
-      <h1 className="text-3xl font-bold tracking-tight">{t.login.heading}</h1>
-      <LoginForm locale={locale} />
-    </>
+    <section className="flex flex-col gap-6 pt-4">
+      <title>{t.title(signUp ? t.login.createAccount : t.login.title)}</title>
+      <h1 className="text-title leading-tight font-bold">{signUp ? t.login.signUpHeading : t.login.heading}</h1>
+      <LoginForm locale={locale} signUp={signUp} />
+    </section>
   );
 }

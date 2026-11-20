@@ -2,8 +2,21 @@
 // src/lib/exercises/tasks.ts, so a typo fails the tests (src/lib/learn/lessons.test.ts) instead of
 // breaking a round.
 
-// The task types the round can show.
-export const EXERCISE_TYPES = ["pick", "build", "spot_error"];
+// The task types the round can show. letters, say and repeat are the pronunciation exercises in
+// src/lib/exercises/pronunciation.ts.
+export const EXERCISE_TYPES = ["pick", "build", "spot_error", "letters", "say", "repeat"];
+
+// A High German word with the letters that sound different in square brackets, such as
+// "[Ch]a[r]a[k]te[r]": no empty or nested brackets, and no spaces.
+const MARKED_WORD = /^(?:[^\s[\]]|\[[^\s[\]]+\])+$/;
+
+// A sentence, with any letters to watch in square brackets, as in a word.
+const MARKED_SENTENCE = /^(?:[^[\]]|\[[^\s[\]]+\])+$/;
+
+// A recording's path in public/, or null until it's recorded.
+function isRecording(value) {
+  return value === null || (typeof value === "string" && value.startsWith("/"));
+}
 
 // Matches sentenceWords in src/lib/exercises/tasks.ts.
 export function sentenceWords(sentence) {
@@ -35,6 +48,9 @@ const FIELDS = {
   pick: { required: ["prompt", "options", "answer"], optional: ["context"] },
   build: { required: ["prompt", "tiles", "answer"], optional: [] },
   spot_error: { required: ["sentence", "wrong", "options", "answer"], optional: ["context"] },
+  letters: { required: ["word"], optional: ["audio"] },
+  say: { required: ["word"], optional: ["audio"] },
+  repeat: { required: ["sentence"], optional: ["audio"] },
 };
 
 // Returns what's wrong with the payload, or null if nothing is.
@@ -73,6 +89,30 @@ export function payloadProblem(type, payload) {
       if (i === -1) return `answer uses "${word}" more often than the tiles have it`;
       left.splice(i, 1);
     }
+    return null;
+  }
+
+  if (type === "letters" || type === "say") {
+    if (typeof payload.word !== "string" || !MARKED_WORD.test(payload.word)) {
+      return "word needs letters, with those that sound different in [brackets]";
+    }
+    if (!/\[/.test(payload.word)) return "word needs letters that sound different in [brackets]";
+    if (type === "letters" && "audio" in payload) {
+      const { audio } = payload;
+      const keys = audio && typeof audio === "object" ? Object.keys(audio).sort().join() : "";
+      if (keys !== "dialect,standardGerman" || !isRecording(audio.standardGerman) || !isRecording(audio.dialect)) {
+        return "audio needs standardGerman and dialect, each a path or null";
+      }
+    }
+    if (type === "say" && "audio" in payload && !isRecording(payload.audio)) return "audio is a path or null";
+    return null;
+  }
+
+  if (type === "repeat") {
+    if (!isSwissGerman(payload.sentence) || !MARKED_SENTENCE.test(payload.sentence)) {
+      return "sentence needs text, with any letters to watch in [brackets]";
+    }
+    if ("audio" in payload && !isRecording(payload.audio)) return "audio is a path or null";
     return null;
   }
 

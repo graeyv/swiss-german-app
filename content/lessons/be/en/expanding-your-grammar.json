@@ -1,0 +1,46 @@
+{
+  "id": "expanding-your-grammar",
+  "title": "Expanding your grammar",
+  "subtitle": "What holds a sentence together",
+  "icon": "grid",
+  "description": "Gender, articles, plurals, possessives, adjective declensions, dative and accusative.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "gender",
+      "title": "Gender",
+      "description": "Why every noun is masculine, feminine or neuter.",
+      "rules": []
+    },
+    {
+      "id": "articles",
+      "title": "Articles",
+      "description": "The words for “the” and “a”, and when to use them.",
+      "rules": []
+    },
+    {
+      "id": "plurals",
+      "title": "Plurals",
+      "description": "Going from one to many.",
+      "rules": []
+    },
+    {
+      "id": "possessives",
+      "title": "Possessives",
+      "description": "My, your, his, her and the rest.",
+      "rules": []
+    },
+    {
+      "id": "adjective-declensions",
+      "title": "Adjective declensions",
+      "description": "How adjectives change their endings.",
+      "rules": []
+    },
+    {
+      "id": "dative-and-accusative",
+      "title": "Dative and accusative",
+      "description": "Who does what to whom.",
+      "rules": []
+    }
+  ]
+}

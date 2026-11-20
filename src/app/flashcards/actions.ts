@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getToday } from "@/lib/flashcards/data";
-import { NEW_CARDS_RANGE } from "@/lib/flashcards/daily-plan";
+import { NEW_CARDS_RANGE, weekOf, zurichDay } from "@/lib/flashcards/daily-plan";
 import { FSRS_MODEL, previewIntervals, scheduleReview } from "@/lib/flashcards/scheduling";
 import { getDictionary } from "@/lib/i18n/server";
 import type { CardFront, WordCard } from "@/lib/types";
@@ -93,6 +93,26 @@ export async function updateDailyPlan(newCardsPerDay: number): Promise<{ error?:
   return {};
 }
 
+// Lifts today's limit of new cards, until midnight on Zürich time. The next day it applies again.
+export async function liftDailyLimit(): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  // An update that matches no row isn't an error, so check that the profile was found.
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ limit_lifted_on: zurichDay(new Date()) })
+    .eq("id", claims.claims.sub)
+    .select("id");
+  if (error) return { error: error.message };
+  if (data.length === 0) return { error: "Your profile is missing" };
+
+  revalidateFlashcardPages();
+  revalidatePath("/flashcards/session/[code]", "page");
+  return {};
+}
+
 // Whether a word's recording plays by itself as soon as its Swiss German shows.
 export async function updateAutoplay(autoplay: boolean): Promise<{ error?: string }> {
   if (typeof autoplay !== "boolean") return { error: "Unknown setting" };
@@ -135,7 +155,23 @@ export async function updateCardFront(cardFront: CardFront): Promise<{ error?: s
 }
 
 // Asked when a session ends, to celebrate if that session completed today's goal.
-export async function isTodaysGoalReached(): Promise<boolean> {
+// Whether today's goal is reached, for the end of a session, with what celebrates it: the streak,
+// and this week's days with practice.
+export type TodaysGoal = { reached: boolean; streak: number; week: ReturnType<typeof weekOf> };
+
+export async function getTodaysGoal(): Promise<TodaysGoal> {
   const supabase = await createClient();
-  return (await getToday(supabase)).goalReached;
+  const now = new Date();
+  // A week back is enough for this week's days.
+  const since = new Date(now.getTime() - 8 * 86_400_000).toISOString();
+  const [today, stats, reviews] = await Promise.all([
+    getToday(supabase),
+    supabase.rpc("profile_stats").single(),
+    supabase.from("review_log").select("reviewed_at").gte("reviewed_at", since),
+  ]);
+  if (stats.error) throw new Error(stats.error.message);
+  if (reviews.error) throw new Error(reviews.error.message);
+
+  const practised = new Set(reviews.data.map(({ reviewed_at }) => zurichDay(new Date(reviewed_at))));
+  return { reached: today.goalReached, streak: stats.data.streak, week: weekOf(zurichDay(now), practised) };
 }

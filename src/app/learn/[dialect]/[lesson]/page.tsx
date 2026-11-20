@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ButtonLink } from "@/app/ui/button";
 import { Icon, isIconName } from "@/app/ui/icons";
-import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Pill } from "@/app/ui/surface";
 import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
@@ -15,15 +14,16 @@ import {
   lessonNumber,
   lessonParams,
 } from "@/lib/learn/lessons";
-import { getReads, readCount, whereToContinue } from "@/lib/learn/progress";
+import { getReads, readCount, rulePath, whereToContinue } from "@/lib/learn/progress";
 import { createClient } from "@/lib/supabase/server";
+import { LessonList, type LessonListItem } from "./lesson-list";
 import { LessonLoading, LessonScreen } from "./lesson-screen";
 
 export function generateStaticParams() {
   return lessonParams();
 }
 
-// A Learn lesson's overview: its sections, such as consonants and vowels, to open one by one.
+// A Learn lesson's overview: its sections, such as consonants and vowels, each with its topics.
 export default function LessonPage({ params }: PageProps<"/learn/[dialect]/[lesson]">) {
   return (
     <Suspense fallback={<LessonLoading />}>
@@ -44,6 +44,35 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
   // The next topic not read yet in this module, once the learner has read any of it.
   const anyRead = lesson.sections.some((section) => readCount(found, section, reads.read) > 0);
   const resume = anyRead ? whereToContinue(reads, [found]) : undefined;
+  const lessons: LessonListItem[] = lesson.sections.map((section) => {
+    const isRead = (ruleId: string) => reads.read.has(rulePath(dialect, lesson.id, section.id, ruleId));
+    const read = readCount(found, section, reads.read);
+    const nextUnread = section.rules.findIndex(({ id }) => !isRead(id));
+    return {
+      id: section.id,
+      title: section.title,
+      caption: read > 0 ? t.learn.topicsRead(read, section.rules.length) : t.lesson.topics(section.rules.length),
+      // A lesson still being written is a single inactive row; one with content also lists the
+      // topics still to come after its written ones, inactive.
+      topics:
+        section.rules.length > 0
+          ? [
+              ...section.rules.map((rule, index) => ({
+                title: rule.title,
+                href: lessonHref(dialect, lesson, section, rule),
+                read: isRead(rule.id),
+                next: index === nextUnread,
+              })),
+              ...(section.planned ?? []).map((title) => ({ title, read: false, next: false })),
+            ]
+          : [],
+    };
+  });
+  // Open at first: the lesson of the topic read last, if it's in this module, else the one to go
+  // on with, else the first.
+  const [lastDialect, lastLesson, lastSection] = reads.last?.split("/") ?? [];
+  const openLesson =
+    lastDialect === dialect && lastLesson === lesson.id ? lastSection : (resume?.section.id ?? first?.id);
 
   return (
     <LessonScreen
@@ -108,26 +137,12 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
         </section>
       )}
 
+      {/* Each lesson unfolds its topics, so the page stays short. The lesson being read in is
+          open, so coming back from a topic shows where the learner is. */}
       <section className="flex flex-col gap-4">
         <h2 className="text-heading font-bold">{t.lesson.topicsHeading}</h2>
         {!ready && <p className="text-body">{t.lesson.inTheMaking}</p>}
-        <ListRows>
-          {lesson.sections.map((section) => (
-            // A section still being written names its planned topics, or says what it's about.
-            <ListRow
-              key={section.id}
-              href={isReady(section) ? lessonHref(dialect, lesson, section) : undefined}
-              title={section.title}
-              caption={
-                !isReady(section)
-                  ? (section.planned?.join(" · ") ?? section.description)
-                  : readCount(found, section, reads.read) > 0
-                    ? t.learn.topicsRead(readCount(found, section, reads.read), section.rules.length)
-                    : t.lesson.topics(section.rules.length)
-              }
-            />
-          ))}
-        </ListRows>
+        <LessonList lessons={lessons} open={openLesson} comingSoon={t.lesson.comingSoon} />
       </section>
     </LessonScreen>
   );

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { findLesson, findRule, findSection, roundExercises } from "@/lib/learn/lessons";
+import { findLesson, findPracticeUnit, findRule } from "@/lib/learn/lessons";
 import { isRulePath } from "@/lib/learn/progress";
 import { createClient } from "@/lib/supabase/server";
 
@@ -25,13 +25,12 @@ export async function markRead(path: string): Promise<{ error?: string }> {
   return {};
 }
 
-// Saves a round of a section's exercises: how many of them were right the first time. path is
-// such as "be/pronunciation/consonants".
+// Saves a round of a section's exercises, or of a lesson's mixed round: how many of them were
+// right the first time. path is such as "be/pronunciation/consonants" or "be/pronunciation/mixed".
 export async function saveRound(path: string, correct: number, total: number): Promise<{ error?: string }> {
   const [dialect, lessonId, sectionId, ...rest] = path.split("/");
   const found = findLesson(dialect, lessonId);
-  const section = found && findSection(found.lesson, sectionId);
-  if (rest.length > 0 || !section || roundExercises(section).length === 0) return { error: "Unknown lesson" };
+  if (rest.length > 0 || !found || !findPracticeUnit(found.lesson, sectionId)) return { error: "Unknown lesson" };
   if (!Number.isInteger(total) || !Number.isInteger(correct) || total < 1 || correct < 0 || correct > total) {
     return { error: "Unknown result" };
   }

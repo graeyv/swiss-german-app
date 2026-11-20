@@ -8,6 +8,7 @@ import { filterSearch, type VocabularyFilter } from "@/lib/flashcards/vocabulary
 import { dictionary, type Locale } from "@/lib/i18n";
 import { Counts } from "../../counts";
 import { FilterSwitch } from "../../filter-switch";
+import { LiftLimit } from "@/app/flashcards/lift-limit";
 
 type SubcategorySheetProps = {
   code: string;
@@ -17,6 +18,8 @@ type SubcategorySheetProps = {
   due: number;
   // Whether the topic has words as well as sentences or expressions, so they can be practised apart.
   mixed: boolean;
+  // Whether lifting today's limit would bring new cards, once the topic is done for today.
+  canLift: boolean;
   locale: Locale;
 };
 
@@ -30,6 +33,7 @@ export function SubcategorySheet({
   newWords,
   due,
   mixed,
+  canLift,
   locale,
 }: SubcategorySheetProps) {
   const t = dictionary(locale).flashcards;
@@ -66,7 +70,10 @@ export function SubcategorySheet({
         {mixed && !done && <FilterSwitch value={filter} onChange={setFilter} locale={locale} />}
 
         <div className="flex flex-col gap-2">
-          {done ? (
+          {done && canLift ? (
+            // Lifting the limit refreshes the page: the topic then has cards and offers practice.
+            <LiftLimit label={dictionary(locale).goal.liftLimit} locale={locale} variant="primary" />
+          ) : done ? (
             <span className="w-full rounded-full bg-line px-6 py-3 text-center font-semibold text-muted">
               {t.nothingLeft}
             </span>

@@ -1,6 +1,6 @@
 // Every text in the app's interface, in English. Every other language must provide the same
 // entries, which the type check enforces. Card content (words, decks) comes from the database.
-import { plural } from "./plural";
+import { plural, pluralForm } from "./plural";
 
 const many = (count: number, one: string, other: string) => plural("en", count, { one, other });
 
@@ -15,15 +15,20 @@ export const en = {
   standardGerman: "Standard German:",
 
   home: {
-    headline: "Understand your Swiss neighbours, not just their signs.",
-    intro:
-      "Short modules in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
-    start: "Start learning",
+    // Bärndütsch said in a conversation, as speech bubbles.
+    bubbles: ["Grüessech!", "Wie geits?", "Merci viumau!", "Hoi zäme!"],
+    headline: "Soon you'll join in.",
+    intro: "Swiss German for everyday life.",
+    start: "Get started",
+    haveAccount: "I already have an account",
   },
 
   login: {
     title: "Log in",
     heading: "Log in to Hoi",
+    signUpHeading: "Create your account",
+    newHere: "New to Hoi? Create an account",
+    haveAccount: "Already have an account? Log in",
     email: "Email",
     password: "Password",
     logIn: "Log in",
@@ -32,7 +37,8 @@ export const en = {
   },
 
   learn: {
-    intro: "How Swiss German differs from Standard German.",
+    // The English track starts from nothing, rather than from Standard German.
+    intro: "Swiss German, step by step.",
     // Above the card to continue: whether the learner has read anything yet, then the module.
     continue: "Continue",
     startHere: "Start here",
@@ -58,8 +64,9 @@ export const en = {
     // Words and sentences, beside the grammar rules learned.
     wordsLearned: (count: number) => many(count, "card learned", "cards learned"),
     languages: "Languages",
-    iSpeak: "I speak",
-    iSpeakNote: "Hoi uses this language for everything, including translations.",
+    // The track, which also sets Hoi's language. It's named by its language (languageName).
+    track: "Learning path",
+    progressKept: "Your progress stays saved.",
     dialect: "Dialect",
     dialectNote: "Words and grammar are in this dialect. Until you choose one, you see every dialect.",
     dialectNotChosen: "Not chosen",
@@ -86,7 +93,7 @@ export const en = {
   lesson: {
     leave: "Leave module",
     number: (number: number) => `Module ${number}`,
-    expect: "What to expect",
+    expect: "What you'll learn",
     topicsHeading: "Lessons",
     back: (page: string) => `Back to ${page}`,
     topics: (count: number) => many(count, "topic", "topics"),
@@ -96,18 +103,27 @@ export const en = {
     // Beside "Next: R" on a module the learner has been in before.
     fromStart: "Start over",
     next: "Next",
+    previous: "Back",
     done: "Done",
     // Where a topic is in its section, such as "Consonants · 2 / 6".
     position: (section: string, position: number, count: number) => `${section} · ${position} / ${count}`,
     remember: "Remember",
+    // A play button beside a phrase.
+    listen: "Listen",
     // Marks a word that sounds the same in Standard German and the dialect.
     same: "same",
     // For screen readers, in place of the Standard German side of a dialect-only word.
     onlyIn: (variety: string) => `only in ${variety}`,
     becomes: "becomes",
-    standardGerman: "Standard German",
+    // The same as in Germany for the examples, so "Swiss" is only in brackets.
+    standardGerman: "(Swiss) Standard German",
     // By dialect id. A dialect without a name here shows its id.
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
+    // The accent of each dialect, for pronouncing Standard German with it.
+    accents: { be: "Bernese", zh: "Zürich" } as Record<string, string>,
+    // A rule's examples said with the accent, named above their buttons.
+    accentName: (accent: string) => `${accent} accent`,
+    playAccent: (accent: string) => `Listen with a ${accent} accent`,
     play: (variety: string) => `Listen in ${variety}`,
     noRecording: "No recording yet",
     comingSoon: "Coming soon",
@@ -128,11 +144,19 @@ export const en = {
     rule: (section: string) => `Rule · ${section}`,
     backToExercise: "Back to the exercise",
     done: (section: string) => `${section} practised`,
+    // After practising the mistakes, for the whole round.
+    scoreNow: (correct: number, total: number) => `Now ${correct} of ${total} right.`,
     score: (correct: number, total: number) => `${correct} of ${total} right the first time.`,
     // After a round with under 60 % right.
     weak: "Still a bit shaky. Read the lesson again and it'll stick better.",
     readAgain: (section: string) => `Read ${section} again`,
     finish: "Done",
+    // Going on without answering an exercise.
+    skip: "Skip",
+    again: "Practise again",
+    // Only the exercises that were wrong.
+    againMistakes: (count: number) => `Practise ${many(count, "mistake", "mistakes")}`,
+    review: "Your answers",
     notSaved: (error: string) => `Your result wasn't saved: ${error}`,
     // The Practice tab's two views: flashcards, and the lessons' exercises.
     views: { label: "What to practise", words: "Vocabulary", lessons: "Lessons" },
@@ -142,6 +166,10 @@ export const en = {
       `${practised} of ${many(count, "lesson", "lessons")} practised`,
     ago: (days: number) => (days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`),
     practised: (ago: string) => `Practised ${ago}`,
+    practisedScore: (ago: string, correct: number, total: number) => `Practised ${ago} · ${correct} of ${total} right`,
+    // Under the button that starts a round practised before.
+    lastResult: (ago: string, correct: number, total: number) => `Last practised ${ago} · ${correct} of ${total} right`,
+    mixedAfter: "Best after all the lessons",
     readNotPractised: "Read, not practised yet",
     notRead: (count: number) => `${many(count, "topic", "topics")}, not read yet`,
     // The card with the one thing suggested, such as "Next · Pronunciation".
@@ -194,6 +222,39 @@ export const en = {
     gap: "gap",
   },
 
+  // The pronunciation exercises: spotting letters, and saying words and sentences oneself.
+  pronunciation: {
+    // What the pronunciation exercises are: Standard German words, said with the dialect's accent.
+    frame: (accent: string) => `Standard German with a ${accent} accent`,
+    // Once, on the round's first exercise.
+    why: "The words stay Standard German, so you practise only the sounds first, without new words.",
+    letters: (accent: string) => `Which letters sound different with a ${accent} accent?`,
+    accent: (accent: string) => `${accent} accent`,
+    right: "Right",
+    // letters joined with "and", such as "K and ST".
+    and: " and ",
+    wrongChanged: (count: number, letters: string) => `Not quite: ${letters} ${count > 1 ? "sound" : "sounds"} different`,
+    say: (accent: string) => `Read the word with a ${accent} accent. Then listen to it.`,
+    repeat: (accent: string) => `Listen, then say the sentence after with a ${accent} accent.`,
+    tip: "Tip: what to listen for?",
+    record: "Record",
+    stop: "Done",
+    recording: "Recording",
+    listen: "Listen",
+    you: "You",
+    model: "How it sounds",
+    noRecording: "Recording to come",
+    sameQuestion: "Did it sound the same?",
+    yes: "Yes, it sounded the same",
+    notYet: "Not yet, again",
+    skip: "Go on anyway",
+    soundedSame: "Sounded the same",
+    notSameYet: "Didn't sound the same yet",
+    changed: (count: number, letters: string) => `${letters} ${count > 1 ? "sound" : "sounds"} different`,
+    noMicrophone: "Without a microphone: say it out loud, then listen.",
+    said: "Said it, listen",
+  },
+
   flashcards: {
     title: "Practice",
     noDecks: "No decks yet. Add the flashcards with",
@@ -243,6 +304,12 @@ export const en = {
     notSaved: (error: string) => `Not saved: ${error}`,
     saving: "Saving…",
     save: "Save changes",
+    // Lifting today's limit of new cards, until midnight.
+    keepLearning: "Keep learning today",
+    liftLimit: "Keep learning without a limit",
+    noLimit: "no limit",
+    liftedUntilMidnight: "No limit until midnight",
+    liftNote: "More new cards today means more reviews in the next few days.",
   },
 
   session: {
@@ -264,8 +331,9 @@ export const en = {
     notSaved: (error: string) => `Your answer wasn’t saved: ${error}. Choose again to retry.`,
     grades: { again: "Again", hard: "Hard", good: "Good", easy: "Easy" },
     statuses: { new: "New", learning: "Learning", review: "Review" },
-    newWordsLearned: (count: number) => many(count, "new card learned", "new cards learned"),
-    wordsReviewed: (count: number) => many(count, "card reviewed", "cards reviewed"),
+    // Under the number at the end of a session, which shows large above it.
+    newWordsLearned: (count: number) => pluralForm("en", count, { one: "new card learned", other: "new cards learned" }),
+    wordsReviewed: (count: number) => pluralForm("en", count, { one: "card reviewed", other: "cards reviewed" }),
     correct: "Correct!",
     notQuite: "Not quite",
     yourAnswer: "Your answer",
@@ -274,8 +342,9 @@ export const en = {
     saving: "Saving…",
     tryAgain: "Try again",
     answerNotSaved: (error: string) => `Your answer wasn’t saved: ${error}`,
-    goalReached: "Today’s goal reached!",
-    goalReachedNote: "That’s it for today. See you tomorrow.",
+    goalReached: "Today’s goal reached",
+    // This week's days, Monday first, as initials under the streak.
+    weekdays: ["M", "T", "W", "T", "F", "S", "S"],
     playPronunciation: "Play pronunciation",
     noRecording: "No recording yet",
   },
@@ -285,34 +354,64 @@ export const en = {
     step: (current: number, total: number) => `Step ${current} of ${total}`,
     back: "Back",
     next: "Next",
-    skip: "Skip",
-    language: {
-      heading: "Which language do you prefer?",
-      intro: "Hoi will use it for everything. You can change it at any time.",
-    },
-    level: {
-      heading: "How familiar are you with Swiss German?",
-      options: {
-        new: { label: "I’m just starting", hint: "Swiss German is new to me" },
-        few_words: { label: "I know a few words", hint: "Like Grüezi and Merci" },
-        understands: { label: "I understand a fair amount", hint: "But I don’t speak it yet" },
-        speaks: { label: "I can hold a simple conversation", hint: "And want to get better" },
+    // The first question, which sets the learner's track and the app's language. It's shown in
+    // German and English together, and each answer in its own language.
+    track: {
+      question: "Do you speak German?",
+      answer: "No, I'll learn in English",
+      what: "You learn Swiss German from the very start.",
+      path: "Your path",
+      modules: (count: number) => many(count, "module", "modules"),
+      recommended: "Recommended",
+      notSure: "Not sure?",
+      switchLater: "You can switch later",
+      // A sentence of Standard German to read, for the unsure.
+      test: {
+        heading: "Quick test",
+        sentence: "Gestern habe ich mit meinen Nachbarn über das Wetter gesprochen.",
+        question: "Do you understand this sentence?",
+        yes: "Yes, easily",
+        no: "Not really",
       },
     },
-    topics: {
-      heading: "Which topics interest you?",
-      intro: "Pick as many as you like. We’ll show them first.",
+    // The second question. Dialect names stay in dialect, so they aren't here.
+    dialect: {
+      question: "Which dialect would you like to learn?",
+      regions: { zh: "Zürich and around", be: "Bern and around", bs: "Basel and around" } as Record<string, string>,
+      soon: { beforeLaunch: "Coming before launch", later: "Coming later" },
+      notSure: "Not sure?",
+      switchLater: "You can switch later",
+      help: {
+        title: "Which dialect?",
+        points: [
+          "Swiss German isn't one language but many dialects. They sound different, but their speakers understand each other well.",
+          "Learn the dialect of the region where you live, work or know people. It's the one you'll hear every day.",
+          "Once you know one dialect, you'll soon understand the others too.",
+        ],
+        understood: "Got it",
+      },
     },
+    // The last screen: how Hoi works, then the pace.
     pace: {
       heading: "How Hoi works",
-      points: [
-        { icon: "📚", text: "You learn a few new words every day." },
-        { icon: "🔁", text: "Hoi brings each word back just before you’d forget it." },
-        { icon: "⏱️", text: "A few minutes a day is enough." },
-      ],
-      choose: "Choose your pace",
+      // The three main tabs, named as in the tab bar.
+      tabs: [
+        { id: "learn", text: (dialect: string) => `Short lessons: how ${dialect} sounds and works.` },
+        { id: "practice", text: () => "A few words every day, and exercises on the lessons." },
+        { id: "talk", text: () => "Real everyday dialogues to listen to." },
+      ] as { id: "learn" | "practice" | "talk"; text: (dialect: string) => string }[],
+      remember: {
+        title: "Words that stick",
+        text: "Hoi shows you each word again just before you'd forget it.",
+        // When one word comes back, as an example.
+        reviews: ["Today", "Tomorrow", "3 days", "1 week", "1 month"],
+      },
+      choose: "How many new words a day?",
+      chooseNote: "Choose your pace. More new words also means more reviews.",
+      perDay: "a day",
       recommended: "Recommended",
-      finish: "Start learning",
+      changeLater: "You can change this in your profile at any time",
+      finish: "Let's go",
       saving: "Saving…",
       notSaved: (error: string) => `Not saved: ${error}`,
     },

@@ -333,7 +333,7 @@ export function DialoguePlayer({ audio, lines, locale }: DialoguePlayerProps) {
                 {playing ? (
                   <Icon name="pause" size={28} />
                 ) : (
-                  <Icon name="play" size={28} className="ml-1" />
+                  <Icon name="play" size={28} />
                 )}
               </button>
               <SkipButton label={t.forward5} onClick={() => seek(time + 5)} direction="forward" />

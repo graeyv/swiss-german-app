@@ -6,9 +6,17 @@ import { type Cheer, pickCheer } from "@/lib/flashcards/cheers";
 import { advanceQueue } from "@/lib/flashcards/queue";
 import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i18n";
 import type { CardFront, Flashcard, WordCard } from "@/lib/types";
-import { isTodaysGoalReached, type SavedReview, submitReview, updateAutoplay, updateCardFront } from "./actions";
+import {
+  getTodaysGoal,
+  type SavedReview,
+  submitReview,
+  type TodaysGoal,
+  updateAutoplay,
+  updateCardFront,
+} from "./actions";
 import { CARD_FACE, CardStack } from "./card-stack";
 import { type Grade, GradeButtons } from "./grade-buttons";
+import { SessionEnd } from "./session-end";
 import { StatusBadge } from "./status-badge";
 import { Icon } from "@/app/ui/icons";
 import { SoundBars } from "@/app/ui/sound-bars";
@@ -18,6 +26,8 @@ type ReviewSessionProps = {
   cardFront: CardFront;
   // Whether a word's recording plays by itself as soon as its Swiss German shows.
   autoplay: boolean;
+  // Whether lifting today's limit would bring more new cards of this topic, offered at the end.
+  canLift: boolean;
   locale: Locale;
   // Whether today's goal was already met when the session started, so only the session that
   // completes it celebrates.
@@ -27,14 +37,11 @@ type ReviewSessionProps = {
   backHref: string;
   backLabel: string;
 };
-
-const primaryButton =
-  "w-full rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50";
-
 export function ReviewSession({
   cards,
   cardFront,
   autoplay: autoplayBefore,
+  canLift,
   locale,
   goalReachedBefore,
   emptyMessage,
@@ -55,7 +62,8 @@ export function ReviewSession({
   const [autoplay, setAutoplay] = useState(autoplayBefore);
   // Picked when the last card is answered, for the end screen.
   const [cheer, setCheer] = useState<Cheer | null>(null);
-  const [goalJustReached, setGoalJustReached] = useState(false);
+  // Today's goal, when this session reached it.
+  const [goal, setGoal] = useState<TodaysGoal | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saving, startSaving] = useTransition();
 
@@ -74,52 +82,23 @@ export function ReviewSession({
       setNewLearned(0);
       setReviewed(0);
       setCheer(null);
-      setGoalJustReached(false);
+      setGoal(null);
       setSaveError(null);
     };
   }, [finished]);
 
   if (finished) {
     return (
-      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-8 px-6 py-10">
-        <div className="flex flex-col items-center gap-2 text-center">
-          <p aria-hidden className="text-6xl motion-safe:animate-pop">
-            {goalJustReached ? "🎯" : "🎉"}
-          </p>
-          {cheer && (
-            <h1 lang="gsw" className="text-4xl font-bold tracking-tight">
-              {cheer}
-            </h1>
-          )}
-        </div>
-
-        {newLearned + reviewed > 0 && (
-          <div className="flex divide-x divide-line rounded-2xl border border-line bg-surface">
-            {newLearned > 0 && (
-              <Stat value={newLearned} label={t.newWordsLearned(newLearned)} />
-            )}
-            {reviewed > 0 && (
-              <Stat value={reviewed} label={t.wordsReviewed(reviewed)} />
-            )}
-          </div>
-        )}
-
-        {goalJustReached && (
-          <div className="flex items-center gap-4 rounded-2xl bg-yellow p-5 motion-safe:animate-pop">
-            <span aria-hidden className="text-3xl">
-              🎯
-            </span>
-            <span className="flex flex-col">
-              <strong className="text-lg text-success">{t.goalReached}</strong>
-              <span className="text-sm text-muted">{t.goalReachedNote}</span>
-            </span>
-          </div>
-        )}
-
-        <Link href={backHref} className={`${primaryButton} text-center`}>
-          {t.backTo(backLabel)}
-        </Link>
-      </main>
+      <SessionEnd
+        cheer={cheer}
+        newLearned={newLearned}
+        reviewed={reviewed}
+        goal={goal}
+        backHref={backHref}
+        backLabel={backLabel}
+        canLift={canLift}
+        locale={locale}
+      />
     );
   }
 
@@ -151,8 +130,8 @@ export function ReviewSession({
     if (next.length === 0) {
       setCheer(pickCheer());
       // A failed check only skips the celebration, so it doesn't hold up the end screen.
-      const reached = await isTodaysGoalReached().catch(() => false);
-      setGoalJustReached(reached && !goalReachedBefore);
+      const today = await getTodaysGoal().catch(() => null);
+      setGoal(today?.reached && !goalReachedBefore ? today : null);
     }
     setQueue(next);
   }
@@ -378,16 +357,6 @@ function CardStage({ card, front, autoplay, locale, stacked, saving, saveError, 
         {revealed && <GradeButtons intervals={card.intervals} onGrade={onGrade} disabled={saving} t={t} />}
       </footer>
     </>
-  );
-}
-
-// One half of the summary panel. Halves share the width equally, and one alone fills it.
-function Stat({ value, label }: { value: number; label: string }) {
-  return (
-    <div className="flex flex-1 basis-0 flex-col items-center px-4 py-4 text-center">
-      <span className="text-3xl font-bold tabular-nums">{value}</span>
-      <span className="text-sm text-muted">{label}</span>
-    </div>
   );
 }
 

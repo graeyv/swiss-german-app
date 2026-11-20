@@ -38,7 +38,7 @@ const ICONS: Record<string, IconName> = {
   "C08-T03": "palette",
   "C08-T04": "box",
   "C08-T05": "question",
-  "C08-T06": "link",
+  "C08-T06": "intersect",
   "C08-T07": "calendar",
 };
 
