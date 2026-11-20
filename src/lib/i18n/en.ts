@@ -15,15 +15,20 @@ export const en = {
   standardGerman: "Standard German:",
 
   home: {
-    headline: "Understand your Swiss neighbours, not just their signs.",
-    intro:
-      "Short modules in real Swiss German, starting with Zürich dialect. Learn what people actually say at the bakery, at work and on the tram.",
-    start: "Start learning",
+    // Bärndütsch said in a conversation, as speech bubbles.
+    bubbles: ["Grüessech!", "Wie geits?", "Merci viumau!", "Hoi zäme!"],
+    headline: "Soon you'll join in.",
+    intro: "Swiss German for everyday life.",
+    start: "Get started",
+    haveAccount: "I already have an account",
   },
 
   login: {
     title: "Log in",
     heading: "Log in to Hoi",
+    signUpHeading: "Create your account",
+    newHere: "New to Hoi? Create an account",
+    haveAccount: "Already have an account? Log in",
     email: "Email",
     password: "Password",
     logIn: "Log in",

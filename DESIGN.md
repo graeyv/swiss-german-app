@@ -254,6 +254,21 @@ topic in English); in the code and this guide they are lesson → section → ru
   "Mehr neue Karten heute heisst mehr Wiederholungen in den nächsten Tagen" below. Until midnight,
   the goal card shows "12 · ohne Limit" and a pill "Ohne Limit bis Mitternacht". Reviews of known
   words stay limited.
+- **Welcome page** (`/`, only for visitors: the logged in go straight to Learn): the logo at the
+  top left and, at the top right, the other language's own name ("English" or "Deutsch") with a
+  globe, quiet text in `teal-soft` that switches to it. Below, a mist card filling the space
+  between, with a short conversation in Bärndütsch (`Conversation`), like a chat: speech bubbles
+  in subtitle size, shaped like the logo's, the other person's on the left in ivory and the
+  learner's on the right in sage, the last ("Hoi zäme!") in yellow, the screen's one yellow. The
+  bubbles pop in one after another, each from its tail; with reduced motion they're all there at
+  once. They're only a picture: no tap, no translation. Under the card, the headline in title size
+  ("Bald redest du mit.") and one line in `teal-soft` ("Schweizerdeutsch für den Alltag."). At
+  the bottom, "Los geht's" (primary, creates an account) and "Ich habe schon ein Konto"
+  (secondary).
+- **Login** (`/login`, and `/login?new` to create an account): the logo at the top left, leading
+  back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei Hoi
+  anmelden"), email and password, one primary button, and below it a text button to the other
+  ("Schon ein Konto? Anmelden", "Neu bei Hoi? Konto erstellen").
 - **Choosing the track** (onboarding's first question): "Sprichst du Hochdeutsch?" in title size,
   with "Do you speak German?" below in subtitle size and `teal-soft`, as the learner may read
   either. Two answer cards on mist, each in its own language: an icon on an ivory circle, the

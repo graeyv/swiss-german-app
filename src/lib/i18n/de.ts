@@ -14,15 +14,20 @@ export const de: Dictionary = {
   standardGerman: "Hochdeutsch:",
 
   home: {
-    headline: "Versteh deine Schweizer Nachbarn, nicht nur ihre Schilder.",
-    intro:
-      "Kurze Module in echtem Schweizerdeutsch, angefangen mit Zürichdeutsch. Lerne, was die Leute wirklich sagen: in der Bäckerei, bei der Arbeit und im Tram.",
-    start: "Jetzt lernen",
+    // Bärndütsch in einem Gespräch, als Sprechblasen.
+    bubbles: ["Grüessech!", "Wie geits?", "Merci viumau!", "Hoi zäme!"],
+    headline: "Bald redest du mit.",
+    intro: "Schweizerdeutsch für den Alltag.",
+    start: "Los geht's",
+    haveAccount: "Ich habe schon ein Konto",
   },
 
   login: {
     title: "Anmelden",
     heading: "Bei Hoi anmelden",
+    signUpHeading: "Erstell dein Konto",
+    newHere: "Neu bei Hoi? Konto erstellen",
+    haveAccount: "Schon ein Konto? Anmelden",
     email: "E-Mail",
     password: "Passwort",
     logIn: "Anmelden",
