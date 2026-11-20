@@ -291,6 +291,12 @@ topic in English); in the code and this guide they are lesson → section → ru
   and "Du kannst später wechseln", as on the track question. The flags are in `public/flags/`;
   they're cantonal emblems, whose use Swiss law restricts. The profile's dialect sheet shows the
   same cards (`DialectChoices`), so only a ready dialect can be chosen there too.
+- **Learning path** (Profil, "Lernweg"): the track, which also sets Hoi's language, so the row and
+  the cards name it by its language ("Deutsch", "English"). Its sheet has a card on mist per track,
+  each in its own language and without an icon: the language in bold body size, what it teaches and
+  its number of modules as a caption, and the check; the chosen one on sage. Below, centred in
+  `teal-soft` caption, "Dein Fortschritt bleibt gespeichert." and "Your progress stays saved." on
+  two lines, so whoever is about to switch can read it.
 - **How Hoi works** (onboarding's last screen): "So funktioniert Hoi", the three main tabs as an
   icon list (icon in `teal-soft`, name in bold, one line below), and "Wörter, die bleiben": one
   sentence and one word's reviews as small teal dots on a thin sage-light line (Heute, Morgen,

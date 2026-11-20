@@ -59,8 +59,9 @@ export const de: Dictionary = {
     streak: (count) => many(count, "Tag in Folge", "Tage in Folge"),
     wordsLearned: (count) => many(count, "Karte gelernt", "Karten gelernt"),
     languages: "Sprachen",
-    iSpeak: "Ich spreche",
-    iSpeakNote: "Hoi verwendet diese Sprache für alles, auch für die Übersetzungen.",
+    // The track, which also sets Hoi's language. It's named by its language (languageName).
+    track: "Lernweg",
+    progressKept: "Dein Fortschritt bleibt gespeichert.",
     dialect: "Dialekt",
     dialectNote: "Wörter und Grammatik kommen in diesem Dialekt. Bis du einen wählst, siehst du alle Dialekte.",
     dialectNotChosen: "Nicht gewählt",

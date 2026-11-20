@@ -64,8 +64,9 @@ export const en = {
     // Words and sentences, beside the grammar rules learned.
     wordsLearned: (count: number) => many(count, "card learned", "cards learned"),
     languages: "Languages",
-    iSpeak: "I speak",
-    iSpeakNote: "Hoi uses this language for everything, including translations.",
+    // The track, which also sets Hoi's language. It's named by its language (languageName).
+    track: "Learning path",
+    progressKept: "Your progress stays saved.",
     dialect: "Dialect",
     dialectNote: "Words and grammar are in this dialect. Until you choose one, you see every dialect.",
     dialectNotChosen: "Not chosen",
