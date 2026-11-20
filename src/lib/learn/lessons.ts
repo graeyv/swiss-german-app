@@ -47,12 +47,15 @@ export type Phrase = { dialect: string; meaning: string; standardGerman?: string
 export type Rule = {
   id: string;
   title: string;
+  // One or more paragraphs, separated by an empty line.
   theory: string;
   // Lists after the theory, when it's easier to read in points.
   points?: PointList[];
   // Phrases that show the rule, such as "Wie gaht's?". For words to compare by their sound, use
   // examples.
   phrases?: Phrase[];
+  // A heading above the phrases, such as "Everyday examples".
+  phrasesHeading?: string;
   examples: Example[];
   // A quiet line after the examples, such as how to listen to them or a sound to compare with.
   note?: string;

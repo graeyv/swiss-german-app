@@ -15,7 +15,7 @@ import { isPronunciationTask, listOf, markedLetters, ruleForLetters } from "@/li
 import { answerText, isCorrect, type Response } from "@/lib/exercises/tasks";
 import { type Dictionary, dictionary, type Locale } from "@/lib/i18n";
 import type { LessonExercise, Rule } from "@/lib/learn/lessons";
-import { RuleBody } from "../[rule]/rule-body";
+import { RuleBody, Theory } from "../[rule]/rule-body";
 
 type PracticeRoundProps = {
   lang: Locale;
@@ -251,7 +251,7 @@ function Exercise({
               <Eyebrow>{t.rule(shown.section)}</Eyebrow>
               <h2 className="text-title font-bold">{shown.rule.title}</h2>
             </div>
-            <p className="text-body">{shown.rule.theory}</p>
+            <Theory text={shown.rule.theory} />
           </div>
           <RuleBody
             rule={shown.rule}

@@ -176,6 +176,8 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Phrases** (a topic's example phrases): like the example list, without columns. Each phrase in
   the dialect in subtitle size, below it its meaning as a caption and, if given, "Standard German:
   Wie geht es dir?", and on the right a play button once it has a recording to come.
+- A topic's text can have several paragraphs, in body size, 12 px apart. Its phrases can have a
+  heading above them, in body size, bold, like a list's.
 - A topic can end its examples with a note, one caption line in `teal-soft`, such as "Listen to
   each recording and repeat."
 - A topic's "Merke" is optional: a topic that only leads on, such as "What you will learn next",

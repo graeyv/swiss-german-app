@@ -1,16 +1,18 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { LessonList, type LessonListItem } from "@/app/learn/[dialect]/[lesson]/lesson-list";
 import { LessonScreen } from "@/app/learn/[dialect]/[lesson]/lesson-screen";
-import { RuleBody } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/rule-body";
+import { RuleBody, Theory } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/rule-body";
 import { ButtonLink } from "@/app/ui/button";
 import { Icon, type IconName, isIconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
-import type { Lesson } from "@/lib/learn/lessons";
+import type { Lesson, Rule } from "@/lib/learn/lessons";
 import file from "./english-b2.json";
+import variantsFile from "./topic-variants.json";
 
 // The English track under proposal B2, with the content brief's texts: the Learn tab's module
 // list, the module pages, and every topic with content, laid out as in the app. Addresses:
@@ -27,6 +29,9 @@ const LATER: { id: string; title: string; icon: IconName }[] = [
   { id: "becoming-fluent", title: "Becoming fluent", icon: "sparkles" },
 ];
 
+// Other versions of a topic's content, by the topic's id, to compare: ?variant=… picks one.
+const VARIANTS = variantsFile as unknown as Record<string, Record<string, Rule>>;
+
 const t = dictionary("en");
 const HERE = "/dev/design/curriculum";
 const moduleHref = (lesson: Lesson) => `${HERE}?module=${lesson.id}`;
@@ -40,7 +45,9 @@ export function CurriculumPreview() {
   const lesson = WRITTEN.find((each) => each.id === params.get("module"));
   const section = lesson?.sections.find((each) => each.id === params.get("lesson"));
   const index = Number(params.get("topic"));
-  if (lesson && section && section.rules[index]) return <Topic lesson={lesson} sectionId={section.id} index={index} />;
+  if (lesson && section && section.rules[index]) {
+    return <Topic lesson={lesson} sectionId={section.id} index={index} variant={params.get("variant")} />;
+  }
   if (lesson) return <ModulePage lesson={lesson} />;
   return <ModuleList />;
 }
@@ -150,10 +157,24 @@ function ModulePage({ lesson }: { lesson: Lesson }) {
 
 // A topic, as the app lays it out: the module named at the top, its lesson's progress, "Back"
 // and "Next" at the bottom, on to the next lesson with content after the last topic.
-function Topic({ lesson, sectionId, index }: { lesson: Lesson; sectionId: string; index: number }) {
+function Topic({
+  lesson,
+  sectionId,
+  index,
+  variant,
+}: {
+  lesson: Lesson;
+  sectionId: string;
+  index: number;
+  variant: string | null;
+}) {
   const all = lesson.sections.flatMap((section) => section.rules.map((rule, position) => ({ section, rule, position })));
   const at = all.findIndex((item) => item.section.id === sectionId && item.position === index);
-  const { section, rule } = all[at];
+  const { section } = all[at];
+  // The topic as written, or one of its other versions.
+  const versions = VARIANTS[all[at].rule.id];
+  const rule = (variant && versions?.[variant]) || all[at].rule;
+  const here = topicHref(lesson, section.id, index);
   const previous = all[at - 1];
   const next = all[at + 1];
 
@@ -192,12 +213,31 @@ function Topic({ lesson, sectionId, index }: { lesson: Lesson; sectionId: string
       }
     >
       <title>{`${rule.title} – dev`}</title>
+      {versions && (
+        <div className="-mb-4 flex flex-wrap gap-1.5">
+          {["Written", ...Object.keys(versions)].map((name) => {
+            const current = name === "Written" ? !variant || !versions[variant] : variant === name;
+            return (
+              <Link
+                key={name}
+                href={name === "Written" ? here : `${here}&variant=${encodeURIComponent(name)}`}
+                replace
+                className={`flex min-h-11 items-center rounded-full px-4 text-caption font-semibold ${
+                  current ? "bg-teal text-ivory" : "bg-mist"
+                }`}
+              >
+                {name}
+              </Link>
+            );
+          })}
+        </div>
+      )}
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <Eyebrow>{section.title}</Eyebrow>
           <h1 className="text-title font-bold">{rule.title}</h1>
         </div>
-        <p className="text-body">{rule.theory}</p>
+        <Theory text={rule.theory} />
       </div>
       <RuleBody rule={rule} dialectName={t.lesson.dialects.be} t={t.lesson} />
     </LessonScreen>

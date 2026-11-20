@@ -21,10 +21,52 @@
         "title": "Introduction to Swiss German",
         "description": "What Swiss German is, and where it's spoken.",
         "planned": [
-          "Swiss German vs. Swiss Standard German",
           "Regional differences and dialects"
         ],
-        "rules": []
+        "rules": [
+          {
+            "id": "swiss-and-standard-german",
+            "title": "Swiss German vs. Swiss Standard German",
+            "phrases": [
+              {
+                "dialect": "Chunsch mit?",
+                "meaning": "Are you coming along?",
+                "standardGerman": "Kommst du mit?",
+                "audio": null
+              },
+              {
+                "dialect": "I bi müed.",
+                "meaning": "I'm tired.",
+                "standardGerman": "Ich bin müde.",
+                "audio": null
+              },
+              {
+                "dialect": "Was machsch?",
+                "meaning": "What are you doing?",
+                "standardGerman": "Was machst du?",
+                "audio": null
+              }
+            ],
+            "examples": [],
+            "takeaway": "In Switzerland, people generally speak Swiss German in everyday life but use Swiss Standard German for most formal writing.",
+            "theory": "In Switzerland, you'll meet two forms of German.",
+            "points": [
+              {
+                "items": [
+                  {
+                    "term": "Swiss German (Schwiizerdütsch)",
+                    "text": "The Alemannic dialects of German-speaking Switzerland, with their own words, sounds and sentence structure. Spoken in everyday life, with family, friends and colleagues."
+                  },
+                  {
+                    "term": "Swiss Standard German (Schweizer Hochdeutsch)",
+                    "text": "Switzerland's version of Standard German, almost the same as in Germany. Used mainly in writing, at school and in formal settings."
+                  }
+                ]
+              }
+            ],
+            "phrasesHeading": "Everyday Swiss German"
+          }
+        ]
       },
       {
         "id": "learning-swiss-german",

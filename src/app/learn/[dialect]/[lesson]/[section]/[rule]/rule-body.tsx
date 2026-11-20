@@ -18,7 +18,12 @@ export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
   return (
     <>
       {rule.points?.map((list, index) => <Points key={index} list={list} />)}
-      {rule.phrases && rule.phrases.length > 0 && <Phrases phrases={rule.phrases} t={t} />}
+      {rule.phrases && rule.phrases.length > 0 && (
+        <section className="flex flex-col gap-3">
+          {rule.phrasesHeading && <h2 className="text-body font-bold">{rule.phrasesHeading}</h2>}
+          <Phrases phrases={rule.phrases} t={t} />
+        </section>
+      )}
       {rule.examples.length > 0 && (
         <ExampleList examples={rule.examples} dialectName={dialectName} accent={accent} t={t} />
       )}
@@ -26,6 +31,15 @@ export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
       {rule.takeaway && <Takeaway label={t.remember}>{rule.takeaway}</Takeaway>}
     </>
   );
+}
+
+// A topic's text, one paragraph per part separated by an empty line.
+export function Theory({ text }: { text: string }) {
+  return text.split(/\n\s*\n/).map((paragraph, index) => (
+    <p key={index} className="text-body">
+      {paragraph}
+    </p>
+  ));
 }
 
 // A list with its heading: plain points with a small dot, or terms in bold with what they are

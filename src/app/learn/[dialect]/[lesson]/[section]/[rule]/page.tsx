@@ -18,7 +18,7 @@ import { rulePath } from "@/lib/learn/progress";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
 import { LastResult } from "./last-result";
 import { MarkRead } from "./mark-read";
-import { RuleBody } from "./rule-body";
+import { RuleBody, Theory } from "./rule-body";
 
 export function generateStaticParams() {
   return ruleParams();
@@ -128,7 +128,7 @@ async function RuleView({
           <Eyebrow>{section.title}</Eyebrow>
           <h1 className="text-title font-bold">{rule.title}</h1>
         </div>
-        <p className="text-body">{rule.theory}</p>
+        <Theory text={rule.theory} />
       </div>
 
       <RuleBody
