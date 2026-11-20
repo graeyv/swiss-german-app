@@ -34,7 +34,8 @@ export default function DevDesignPage() {
 
       <Part title="Englischer Track: erste Lektion (Entwurf)">
         <ListRows>
-          <ListRow href="/dev/design/curriculum" icon="learn" title="Curriculum B2" caption="8 Module, mit den Inhalten aus dem Content Brief" />
+          <ListRow href="/dev/design/curriculum?track=en" icon="learn" title="Curriculum B2" caption="8 Module, mit den Inhalten aus dem Content Brief" />
+          <ListRow href="/dev/design/curriculum?track=de" icon="wave" title="Curriculum Deutsch" caption="Mit dem vorgeschlagenen Modul «Bevor du startest»" />
         </ListRows>
       </Part>
 
@@ -275,7 +276,7 @@ const ICONS: IconName[] = [
   "good",
   "easy",
   "clock",
-  "link",
+  "intersect",
   "sparkles",
   "puzzle",
   "chat",

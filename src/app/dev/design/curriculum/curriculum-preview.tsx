@@ -9,54 +9,76 @@ import { ButtonLink } from "@/app/ui/button";
 import { Icon, type IconName, isIconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Eyebrow, Highlight } from "@/app/ui/text";
-import { dictionary } from "@/lib/i18n";
-import type { Lesson, Rule } from "@/lib/learn/lessons";
-import file from "./english-b2.json";
+import { dictionary, type Locale } from "@/lib/i18n";
+import { type Lesson, lessonsFor, type Rule } from "@/lib/learn/lessons";
+import englishFile from "./english-b2.json";
+import germanIntroFile from "./german-intro.json";
 import variantsFile from "./topic-variants.json";
 
-// The English track under proposal B2, with the content brief's texts: the Learn tab's module
-// list, the module pages, and every topic with content, laid out as in the app. Addresses:
-// ?module=pronunciation for a module, &lesson=vowels&topic=0 for a topic. A lesson's topics still
-// to come are its planned ones.
+// Proposed curricula, laid out as in the app: the Learn tab's module list, the module pages, and
+// every topic with content. ?track=de for the German track (English by default), &module=… for a
+// module, &lesson=…&topic=0 for a topic. A lesson's topics still to come are its planned ones.
 
-// The three modules with content, in the lesson format, then the others, which only have a title.
-const WRITTEN = file as unknown as Lesson[];
-const LATER: { id: string; title: string; icon: IconName }[] = [
-  { id: "building-sentences", title: "Building sentences", icon: "puzzle" },
-  { id: "expanding-your-grammar", title: "Expanding your grammar", icon: "grid" },
-  { id: "everyday-communication", title: "Everyday communication", icon: "chat" },
-  { id: "talking-about-your-life", title: "Talking about your life", icon: "user" },
-  { id: "becoming-fluent", title: "Becoming fluent", icon: "sparkles" },
-];
+type Track = {
+  locale: Locale;
+  // The modules with content, in the lesson format.
+  written: Lesson[];
+  // Modules after them that only have a title so far.
+  later: { id: string; title: string; icon: IconName }[];
+};
+
+const TRACKS: Record<Locale, Track> = {
+  // Proposal B2, with the content brief's texts.
+  en: {
+    locale: "en",
+    written: englishFile as unknown as Lesson[],
+    later: [
+      { id: "building-sentences", title: "Building sentences", icon: "puzzle" },
+      { id: "expanding-your-grammar", title: "Expanding your grammar", icon: "grid" },
+      { id: "everyday-communication", title: "Everyday communication", icon: "chat" },
+      { id: "talking-about-your-life", title: "Talking about your life", icon: "user" },
+      { id: "becoming-fluent", title: "Becoming fluent", icon: "sparkles" },
+    ],
+  },
+  // A short first module proposed for German speakers, then the track's modules as they are.
+  de: {
+    locale: "de",
+    written: [germanIntroFile as unknown as Lesson, ...lessonsFor("de").map(({ lesson }) => lesson)],
+    later: [],
+  },
+};
 
 // Other versions of a topic's content, by the topic's id, to compare: ?variant=… picks one.
 const VARIANTS = variantsFile as unknown as Record<string, Record<string, Rule>>;
 
-const t = dictionary("en");
 const HERE = "/dev/design/curriculum";
-const moduleHref = (lesson: Lesson) => `${HERE}?module=${lesson.id}`;
-const topicHref = (lesson: Lesson, section: string, topic: number) =>
-  `${HERE}?module=${lesson.id}&lesson=${section}&topic=${topic}`;
+const listHref = (track: Track) => `${HERE}?track=${track.locale}`;
+const moduleHref = (track: Track, lesson: Lesson) => `${listHref(track)}&module=${lesson.id}`;
+const topicHref = (track: Track, lesson: Lesson, section: string, topic: number) =>
+  `${moduleHref(track, lesson)}&lesson=${section}&topic=${topic}`;
 const topicCount = (lesson: Lesson) =>
   lesson.sections.reduce((sum, section) => sum + section.rules.length + (section.planned?.length ?? 0), 0);
+const isWritten = (lesson: Lesson) => lesson.sections.some((section) => section.rules.length > 0);
 
 export function CurriculumPreview() {
   const params = useSearchParams();
-  const lesson = WRITTEN.find((each) => each.id === params.get("module"));
+  const track = TRACKS[params.get("track") === "de" ? "de" : "en"];
+  const lesson = track.written.find((each) => each.id === params.get("module"));
   const section = lesson?.sections.find((each) => each.id === params.get("lesson"));
   const index = Number(params.get("topic"));
   if (lesson && section && section.rules[index]) {
-    return <Topic lesson={lesson} sectionId={section.id} index={index} variant={params.get("variant")} />;
+    return <Topic track={track} lesson={lesson} sectionId={section.id} index={index} variant={params.get("variant")} />;
   }
-  if (lesson) return <ModulePage lesson={lesson} />;
-  return <ModuleList />;
+  if (lesson) return <ModulePage track={track} lesson={lesson} />;
+  return <ModuleList track={track} />;
 }
 
 // The Learn tab's module list, as the app shows it: modules without content carry the pill.
-function ModuleList() {
+function ModuleList({ track }: { track: Track }) {
+  const t = dictionary(track.locale);
   return (
-    <main lang="en" className="mx-auto flex w-full max-w-xl flex-col gap-8 px-6 py-6">
-      <title>Curriculum B2 – dev</title>
+    <main lang={track.locale} className="mx-auto flex w-full max-w-xl flex-col gap-8 px-6 py-6">
+      <title>Curriculum – dev</title>
       <div className="flex flex-col gap-2">
         <h1 className="text-title font-bold">{t.nav.learn}</h1>
         <p className="text-subtitle font-semibold">{t.learn.intro}</p>
@@ -64,25 +86,26 @@ function ModuleList() {
       <section className="flex flex-col gap-3">
         <h2 className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">{t.learn.allModules}</h2>
         <ListRows>
-          {WRITTEN.map((lesson, index) => {
-            const ready = lesson.sections.some((section) => section.rules.length > 0);
-            return (
-              <ListRow
-                key={lesson.id}
-                href={moduleHref(lesson)}
-                icon={isIconName(lesson.icon) ? lesson.icon : undefined}
-                eyebrow={t.lesson.number(index + 1)}
-                title={lesson.title}
-                caption={`${t.lesson.sections(lesson.sections.length)} · ${t.lesson.topics(topicCount(lesson))}`}
-                comingSoon={ready ? undefined : t.lesson.comingSoon}
-              />
-            );
-          })}
-          {LATER.map((later, index) => (
+          {track.written.map((lesson, index) => (
+            <ListRow
+              key={lesson.id}
+              href={moduleHref(track, lesson)}
+              icon={isIconName(lesson.icon) ? lesson.icon : undefined}
+              eyebrow={t.lesson.number(index + 1)}
+              title={lesson.title}
+              caption={
+                topicCount(lesson) > 0
+                  ? `${t.lesson.sections(lesson.sections.length)} · ${t.lesson.topics(topicCount(lesson))}`
+                  : t.lesson.sections(lesson.sections.length)
+              }
+              comingSoon={isWritten(lesson) ? undefined : t.lesson.comingSoon}
+            />
+          ))}
+          {track.later.map((later, index) => (
             <ListRow
               key={later.id}
               icon={later.icon}
-              eyebrow={t.lesson.number(WRITTEN.length + index + 1)}
+              eyebrow={t.lesson.number(track.written.length + index + 1)}
               title={later.title}
               comingSoon={t.lesson.comingSoon}
             />
@@ -95,7 +118,8 @@ function ModuleList() {
 
 // A module's page, as the app lays it out, with its lessons unfolding their topics: those with
 // content first, then those still to come.
-function ModulePage({ lesson }: { lesson: Lesson }) {
+function ModulePage({ track, lesson }: { track: Track; lesson: Lesson }) {
+  const t = dictionary(track.locale);
   const lessons: LessonListItem[] = lesson.sections.map((section) => ({
     id: section.id,
     title: section.title,
@@ -105,7 +129,7 @@ function ModulePage({ lesson }: { lesson: Lesson }) {
     topics: [
       ...section.rules.map((rule, index) => ({
         title: rule.title,
-        href: topicHref(lesson, section.id, index),
+        href: topicHref(track, lesson, section.id, index),
         read: false,
         next: index === 0,
       })),
@@ -117,14 +141,18 @@ function ModulePage({ lesson }: { lesson: Lesson }) {
 
   return (
     <LessonScreen
-      lang="en"
-      back={{ href: HERE, label: t.lesson.leave }}
-      footer={firstWritten ? <ButtonLink href={topicHref(lesson, firstWritten, 0)}>{t.lesson.start}</ButtonLink> : undefined}
+      lang={track.locale}
+      back={{ href: listHref(track), label: t.lesson.leave }}
+      footer={
+        firstWritten ? (
+          <ButtonLink href={topicHref(track, lesson, firstWritten, 0)}>{t.lesson.start}</ButtonLink>
+        ) : undefined
+      }
     >
       <title>{`${lesson.title} – dev`}</title>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <Eyebrow>{t.lesson.number(WRITTEN.indexOf(lesson) + 1)}</Eyebrow>
+          <Eyebrow>{t.lesson.number(track.written.indexOf(lesson) + 1)}</Eyebrow>
           <h1 className="text-title font-bold">{lesson.title}</h1>
         </div>
         <p className="text-subtitle font-semibold">
@@ -158,29 +186,33 @@ function ModulePage({ lesson }: { lesson: Lesson }) {
 // A topic, as the app lays it out: the module named at the top, its lesson's progress, "Back"
 // and "Next" at the bottom, on to the next lesson with content after the last topic.
 function Topic({
+  track,
   lesson,
   sectionId,
   index,
   variant,
 }: {
+  track: Track;
   lesson: Lesson;
   sectionId: string;
   index: number;
   variant: string | null;
 }) {
+  const t = dictionary(track.locale);
   const all = lesson.sections.flatMap((section) => section.rules.map((rule, position) => ({ section, rule, position })));
   const at = all.findIndex((item) => item.section.id === sectionId && item.position === index);
   const { section } = all[at];
   // The topic as written, or one of its other versions.
   const versions = VARIANTS[all[at].rule.id];
   const rule = (variant && versions?.[variant]) || all[at].rule;
-  const here = topicHref(lesson, section.id, index);
+  const here = topicHref(track, lesson, section.id, index);
   const previous = all[at - 1];
   const next = all[at + 1];
+  const dialectName = t.lesson.dialects.be;
 
   const back = previous && (
     <ButtonLink
-      href={topicHref(lesson, previous.section.id, previous.position)}
+      href={topicHref(track, lesson, previous.section.id, previous.position)}
       replace
       variant="secondary"
       className="min-h-14"
@@ -192,8 +224,8 @@ function Topic({
 
   return (
     <LessonScreen
-      lang="en"
-      back={{ href: moduleHref(lesson), label: t.lesson.back(lesson.title), text: lesson.title }}
+      lang={track.locale}
+      back={{ href: moduleHref(track, lesson), label: t.lesson.back(lesson.title), text: lesson.title }}
       progress={{
         position: index + 1,
         count: section.rules.length,
@@ -203,11 +235,11 @@ function Topic({
         <div className={`grid w-full gap-3 ${back ? "grid-cols-[1fr_2fr]" : ""}`}>
           {back}
           {next ? (
-            <ButtonLink href={topicHref(lesson, next.section.id, next.position)} replace>
+            <ButtonLink href={topicHref(track, lesson, next.section.id, next.position)} replace>
               {t.lesson.next}: {next.section === section ? next.rule.title : next.section.title}
             </ButtonLink>
           ) : (
-            <ButtonLink href={moduleHref(lesson)}>{t.lesson.done}</ButtonLink>
+            <ButtonLink href={moduleHref(track, lesson)}>{t.lesson.done}</ButtonLink>
           )}
         </div>
       }
@@ -239,7 +271,12 @@ function Topic({
         </div>
         <Theory text={rule.theory} />
       </div>
-      <RuleBody rule={rule} dialectName={t.lesson.dialects.be} t={t.lesson} />
+      <RuleBody
+        rule={rule}
+        dialectName={dialectName}
+        accent={lesson.accent ? (t.lesson.accents.be ?? dialectName) : undefined}
+        t={t.lesson}
+      />
     </LessonScreen>
   );
 }

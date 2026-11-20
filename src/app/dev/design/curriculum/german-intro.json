@@ -1,0 +1,98 @@
+{
+  "id": "bevor-du-startest",
+  "title": "Bevor du startest",
+  "subtitle": "Was du über Schweizerdeutsch wissen solltest",
+  "icon": "wave",
+  "description": "Drei Dinge, die dir den Einstieg leichter machen: welchen Dialekt du lernst, wie man ihn schreibt und wann man ihn spricht.",
+  "expectations": [
+    {
+      "icon": "pin",
+      "title": "Wissen, welchen Dialekt du lernst"
+    },
+    {
+      "icon": "learn",
+      "title": "Schweizerdeutsch lesen, auch ohne feste Schreibweise"
+    },
+    {
+      "icon": "chat",
+      "title": "Wissen, wann man Dialekt spricht und wann Hochdeutsch"
+    }
+  ],
+  "sections": [
+    {
+      "id": "einstieg",
+      "title": "Der Einstieg",
+      "description": "Dialekte, Schreibweise und wann man welche Sprache spricht.",
+      "rules": [
+        {
+          "id": "dialekte",
+          "title": "Ein Land, viele Dialekte",
+          "theory": "Schweizerdeutsch ist keine einheitliche Sprache, sondern eine Gruppe alemannischer Dialekte. Zürich, Bern und Basel klingen deutlich verschieden, und oft unterscheiden sich auch einzelne Wörter.",
+          "phrasesHeading": "«Ich weiss es nicht» in drei Dialekten",
+          "phrases": [
+            {
+              "dialect": "Ich weiss es nöd.",
+              "meaning": "Züritüütsch",
+              "audio": null
+            },
+            {
+              "dialect": "I weiss es nid.",
+              "meaning": "Bärndütsch",
+              "audio": null
+            },
+            {
+              "dialect": "I weiss es nit.",
+              "meaning": "Baseldytsch",
+              "audio": null
+            }
+          ],
+          "examples": [],
+          "takeaway": "Du lernst Bärndütsch. Wer einen Dialekt versteht, versteht die anderen bald auch."
+        },
+        {
+          "id": "schreibweise",
+          "title": "Geschrieben, wie man spricht",
+          "theory": "Schweizerdeutsch hat keine feste Schreibweise. Man schreibt meist so, wie man spricht, und in Chats und Nachrichten oft ganz unterschiedlich.",
+          "points": [
+            {
+              "heading": "Lies nicht mit hochdeutschen Augen",
+              "items": [
+                {
+                  "term": "ie",
+                  "text": "Zwei Laute nacheinander, kein langes i: «lieb» klingt wie «li-eb»."
+                },
+                {
+                  "term": "y",
+                  "text": "Ein langes, geschlossenes i: «Zyt» heisst «Zeit»."
+                },
+                {
+                  "term": "uu, ii, ää",
+                  "text": "Doppelte Vokale sind lang: «Huus» heisst «Haus»."
+                }
+              ]
+            }
+          ],
+          "examples": [],
+          "takeaway": "In Hoi ist jedes Wort immer gleich geschrieben und hat eine Aufnahme. So lernst du Schrift und Klang zusammen."
+        },
+        {
+          "id": "dialekt-oder-hochdeutsch",
+          "title": "Dialekt oder Hochdeutsch?",
+          "theory": "Im Alltag sprechen Schweizerinnen und Schweizer Dialekt: im Büro, beim Einkaufen, unter Freunden. Hochdeutsch ist vor allem Schriftsprache und wird in der Schule, in den Nachrichten und in offiziellen Texten verwendet.",
+          "points": [
+            {
+              "heading": "Was das für dich heisst",
+              "items": [
+                "Viele wechseln ins Hochdeutsche, sobald sie es hören. Das ist meist Höflichkeit.",
+                "Du darfst sie bitten, beim Dialekt zu bleiben. So hörst du ihn öfter.",
+                "Selbst Dialekt sprechen musst du nicht. Verstehen ist der erste Schritt."
+              ]
+            }
+          ],
+          "examples": [],
+          "takeaway": "Ziel ist zuerst das Verstehen. Sprechen kommt mit der Zeit, wenn du magst."
+        }
+      ]
+    }
+  ]
+}
