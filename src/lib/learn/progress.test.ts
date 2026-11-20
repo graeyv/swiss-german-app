@@ -9,8 +9,8 @@ const path = (section: string, rule: string) => rulePath("be", "pronunciation", 
 describe("where to continue in Learn", () => {
   it("starts with the first topic before anything is read", () => {
     const next = whereToContinue({ read: new Set() });
-    expect(next?.entry).toBe(pronunciation);
-    expect(next?.rule.id).toBe(consonants.rules[0].id);
+    expect(next?.entry.lesson.id).toBe("bevor-du-startest");
+    expect(next?.rule.id).toBe("dialekte");
     expect(next?.started).toBe(false);
   });
 

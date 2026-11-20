@@ -3,110 +3,171 @@
   "title": "Getting started",
   "subtitle": "Your first steps in Swiss German",
   "icon": "wave",
-  "description": "Discover how Swiss German sounds and learn the first words and expressions you'll need in everyday life.",
+  "description": "Understand how Swiss German relates to Standard German, how it is written, and how its spelling connects to pronunciation, before you learn individual words.",
   "expectations": [
     {
       "icon": "intersect",
       "title": "Understand how Swiss German relates to Standard German"
     },
     {
-      "icon": "headphones",
-      "title": "Hear and recognise Swiss German sounds and pronunciation"
+      "icon": "learn",
+      "title": "Know how Swiss German is spoken and written"
     },
     {
-      "icon": "chat",
-      "title": "Start communicating with your first words, greetings and everyday expressions"
+      "icon": "practice",
+      "title": "Know how to approach learning it"
     }
   ],
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
-      "description": "Before learning individual words, discover how Swiss German relates to Standard German, how people write it, and how its spelling connects to pronunciation.",
-      "planned": [
-        "Two forms of German",
-        "Speaking vs. writing",
-        "How is Swiss German written?",
-        "One word, different spellings",
-        "Your learning convention",
-        "Letters don't always sound the same",
-        "What you will learn next"
-      ],
-      "rules": []
+      "title": "What is Swiss German?",
+      "description": "What Swiss German is, and where it's spoken.",
+      "planned": [],
+      "rules": [
+        {
+          "id": "swiss-and-standard-german",
+          "title": "Two kinds of German",
+          "phrases": [
+            {
+              "dialect": "Chunsch mit?",
+              "meaning": "Are you coming along?",
+              "standardGerman": "Kommst du mit?",
+              "audio": null
+            },
+            {
+              "dialect": "I bi müed.",
+              "meaning": "I'm tired.",
+              "standardGerman": "Ich bin müde.",
+              "audio": null
+            },
+            {
+              "dialect": "Was machsch?",
+              "meaning": "What are you doing?",
+              "standardGerman": "Was machst du?",
+              "audio": null
+            }
+          ],
+          "examples": [],
+          "takeaway": "In Switzerland, people generally speak Swiss German in everyday life but use Swiss Standard German for most formal writing.",
+          "theory": "In Switzerland, you'll meet two forms of German.",
+          "points": [
+            {
+              "items": [
+                {
+                  "term": "Swiss German (Schwiizerdütsch)",
+                  "text": "The Alemannic dialects of German-speaking Switzerland, with their own words, sounds and sentence structure. Spoken in everyday life, with family, friends and colleagues."
+                },
+                {
+                  "term": "Swiss Standard German (Schweizer Hochdeutsch)",
+                  "text": "Switzerland's version of Standard German (often called Hochdeutsch), almost the same as in Germany. Used mainly in writing, at school and in formal settings."
+                }
+              ]
+            }
+          ],
+          "phrasesHeading": "Everyday Swiss German"
+        },
+        {
+          "id": "regional-dialects",
+          "title": "One language, many dialects",
+          "theory": "Swiss German consists of different regional dialects. The way people speak varies depending on where they come from. The main dialect regions include Zürich, Bern, Basel and Eastern Switzerland.\n\nSome words and expressions are pronounced differently across regions.",
+          "phrasesHeading": "Example: “I don't know.”",
+          "phrases": [
+            {
+              "dialect": "Ich weiss es nöd.",
+              "meaning": "Zürich German (Züritüütsch)",
+              "audio": null
+            },
+            {
+              "dialect": "I weiss es nid.",
+              "meaning": "Bernese German (Bärndütsch)",
+              "audio": null
+            },
+            {
+              "dialect": "I weiss es nit.",
+              "meaning": "Basel German (Baseldytsch)",
+              "audio": null
+            },
+            {
+              "dialect": "Ich weiss es nicht.",
+              "meaning": "(Swiss) Standard German",
+              "audio": null
+            }
+          ],
+          "examples": [],
+          "note": "Swiss German has no standardised spelling. These examples show regional variations; the differences are often even more noticeable in pronunciation.",
+          "takeaway": "You don't need to learn every dialect. Learn yours well, and you'll soon understand the others too: Swiss people from different regions understand each other easily."
+        }
+      ]
     },
     {
-      "id": "pronunciation",
-      "title": "Pronunciation",
-      "description": "Learn the sounds of your dialect and discover how to pronounce words naturally.",
-      "planned": [
-        "A, E, I, O, U",
-        "Ä",
-        "Ö",
-        "Ü",
-        "Short and long vowels",
-        "CH",
-        "SCH",
-        "R",
-        "ST and SP",
-        "EI and IE",
-        "AU",
-        "UE and ÜE",
-        "Word stress",
-        "Sentence rhythm and intonation",
-        "Connected speech"
-      ],
-      "rules": []
-    },
-    {
-      "id": "greetings-and-introductions",
-      "title": "Greetings & introductions",
-      "description": "Say hello and introduce yourself.",
-      "planned": [
-        "Saying hello and goodbye",
-        "Introducing yourself",
-        "Asking someone's name",
-        "Asking where someone is from",
-        "Formal and informal greetings"
-      ],
-      "rules": []
-    },
-    {
-      "id": "everyday-expressions",
-      "title": "Everyday expressions",
-      "description": "Learn useful words and phrases.",
-      "planned": [
-        "Please and thank you",
-        "Apologies",
-        "Asking someone to repeat",
-        "Saying you don't understand",
-        "Common reactions"
-      ],
-      "rules": []
-    },
-    {
-      "id": "yes-and-no",
-      "title": "Yes & no",
-      "description": "Agree, disagree and respond.",
-      "planned": [
-        "Saying yes and no",
-        "Agreeing and disagreeing",
-        "Expressing uncertainty",
-        "Giving short responses"
-      ],
-      "rules": []
-    },
-    {
-      "id": "numbers",
-      "title": "Numbers",
-      "description": "Count and use numbers.",
-      "planned": [
-        "Numbers 0–20",
-        "Numbers 20–100",
-        "Phone numbers",
-        "Prices",
-        "Age and dates"
-      ],
-      "rules": []
+      "id": "learning-swiss-german",
+      "title": "How to learn Swiss German",
+      "description": "How Swiss German is spoken and written, and how it goes with Standard German.",
+      "planned": [],
+      "rules": [
+        {
+          "id": "how-it-is-spoken",
+          "title": "Start with your ears",
+          "theory": "Swiss German is primarily a spoken language, and for many non-native speakers, pronunciation is one of the biggest challenges. The best way to start is to get familiar with the sounds that are typical of Swiss German.",
+          "points": [
+            {
+              "heading": "How to start: train your ear",
+              "items": [
+                "Listen to individual sounds.",
+                "Recognise them in words.",
+                "Get used to hearing them in short sentences."
+              ]
+            }
+          ],
+          "examples": [],
+          "takeaway": "The more you listen, the easier it becomes to recognise the sounds and say them yourself."
+        },
+        {
+          "id": "how-it-is-written",
+          "title": "Written as it sounds",
+          "theory": "Swiss German is mainly spoken. When people write it, they often spell words the way they pronounce them. Unlike Swiss Standard German, it has no official spelling rules, so the same word can be written in different ways.",
+          "points": [
+            {
+              "heading": "Three ways to write “I saw your father yesterday.”",
+              "items": [
+                {
+                  "term": "I ha geschter dy fattr xee",
+                  "text": "Phonetic: written as it sounds"
+                },
+                {
+                  "term": "I ha gester di Vater gseh",
+                  "text": "Close to Standard German spelling"
+                },
+                {
+                  "term": "I ha geschter di Vater gsee",
+                  "text": "A mix of both"
+                }
+              ]
+            }
+          ],
+          "examples": [],
+          "note": "(Swiss) Standard German: Ich habe gestern deinen Vater gesehen.",
+          "takeaway": "Don't let the different spellings confuse you. There's no single correct way to write Swiss German, and it's mostly spoken anyway. You'll get used to the variations as you learn."
+        },
+        {
+          "id": "learning-both",
+          "title": "Swiss German or Standard German?",
+          "theory": "What should you learn first: Swiss German or Standard German? You can learn one after the other, or just one of them. Many people learn both together, and that's what we recommend: the two share much of their vocabulary and grammar, so each helps with the other.",
+          "points": [
+            {
+              "heading": "Learning both gives you",
+              "items": [
+                "Standard German for writing, official matters and permits.",
+                "Swiss German to follow everyday conversations and join in.",
+                "A head start in each, since they share so much."
+              ]
+            }
+          ],
+          "examples": [],
+          "takeaway": "Hoi focuses on Swiss German, the language you'll hear every day. Next to every word and phrase, you also see the Standard German, so you pick it up along the way."
+        }
+      ]
     }
   ]
 }

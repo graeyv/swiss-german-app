@@ -17,8 +17,8 @@ import {
 
 describe("lessons", () => {
   it("numbers the lessons of each track in order", () => {
-    expect(lessonsFor("de").map(lessonNumber)).toEqual([1, 2, 3, 4, 5]);
-    expect(lessonsFor("en").map(lessonNumber)).toEqual([1, 2, 3, 4, 5, 6]);
+    expect(lessonsFor("de").map(lessonNumber)).toEqual([1, 2, 3, 4, 5, 6]);
+    expect(lessonsFor("en").map(lessonNumber)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
   });
 
   it("has unique lesson ids within a dialect, across its tracks", () => {
@@ -37,7 +37,7 @@ describe("lessons", () => {
 
   it("tells lessons with something to open from those still being written", () => {
     const ready = LESSONS.filter(({ lesson }) => isReady(lesson)).map(({ lesson }) => lesson.id);
-    expect(ready).toEqual(["pronunciation"]);
+    expect(ready).toEqual(["bevor-du-startest", "pronunciation", "getting-started", "sounds"]);
   });
 
   it("counts a lesson's topics, planned ones too", () => {
@@ -47,7 +47,7 @@ describe("lessons", () => {
   });
 
   it("builds pages only for sections that are ready", () => {
-    expect(sectionParams().map(({ section }) => section)).toEqual(["consonants", "vowels"]);
+    expect(sectionParams().map(({ section }) => section)).toEqual(["einstieg", "consonants", "vowels", "introduction", "learning-swiss-german", "vowels", "consonants"]);
   });
 
   it("takes up to two exercises of each rule for a section's round, in order", () => {

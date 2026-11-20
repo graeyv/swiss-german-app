@@ -2,6 +2,7 @@
 // from Standard German; for English speakers, from the start. Each lesson is a JSON file in
 // content/lessons/<dialect>/<language>/, so its text can change without touching the code.
 // Assigning a file to Lesson below makes the type check catch a file that doesn't have this shape.
+import beBevorDuStartest from "../../../content/lessons/be/de/bevor-du-startest.json";
 import beEveryday from "../../../content/lessons/be/de/everyday.json";
 import beGrammar from "../../../content/lessons/be/de/grammar.json";
 import beNewWords from "../../../content/lessons/be/de/new-words.json";
@@ -11,7 +12,9 @@ import beBecomingFluent from "../../../content/lessons/be/en/becoming-fluent.jso
 import beBuildingSentences from "../../../content/lessons/be/en/building-sentences.json";
 import beEverydayCommunication from "../../../content/lessons/be/en/everyday-communication.json";
 import beExpandingYourGrammar from "../../../content/lessons/be/en/expanding-your-grammar.json";
+import beFirstWords from "../../../content/lessons/be/en/first-words.json";
 import beGettingStarted from "../../../content/lessons/be/en/getting-started.json";
+import beSounds from "../../../content/lessons/be/en/sounds.json";
 import beTalkingAboutYourLife from "../../../content/lessons/be/en/talking-about-your-life.json";
 import type { PronunciationTask } from "@/lib/exercises/pronunciation";
 import type { Task } from "@/lib/exercises/tasks";
@@ -129,12 +132,15 @@ const everyday = fromFile(beEveryday);
 // too, so learners see where the track leads. Lesson ids are unique within a dialect, across its
 // tracks, as the addresses and saved progress only name the dialect and the lesson.
 export const LESSONS: DialectLesson[] = [
+  { dialect: "be", language: "de", lesson: fromFile(beBevorDuStartest) },
   { dialect: "be", language: "de", lesson: pronunciation },
   { dialect: "be", language: "de", lesson: relatedWords },
   { dialect: "be", language: "de", lesson: newWords },
   { dialect: "be", language: "de", lesson: grammar },
   { dialect: "be", language: "de", lesson: everyday },
   { dialect: "be", language: "en", lesson: fromFile(beGettingStarted) },
+  { dialect: "be", language: "en", lesson: fromFile(beSounds) },
+  { dialect: "be", language: "en", lesson: fromFile(beFirstWords) },
   { dialect: "be", language: "en", lesson: fromFile(beBuildingSentences) },
   { dialect: "be", language: "en", lesson: fromFile(beExpandingYourGrammar) },
   { dialect: "be", language: "en", lesson: fromFile(beEverydayCommunication) },

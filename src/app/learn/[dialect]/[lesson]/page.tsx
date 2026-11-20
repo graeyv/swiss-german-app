@@ -52,12 +52,20 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
       id: section.id,
       title: section.title,
       caption: read > 0 ? t.learn.topicsRead(read, section.rules.length) : t.lesson.topics(section.rules.length),
-      topics: section.rules.map((rule, index) => ({
-        title: rule.title,
-        href: lessonHref(dialect, lesson, section, rule),
-        read: isRead(rule.id),
-        next: index === nextUnread,
-      })),
+      // A lesson still being written is a single inactive row; one with content also lists the
+      // topics still to come after its written ones, inactive.
+      topics:
+        section.rules.length > 0
+          ? [
+              ...section.rules.map((rule, index) => ({
+                title: rule.title,
+                href: lessonHref(dialect, lesson, section, rule),
+                read: isRead(rule.id),
+                next: index === nextUnread,
+              })),
+              ...(section.planned ?? []).map((title) => ({ title, read: false, next: false })),
+            ]
+          : [],
     };
   });
   // Open at first: the lesson of the topic read last, if it's in this module, else the one to go
