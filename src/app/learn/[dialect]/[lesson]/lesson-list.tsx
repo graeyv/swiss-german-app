@@ -10,8 +10,9 @@ export type LessonListItem = {
   title: string;
   // Such as "2 von 6 Themen gelesen".
   caption: string;
-  // Empty for a lesson still being written.
-  topics: { title: string; href: string; read: boolean; next: boolean }[];
+  // Empty for a lesson still being written. A topic still being written has no href: it shows,
+  // inactive, with the "Bald verfügbar" pill.
+  topics: { title: string; href?: string; read: boolean; next: boolean }[];
 };
 
 type LessonListProps = {
@@ -67,24 +68,37 @@ export function LessonList({ lessons, open, comingSoon }: LessonListProps) {
             {isOpen && (
               // In order, numbered: read ones teal with a check, the next one sage, the rest ivory.
               <ol id={`topics-${lesson.id}`} className="flex flex-col pb-3">
-                {lesson.topics.map((topic, index) => (
-                  <li key={topic.href}>
-                    <Link
-                      href={topic.href}
-                      className="flex min-h-13 items-center gap-4 px-6 transition-transform active:scale-[0.98]"
-                    >
-                      <span
-                        className={`flex size-8 shrink-0 items-center justify-center rounded-full text-caption font-bold ${
-                          topic.read ? "bg-teal text-ivory" : topic.next ? "bg-sage" : "bg-ivory"
-                        }`}
+                {lesson.topics.map((topic, index) =>
+                  topic.href ? (
+                    <li key={topic.title}>
+                      <Link
+                        href={topic.href}
+                        className="flex min-h-13 items-center gap-4 px-6 transition-transform active:scale-[0.98]"
                       >
-                        {topic.read ? <Icon name="check" size={16} /> : index + 1}
+                        <span
+                          className={`flex size-8 shrink-0 items-center justify-center rounded-full text-caption font-bold ${
+                            topic.read ? "bg-teal text-ivory" : topic.next ? "bg-sage" : "bg-ivory"
+                          }`}
+                        >
+                          {topic.read ? <Icon name="check" size={16} /> : index + 1}
+                        </span>
+                        <span className="flex-1 text-body font-semibold">{topic.title}</span>
+                        <Icon name="forward" size={20} />
+                      </Link>
+                    </li>
+                  ) : (
+                    // Still being written: its number and title in teal-soft, the pill instead of the arrow.
+                    <li key={topic.title} className="flex min-h-13 items-center gap-4 px-6">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-ivory text-caption font-bold text-teal-soft">
+                        {index + 1}
                       </span>
-                      <span className="flex-1 text-body font-semibold">{topic.title}</span>
-                      <Icon name="forward" size={20} />
-                    </Link>
-                  </li>
-                ))}
+                      <span className="flex min-w-0 flex-1 flex-col">
+                        <span className="text-body font-semibold text-teal-soft">{topic.title}</span>
+                        <ComingSoonPill label={comingSoon} />
+                      </span>
+                    </li>
+                  ),
+                )}
               </ol>
             )}
           </li>

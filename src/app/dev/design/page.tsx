@@ -34,7 +34,7 @@ export default function DevDesignPage() {
 
       <Part title="Englischer Track: erste Lektion (Entwurf)">
         <ListRows>
-          <ListRow href="/dev/design/introduction" icon="wave" title="Getting started · Introduction" caption="7 Themen aus dem Curriculum-Entwurf" />
+          <ListRow href="/dev/design/curriculum" icon="learn" title="Curriculum B2" caption="8 Module, mit den Inhalten aus dem Content Brief" />
         </ListRows>
       </Part>
 

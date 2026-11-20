@@ -54,6 +54,8 @@ export type Rule = {
   // examples.
   phrases?: Phrase[];
   examples: Example[];
+  // A quiet line after the examples, such as how to listen to them or a sound to compare with.
+  note?: string;
   // The rule in one sentence, to remember. A topic that only leads on, such as one saying what
   // comes next, has none.
   takeaway?: string;

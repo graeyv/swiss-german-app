@@ -13,7 +13,7 @@ type RuleBodyProps = {
 };
 
 // What follows a topic's theory, each part only when the topic has it: its lists, its phrases,
-// its words to compare by their sound, then what to remember. See DESIGN.md.
+// its words to compare by their sound, a note on them, then what to remember. See DESIGN.md.
 export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
   return (
     <>
@@ -22,6 +22,7 @@ export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
       {rule.examples.length > 0 && (
         <ExampleList examples={rule.examples} dialectName={dialectName} accent={accent} t={t} />
       )}
+      {rule.note && <p className="text-caption text-teal-soft">{rule.note}</p>}
       {rule.takeaway && <Takeaway label={t.remember}>{rule.takeaway}</Takeaway>}
     </>
   );
