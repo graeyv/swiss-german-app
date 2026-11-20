@@ -241,6 +241,7 @@ export type Database = {
           display_name: string | null
           id: string
           interests: string[]
+          limit_lifted_on: string | null
           locale: string
           new_cards_per_day: number
           onboarded_at: string | null
@@ -254,6 +255,7 @@ export type Database = {
           display_name?: string | null
           id: string
           interests?: string[]
+          limit_lifted_on?: string | null
           locale?: string
           new_cards_per_day?: number
           onboarded_at?: string | null
@@ -267,6 +269,7 @@ export type Database = {
           display_name?: string | null
           id?: string
           interests?: string[]
+          limit_lifted_on?: string | null
           locale?: string
           new_cards_per_day?: number
           onboarded_at?: string | null

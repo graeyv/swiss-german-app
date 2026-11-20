@@ -58,7 +58,7 @@ export function ListenButton({ url, label, noRecordingLabel }: ListenButtonProps
       {playing ? (
         <SoundBars />
       ) : (
-        <Icon name="play" size={16} className="ml-0.5" />
+        <Icon name="play" size={16} />
       )}
     </button>
   );

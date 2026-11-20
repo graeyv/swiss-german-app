@@ -7,8 +7,8 @@ import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
-import { findLesson, lessonParams, practiceHref, roundExercises } from "@/lib/learn/lessons";
-import { getReads, readCount } from "@/lib/learn/progress";
+import { findLesson, lessonParams, MIXED, mixedSection, practiceHref, roundExercises } from "@/lib/learn/lessons";
+import { getReads, isReadThrough, readCount } from "@/lib/learn/progress";
 import { getRounds, roundOf } from "@/lib/learn/suggestion";
 import { createClient } from "@/lib/supabase/server";
 
@@ -16,7 +16,8 @@ export function generateStaticParams() {
   return lessonParams();
 }
 
-// A module's exercises, one round per lesson, to practise as often as the learner likes: from
+// A module's exercises, one round per lesson and a mixed one at the end, to practise as often as
+// the learner likes: from
 // "Alle Übungen" in the Practice tab, and from the module's page in Learn ("Zu den Übungen").
 export default function ModuleExercisesPage({ params }: PageProps<"/flashcards/lessons/[dialect]/[lesson]">) {
   return (
@@ -49,7 +50,7 @@ async function ModuleExercises({ params }: Pick<PageProps<"/flashcards/lessons/[
       </div>
 
       <ListRows>
-        {lesson.sections.map((section) => {
+        {[...lesson.sections, ...[mixedSection(lesson)].filter((section) => section !== undefined)].map((section) => {
           // A lesson without exercises yet shows what's coming, but doesn't open.
           if (roundExercises(section).length === 0) {
             return <ListRow key={section.id} title={section.title} comingSoon={t.lesson.comingSoon} />;
@@ -57,9 +58,11 @@ async function ModuleExercises({ params }: Pick<PageProps<"/flashcards/lessons/[
           const round = roundOf(rounds, { entry: found, section });
           const read = readCount(found, section, reads.read);
           const caption = round
-            ? t.practice.practised(t.practice.ago(round.daysAgo))
-            : read === section.rules.length
+            ? t.practice.practisedScore(t.practice.ago(round.daysAgo), round.correct, round.total)
+            : isReadThrough(found, section, reads.read)
               ? t.practice.readNotPractised
+              : section.id === MIXED
+                ? t.practice.mixedAfter
               : read > 0
                 ? t.learn.topicsRead(read, section.rules.length)
                 : t.practice.notRead(section.rules.length);

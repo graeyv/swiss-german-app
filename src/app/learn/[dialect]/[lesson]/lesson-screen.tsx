@@ -5,8 +5,9 @@ import { TopBar } from "@/app/top-bar";
 type LessonScreenProps = {
   // The lesson's language.
   lang: string;
-  // Where the arrow at the top leads, and its name for screen readers.
-  back: { href: string; label: string };
+  // Where the arrow at the top leads, and its name for screen readers. With text, the arrow names
+  // where it leads, such as "‹ Aussprache".
+  back: { href: string; label: string; text?: string };
   // Where a topic is in its section, shown as a bar with one segment per topic. The label names it
   // for screen readers.
   progress?: { position: number; count: number; label: string };
@@ -19,7 +20,7 @@ type LessonScreenProps = {
 export function LessonScreen({ lang, back, progress, children, footer }: LessonScreenProps) {
   return (
     <main lang={lang} className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6">
-      <TopBar back={back}>
+      <TopBar back={back} backText={back.text}>
         {progress && (
           <>
             <div

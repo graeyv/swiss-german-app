@@ -22,7 +22,7 @@ export default function FlashcardsPage() {
 async function Decks() {
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
-  const { tree, newCardsPerDay, summary, limits, goalReached } = await getToday(supabase);
+  const { tree, newCardsPerDay, summary, limits, goalReached, lifted, canLift } = await getToday(supabase);
 
   if (tree.length === 0) {
     return (
@@ -46,6 +46,8 @@ async function Decks() {
         reviewsDone={reviews.done}
         reviewsTotal={reviews.total}
         reached={goalReached}
+        lifted={lifted}
+        canLift={canLift}
         locale={locale}
       />
 

@@ -1,0 +1,52 @@
+{
+  "id": "becoming-fluent",
+  "title": "Becoming fluent",
+  "subtitle": "Sounding like a local",
+  "icon": "sparkles",
+  "description": "Conjunctions, prepositions, relative clauses, reflexive verbs, Konjunktiv II, idioms and typical Swiss expressions.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "conjunctions",
+      "title": "Conjunctions",
+      "description": "Linking ideas with and, but, because and so.",
+      "rules": []
+    },
+    {
+      "id": "prepositions",
+      "title": "Prepositions",
+      "description": "In, on, at, with and the rest.",
+      "rules": []
+    },
+    {
+      "id": "relative-clauses",
+      "title": "Relative clauses",
+      "description": "The person who, the thing that.",
+      "rules": []
+    },
+    {
+      "id": "reflexive-verbs",
+      "title": "Reflexive verbs",
+      "description": "Verbs that point back to yourself.",
+      "rules": []
+    },
+    {
+      "id": "konjunktiv-ii",
+      "title": "Konjunktiv II",
+      "description": "Wishes, politeness and what could be.",
+      "rules": []
+    },
+    {
+      "id": "idioms",
+      "title": "Idioms",
+      "description": "Sayings you'll hear, and what they mean.",
+      "rules": []
+    },
+    {
+      "id": "swiss-expressions",
+      "title": "Typical Swiss expressions",
+      "description": "The words that make you sound Swiss.",
+      "rules": []
+    }
+  ]
+}

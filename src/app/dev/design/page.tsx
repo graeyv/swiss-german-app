@@ -157,7 +157,7 @@ export default function DevDesignPage() {
       </Part>
 
       <Part title="Beispiele einer Regel">
-        <ExampleList examples={EXAMPLES} dialectName="Berndeutsch" t={dictionary("de").lesson} />
+        <ExampleList examples={EXAMPLES} dialectName="Berndeutsch" accent="Berner" t={dictionary("de").lesson} />
       </Part>
 
       <Part title="Merke">
@@ -262,13 +262,14 @@ const ICONS: IconName[] = [
   "cross",
   "headphones",
   "mic",
+  "speaking",
   "bulb",
   "again",
   "hard",
   "good",
   "easy",
   "clock",
-  "link",
+  "intersect",
   "sparkles",
   "puzzle",
   "chat",

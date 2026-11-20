@@ -1,0 +1,98 @@
+{
+  "id": "bevor-du-startest",
+  "title": "Bevor du startest",
+  "subtitle": "Was du über Schweizerdeutsch wissen solltest",
+  "icon": "wave",
+  "description": "Drei Dinge, die dir den Einstieg leichter machen: wie sich die Dialekte unterscheiden, wie man sie schreibt und wann man sie spricht.",
+  "expectations": [
+    {
+      "icon": "pin",
+      "title": "Verstehen, wie sich die Dialekte unterscheiden"
+    },
+    {
+      "icon": "learn",
+      "title": "Wissen, warum Schweizerdeutsch so unterschiedlich geschrieben wird"
+    },
+    {
+      "icon": "chat",
+      "title": "Wissen, wann man Dialekt spricht und wann Hochdeutsch"
+    }
+  ],
+  "sections": [
+    {
+      "id": "einstieg",
+      "title": "Der Einstieg",
+      "description": "Dialekte, Schreibweise und wann man welche Sprache spricht.",
+      "rules": [
+        {
+          "id": "dialekte",
+          "title": "Ein Land, viele Dialekte",
+          "theory": "Schweizerdeutsch ist keine einheitliche Sprache, sondern eine Gruppe alemannischer Dialekte, fast jede Region hat ihren eigenen. Zürich, Bern und Basel zum Beispiel klingen deutlich verschieden, und oft unterscheiden sich auch einzelne Wörter.",
+          "phrasesHeading": "«Ich weiss es nicht» in drei Dialekten",
+          "phrases": [
+            {
+              "dialect": "Ich weiss es nöd.",
+              "meaning": "Züritüütsch",
+              "audio": null
+            },
+            {
+              "dialect": "I weiss es nid.",
+              "meaning": "Bärndütsch",
+              "audio": null
+            },
+            {
+              "dialect": "I weiss es nit.",
+              "meaning": "Baseldytsch",
+              "audio": null
+            }
+          ],
+          "examples": [],
+          "takeaway": "Du musst nicht alle Dialekte lernen. Wer einen gut versteht, versteht die anderen bald auch: Schweizerinnen und Schweizer aus verschiedenen Regionen verstehen sich problemlos."
+        },
+        {
+          "id": "schreibweise",
+          "title": "Geschrieben, wie man spricht",
+          "theory": "Schweizerdeutsch wird vor allem gesprochen. Wer es schreibt, schreibt meist so, wie er spricht. Anders als das Hochdeutsche hat es keine festen Rechtschreibregeln, deshalb kann dasselbe Wort ganz verschieden geschrieben werden.",
+          "points": [
+            {
+              "heading": "«Gestern habe ich deinen Vater gesehen.» in drei Schreibweisen",
+              "items": [
+                {
+                  "term": "I ha geschter dy fattr xee",
+                  "text": "Phonetisch: so geschrieben, wie es klingt"
+                },
+                {
+                  "term": "I ha gester di Vater gseh",
+                  "text": "Nah an der hochdeutschen Schreibweise"
+                },
+                {
+                  "term": "I ha geschter di Vater gsee",
+                  "text": "Eine Mischung aus beidem"
+                }
+              ]
+            }
+          ],
+          "examples": [],
+          "takeaway": "Lass dich von den verschiedenen Schreibweisen nicht verwirren. Es gibt nicht die eine richtige, und Schweizerdeutsch wird ohnehin vor allem gesprochen. Mit der Zeit erkennst du die Varianten."
+        },
+        {
+          "id": "dialekt-oder-hochdeutsch",
+          "title": "Dialekt oder Hochdeutsch?",
+          "theory": "Im Alltag sprechen Schweizerinnen und Schweizer Dialekt: im Büro, beim Einkaufen, unter Freunden. Hochdeutsch ist vor allem Schriftsprache und wird in der Schule, in den Nachrichten und in offiziellen Texten verwendet.",
+          "points": [
+            {
+              "heading": "Was das für dich heisst",
+              "items": [
+                "Viele wechseln ins Hochdeutsche, sobald sie es hören. Das ist meist Höflichkeit.",
+                "Du darfst sie bitten, beim Dialekt zu bleiben. So hörst du ihn öfter.",
+                "Selbst Dialekt sprechen musst du nicht. Verstehen ist der erste Schritt."
+              ]
+            }
+          ],
+          "examples": [],
+          "takeaway": "Ziel ist zuerst das Verstehen. Sprechen kommt mit der Zeit, wenn du magst."
+        }
+      ]
+    }
+  ]
+}

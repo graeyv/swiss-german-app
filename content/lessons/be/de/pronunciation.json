@@ -2,8 +2,9 @@
   "id": "pronunciation",
   "title": "Aussprache",
   "subtitle": "So klingt Berndeutsch",
-  "icon": "headphones",
-  "description": "Entdecke die wichtigsten Unterschiede zwischen der Aussprache im Hochdeutschen und im Berndeutschen.",
+  "icon": "speaking",
+  "description": "Entdecke die wichtigsten Unterschiede zwischen der Aussprache im Hochdeutschen und im Berndeutschen, an hochdeutschen Wörtern.",
+  "accent": true,
   "expectations": [
     {
       "icon": "headphones",
@@ -450,5 +451,82 @@
         }
       ]
     }
-  ]
+  ],
+  "mixed": {
+    "title": "Aussprache",
+    "exercises": [
+      {
+        "id": "charakter",
+        "type": "letters",
+        "word": "[Ch]a[r]a[k][t]e[r]",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "wurst",
+        "type": "letters",
+        "word": "Wu[r][st]",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "taetowieren",
+        "type": "letters",
+        "word": "[T][ä][t][o]wie[r]en",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "tueroel",
+        "type": "letters",
+        "word": "[T][ü][r][ö]l",
+        "audio": {
+          "standardGerman": null,
+          "dialect": null
+        }
+      },
+      {
+        "id": "treppe",
+        "type": "say",
+        "word": "[T][r]e[pp]e",
+        "audio": null
+      },
+      {
+        "id": "kasper",
+        "type": "say",
+        "word": "[K]a[sp]e[r]",
+        "audio": null
+      },
+      {
+        "id": "voegel",
+        "type": "say",
+        "word": "V[ö]gel",
+        "audio": null
+      },
+      {
+        "id": "zaehne",
+        "type": "say",
+        "word": "Z[ä]hne",
+        "audio": null
+      },
+      {
+        "id": "maedchen",
+        "type": "repeat",
+        "sentence": "Da[s] M[ä]d[ch]en [K]auft ein Stü[ck] [K][ä][s]e, fünf B[r][ö][t][ch]en und f[r]isches Gemü[s]e.",
+        "audio": null
+      },
+      {
+        "id": "gaeste",
+        "type": "repeat",
+        "sentence": "Die G[ä][st]e [s]itzen d[r]aussen, essen [Ä]pfel und h[ö][r]en dem Mu[s]i[k]e[r] zu.",
+        "audio": null
+      }
+    ]
+  }
 }

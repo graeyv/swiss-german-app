@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { updateDailyPlan } from "@/app/flashcards/actions";
+import { LiftLimit } from "@/app/flashcards/lift-limit";
 import { presetId } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { BottomSheet } from "@/app/ui/bottom-sheet";
@@ -15,6 +16,9 @@ type TodaysGoalProps = {
   // Words reviewed plus those still due today, counting only words learned before today.
   reviewsTotal: number;
   reached: boolean;
+  // Whether today's limit of new cards is lifted, and whether lifting it would give more cards.
+  lifted: boolean;
+  canLift: boolean;
   locale: Locale;
 };
 
@@ -24,6 +28,8 @@ export function TodaysGoal({
   reviewsDone,
   reviewsTotal,
   reached,
+  lifted,
+  canLift,
   locale,
 }: TodaysGoalProps) {
   const t = dictionary(locale).goal;
@@ -63,15 +69,15 @@ export function TodaysGoal({
   }
 
   return (
-    <section
-      className={`flex flex-col gap-4 rounded-2xl p-5 ${reached ? "bg-yellow" : "bg-mist"}`}
-    >
+    // On mist every day. A reached goal says so in a small yellow pill, the card's one yellow.
+    <section className="flex flex-col gap-4 rounded-2xl bg-mist p-5">
       <div className="flex items-center justify-between gap-4">
         <h2 className="flex items-center gap-2 text-lg font-bold tracking-tight">
           {t.heading}
           {reached && (
-            <span className="rounded-full bg-teal px-2.5 py-0.5 text-xs font-semibold text-ivory motion-safe:animate-pop">
-              🎉 {t.reached}
+            <span className="inline-flex items-center gap-1 rounded-full bg-yellow px-2.5 py-0.5 text-xs font-semibold motion-safe:animate-pop">
+              <Icon name="check" size={12} />
+              {t.reached}
             </span>
           )}
         </h2>
@@ -86,13 +92,24 @@ export function TodaysGoal({
       </div>
 
       <div className="flex flex-col gap-3">
-        {saved > 0 && (
+        {lifted ? (
+          // Without a limit there's nothing to fill, so the bar is full and shows the count.
           <Progress
             label={t.newWords}
-            done={Math.min(introducedToday, saved)}
-            total={saved}
+            done={1}
+            total={1}
+            value={`${introducedToday} · ${t.noLimit}`}
             empty={t.nothingToReview}
           />
+        ) : (
+          saved > 0 && (
+            <Progress
+              label={t.newWords}
+              done={Math.min(introducedToday, saved)}
+              total={saved}
+              empty={t.nothingToReview}
+            />
+          )
         )}
         <Progress
           label={t.cardsReviewed}
@@ -101,6 +118,15 @@ export function TodaysGoal({
           empty={t.nothingToReview}
         />
       </div>
+
+      {lifted ? (
+        <span className="flex w-fit items-center gap-1.5 rounded-full bg-ivory px-3 py-1 text-sm font-semibold">
+          <Icon name="clock" size={16} />
+          {t.liftedUntilMidnight}
+        </span>
+      ) : (
+        reached && canLift && <LiftLimit label={t.keepLearning} locale={locale} />
+      )}
 
       <BottomSheet ref={sheet} label={t.sheetTitle}>
         <div className="flex items-start justify-between gap-4">
@@ -136,16 +162,23 @@ export function TodaysGoal({
   );
 }
 
-type ProgressProps = { label: string; done: number; total: number; empty: string };
+type ProgressProps = {
+  label: string;
+  done: number;
+  total: number;
+  empty: string;
+  // Shown instead of "done / total", such as "12 · ohne Limit".
+  value?: string;
+};
 
-function Progress({ label, done, total, empty }: ProgressProps) {
+function Progress({ label, done, total, empty, value }: ProgressProps) {
   const percent = total === 0 ? 0 : Math.min(100, (done / total) * 100);
 
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-4 text-sm">
         <span className="text-muted">{label}</span>
-        <strong className="tabular-nums">{total === 0 ? empty : `${done} / ${total}`}</strong>
+        <strong className="tabular-nums">{value ?? (total === 0 ? empty : `${done} / ${total}`)}</strong>
       </div>
       <div
         role="progressbar"
@@ -153,7 +186,7 @@ function Progress({ label, done, total, empty }: ProgressProps) {
         aria-valuemin={0}
         aria-valuemax={total}
         aria-valuenow={done}
-        className="h-2 overflow-hidden rounded-full bg-line"
+        className="h-2 overflow-hidden rounded-full bg-ivory"
       >
         <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${percent}%` }} />
       </div>

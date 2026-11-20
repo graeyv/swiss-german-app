@@ -4,10 +4,11 @@ import { getToday } from "@/lib/flashcards/data";
 import { DEFAULT_NEW_CARDS } from "@/lib/flashcards/daily-plan";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
+import { lessonsFor } from "@/lib/learn/lessons";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../actions";
 import { LogOutIcon } from "./icons";
-import { AudioSetting, DialectSetting, DirectionSetting, LanguageSetting, PaceSetting, TopicsSetting } from "./settings";
+import { AudioSetting, DialectSetting, DirectionSetting, PaceSetting, TopicsSetting, TrackSetting } from "./settings";
 
 export default function ProfilePage() {
   return (
@@ -73,7 +74,7 @@ async function Profile() {
       </section>
 
       <Group title={t.profile.languages}>
-        <LanguageSetting locale={locale} />
+        <TrackSetting locale={locale} modules={{ de: lessonsFor("de").length, en: lessonsFor("en").length }} />
         <DialectSetting dialects={dialects.data} current={profile.data?.dialect_id ?? null} locale={locale} />
       </Group>
 

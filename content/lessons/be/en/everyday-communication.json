@@ -1,0 +1,52 @@
+{
+  "id": "everyday-communication",
+  "title": "Everyday communication",
+  "subtitle": "Getting by in daily life",
+  "icon": "chat",
+  "description": "Food, shopping, directions, transport, socialising, ordering and asking for help.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "food",
+      "title": "Food",
+      "description": "Talking about what you eat and drink.",
+      "rules": []
+    },
+    {
+      "id": "shopping",
+      "title": "Shopping",
+      "description": "Asking for things, prices and sizes.",
+      "rules": []
+    },
+    {
+      "id": "directions",
+      "title": "Directions",
+      "description": "Asking the way, and understanding the answer.",
+      "rules": []
+    },
+    {
+      "id": "transport",
+      "title": "Transport",
+      "description": "Trains, trams and buses.",
+      "rules": []
+    },
+    {
+      "id": "socialising",
+      "title": "Socialising",
+      "description": "Small talk, invitations and meeting up.",
+      "rules": []
+    },
+    {
+      "id": "ordering",
+      "title": "Ordering",
+      "description": "In cafés, bars and restaurants.",
+      "rules": []
+    },
+    {
+      "id": "asking-for-help",
+      "title": "Asking for help",
+      "description": "When you need a hand, or didn't understand.",
+      "rules": []
+    }
+  ]
+}

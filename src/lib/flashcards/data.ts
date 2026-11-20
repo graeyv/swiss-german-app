@@ -7,12 +7,7 @@ import { randomUUID } from "node:crypto";
 import type { createClient } from "@/lib/supabase/server";
 import type { Dictionary } from "@/lib/i18n";
 import type { CardFront, Flashcard, WordCard } from "@/lib/types";
-import {
-  DEFAULT_NEW_CARDS,
-  type FlashcardSummary,
-  goalReached,
-  todaysQueue,
-} from "./daily-plan";
+import { DEFAULT_NEW_CARDS, type FlashcardSummary, goalReached, todaysQueue, zurichDay } from "./daily-plan";
 import { buildDeckTree, DECK_COLORS, type DeckColor, type DeckRow, sortByInterests } from "./decks";
 import { type CardRow, previewIntervals } from "./scheduling";
 
@@ -31,7 +26,7 @@ async function getDeckTree(supabase: Supabase) {
 
 async function getDailyPlan(supabase: Supabase) {
   const [profile, summary] = await Promise.all([
-    supabase.from("profiles").select("new_cards_per_day, interests").maybeSingle(),
+    supabase.from("profiles").select("new_cards_per_day, interests, limit_lifted_on").maybeSingle(),
     supabase.rpc("flashcard_summary").single(),
   ]);
   if (profile.error) throw new Error(profile.error.message);
@@ -41,6 +36,8 @@ async function getDailyPlan(supabase: Supabase) {
   return {
     newCardsPerDay: profile.data?.new_cards_per_day ?? DEFAULT_NEW_CARDS,
     interests: profile.data?.interests ?? [],
+    // Whether the learner lifted today's limit of new cards.
+    lifted: profile.data?.limit_lifted_on === zurichDay(new Date()),
     summary: flashcardSummary,
   };
 }
@@ -48,7 +45,7 @@ async function getDailyPlan(supabase: Supabase) {
 // Everything the flashcards screens need about today: the decks with their counts (the
 // learner's chosen topics first), the daily goal, what's left of it, and whether it's reached.
 export async function getToday(supabase: Supabase) {
-  const [tree, { newCardsPerDay, interests, summary }] = await Promise.all([
+  const [tree, { newCardsPerDay, interests, lifted, summary }] = await Promise.all([
     getDeckTree(supabase),
     getDailyPlan(supabase),
   ]);
@@ -56,7 +53,10 @@ export async function getToday(supabase: Supabase) {
     tree: sortByInterests(tree, interests),
     newCardsPerDay,
     summary,
-    limits: todaysQueue(newCardsPerDay, summary),
+    lifted,
+    limits: todaysQueue(newCardsPerDay, summary, lifted),
+    // More new cards than today's limit allows, so lifting it would give the learner more.
+    canLift: !lifted && tree.some((deck) => deck.new_count > 0),
     goalReached: goalReached(newCardsPerDay, summary, tree.some((deck) => deck.new_count > 0)),
   };
 }

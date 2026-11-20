@@ -1,0 +1,66 @@
+{
+  "id": "first-words",
+  "title": "First words",
+  "subtitle": "Start talking",
+  "icon": "users",
+  "description": "Your first words and expressions for everyday life.",
+  "expectations": [
+    {
+      "icon": "chat",
+      "title": "Start communicating with your first words, greetings and everyday expressions"
+    }
+  ],
+  "sections": [
+    {
+      "id": "greetings-and-introductions",
+      "title": "Greetings & introductions",
+      "description": "Say hello and introduce yourself.",
+      "planned": [
+        "Saying hello and goodbye",
+        "Introducing yourself",
+        "Asking someone's name",
+        "Asking where someone is from",
+        "Formal and informal greetings"
+      ],
+      "rules": []
+    },
+    {
+      "id": "everyday-expressions",
+      "title": "Everyday expressions",
+      "description": "Learn useful words and phrases.",
+      "planned": [
+        "Please and thank you",
+        "Apologies",
+        "Asking someone to repeat",
+        "Saying you don't understand",
+        "Common reactions"
+      ],
+      "rules": []
+    },
+    {
+      "id": "yes-and-no",
+      "title": "Yes & no",
+      "description": "Agree, disagree and respond.",
+      "planned": [
+        "Saying yes and no",
+        "Agreeing and disagreeing",
+        "Expressing uncertainty",
+        "Giving short responses"
+      ],
+      "rules": []
+    },
+    {
+      "id": "numbers",
+      "title": "Numbers",
+      "description": "Count and use numbers.",
+      "planned": [
+        "Numbers 0–20",
+        "Numbers 20–100",
+        "Phone numbers",
+        "Prices",
+        "Age and dates"
+      ],
+      "rules": []
+    }
+  ]
+}

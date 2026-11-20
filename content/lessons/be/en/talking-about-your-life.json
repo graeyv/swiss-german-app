@@ -1,0 +1,46 @@
+{
+  "id": "talking-about-your-life",
+  "title": "Talking about your life",
+  "subtitle": "Your story, in Bernese German",
+  "icon": "user",
+  "description": "Past tense, future expressions, describing people, feelings, experiences and plans.",
+  "expectations": [],
+  "sections": [
+    {
+      "id": "past-tense",
+      "title": "Past tense",
+      "description": "Saying what happened.",
+      "rules": []
+    },
+    {
+      "id": "future-expressions",
+      "title": "Future expressions",
+      "description": "Talking about what's coming.",
+      "rules": []
+    },
+    {
+      "id": "describing-people",
+      "title": "Describing people",
+      "description": "What people look like, and what they're like.",
+      "rules": []
+    },
+    {
+      "id": "feelings",
+      "title": "Feelings",
+      "description": "Saying how you feel.",
+      "rules": []
+    },
+    {
+      "id": "experiences",
+      "title": "Experiences",
+      "description": "Telling others what you've done.",
+      "rules": []
+    },
+    {
+      "id": "plans",
+      "title": "Plans",
+      "description": "Making plans, and sharing them.",
+      "rules": []
+    }
+  ]
+}
