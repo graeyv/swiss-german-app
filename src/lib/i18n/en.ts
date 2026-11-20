@@ -118,7 +118,7 @@ export const en = {
     // By dialect id. A dialect without a name here shows its id.
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
     // The accent of each dialect, for pronouncing Standard German with it.
-    accents: { be: "Bernese", zh: "Zurich" } as Record<string, string>,
+    accents: { be: "Bernese", zh: "Zürich" } as Record<string, string>,
     // A rule's examples said with the accent, named above their buttons.
     accentName: (accent: string) => `${accent} accent`,
     playAccent: (accent: string) => `Listen with a ${accent} accent`,
@@ -375,7 +375,7 @@ export const en = {
     // The second question. Dialect names stay in dialect, so they aren't here.
     dialect: {
       question: "Which dialect would you like to learn?",
-      regions: { zh: "Zurich and around", be: "Bern and around", bs: "Basel and around" } as Record<string, string>,
+      regions: { zh: "Zürich and around", be: "Bern and around", bs: "Basel and around" } as Record<string, string>,
       soon: { beforeLaunch: "Coming before launch", later: "Coming later" },
       notSure: "Not sure?",
       switchLater: "You can switch later",

@@ -7,7 +7,7 @@ export type DialectOption = { id: string; name: string; flag: string; soon?: "be
 export const DIALECT_OPTIONS: DialectOption[] = [
   { id: "zh", name: "Züritüütsch", flag: "/flags/zh.svg", soon: "beforeLaunch" },
   { id: "be", name: "Bärndütsch", flag: "/flags/be.svg" },
-  { id: "bs", name: "Baaseldytsch", flag: "/flags/bs.svg", soon: "later" },
+  { id: "bs", name: "Baseldytsch", flag: "/flags/bs.svg", soon: "later" },
 ];
 
 export function isReadyDialect(id: string) {

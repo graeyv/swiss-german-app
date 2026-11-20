@@ -20,9 +20,7 @@
         "id": "introduction",
         "title": "Introduction to Swiss German",
         "description": "What Swiss German is, and where it's spoken.",
-        "planned": [
-          "Regional differences and dialects"
-        ],
+        "planned": [],
         "rules": [
           {
             "id": "swiss-and-standard-german",
@@ -65,6 +63,37 @@
               }
             ],
             "phrasesHeading": "Everyday Swiss German"
+          },
+          {
+            "id": "regional-dialects",
+            "title": "Regional differences and dialects",
+            "theory": "Swiss German consists of different regional dialects. The way people speak varies depending on where they come from. The main dialect regions include Zürich, Bern, Basel and Eastern Switzerland.\n\nSome words and expressions are pronounced differently across regions.",
+            "phrasesHeading": "Example: “I don't know.”",
+            "phrases": [
+              {
+                "dialect": "Ich weiss es nöd.",
+                "meaning": "Zürich German (Züritüütsch)",
+                "audio": null
+              },
+              {
+                "dialect": "I weiss es nid.",
+                "meaning": "Bernese German (Bärndütsch)",
+                "audio": null
+              },
+              {
+                "dialect": "I weiss es nit.",
+                "meaning": "Basel German (Baseldytsch)",
+                "audio": null
+              },
+              {
+                "dialect": "Ich weiss es nicht.",
+                "meaning": "Swiss Standard German",
+                "audio": null
+              }
+            ],
+            "examples": [],
+            "note": "Swiss German has no standardised spelling. These examples show regional variations; the differences are often even more noticeable in pronunciation.",
+            "takeaway": "You don't need to learn every dialect. Learn yours well, and you'll soon understand the others too: Swiss people from different regions understand each other easily."
           }
         ]
       },

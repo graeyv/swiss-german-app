@@ -73,8 +73,9 @@ function Points({ list }: { list: PointList }) {
 function Phrases({ phrases, t }: { phrases: Phrase[]; t: Dictionary["lesson"] }) {
   return (
     <ul className="flex flex-col gap-6">
-      {phrases.map((phrase) => (
-        <li key={phrase.dialect} className="flex items-center gap-3">
+      {/* The same phrase can appear twice, said in two regions. */}
+      {phrases.map((phrase, index) => (
+        <li key={`${index}-${phrase.dialect}`} className="flex items-center gap-3">
           <div className="flex min-w-0 flex-1 flex-col gap-0.5">
             <p lang="gsw" className="text-subtitle font-bold break-words">
               {phrase.dialect}
