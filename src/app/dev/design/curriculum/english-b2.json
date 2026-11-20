@@ -12,19 +12,23 @@
       },
       {
         "icon": "learn",
-        "title": "Know how Swiss German is spoken and written, and how best to learn it"
+        "title": "Know how Swiss German is spoken and written"
+      },
+      {
+        "icon": "practice",
+        "title": "Know how to approach learning it"
       }
     ],
     "sections": [
       {
         "id": "introduction",
-        "title": "Introduction to Swiss German",
+        "title": "What is Swiss German?",
         "description": "What Swiss German is, and where it's spoken.",
         "planned": [],
         "rules": [
           {
             "id": "swiss-and-standard-german",
-            "title": "Swiss German vs. Swiss Standard German",
+            "title": "Two kinds of German",
             "phrases": [
               {
                 "dialect": "Chunsch mit?",
@@ -66,7 +70,7 @@
           },
           {
             "id": "regional-dialects",
-            "title": "Regional differences and dialects",
+            "title": "One language, many dialects",
             "theory": "Swiss German consists of different regional dialects. The way people speak varies depending on where they come from. The main dialect regions include Zürich, Bern, Basel and Eastern Switzerland.\n\nSome words and expressions are pronounced differently across regions.",
             "phrasesHeading": "Example: “I don't know.”",
             "phrases": [
@@ -87,7 +91,7 @@
               },
               {
                 "dialect": "Ich weiss es nicht.",
-                "meaning": "Swiss Standard German",
+                "meaning": "(Swiss) Standard German",
                 "audio": null
               }
             ],
@@ -99,14 +103,72 @@
       },
       {
         "id": "learning-swiss-german",
-        "title": "Learning Swiss German",
-        "description": "How Swiss German is spoken and written, and how to learn it.",
-        "planned": [
-          "How Swiss German is spoken",
-          "How Swiss German is written",
-          "How to learn it"
-        ],
-        "rules": []
+        "title": "How to learn Swiss German",
+        "description": "How Swiss German is spoken and written, and how it goes with Standard German.",
+        "planned": [],
+        "rules": [
+          {
+            "id": "how-it-is-spoken",
+            "title": "Start with your ears",
+            "theory": "Swiss German is primarily a spoken language, and for many non-native speakers, pronunciation is one of the biggest challenges. The best way to start is to get familiar with the sounds that are typical of Swiss German.",
+            "points": [
+              {
+                "heading": "How to start: train your ear",
+                "items": [
+                  "Listen to individual sounds.",
+                  "Recognise them in words.",
+                  "Get used to hearing them in short sentences."
+                ]
+              }
+            ],
+            "examples": [],
+            "takeaway": "The more you listen, the easier it becomes to recognise the sounds and say them yourself."
+          },
+          {
+            "id": "how-it-is-written",
+            "title": "Written as it sounds",
+            "theory": "Swiss German is mainly spoken. When people write it, they often spell words the way they pronounce them. Unlike Swiss Standard German, it has no official spelling rules, so the same word can be written in different ways.",
+            "points": [
+              {
+                "heading": "Three ways to write “I saw your father yesterday.”",
+                "items": [
+                  {
+                    "term": "I ha geschter dy fattr xee",
+                    "text": "Phonetic: written as it sounds"
+                  },
+                  {
+                    "term": "I ha gester di Vater gseh",
+                    "text": "Close to Standard German spelling"
+                  },
+                  {
+                    "term": "I ha geschter di Vater gsee",
+                    "text": "A mix of both"
+                  }
+                ]
+              }
+            ],
+            "examples": [],
+            "note": "(Swiss) Standard German: Ich habe gestern deinen Vater gesehen.",
+            "takeaway": "Don't let the different spellings confuse you. There's no single correct way to write Swiss German, and it's mostly spoken anyway. You'll get used to the variations as you learn."
+          },
+          {
+            "id": "learning-both",
+            "title": "Swiss German or Standard German?",
+            "theory": "You can learn one after the other, or just one of them. Many people learn both together, and that's what we recommend: the two share much of their vocabulary and grammar, so each helps with the other.",
+            "points": [
+              {
+                "heading": "Learning both gives you",
+                "items": [
+                  "Standard German for writing, official matters and permits.",
+                  "Swiss German to follow everyday conversations and join in.",
+                  "A head start in each, since they share so much."
+                ]
+              }
+            ],
+            "examples": [],
+            "takeaway": "You won't have to choose. Hoi teaches you Swiss German and shows the Standard German next to every word and phrase, so you build both at once."
+          }
+        ]
       }
     ]
   },

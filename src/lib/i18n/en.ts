@@ -114,7 +114,8 @@ export const en = {
     // For screen readers, in place of the Standard German side of a dialect-only word.
     onlyIn: (variety: string) => `only in ${variety}`,
     becomes: "becomes",
-    standardGerman: "Swiss Standard German",
+    // The same as in Germany for the examples, so "Swiss" is only in brackets.
+    standardGerman: "(Swiss) Standard German",
     // By dialect id. A dialect without a name here shows its id.
     dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
     // The accent of each dialect, for pronouncing Standard German with it.
