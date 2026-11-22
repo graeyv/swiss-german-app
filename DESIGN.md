@@ -124,6 +124,7 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Practice switch** (Üben tab): "Wortschatz | Lektionen" at the top, a pill on mist with the open
   view in ivory. Each view is its own address. Below "Lektionen", the suggestion card and "ALLE
   ÜBUNGEN": every module as a list row ("1 von 2 Lektionen geübt"), opening its lessons to practise.
+  Modules only to read, such as "Bevor du startest", aren't listed.
 - **Module list** (Learn tab): under "ALLE MODULE", every module in order as an equal list row with
   its icon, "MODUL N", title and "N Lektionen · N Themen". The module read in last says "Zuletzt
   gelesen" instead of its size. A module still being written has the "Bald verfügbar" pill
@@ -267,7 +268,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   bubbles pop in one after another, each from its tail; with reduced motion they're all there at
   once. They're only a picture: no tap, no translation. Under the card, the headline in title size
   ("Bald redest du mit.") and one line in `teal-soft` ("Schweizerdeutsch für den Alltag."). At
-  the bottom, "Los geht's" (primary, creates an account) and "Ich habe schon ein Konto"
+  the bottom, "Konto erstellen" (primary) and "Ich habe schon ein Konto"
   (secondary).
 - **Login** (`/login`, and `/login?new` to create an account): the logo at the top left, leading
   back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei Hoi

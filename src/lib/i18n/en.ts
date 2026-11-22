@@ -19,7 +19,7 @@ export const en = {
     bubbles: ["Grüessech!", "Wie geits?", "Merci viumau!", "Hoi zäme!"],
     headline: "Soon you'll join in.",
     intro: "Swiss German for everyday life.",
-    start: "Get started",
+    start: "Create account",
     haveAccount: "I already have an account",
   },
 

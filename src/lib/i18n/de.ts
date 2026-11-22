@@ -18,7 +18,7 @@ export const de: Dictionary = {
     bubbles: ["Grüessech!", "Wie geits?", "Merci viumau!", "Hoi zäme!"],
     headline: "Bald redest du mit.",
     intro: "Schweizerdeutsch für den Alltag.",
-    start: "Los geht's",
+    start: "Konto erstellen",
     haveAccount: "Ich habe schon ein Konto",
   },
 
