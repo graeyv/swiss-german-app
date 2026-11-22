@@ -126,11 +126,13 @@ topic in English); in the code and this guide they are lesson → section → ru
   ÜBUNGEN": every module as a list row ("1 von 2 Lektionen geübt"), opening its lessons to practise.
   Modules only to read, such as "Bevor du startest", aren't listed.
 - **Module list** (Learn tab): under "ALLE MODULE", every module in order as an equal list row with
-  its icon, "MODUL N", title and "N Lektionen · N Themen". The module read in last says "Zuletzt
-  gelesen" instead of its size. A module still being written has the "Bald verfügbar" pill
-  (see Topic tile) in place of its size, but keeps its arrow and still opens, so learners see what
-  it will cover. Every module has its
-  own icon, never a colour.
+  its icon, "MODUL N", title and its size, "N Lektionen · N Themen", until anything in it is read.
+  Then it says how far: "4 von 10 Themen gelesen", and once every topic is read, "Alles gelesen"
+  in full teal, led by a small teal check like a read topic's. Topics still planned count, so a
+  module with more to come isn't done. No progress bar, no yellow, no dimming. A module still
+  being written has the "Bald verfügbar" pill (see Topic tile) in place of its size, but keeps its
+  arrow and still opens, so learners see what it will cover. Every module has its own icon, never
+  a colour.
 - **Topic tile** (`TopicTile`, Flashcards and Conversations): the topics in a two-column grid, each
   a tile on mist with the topic's illustration across the top on `sage-light` (3:2), its title and
   caption below, and, in Flashcards, today's counts at the bottom. Conversations uses the
@@ -152,7 +154,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   second line.
 - **List row** ("Konsonanten"): a rounded row on mist, optionally led by a filled icon in
   `teal-soft`, bold title, caption below, teal arrow (→) on the right. The whole row is the tap
-  target. Flashcard subtopics are list rows too, each with its own icon (`deck-icons.ts`).
+  target. Flashcard subtopics are list rows too, each with its own icon (`deck-icons.ts`). A row
+  whose content is all done (`done`) has its caption in full teal, led by a small teal check.
 - **Module page** (Learn): the lesson header, then under "Lektionen" each lesson as a card on
   mist with its title, "2 von 6 Themen gelesen" and an arrow pointing right (`down`, turned).
   Tapping it unfolds its topics inside the same card and turns the arrow down; several can be

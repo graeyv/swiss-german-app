@@ -22,10 +22,13 @@ type ListRowProps = {
   // For a row with nothing in it yet: the label of the pill that replaces its caption, such as
   // "Bald verfügbar". Its title turns teal-soft, like an inactive topic tile.
   comingSoon?: string;
+  // Everything in it is done, such as a module read through: a small teal check leads the caption,
+  // like a read topic's.
+  done?: boolean;
 };
 
 // A row on mist: bold title, caption below, an arrow on the right. The whole row is the tap target.
-export function ListRow({ href, title, caption, icon, eyebrow, comingSoon }: ListRowProps) {
+export function ListRow({ href, title, caption, icon, eyebrow, comingSoon, done }: ListRowProps) {
   const text = (
     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
       {eyebrow && (
@@ -35,7 +38,17 @@ export function ListRow({ href, title, caption, icon, eyebrow, comingSoon }: Lis
       {comingSoon ? (
         <ComingSoonPill label={comingSoon} />
       ) : (
-        caption && <span className="text-caption text-teal-soft">{caption}</span>
+        caption &&
+        (done ? (
+          <span className="flex items-center gap-1.5 text-caption">
+            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-teal text-ivory">
+              <Icon name="check" size={12} />
+            </span>
+            {caption}
+          </span>
+        ) : (
+          <span className="text-caption text-teal-soft">{caption}</span>
+        ))
       )}
     </span>
   );

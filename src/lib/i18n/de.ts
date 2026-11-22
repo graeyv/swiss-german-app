@@ -41,7 +41,7 @@ export const de: Dictionary = {
     startHere: "Hier beginnen",
     topicsRead: (read, count) => `${read} von ${many(count, "Thema", "Themen")} gelesen`,
     allModules: "Alle Module",
-    lastRead: "Zuletzt gelesen",
+    allRead: "Alles gelesen",
   },
 
   nav: {

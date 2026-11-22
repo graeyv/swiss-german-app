@@ -45,7 +45,7 @@ export const en = {
     topicsRead: (read: number, count: number) => `${read} of ${many(count, "topic", "topics")} read`,
     allModules: "All modules",
     // In place of a module's size, on the one the learner read in last.
-    lastRead: "Read last",
+    allRead: "All read",
   },
 
   nav: {

@@ -77,3 +77,8 @@ export function whereToContinue(reads: Reads, lessons: DialectLesson[] = LESSONS
 export function lastModule(reads: Reads) {
   return reads.last?.split("/").slice(0, 2).join("/");
 }
+
+// How many of a module's topics the learner has read.
+export function moduleReadCount(entry: DialectLesson, read: Set<string>) {
+  return entry.lesson.sections.reduce((sum, section) => sum + readCount(entry, section, read), 0);
+}

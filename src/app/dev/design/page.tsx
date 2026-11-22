@@ -18,6 +18,7 @@ import { GradePreview } from "./grade-preview";
 import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";
 import { LogoPreview } from "./logo-preview";
+import { ModuleProgressPreview } from "./module-progress-preview";
 import { RatingTipPreview } from "./rating-tip-preview";
 import { ConversationsHeaderPreview, PracticeHeaderPreview } from "./tab-header-preview";
 
@@ -36,6 +37,16 @@ export default function DevDesignPage() {
 
       <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
         <VariantPreview />
+      </Part>
+
+      <Part title="Englisch · Aussprache (in Arbeit)">
+        <ListRows>
+          <ListRow href="/dev/lesson-en" icon="speaking" title="Pronunciation" caption="Modul, Lektionen und Themen" />
+        </ListRows>
+      </Part>
+
+      <Part title="Module in Lernen: wie weit gelesen (iPhone-Breite)">
+        <ModuleProgressPreview />
       </Part>
 
       <Part title="Einmaliger Tipp beim Bewerten (iPhone-Breite)">
