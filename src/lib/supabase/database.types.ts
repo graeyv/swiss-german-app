@@ -245,6 +245,7 @@ export type Database = {
           locale: string
           new_cards_per_day: number
           onboarded_at: string | null
+          rating_tip_seen: boolean
           swiss_german_level: string | null
         }
         Insert: {
@@ -259,6 +260,7 @@ export type Database = {
           locale?: string
           new_cards_per_day?: number
           onboarded_at?: string | null
+          rating_tip_seen?: boolean
           swiss_german_level?: string | null
         }
         Update: {
@@ -273,6 +275,7 @@ export type Database = {
           locale?: string
           new_cards_per_day?: number
           onboarded_at?: string | null
+          rating_tip_seen?: boolean
           swiss_german_level?: string | null
         }
         Relationships: [

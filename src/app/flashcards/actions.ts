@@ -133,6 +133,17 @@ export async function updateAutoplay(autoplay: boolean): Promise<{ error?: strin
   return {};
 }
 
+// The one-time tip on the rating buttons has been seen, so it doesn't show again.
+export async function markRatingTipSeen(): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  if (!claims?.claims) return { error: "Not logged in" };
+
+  const { error } = await supabase.from("profiles").update({ rating_tip_seen: true }).eq("id", claims.claims.sub);
+  if (error) return { error: error.message };
+  return {};
+}
+
 export async function updateCardFront(cardFront: CardFront): Promise<{ error?: string }> {
   if (cardFront !== "swiss_german" && cardFront !== "translation") {
     return { error: "Unknown card side" };

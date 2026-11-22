@@ -60,6 +60,8 @@
   --animate-ring: ring 0.8s ease-out both;
   --animate-burst: burst 1s cubic-bezier(0.2, 0.7, 0.3, 1) both;
   --animate-rise: rise 0.4s ease-out both;
+  /* A one-time tip. Used with motion-safe:, so reduced motion shows it at once. */
+  --animate-tip-in: tip-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
   --font-sans: var(--font-dm-sans);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
@@ -143,6 +145,20 @@
   100% {
     opacity: 0;
     transform: translate(-50%, -50%) rotate(var(--angle)) translateY(var(--distance)) scale(1);
+  }
+}
+
+/* Rises into place from below, growing out of where its tail points, overshooting a little. */
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.94);
+    transform-origin: 2.5rem 100%;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    transform-origin: 2.5rem 100%;
   }
 }
 

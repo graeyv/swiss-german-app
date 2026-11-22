@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TOPIC_ILLUSTRATIONS } from "@/app/topic-illustrations";
+import { TabHeader } from "@/app/ui/tab-header";
 import { TopicTile } from "@/app/ui/topic-tile";
 import { isReady, textIn, TOPICS } from "@/lib/conversations";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
@@ -22,7 +23,7 @@ async function Conversations() {
   return (
     <>
       <title>{t.title(t.nav.conversations)}</title>
-      <h1 className="text-title font-bold">{t.nav.conversations}</h1>
+      <TabHeader title={t.nav.conversations} intro={t.conversations.intro} />
 
       <ul className="grid grid-cols-2 gap-3">
         {TOPICS.map((topic) => (

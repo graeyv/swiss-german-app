@@ -1,6 +1,7 @@
 {
   "id": "expanding-your-grammar",
   "title": "Expanding your grammar",
+  "titleIn": { "de": "Mehr Grammatik" },
   "subtitle": "What holds a sentence together",
   "icon": "grid",
   "description": "Gender, articles, plurals, possessives, adjective declensions, dative and accusative.",

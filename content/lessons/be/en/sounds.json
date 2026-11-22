@@ -1,6 +1,7 @@
 {
   "id": "sounds",
   "title": "Pronunciation",
+  "titleIn": { "de": "Aussprache" },
   "subtitle": "How Swiss German sounds",
   "icon": "speaking",
   "description": "Learn the sounds of your dialect and discover how to pronounce words naturally.",

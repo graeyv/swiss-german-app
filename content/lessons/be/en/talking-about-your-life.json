@@ -1,6 +1,7 @@
 {
   "id": "talking-about-your-life",
   "title": "Talking about your life",
+  "titleIn": { "de": "Über dich erzählen" },
   "subtitle": "Your story, in Bernese German",
   "icon": "user",
   "description": "Past tense, future expressions, describing people, feelings, experiences and plans.",

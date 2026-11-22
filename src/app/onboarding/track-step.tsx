@@ -10,7 +10,9 @@ import { dictionary, type Locale } from "@/lib/i18n";
 export type TrackModule = { title: string; icon: string };
 
 type TrackStepProps = {
-  // Each track's modules, by its language.
+  // The language the question is asked in, which the switch at the top changes.
+  locale: Locale;
+  // Each track's modules, by its language, titled in the language of the question.
   modules: Record<Locale, TrackModule[]>;
   // The answer chosen, or null before one is.
   chosen: Locale | null;
@@ -21,19 +23,19 @@ type TrackStepProps = {
 };
 
 // The answers in the order shown, each with its icon: German speakers first, as most learners are.
-const ANSWERS: { locale: Locale; icon: IconName }[] = [
-  { locale: "de", icon: "speaking" },
-  { locale: "en", icon: "globe" },
+const ANSWERS: { track: Locale; icon: IconName }[] = [
+  { track: "de", icon: "speaking" },
+  { track: "en", icon: "globe" },
 ];
 
 // The first question, which sets the learner's track, and with it the app's language: whether
-// they speak German. It's asked in German and English, as the learner may read either, and each
-// answer is in its own language. The chosen answer unfolds its path. For the unsure, a quick test
-// of one sentence picks the answer, marked as recommended. See DESIGN.md.
-export function TrackStep({ modules, chosen, recommended, pending, onChoose }: TrackStepProps) {
+// they understand German well, as a first language or not. Everything on it is in one language,
+// which the switch in the header changes. The chosen answer unfolds its path. For the unsure, a
+// quick test of one sentence picks the answer, marked as recommended. See DESIGN.md.
+export function TrackStep({ locale, modules, chosen, recommended, pending, onChoose }: TrackStepProps) {
   const sheet = useRef<HTMLDialogElement>(null);
-  const de = dictionary("de").onboarding.track;
-  const en = dictionary("en").onboarding.track;
+  const texts = dictionary(locale).onboarding;
+  const t = texts.track;
 
   function answerTest(understood: boolean) {
     onChoose(understood ? "de" : "en", true);
@@ -43,25 +45,22 @@ export function TrackStep({ modules, chosen, recommended, pending, onChoose }: T
   return (
     <>
       <div className="flex flex-col gap-1">
-        <h1 lang="de" className="text-title leading-tight font-bold">
-          {de.question}
-        </h1>
-        <p lang="en" className="text-subtitle font-semibold text-teal-soft">
-          {en.question}
-        </p>
+        <h1 className="text-title leading-tight font-bold">{t.question}</h1>
+        <p className="text-body text-teal-soft">{t.intro}</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        {ANSWERS.map(({ locale, icon }) => (
+        {ANSWERS.map(({ track, icon }) => (
           <Answer
-            key={locale}
+            key={track}
             locale={locale}
+            track={track}
             icon={icon}
-            selected={chosen === locale}
-            recommended={recommended === locale}
-            modules={modules[locale]}
+            selected={chosen === track}
+            recommended={recommended === track}
+            modules={modules[track]}
             disabled={pending}
-            onSelect={() => onChoose(locale)}
+            onSelect={() => onChoose(track)}
           />
         ))}
       </div>
@@ -73,40 +72,31 @@ export function TrackStep({ modules, chosen, recommended, pending, onChoose }: T
           className="flex min-h-11 items-center gap-2 self-center rounded-full bg-mist px-4 text-caption font-semibold transition-transform active:scale-95"
         >
           <Icon name="question" size={16} />
-          <span lang="de">{de.notSure}</span> · <span lang="en">{en.notSure}</span>
+          {t.notSure}
         </button>
         <p className="flex items-center justify-center gap-2 text-center text-caption text-teal-soft">
           <Icon name="swap" size={16} className="shrink-0" />
-          <span>
-            <span lang="de">{de.switchLater}</span> · <span lang="en">{en.switchLater}</span>
-          </span>
+          {t.switchLater}
         </p>
       </div>
 
-      <BottomSheet ref={sheet} label={`${de.test.heading} · ${en.test.heading}`}>
+      <BottomSheet ref={sheet} label={t.test.heading}>
         <div className="flex flex-col gap-5">
-          <h2 className="text-heading font-bold">
-            <span lang="de">{de.test.heading}</span> · <span lang="en">{en.test.heading}</span>
-          </h2>
+          <h2 className="text-heading font-bold">{t.test.heading}</h2>
           <div className="flex flex-col gap-4 rounded-3xl bg-mist p-5">
             <p lang="de" className="text-subtitle leading-snug font-semibold">
-              «{de.test.sentence}»
+              «{t.test.sentence}»
             </p>
-            <p className="text-caption text-teal-soft">
-              <span lang="de">{de.test.question}</span> · <span lang="en">{en.test.question}</span>
-            </p>
+            <p className="text-caption text-teal-soft">{t.test.question}</p>
             <div className="grid grid-cols-2 gap-3">
-              <TestAnswer lang="de" icon="check" onClick={() => answerTest(true)}>
-                {de.test.yes}
+              <TestAnswer icon="check" onClick={() => answerTest(true)}>
+                {t.test.yes}
               </TestAnswer>
-              <TestAnswer lang="en" onClick={() => answerTest(false)}>
-                {en.test.no}
-              </TestAnswer>
+              <TestAnswer onClick={() => answerTest(false)}>{t.test.no}</TestAnswer>
             </div>
           </div>
           <Button variant="secondary" onClick={() => sheet.current?.close()}>
-            <span lang="de">{dictionary("de").onboarding.back}</span> ·{" "}
-            <span lang="en">{dictionary("en").onboarding.back}</span>
+            {texts.back}
           </Button>
         </div>
       </BottomSheet>
@@ -118,6 +108,7 @@ export function TrackStep({ modules, chosen, recommended, pending, onChoose }: T
 // The quick test's answer carries a yellow tag on its edge.
 function Answer({
   locale,
+  track,
   icon,
   selected,
   recommended,
@@ -126,6 +117,7 @@ function Answer({
   onSelect,
 }: {
   locale: Locale;
+  track: Locale;
   icon: IconName;
   selected: boolean;
   recommended: boolean;
@@ -137,7 +129,6 @@ function Answer({
   return (
     <button
       type="button"
-      lang={locale}
       aria-pressed={selected}
       disabled={disabled}
       onClick={onSelect}
@@ -155,8 +146,10 @@ function Answer({
           <Icon name={icon} size={24} />
         </span>
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="text-body font-bold">{t.answer}</span>
-          <span className={`text-caption ${selected ? "" : "text-teal-soft"}`}>{t.what}</span>
+          <span className="text-body font-bold">{t.answers[track].answer}</span>
+          <span className={`text-caption ${selected ? "" : "text-teal-soft"}`}>
+            {track === "de" ? `${t.germanNote} ${t.answers.de.what}` : t.answers[track].what}
+          </span>
         </span>
         <span
           className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
@@ -187,12 +180,10 @@ function Answer({
 }
 
 function TestAnswer({
-  lang,
   icon,
   onClick,
   children,
 }: {
-  lang: Locale;
   icon?: IconName;
   onClick: () => void;
   children: string;
@@ -200,7 +191,6 @@ function TestAnswer({
   return (
     <button
       type="button"
-      lang={lang}
       onClick={onClick}
       className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-ivory px-4 text-body font-semibold transition-transform active:scale-95"
     >

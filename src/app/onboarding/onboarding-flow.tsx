@@ -4,25 +4,25 @@ import { useState, useTransition } from "react";
 import { setLocale } from "@/app/(tabs)/actions";
 import { Button } from "@/app/ui/button";
 import { Icon } from "@/app/ui/icons";
-import { defaultDialect } from "@/lib/dialects";
+import { defaultDialect, DIALECT_OPTIONS } from "@/lib/dialects";
 import { PRESETS } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { finishOnboarding } from "./actions";
 import { DialectStep } from "./dialect-step";
-import { PaceStep, RECOMMENDED_PACE } from "./pace-step";
+import { HowStep, PaceStep, RECOMMENDED_PACE } from "./pace-step";
 import { TrackStep, type TrackModule } from "./track-step";
 
 type OnboardingFlowProps = {
   locale: Locale;
-  // Each track's modules, for the first question.
+  // Each track's modules, titled in the learner's language, for the first question.
   tracks: Record<Locale, TrackModule[]>;
 };
 
-const STEPS = ["track", "dialect", "pace"] as const;
+const STEPS = ["track", "dialect", "how", "pace"] as const;
 
-// Three short screens: the track, the dialect, then how Hoi works with the pace. Each has to be
-// answered, none can be skipped: the track waits for an answer, the dialect starts as the only one
-// ready while there's just one, and the pace as the recommended one.
+// Four short screens: the track, the dialect, how Hoi works, then the pace. Each question has to
+// be answered, none can be skipped: the track waits for an answer, the dialect starts as the only
+// one ready while there's just one, and the pace as the recommended one.
 export function OnboardingFlow({ locale, tracks }: OnboardingFlowProps) {
   const texts = dictionary(locale);
   const t = texts.onboarding;
@@ -38,12 +38,33 @@ export function OnboardingFlow({ locale, tracks }: OnboardingFlowProps) {
   const [pending, startTransition] = useTransition();
 
   const current = STEPS[step];
+  const other: Locale = locale === "de" ? "en" : "de";
   const next = () => setStep((value) => Math.min(value + 1, STEPS.length - 1));
+
+  // The language the onboarding is in, changed from the first question's switch.
+  function switchLanguage() {
+    setError(null);
+    startTransition(async () => {
+      const result = await setLocale(other);
+      if (result.error) setError(result.error);
+    });
+  }
+
+  // On from the first question: the track sets Hoi's language, so the rest is in the track's.
+  function afterTrack() {
+    if (!track || track === locale) return next();
+    setError(null);
+    startTransition(async () => {
+      const result = await setLocale(track);
+      if (result.error) setError(result.error);
+      else startTransition(next);
+    });
+  }
 
   function finish() {
     setError(null);
     startTransition(async () => {
-      // Only returns when saving failed: success redirects to the flashcards.
+      // Only returns when saving failed: success redirects to Lernen.
       const result = await finishOnboarding({ dialect, newCardsPerDay });
       setError(result.error);
     });
@@ -51,7 +72,7 @@ export function OnboardingFlow({ locale, tracks }: OnboardingFlowProps) {
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-8 px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-      <header className="grid grid-cols-[2.75rem_1fr_2.75rem] items-center gap-3">
+      <header className="grid grid-cols-[2.75rem_1fr_auto] items-center gap-3">
         {step > 0 ? (
           <button
             type="button"
@@ -76,12 +97,29 @@ export function OnboardingFlow({ locale, tracks }: OnboardingFlowProps) {
             <span key={name} className={`h-1.5 flex-1 rounded-full transition-colors ${index <= step ? "bg-teal" : "bg-mist"}`} />
           ))}
         </div>
-        <span />
+        {/* The language, as on the start page: named in the other language itself, so it's found
+            by those who need it. Only on the first question; after it, the track sets the language.
+            Kept, hidden, on the others so the progress bar doesn't change width. */}
+        <button
+          type="button"
+          lang={other}
+          onClick={switchLanguage}
+          disabled={pending}
+          aria-hidden={step > 0 || undefined}
+          tabIndex={step > 0 ? -1 : undefined}
+          className={`-mr-3 flex min-h-11 items-center gap-1.5 px-3 text-caption font-semibold text-teal-soft transition-transform active:scale-95 ${
+            step > 0 ? "invisible" : ""
+          }`}
+        >
+          <Icon name="globe" size={16} />
+          {dictionary(other).languageName}
+        </button>
       </header>
 
       <section className="flex flex-1 flex-col gap-6">
         {current === "track" && (
           <TrackStep
+            locale={locale}
             modules={tracks}
             chosen={track}
             recommended={recommendedTrack}
@@ -89,19 +127,19 @@ export function OnboardingFlow({ locale, tracks }: OnboardingFlowProps) {
             onChoose={(choice, recommended) => {
               setTrack(choice);
               if (recommended) setRecommendedTrack(choice);
-              // Switching straight away shows the rest of the onboarding in that language.
-              if (choice !== locale) startTransition(async () => void (await setLocale(choice)));
             }}
           />
         )}
         {current === "dialect" && <DialectStep locale={locale} chosen={dialect} onChoose={setDialect} />}
-        {current === "pace" && (
-          <PaceStep
+        {current === "how" && (
+          // The dialect by its own name, as chosen on the screen before.
+          <HowStep
             locale={locale}
-            dialectName={texts.lesson.dialects[dialect ?? "be"] ?? texts.lesson.dialects.be}
-            newCardsPerDay={newCardsPerDay}
-            onChoose={setNewCardsPerDay}
+            dialectName={DIALECT_OPTIONS.find(({ id }) => id === dialect)?.name ?? DIALECT_OPTIONS[0].name}
           />
+        )}
+        {current === "pace" && (
+          <PaceStep locale={locale} newCardsPerDay={newCardsPerDay} onChoose={setNewCardsPerDay} />
         )}
       </section>
 
@@ -116,7 +154,7 @@ export function OnboardingFlow({ locale, tracks }: OnboardingFlowProps) {
             {pending ? t.pace.saving : t.pace.finish}
           </Button>
         ) : (
-          <Button onClick={next} disabled={pending || (current === "track" && !track)}>
+          <Button onClick={current === "track" ? afterTrack : next} disabled={pending || (current === "track" && !track)}>
             {t.next}
           </Button>
         )}
