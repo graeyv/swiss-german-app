@@ -345,6 +345,12 @@ topic in English); in the code and this guide they are lesson → section → ru
 
 ## Not decided yet
 
+- **Sound list** (English Pronunciation, proposed): for topics that pair letters with sounds. One
+  mist card per letter: the letter in title size beside what it sounds like in body size ("Similar
+  to e in bed", one English word, the letters making the sound underlined in sage as in the pronunciation exercises), and below, on an ivory strip inside the card, the Swiss German word in
+  subtitle size with its meaning in `teal-soft` and its round play button on the right. The button
+  shares the strip only with the word, so it's clear the word is what plays.
+  Previewed at `/dev/lesson-en`.
 - **Emojis**: multicoloured emojis clash with "teal is the only icon colour". Flashcard subtopics
   now use icons, and topics their illustration. Onboarding and settings still show the topics'
   emojis; this guide will say how to replace them.
