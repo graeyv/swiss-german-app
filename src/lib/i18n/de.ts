@@ -309,9 +309,16 @@ export const de: Dictionary = {
     back: "Zurück",
     next: "Weiter",
     track: {
-      question: "Sprichst du Hochdeutsch?",
-      answer: "Ja, ich spreche Hochdeutsch",
-      what: "Du lernst, was Schweizerdeutsch anders macht.",
+      question: "Verstehst du Hochdeutsch gut?",
+      intro: "Hoi hat zwei Lernwege. Deine Antwort wählt den passenden.",
+      answers: {
+        de: {
+          answer: "Ja, ich verstehe Hochdeutsch gut",
+          what: "Du lernst Schweizerdeutsch, aufbauend auf deinem Hochdeutsch.",
+        },
+        en: { answer: "Nein, ich lerne lieber auf Englisch", what: "Du lernst Schweizerdeutsch von Anfang an, auf Englisch." },
+      },
+      germanNote: "Auch als Fremdsprache.",
       path: "Dein Lernweg",
       modules: (count) => many(count, "Modul", "Module"),
       recommended: "Empfohlen",
@@ -355,7 +362,7 @@ export const de: Dictionary = {
       },
       choose: "Wie viele neue Wörter am Tag?",
       chooseNote: "Wähle dein Tempo. Mehr neue Wörter heisst auch mehr Wiederholungen.",
-      perDay: "pro Tag",
+      newWordsPerDay: "neue Wörter pro Tag",
       recommended: "Empfohlen",
       changeLater: "Du kannst das jederzeit im Profil ändern",
       finish: "Los geht's",

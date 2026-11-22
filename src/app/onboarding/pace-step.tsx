@@ -7,25 +7,16 @@ import { dictionary, type Locale } from "@/lib/i18n";
 // The pace recommended to everyone, as there's no question about the learner's level.
 export const RECOMMENDED_PACE = "steady";
 
-type PaceStepProps = {
-  locale: Locale;
-  // The dialect's name, such as "Berndeutsch", for what Learn teaches.
-  dialectName: string;
-  // New cards a day chosen.
-  newCardsPerDay: number;
-  onChoose: (newCardsPerDay: number) => void;
-};
-
 const TAB_ICONS: Record<"learn" | "practice" | "talk", IconName> = { learn: "learn", practice: "practice", talk: "talk" };
 
 // Where one word's reviews sit on the line, as an example of the gaps growing; the labels take
 // turns below and above it, so the close first ones have room.
 const REVIEW_POSITIONS = [0, 14, 31, 56, 100];
 
-// The last screen: how Hoi is built up, in its three main tabs, and how words come back just
-// before they'd be forgotten, both only informing, as plain text. Then the one thing to choose,
-// set apart as cards with check circles: how many new words a day. See DESIGN.md.
-export function PaceStep({ locale, dialectName, newCardsPerDay, onChoose }: PaceStepProps) {
+// The third screen, only informing, so there's nothing to choose and only "Weiter": how Hoi is
+// built up, in its three main tabs, and how words come back just before they'd be forgotten, with
+// the timeline's dots popping in. See DESIGN.md.
+export function HowStep({ locale, dialectName }: { locale: Locale; dialectName: string }) {
   const texts = dictionary(locale);
   const t = texts.onboarding.pace;
 
@@ -53,49 +44,71 @@ export function PaceStep({ locale, dialectName, newCardsPerDay, onChoose }: Pace
         <p className="text-caption text-teal-soft">{t.remember.text}</p>
         <Timeline labels={t.remember.reviews} />
       </section>
+    </>
+  );
+}
 
-      <section className="flex flex-col gap-3 pt-2">
-        <div className="flex flex-col gap-0.5">
-          <h2 className="text-heading font-bold">{t.choose}</h2>
-          <p className="text-caption text-teal-soft">{t.chooseNote}</p>
-        </div>
-        <div role="group" aria-label={t.choose} className="grid grid-cols-3 gap-2">
-          {PRESETS.map((preset) => {
-            const selected = newCardsPerDay === preset.newCardsPerDay;
-            return (
-              <button
-                key={preset.id}
-                type="button"
-                aria-pressed={selected}
-                onClick={() => onChoose(preset.newCardsPerDay)}
-                className={`relative flex flex-col items-center gap-1 rounded-3xl px-2 pt-4 pb-3 text-center transition-[background-color,transform] active:scale-[0.97] ${
-                  selected ? "bg-sage" : "bg-mist"
+type PaceStepProps = {
+  locale: Locale;
+  // New cards a day chosen.
+  newCardsPerDay: number;
+  onChoose: (newCardsPerDay: number) => void;
+};
+
+// The last screen, the one thing to choose: how many new words a day, as cards like the other
+// questions', the number in an ivory circle. See DESIGN.md.
+export function PaceStep({ locale, newCardsPerDay, onChoose }: PaceStepProps) {
+  const texts = dictionary(locale);
+  const t = texts.onboarding.pace;
+
+  return (
+    <>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-title leading-tight font-bold">{t.choose}</h1>
+        <p className="text-body text-teal-soft">{t.chooseNote}</p>
+      </div>
+
+      <div role="group" aria-label={t.choose} className="flex flex-col gap-3">
+        {PRESETS.map((preset) => {
+          const selected = newCardsPerDay === preset.newCardsPerDay;
+          return (
+            <button
+              key={preset.id}
+              type="button"
+              aria-pressed={selected}
+              onClick={() => onChoose(preset.newCardsPerDay)}
+              className={`relative flex items-center gap-4 rounded-3xl p-4 text-left transition-[background-color,transform] active:scale-[0.98] ${
+                selected ? "bg-sage" : "bg-mist"
+              }`}
+            >
+              {preset.id === RECOMMENDED_PACE && (
+                <span className="absolute -top-2.5 right-5 rounded-full bg-yellow px-2.5 py-0.5 text-xs font-semibold">
+                  {t.recommended}
+                </span>
+              )}
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-ivory text-heading font-bold tabular-nums">
+                {preset.newCardsPerDay}
+              </span>
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="text-body font-bold">{texts.goal.presets[preset.id]}</span>
+                <span className={`text-caption ${selected ? "" : "text-teal-soft"}`}>{t.newWordsPerDay}</span>
+              </span>
+              <span
+                className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
+                  selected ? "bg-teal text-ivory" : "bg-ivory"
                 }`}
               >
-                {preset.id === RECOMMENDED_PACE && (
-                  <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-yellow px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap">
-                    {t.recommended}
-                  </span>
-                )}
-                <span className="text-title leading-none font-bold tabular-nums">{preset.newCardsPerDay}</span>
-                <span className="text-caption">{t.perDay}</span>
-                <span className="text-caption font-semibold">{texts.goal.presets[preset.id]}</span>
-                <span
-                  className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
-                    selected ? "bg-teal text-ivory" : "bg-ivory"
-                  }`}
-                >
-                  {selected && <Icon name="check" size={16} />}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        <p className="flex items-center justify-center gap-2 text-caption text-teal-soft">
-          <Icon name="swap" size={16} className="shrink-0" />
-          {t.changeLater}
-        </p>
-      </section>
+                {selected && <Icon name="check" size={16} />}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <p className="flex items-center justify-center gap-2 text-caption text-teal-soft">
+        <Icon name="swap" size={16} className="shrink-0" />
+        {t.changeLater}
+      </p>
     </>
   );
 }

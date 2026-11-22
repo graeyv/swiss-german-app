@@ -357,9 +357,15 @@ export const en = {
     // The first question, which sets the learner's track and the app's language. It's shown in
     // German and English together, and each answer in its own language.
     track: {
-      question: "Do you speak German?",
-      answer: "No, I'll learn in English",
-      what: "You learn Swiss German from the very start.",
+      question: "Do you understand German well?",
+      intro: "Hoi has two learning paths. Your answer picks the right one.",
+      // The answer for each track, in this language, and what that track teaches. The German
+      // track's note, only in onboarding, says German needn't be the learner's first language.
+      answers: {
+        de: { answer: "Yes, I understand German well", what: "You learn Swiss German, building on your German." },
+        en: { answer: "No, I'll learn in English", what: "You learn Swiss German from the very start." },
+      },
+      germanNote: "Native or not.",
       path: "Your path",
       modules: (count: number) => many(count, "module", "modules"),
       recommended: "Recommended",
@@ -408,7 +414,8 @@ export const en = {
       },
       choose: "How many new words a day?",
       chooseNote: "Choose your pace. More new words also means more reviews.",
-      perDay: "a day",
+      // Under each pace's name.
+      newWordsPerDay: "new words a day",
       recommended: "Recommended",
       changeLater: "You can change this in your profile at any time",
       finish: "Let's go",

@@ -273,15 +273,19 @@ topic in English); in the code and this guide they are lesson → section → ru
   back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei Hoi
   anmelden"), email and password, one primary button, and below it a text button to the other
   ("Schon ein Konto? Anmelden", "Neu bei Hoi? Konto erstellen").
-- **Choosing the track** (onboarding's first question): "Sprichst du Hochdeutsch?" in title size,
-  with "Do you speak German?" below in subtitle size and `teal-soft`, as the learner may read
-  either. Two answer cards on mist, each in its own language: an icon on an ivory circle, the
-  answer in bold, one line on what it means, and a check circle on the right. The chosen card
-  turns sage with a teal check, and unfolds its path on an ivory panel inside it ("DEIN LERNWEG ·
-  5 Module", each module with its icon). Below, a mist pill "Nicht sicher? · Not sure?" opens a
-  quick test in a sheet: one Standard German sentence, "Verstehst du diesen Satz?", and "Ja, gut"
-  or "Not really", which choose the answer and put a small yellow "Empfohlen" tag on its edge,
-  the screen's one yellow. Under it, always, "Du kannst später wechseln · You can switch later".
+- **Choosing the track** (onboarding's first question), all in one language: the one from the
+  start page, which the start page's switch at the top right ("English" with a globe) changes,
+  on this screen only. "Verstehst du Hochdeutsch gut?" in title size, and below it in body size
+  and `teal-soft`, "Hoi hat zwei Lernwege. Deine Antwort wählt den passenden." Two answer cards
+  on mist: an icon on an ivory circle, the answer in bold ("Ja, ich verstehe Hochdeutsch gut",
+  "Nein, ich lerne lieber auf Englisch"), one line on what it means (the German one first says
+  "Auch als Fremdsprache."), and a check circle on the right. The chosen card turns sage with a
+  teal check, and unfolds its path on an ivory panel inside it ("DEIN LERNWEG · 6 Module", each
+  module with its icon, titled in the screen's language). Below, a mist pill "Nicht sicher?"
+  opens a quick test in a sheet: one Standard German sentence, "Verstehst du diesen Satz?", and
+  "Ja, gut" or "Nicht wirklich", which choose the answer and put a small yellow "Empfohlen" tag on
+  its edge, the screen's one yellow. Under it, always, "Du kannst später wechseln". "Weiter" then
+  sets Hoi's language to the track's.
 - **Choosing the dialect** (onboarding's second question): "Welchen Dialekt möchtest du lernen?"
   in title size, then a card on mist per dialect: its canton's flag (square, 48 px, rounded
   corners, no frame), the name in dialect ("Bärndütsch") in bold body size, and "Bern und Umgebung" below, or
@@ -297,14 +301,18 @@ topic in English); in the code and this guide they are lesson → section → ru
   its number of modules as a caption, and the check; the chosen one on sage. Below, centred in
   `teal-soft` caption, "Dein Fortschritt bleibt gespeichert." and "Your progress stays saved." on
   two lines, so whoever is about to switch can read it.
-- **How Hoi works** (onboarding's last screen): "So funktioniert Hoi", the three main tabs as an
-  icon list (icon in `teal-soft`, name in bold, one line below), and "Wörter, die bleiben": one
-  sentence and one word's reviews as small teal dots on a thin sage-light line (Heute, Morgen,
-  3 Tage, 1 Woche, 1 Monat), the gaps growing and the labels taking turns below and above. All of
-  that only informs, so it's plain text without cards. Then the one choice, "Wie viele neue Wörter
-  am Tag?": three cards on mist (5, 10, 20 "pro Tag", Locker, Stetig, Intensiv), each with a check
-  circle at the bottom like every onboarding choice, "Stetig" chosen and tagged "Empfohlen" in
-  yellow. Below, "Du kannst das jederzeit im Profil ändern", and "Los geht's" at the bottom.
+- **How Hoi works** (onboarding's third screen, only informing, so only "Weiter"): "So
+  funktioniert Hoi", the three main tabs as an icon list (icon in `teal-soft`, name in bold, one
+  line below, naming the chosen dialect by its own name, "Bärndütsch"), and "Wörter, die bleiben":
+  one sentence and one word's reviews as small teal dots popping in one after another on a thin
+  sage-light line (Heute, Morgen, 3 Tage, 1 Woche, 1 Monat), the gaps growing and the labels
+  taking turns below and above. All of it is plain text without cards.
+- **Choosing the pace** (onboarding's last screen): "Wie viele neue Wörter am Tag?" in title size,
+  "Wähle dein Tempo. …" below in body size and `teal-soft`. Three cards on mist like the other
+  questions': the number in an ivory circle, the name (Locker, Stetig, Intensiv) in bold, "neue
+  Wörter pro Tag" as a caption, and the check circle; "Stetig" chosen and tagged "Empfohlen" in
+  yellow on its edge. Below, "Du kannst das jederzeit im Profil ändern", and "Los geht's" at the
+  bottom.
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick
