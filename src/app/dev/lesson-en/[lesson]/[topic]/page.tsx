@@ -4,6 +4,7 @@ import { MarkedWord } from "@/app/exercises/pronunciation/parts";
 import { ListenButton } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/listen-button";
 import { LessonLoading, LessonScreen } from "@/app/learn/[dialect]/[lesson]/lesson-screen";
 import { ButtonLink } from "@/app/ui/button";
+import { Takeaway } from "@/app/ui/takeaway";
 import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { devOnly } from "../../../dev-only";
@@ -79,6 +80,13 @@ async function Topic({ params }: Params) {
           German pronunciation topics. */}
       {topic.sounds &&
         (topic.sounds.length > 1 ? <SoundList sounds={topic.sounds} /> : <WordList words={topic.sounds[0].words} />)}
+      {/* A way into the sound the text doesn't give, last, in the yellow card of Learn's
+          "Remember": the screen's one yellow. */}
+      {topic.tip && (
+        <Takeaway label="Tip">
+          <MarkedWord word={topic.tip} small />
+        </Takeaway>
+      )}
       {/* The lesson's first topic shows what's coming: the letters of the topics after it. */}
       {index === 0 && <LessonLetters topics={topics.slice(1)} />}
     </LessonScreen>

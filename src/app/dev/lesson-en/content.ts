@@ -1,7 +1,6 @@
 // The English track's Pronunciation module while it's being written: three lessons, grouped by
-// whether the letter and its sound are familiar from English. Lessons 1 and 2 have their text, as
-// written by the user; lesson 3 has its topics' titles only. Moves into content/lessons once
-// settled.
+// whether the letter and its sound are familiar from English, as written by the user. Moves into
+// content/lessons once settled.
 
 // A Swiss German word and what it means, to listen to. No recordings yet.
 export type Word = { word: string; meaning: string };
@@ -12,17 +11,23 @@ export type Word = { word: string; meaning: string };
 // J, says what it sounds like in its theory instead, marked the same way, and has no like.
 export type Sound = { letter: string; like?: string; words: Word[] };
 
-// Without theory, a topic is still to be written. Its theory can mark letters with brackets, as
-// like does.
-export type Topic = { id: string; title: string; theory?: string; sounds?: Sound[] };
+// Without theory, a topic is still to be written. Its theory and tip can mark letters with
+// brackets, as like does. A tip adds a way into the sound the text doesn't give, such as another
+// language's word, and shows last in a yellow card.
+export type Topic = { id: string; title: string; theory?: string; tip?: string; sounds?: Sound[] };
 
 export type Lesson = { id: string; title: string; topics: Topic[] };
 
 export const MODULE = {
   title: "Pronunciation",
   number: 2,
-  subtitle: "Different from English",
-  expectations: [{ icon: "intersect", title: "Understand how Swiss German relates to Standard German" }],
+  subtitle: "How Bärndütsch sounds",
+  description:
+    "Start with the sounds you already know from English, then those written differently, and finally the ones that are new.",
+  expectations: [
+    { icon: "headphones", title: "Hear the sounds of Bärndütsch" },
+    { icon: "speaking", title: "Say them yourself" },
+  ],
 };
 
 export const LESSONS: Lesson[] = [
@@ -34,7 +39,7 @@ export const LESSONS: Lesson[] = [
         id: "introduction",
         title: "Start with what you know",
         theory:
-          "Many Swiss German sounds are ones you already know from English, and if you speak French, Spanish or Portuguese, from those too. We start with these, so you can recognise and say them in everyday words.",
+          "Many Bärndütsch sounds are ones you already know from English, and if you speak French, Spanish or Portuguese, from those too. We start with these, so you can recognise and say them in everyday words.",
       },
       {
         id: "vowels",
@@ -51,7 +56,7 @@ export const LESSONS: Lesson[] = [
       {
         id: "consonants",
         title: "Consonants",
-        theory: "These consonants are generally pronounced in a familiar way.",
+        theory: "These consonants are said as in English.",
         sounds: [
           { letter: "B", like: "Like b in [b]ook", words: [{ word: "Brot", meaning: "Bread" }] },
           { letter: "D", like: "Like d in [d]ay", words: [{ word: "Danke", meaning: "Thank you" }] },
@@ -76,12 +81,12 @@ export const LESSONS: Lesson[] = [
         id: "introduction",
         title: "Sounds you know, written differently",
         theory:
-          "Some letters you know are said differently in Swiss German. The sounds themselves are familiar: only the letter that stands for them is new.",
+          "Some letters you know are said differently in Bärndütsch. The sounds themselves are familiar: only the letter that stands for them is new.",
       },
       {
         id: "j",
         title: "J",
-        theory: "In Swiss German, J is pronounced like the English Y in [y]es.",
+        theory: "In Bärndütsch, J is pronounced like the English Y in [y]es.",
         sounds: [
           {
             letter: "J",
@@ -96,7 +101,7 @@ export const LESSONS: Lesson[] = [
       {
         id: "w",
         title: "W",
-        theory: "In Swiss German, W is generally pronounced like the English V in [v]ery.",
+        theory: "In Bärndütsch, W is pronounced like the English V in [v]ery.",
         sounds: [
           {
             letter: "W",
@@ -111,7 +116,7 @@ export const LESSONS: Lesson[] = [
       {
         id: "z",
         title: "Z",
-        theory: "In Swiss German, Z is pronounced like TS in the English words ca[ts] or [Ts]unami.",
+        theory: "In Bärndütsch, Z is pronounced like TS in the English words ca[ts] or [Ts]unami.",
         sounds: [
           {
             letter: "Z",
@@ -142,17 +147,145 @@ export const LESSONS: Lesson[] = [
   },
   {
     id: "new-sounds",
-    title: "Sounds English doesn't have",
+    title: "New sounds or new letters",
     topics: [
-      { id: "introduction", title: "Introduction" },
-      { id: "r", title: "R" },
-      { id: "ae", title: "Ä" },
-      { id: "oe", title: "Ö" },
-      { id: "ue", title: "Ü" },
-      { id: "ch", title: "CH" },
-      { id: "k", title: "K" },
-      { id: "st", title: "ST" },
-      { id: "sp", title: "SP" },
+      {
+        id: "introduction",
+        title: "Something new",
+        theory:
+          "Now it gets new: sounds English doesn't have, such as CH and R, and letters it doesn't have, such as Ä, Ö and Ü. They take a little more practice.",
+      },
+      {
+        id: "r",
+        title: "R",
+        theory:
+          "In Bärndütsch, R is rolled with the tip of the tongue, quite unlike the English R.",
+        tip: "If you speak Spanish or Italian, you can try the rolled R as a starting point, as in Italian [r]osso or Spanish pe[rr]o.",
+        sounds: [
+          {
+            letter: "R",
+            words: [
+              { word: "Rot", meaning: "Red" },
+              { word: "Räge", meaning: "Rain" },
+              { word: "Richtig", meaning: "Correct" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "ae",
+        title: "Ä",
+        theory:
+          "In Bärndütsch, Ä is a very open vowel, close to the a in c[a]t or b[a]t as said in British English.",
+        sounds: [
+          {
+            letter: "Ä",
+            words: [
+              { word: "Mässer", meaning: "Knife" },
+              { word: "Bär", meaning: "Bear" },
+              { word: "Stärn", meaning: "Star" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "oe",
+        title: "Ö",
+        theory:
+          "Ö doesn't exist in English, but it's close to the vowel in b[ir]d or h[er] in British English.",
+        sounds: [
+          {
+            letter: "Ö",
+            words: [
+              { word: "Schön", meaning: "Beautiful" },
+              { word: "Löffu", meaning: "Spoon" },
+              { word: "Öffne", meaning: "Open" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "ue",
+        title: "Ü",
+        theory:
+          "Ü doesn't exist in English either. Say a long ee as in s[ee], and while you keep saying it, push your lips forward into a small circle, as if you were about to whistle.",
+        tip: "If you know French: Ü sounds like the u in t[u].",
+        sounds: [
+          {
+            letter: "Ü",
+            words: [
+              { word: "Tür", meaning: "Door" },
+              { word: "Müed", meaning: "Tired" },
+              { word: "Nüt", meaning: "Nothing" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "ch",
+        title: "CH",
+        theory:
+          "CH is one of the most typical sounds of Bärndütsch: a strong, breathy sound made at the back of the mouth, a bit like gently clearing your throat.",
+        tip: "If you know Spanish, CH is like the j in [J]osé. The French r in [r]ouge comes close too.",
+        sounds: [
+          {
+            letter: "CH",
+            words: [
+              { word: "Chind", meaning: "Child" },
+              { word: "Dach", meaning: "Roof" },
+              { word: "Buech", meaning: "Book" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "k",
+        title: "K",
+        theory:
+          "In Bärndütsch, K is followed by a short CH, the breathy sound from the topic before. So Kiosk sounds almost like “kchiosk”.",
+        sounds: [
+          {
+            letter: "K",
+            words: [
+              { word: "Knapp", meaning: "Close" },
+              { word: "Karussell", meaning: "Carousel" },
+              { word: "Kiosk", meaning: "Kiosk" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "st",
+        title: "ST",
+        theory:
+          "In Bärndütsch, ST is said as SHT, at the start of a word and in the middle too: the sh in [sh]oe, followed by t. Strass sounds like “shtrass”.",
+        sounds: [
+          {
+            letter: "ST",
+            words: [
+              { word: "Strass", meaning: "Street" },
+              { word: "Stäge", meaning: "Stairs" },
+              { word: "Stadt", meaning: "City" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "sp",
+        title: "SP",
+        theory:
+          "In Bärndütsch, SP is said as SHP, at the start of a word and in the middle too: the sh in [sh]oe, followed by p. Sport sounds like “shport”.",
+        sounds: [
+          {
+            letter: "SP",
+            words: [
+              { word: "Sport", meaning: "Sport" },
+              { word: "Spiu", meaning: "Game" },
+              { word: "Spaghetti", meaning: "Spaghetti" },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];

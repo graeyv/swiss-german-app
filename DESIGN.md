@@ -355,6 +355,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   a round play button on the right. A button shares its strip only with its word, so it's clear
   the word is what plays. A lesson's first topic shows the letters to come in mist circles (pills
   for combinations), under each topic's title when topics have several letters.
+  A topic can end on a tip, a way into the sound its text doesn't give (such as "If you know
+  French: Ü sounds like the u in tu"), in the takeaway's yellow card labelled "TIP".
   Previewed at `/dev/lesson-en`.
 - **Emojis**: multicoloured emojis clash with "teal is the only icon colour". Flashcard subtopics
   now use icons, and topics their illustration. Onboarding and settings still show the topics'

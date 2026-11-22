@@ -44,6 +44,7 @@ export default function DevPronunciationPage() {
         <p className="text-subtitle font-semibold">
           <Highlight>{MODULE.subtitle}</Highlight>
         </p>
+        <p className="text-body">{MODULE.description}</p>
       </div>
 
       <section className="flex flex-col gap-4">
