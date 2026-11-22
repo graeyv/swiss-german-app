@@ -105,6 +105,8 @@ export type Lesson = {
   // Whether its examples are Standard German words said with the dialect's accent, such as the
   // pronunciation's, so their side is named after the accent: "Berner Akzent".
   accent?: boolean;
+  // Only to read, never with exercises, such as Getting started: left out of the Practice tab.
+  readOnly?: boolean;
 };
 
 // A lesson, with the dialect it teaches and the language it's written in. The lesson's screens

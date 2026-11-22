@@ -4,6 +4,7 @@
   "titleIn": { "en": "Before you start" },
   "subtitle": "Was du über Schweizerdeutsch wissen solltest",
   "icon": "wave",
+  "readOnly": true,
   "description": "Drei Dinge, die dir den Einstieg leichter machen: wie sich die Dialekte unterscheiden, wie man sie schreibt und wann man sie spricht.",
   "expectations": [
     {

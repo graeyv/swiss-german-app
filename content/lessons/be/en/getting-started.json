@@ -4,6 +4,7 @@
   "titleIn": { "de": "Erste Schritte" },
   "subtitle": "Your first steps in Swiss German",
   "icon": "wave",
+  "readOnly": true,
   "description": "Find out what Swiss German is, how it's spoken and written, and how to approach learning it, before you learn your first words.",
   "expectations": [
     {
