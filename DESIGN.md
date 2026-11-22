@@ -345,11 +345,16 @@ topic in English); in the code and this guide they are lesson → section → ru
 
 ## Not decided yet
 
-- **Sound list** (English Pronunciation, proposed): for topics that pair letters with sounds. One
-  mist card per letter: the letter in title size beside what it sounds like in body size ("Similar
-  to e in bed", one English word, the letters making the sound underlined in sage as in the pronunciation exercises), and below, on an ivory strip inside the card, the Swiss German word in
-  subtitle size with its meaning in `teal-soft` and its round play button on the right. The button
-  shares the strip only with the word, so it's clear the word is what plays.
+- **Sound list** (English Pronunciation, proposed): for topics that pair several letters with
+  their sounds, such as the vowels. A topic about one letter, such as J, uses the quiet list of the
+  phrases instead, its comparison in the text with the letters underlined. One
+  mist card per letter (or combination, such as SCH): the letter in title size beside what it
+  sounds like in body size ("Similar to e in bed", one English word, the letters making the sound
+  underlined in sage as in the pronunciation exercises), and below, each on an ivory strip inside
+  the card, one or more Swiss German words in subtitle size with their meaning in `teal-soft` and
+  a round play button on the right. A button shares its strip only with its word, so it's clear
+  the word is what plays. A lesson's first topic shows the letters to come in mist circles (pills
+  for combinations), under each topic's title when topics have several letters.
   Previewed at `/dev/lesson-en`.
 - **Emojis**: multicoloured emojis clash with "teal is the only icon colour". Flashcard subtopics
   now use icons, and topics their illustration. Onboarding and settings still show the topics'
