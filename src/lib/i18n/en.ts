@@ -34,6 +34,8 @@ export const en = {
     logIn: "Log in",
     createAccount: "Create account",
     confirmEmail: "Check your email to confirm your account.",
+    google: "Continue with Google",
+    or: "or",
   },
 
   learn: {

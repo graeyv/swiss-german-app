@@ -33,6 +33,8 @@ export const de: Dictionary = {
     logIn: "Anmelden",
     createAccount: "Konto erstellen",
     confirmEmail: "Bestätige dein Konto über den Link in deiner E-Mail.",
+    google: "Weiter mit Google",
+    or: "oder",
   },
 
   learn: {
