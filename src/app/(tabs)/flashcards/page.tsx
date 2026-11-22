@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { TabHeader } from "@/app/ui/tab-header";
 import { getToday } from "@/lib/flashcards/data";
 import { reviewProgress } from "@/lib/flashcards/daily-plan";
 import { dictionary } from "@/lib/i18n";
@@ -37,7 +38,7 @@ async function Decks() {
   return (
     <>
       <title>{t.title(t.flashcards.title)}</title>
-      <h1 className="sr-only">{t.flashcards.title}</h1>
+      <TabHeader title={t.flashcards.title} intro={t.flashcards.intro} />
       <PracticeSwitch view="words" locale={locale} />
 
       <TodaysGoal

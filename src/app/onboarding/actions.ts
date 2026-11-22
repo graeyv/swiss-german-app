@@ -36,5 +36,6 @@ export async function finishOnboarding(answers: Answers): Promise<{ error: strin
   if (data.length === 0) return { error: "Your profile is missing" };
 
   revalidatePath("/", "layout");
-  redirect("/flashcards");
+  // To Lernen, whose suggestion card ("Hier beginnen") is the one clear first step.
+  redirect("/learn");
 }

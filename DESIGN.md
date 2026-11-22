@@ -95,7 +95,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`, `BottomSheet`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`, `BottomSheet`, `TabHeader`, `Tip`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
 topic in English); in the code and this guide they are lesson → section → rule.
@@ -108,8 +108,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   while the page scrolls (`TopBar`). Where it skips a level, it names where it leads instead, in
   small semibold text: "‹ Aussprache" on a topic, which goes up to its module, and "‹ Lektionen"
   in the practice tab.
-- **Tab header** (Learn tab): the tab's name as title, below it one line in subtitle size and
-  weight, full teal, saying what the tab is for. No marker.
+- **Tab header** (`TabHeader`, on Lernen, Üben and Dialoge): the tab's name as title, below it
+  one line in subtitle size and weight, full teal, saying what the tab is for. No marker.
 - **Suggestion card**: a tab's one suggestion, at the top: a sage card with an eyebrow in teal (the
   softer teal is too faint on sage) saying why, such as "WEITERMACHEN · AUSSPRACHE", the title in
   heading size, one short line, and the primary button. It's an action, not one of the items
@@ -316,7 +316,16 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Rating a flashcard** (Nochmals, Schwer, Gut, Einfach): four square cards in a row, each with
   an icon (circular arrow, sad, smiling, winking face) and the word. Below each, a clock and when
   the card comes back. The colour gets greener the better the card was known: rose with a brick
-  icon (like a wrong answer), mist, `sage-light`, sage. No yellow.
+  icon (like a wrong answer), mist, `sage-light`, sage. No yellow, except the one-time tip
+  above them.
+- **One-time tip** (`Tip`): explains something the first time it comes up, without a tour. A
+  yellow card, the screen's one yellow: a lightbulb and a short bold title such as "Wie gut
+  wusstest du es?", one caption below, and a small tail at the bottom left pointing at what it
+  explains. It rises in from below with a little overshoot, after whatever it explains has
+  appeared (on a flashcard, once the card has turned over), and there's nothing to close: it goes
+  once the learner does what it explains, and is saved as seen. With reduced motion it's simply
+  there. Only for things whose meaning can't be seen, such as rating a flashcard; a tab is
+  explained by its header instead.
 - **Primary button** ("Los geht's"): teal pill, ivory text, at the bottom within thumb reach,
   above the home indicator. One per screen.
 - **Secondary button**: mist pill, teal text.

@@ -187,6 +187,7 @@ export const en = {
   },
 
   conversations: {
+    intro: "Real everyday dialogues to listen to.",
     // How many scenes a topic has, such as "5 scenes".
     scenes: (count: number) => many(count, "scene", "scenes"),
     // On a scene that is still to be written.
@@ -257,6 +258,7 @@ export const en = {
 
   flashcards: {
     title: "Practice",
+    intro: "A few words every day, and exercises on the lessons.",
     noDecks: "No decks yet. Add the flashcards with",
     topics: "Topics",
     subcategories: "Subcategories",
@@ -330,6 +332,11 @@ export const en = {
     also: "also",
     notSaved: (error: string) => `Your answer wasn’t saved: ${error}. Choose again to retry.`,
     grades: { again: "Again", hard: "Hard", good: "Good", easy: "Easy" },
+    // Shown once, above the rating buttons on the first card a learner turns over.
+    ratingTip: {
+      title: "How well did you know it?",
+      text: "Be honest: «Again» shows the card again right away, «Easy» only in a few days. Below each, you see when it comes back.",
+    },
     statuses: { new: "New", learning: "Learning", review: "Review" },
     // Under the number at the end of a session, which shows large above it.
     newWordsLearned: (count: number) => pluralForm("en", count, { one: "new card learned", other: "new cards learned" }),

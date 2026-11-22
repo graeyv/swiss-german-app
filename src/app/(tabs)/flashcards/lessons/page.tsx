@@ -9,6 +9,7 @@ import { exercisesHref, hasExercises, lessonHref, lessonsFor, practiceHref } fro
 import { getReads, isReadThrough, readCount, topicsOf } from "@/lib/learn/progress";
 import { getRounds, practiceSections, roundOf, type Suggestion, suggest } from "@/lib/learn/suggestion";
 import { createClient } from "@/lib/supabase/server";
+import { TabHeader } from "@/app/ui/tab-header";
 import { PracticeSwitch } from "../practice-switch";
 
 // The Practice tab's second view: the lessons' exercises. One suggestion at the top, then every
@@ -33,7 +34,7 @@ async function LessonExercises() {
   return (
     <>
       <title>{t.title(t.practice.views.lessons)}</title>
-      <h1 className="sr-only">{t.flashcards.title}</h1>
+      <TabHeader title={t.flashcards.title} intro={t.flashcards.intro} />
       <PracticeSwitch view="lessons" locale={locale} />
 
       {suggestion && <SuggestionCard suggestion={suggestion} reads={reads.read} t={t} />}

@@ -64,7 +64,7 @@ export function OnboardingFlow({ locale, tracks }: OnboardingFlowProps) {
   function finish() {
     setError(null);
     startTransition(async () => {
-      // Only returns when saving failed: success redirects to the flashcards.
+      // Only returns when saving failed: success redirects to Lernen.
       const result = await finishOnboarding({ dialect, newCardsPerDay });
       setError(result.error);
     });

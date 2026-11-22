@@ -3,6 +3,7 @@ import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { ButtonLink } from "@/app/ui/button";
 import { isIconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
+import { TabHeader } from "@/app/ui/tab-header";
 import type { Dictionary } from "@/lib/i18n";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { isReady, type Lesson, lessonHref, lessonNumber, lessonsFor, topicCount } from "@/lib/learn/lessons";
@@ -32,10 +33,7 @@ async function Learn() {
   return (
     <>
       <title>{t.title(t.nav.learn)}</title>
-      <div className="flex flex-col gap-2">
-        <h1 className="text-title font-bold">{t.nav.learn}</h1>
-        <p className="text-subtitle font-semibold">{t.learn.intro}</p>
-      </div>
+      <TabHeader title={t.nav.learn} intro={t.learn.intro} />
 
       {next && <ContinueCard next={next} read={reads.read} t={t} />}
 

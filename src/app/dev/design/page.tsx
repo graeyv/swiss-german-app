@@ -18,6 +18,8 @@ import { GradePreview } from "./grade-preview";
 import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";
 import { LogoPreview } from "./logo-preview";
+import { RatingTipPreview } from "./rating-tip-preview";
+import { ConversationsHeaderPreview, PracticeHeaderPreview } from "./tab-header-preview";
 
 // Developer tool: everything DESIGN.md defines, in one place, to check the look at phone width
 // before it goes onto the screens. German, like the model screen.
@@ -34,6 +36,18 @@ export default function DevDesignPage() {
 
       <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
         <VariantPreview />
+      </Part>
+
+      <Part title="Einmaliger Tipp beim Bewerten (iPhone-Breite)">
+        <RatingTipPreview />
+      </Part>
+
+      <Part title="Tab-Kopf: Üben (iPhone-Breite)">
+        <PracticeHeaderPreview />
+      </Part>
+
+      <Part title="Tab-Kopf: Dialoge (iPhone-Breite)">
+        <ConversationsHeaderPreview />
       </Part>
 
       <Part title="Logo">

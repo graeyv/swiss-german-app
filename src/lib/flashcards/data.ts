@@ -63,12 +63,18 @@ export async function getToday(supabase: Supabase) {
 
 // How the learner wants their cards: which side first, and whether a word's recording plays by
 // itself when its Swiss German shows.
-export async function getCardSettings(supabase: Supabase): Promise<{ cardFront: CardFront; autoplay: boolean }> {
-  const { data, error } = await supabase.from("profiles").select("card_front, autoplay_audio").maybeSingle();
+export async function getCardSettings(
+  supabase: Supabase,
+): Promise<{ cardFront: CardFront; autoplay: boolean; ratingTipSeen: boolean }> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("card_front, autoplay_audio, rating_tip_seen")
+    .maybeSingle();
   if (error) throw new Error(error.message);
   return {
     cardFront: data?.card_front === "translation" ? "translation" : "swiss_german",
     autoplay: data?.autoplay_audio ?? true,
+    ratingTipSeen: data?.rating_tip_seen ?? false,
   };
 }
 

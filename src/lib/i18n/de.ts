@@ -161,6 +161,7 @@ export const de: Dictionary = {
   },
 
   conversations: {
+    intro: "Echte Dialoge aus dem Alltag zum Zuhören.",
     scenes: (count) => many(count, "Szene", "Szenen"),
     comingSoon: "Bald verfügbar",
     play: "Abspielen",
@@ -221,6 +222,7 @@ export const de: Dictionary = {
 
   flashcards: {
     title: "Üben",
+    intro: "Jeden Tag ein paar Wörter, dazu Übungen zu den Lektionen.",
     noDecks: "Noch keine Themen. Füge die Karteikarten hinzu mit",
     topics: "Themen",
     subcategories: "Unterkategorien",
@@ -285,6 +287,11 @@ export const de: Dictionary = {
     notSaved: (error) =>
       `Deine Antwort wurde nicht gespeichert: ${error}. Wähle nochmals, um es erneut zu versuchen.`,
     grades: { again: "Nochmals", hard: "Schwer", good: "Gut", easy: "Einfach" },
+    // Shown once, above the rating buttons on the first card a learner turns over.
+    ratingTip: {
+      title: "Wie gut wusstest du es?",
+      text: "Sei ehrlich: «Nochmals» zeigt die Karte gleich wieder, «Einfach» erst in ein paar Tagen. Darunter steht, wann sie zurückkommt.",
+    },
     statuses: { new: "Neu", learning: "Am Lernen", review: "Wiederholung" },
     // Under the number, which shows large above it.
     newWordsLearned: (count) => pluralForm("de", count, { one: "neue Karte gelernt", other: "neue Karten gelernt" }),

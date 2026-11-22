@@ -8,6 +8,7 @@ import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i
 import type { CardFront, Flashcard, WordCard } from "@/lib/types";
 import {
   getTodaysGoal,
+  markRatingTipSeen,
   type SavedReview,
   submitReview,
   type TodaysGoal,
@@ -20,12 +21,15 @@ import { SessionEnd } from "./session-end";
 import { StatusBadge } from "./status-badge";
 import { Icon } from "@/app/ui/icons";
 import { SoundBars } from "@/app/ui/sound-bars";
+import { Tip } from "@/app/ui/tip";
 
 type ReviewSessionProps = {
   cards: Flashcard[];
   cardFront: CardFront;
   // Whether a word's recording plays by itself as soon as its Swiss German shows.
   autoplay: boolean;
+  // Whether to explain the rating buttons, once, on the first card the learner turns over.
+  ratingTip: boolean;
   // Whether lifting today's limit would bring more new cards of this topic, offered at the end.
   canLift: boolean;
   locale: Locale;
@@ -41,6 +45,7 @@ export function ReviewSession({
   cards,
   cardFront,
   autoplay: autoplayBefore,
+  ratingTip,
   canLift,
   locale,
   goalReachedBefore,
@@ -60,6 +65,8 @@ export function ReviewSession({
   const [reviewed, setReviewed] = useState(0);
   const [front, setFront] = useState(cardFront);
   const [autoplay, setAutoplay] = useState(autoplayBefore);
+  // Until the learner rates their first card with the tip showing.
+  const [showTip, setShowTip] = useState(ratingTip);
   // Picked when the last card is answered, for the end screen.
   const [cheer, setCheer] = useState<Cheer | null>(null);
   // Today's goal, when this session reached it.
@@ -139,6 +146,11 @@ export function ReviewSession({
   // A word moves on as soon as its rating is saved.
   function grade(value: Grade) {
     setSaveError(null);
+    // Rating once is what the tip explains, so it's seen. Saving that happens meanwhile.
+    if (showTip) {
+      setShowTip(false);
+      void markRatingTipSeen();
+    }
     // Saving refreshes the page, whose cards would no longer include this one. The session keeps
     // the queue it has from the first answer on.
     setQueue(activeQueue);
@@ -219,6 +231,7 @@ export function ReviewSession({
         card={card}
         front={front}
         autoplay={autoplay}
+        tip={showTip}
         locale={locale}
         stacked={activeQueue.length > 1}
         saving={saving}
@@ -233,6 +246,8 @@ type CardStageProps = {
   card: WordCard;
   front: CardFront;
   autoplay: boolean;
+  // Whether the one-time tip shows above the rating buttons once the card is turned over.
+  tip: boolean;
   locale: Locale;
   // Whether more cards wait behind this one, shown as a stack.
   stacked: boolean;
@@ -242,7 +257,7 @@ type CardStageProps = {
 };
 
 // A word. Keyed by the card's attempt, so each card starts face down.
-function CardStage({ card, front, autoplay, locale, stacked, saving, saveError, onGrade }: CardStageProps) {
+function CardStage({ card, front, autoplay, tip, locale, stacked, saving, saveError, onGrade }: CardStageProps) {
   const texts = dictionary(locale);
   const t = texts.session;
   const [revealed, setRevealed] = useState(false);
@@ -354,6 +369,8 @@ function CardStage({ card, front, autoplay, locale, stacked, saving, saveError, 
             {t.notSaved(saveError)}
           </p>
         )}
+        {/* Rises in as the card finishes turning over (0.5 s). */}
+        {revealed && tip && <Tip title={t.ratingTip.title} text={t.ratingTip.text} delay={0.45} />}
         {revealed && <GradeButtons intervals={card.intervals} onGrade={onGrade} disabled={saving} t={t} />}
       </footer>
     </>
