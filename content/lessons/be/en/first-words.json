@@ -1,6 +1,7 @@
 {
   "id": "first-words",
   "title": "First words",
+  "titleIn": { "de": "Erste Wörter" },
   "subtitle": "Start talking",
   "icon": "users",
   "description": "Your first words and expressions for everyday life.",

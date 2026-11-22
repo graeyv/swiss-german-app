@@ -35,7 +35,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
 
-  const [today, { cardFront, autoplay }] = await Promise.all([getToday(supabase), getCardSettings(supabase)]);
+  const [today, { cardFront, autoplay, ratingTipSeen }] = await Promise.all([getToday(supabase), getCardSettings(supabase)]);
   const { tree, limits } = today;
   const found = findDeck(tree, code);
   if (!found) notFound();
@@ -83,6 +83,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
         cards={cards}
         cardFront={cardFront}
         autoplay={autoplay}
+        ratingTip={!ratingTipSeen}
         // The topic has more new cards than today's limit allows, so lifting it would bring them.
         canLift={!today.lifted && found.deck.new_count > newLeft}
         locale={locale}

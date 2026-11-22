@@ -92,6 +92,9 @@ export type Expectation = { icon: string; title: string };
 export type Lesson = {
   id: string;
   title: string;
+  // The title in other languages, so a track's path can be shown in the learner's language, as
+  // the onboarding's first question does.
+  titleIn?: Partial<Record<Locale, string>>;
   subtitle: string;
   // One of the app's icons, such as "headphones", for the lesson in the Learn tab.
   icon: string;

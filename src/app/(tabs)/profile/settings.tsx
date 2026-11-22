@@ -166,7 +166,7 @@ export function TrackSetting({ locale, modules }: { locale: Locale; modules: Rec
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-body font-bold">{texts.languageName}</span>
                   <span className={`text-caption ${selected ? "" : "text-teal-soft"}`}>
-                    {texts.onboarding.track.what} {texts.onboarding.track.modules(modules[option])}.
+                    {texts.onboarding.track.answers[option].what} {texts.onboarding.track.modules(modules[option])}.
                   </span>
                 </span>
                 <span

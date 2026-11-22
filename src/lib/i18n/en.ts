@@ -187,6 +187,7 @@ export const en = {
   },
 
   conversations: {
+    intro: "Real everyday dialogues to listen to.",
     // How many scenes a topic has, such as "5 scenes".
     scenes: (count: number) => many(count, "scene", "scenes"),
     // On a scene that is still to be written.
@@ -257,6 +258,7 @@ export const en = {
 
   flashcards: {
     title: "Practice",
+    intro: "A few words every day, and exercises on the lessons.",
     noDecks: "No decks yet. Add the flashcards with",
     topics: "Topics",
     subcategories: "Subcategories",
@@ -330,6 +332,11 @@ export const en = {
     also: "also",
     notSaved: (error: string) => `Your answer wasn’t saved: ${error}. Choose again to retry.`,
     grades: { again: "Again", hard: "Hard", good: "Good", easy: "Easy" },
+    // Shown once, above the rating buttons on the first card a learner turns over.
+    ratingTip: {
+      title: "How well did you know it?",
+      text: "Be honest: «Again» shows the card again right away, «Easy» only in a few days. Below each, you see when it comes back.",
+    },
     statuses: { new: "New", learning: "Learning", review: "Review" },
     // Under the number at the end of a session, which shows large above it.
     newWordsLearned: (count: number) => pluralForm("en", count, { one: "new card learned", other: "new cards learned" }),
@@ -357,9 +364,15 @@ export const en = {
     // The first question, which sets the learner's track and the app's language. It's shown in
     // German and English together, and each answer in its own language.
     track: {
-      question: "Do you speak German?",
-      answer: "No, I'll learn in English",
-      what: "You learn Swiss German from the very start.",
+      question: "Do you understand German well?",
+      intro: "Hoi has two learning paths. Your answer picks the right one.",
+      // The answer for each track, in this language, and what that track teaches. The German
+      // track's note, only in onboarding, says German needn't be the learner's first language.
+      answers: {
+        de: { answer: "Yes, I understand German well", what: "You learn Swiss German, building on your German." },
+        en: { answer: "No, I'll learn in English", what: "You learn Swiss German from the very start." },
+      },
+      germanNote: "Native or not.",
       path: "Your path",
       modules: (count: number) => many(count, "module", "modules"),
       recommended: "Recommended",
@@ -408,7 +421,8 @@ export const en = {
       },
       choose: "How many new words a day?",
       chooseNote: "Choose your pace. More new words also means more reviews.",
-      perDay: "a day",
+      // Under each pace's name.
+      newWordsPerDay: "new words a day",
       recommended: "Recommended",
       changeLater: "You can change this in your profile at any time",
       finish: "Let's go",

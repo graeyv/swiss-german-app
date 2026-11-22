@@ -1,6 +1,7 @@
 {
   "id": "everyday",
   "title": "Im Alltag",
+  "titleIn": { "en": "Everyday life" },
   "subtitle": "So redet man in Bern",
   "icon": "chat",
   "description": "Wie man grüsst, jemanden anspricht und wann Berndeutsch oder Hochdeutsch gesprochen wird.",

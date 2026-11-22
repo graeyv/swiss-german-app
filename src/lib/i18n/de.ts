@@ -161,6 +161,7 @@ export const de: Dictionary = {
   },
 
   conversations: {
+    intro: "Echte Dialoge aus dem Alltag zum Zuhören.",
     scenes: (count) => many(count, "Szene", "Szenen"),
     comingSoon: "Bald verfügbar",
     play: "Abspielen",
@@ -221,6 +222,7 @@ export const de: Dictionary = {
 
   flashcards: {
     title: "Üben",
+    intro: "Jeden Tag ein paar Wörter, dazu Übungen zu den Lektionen.",
     noDecks: "Noch keine Themen. Füge die Karteikarten hinzu mit",
     topics: "Themen",
     subcategories: "Unterkategorien",
@@ -285,6 +287,11 @@ export const de: Dictionary = {
     notSaved: (error) =>
       `Deine Antwort wurde nicht gespeichert: ${error}. Wähle nochmals, um es erneut zu versuchen.`,
     grades: { again: "Nochmals", hard: "Schwer", good: "Gut", easy: "Einfach" },
+    // Shown once, above the rating buttons on the first card a learner turns over.
+    ratingTip: {
+      title: "Wie gut wusstest du es?",
+      text: "Sei ehrlich: «Nochmals» zeigt die Karte gleich wieder, «Einfach» erst in ein paar Tagen. Darunter steht, wann sie zurückkommt.",
+    },
     statuses: { new: "Neu", learning: "Am Lernen", review: "Wiederholung" },
     // Under the number, which shows large above it.
     newWordsLearned: (count) => pluralForm("de", count, { one: "neue Karte gelernt", other: "neue Karten gelernt" }),
@@ -309,9 +316,16 @@ export const de: Dictionary = {
     back: "Zurück",
     next: "Weiter",
     track: {
-      question: "Sprichst du Hochdeutsch?",
-      answer: "Ja, ich spreche Hochdeutsch",
-      what: "Du lernst, was Schweizerdeutsch anders macht.",
+      question: "Verstehst du Hochdeutsch gut?",
+      intro: "Hoi hat zwei Lernwege. Deine Antwort wählt den passenden.",
+      answers: {
+        de: {
+          answer: "Ja, ich verstehe Hochdeutsch gut",
+          what: "Du lernst Schweizerdeutsch, aufbauend auf deinem Hochdeutsch.",
+        },
+        en: { answer: "Nein, ich lerne lieber auf Englisch", what: "Du lernst Schweizerdeutsch von Anfang an, auf Englisch." },
+      },
+      germanNote: "Auch als Fremdsprache.",
       path: "Dein Lernweg",
       modules: (count) => many(count, "Modul", "Module"),
       recommended: "Empfohlen",
@@ -355,7 +369,7 @@ export const de: Dictionary = {
       },
       choose: "Wie viele neue Wörter am Tag?",
       chooseNote: "Wähle dein Tempo. Mehr neue Wörter heisst auch mehr Wiederholungen.",
-      perDay: "pro Tag",
+      newWordsPerDay: "neue Wörter pro Tag",
       recommended: "Empfohlen",
       changeLater: "Du kannst das jederzeit im Profil ändern",
       finish: "Los geht's",

@@ -1,6 +1,7 @@
 {
   "id": "everyday-communication",
   "title": "Everyday communication",
+  "titleIn": { "de": "Im Alltag" },
   "subtitle": "Getting by in daily life",
   "icon": "chat",
   "description": "Food, shopping, directions, transport, socialising, ordering and asking for help.",

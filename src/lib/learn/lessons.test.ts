@@ -26,6 +26,13 @@ describe("lessons", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it("titles every module in the other track's language too, for the onboarding", () => {
+    for (const { language, lesson } of LESSONS) {
+      const other = language === "de" ? "en" : "de";
+      expect(lesson.titleIn?.[other], lesson.id).toBeTruthy();
+    }
+  });
+
   it("has unique ids and only icons the app knows", () => {
     for (const { lesson } of LESSONS) {
       const ids = lesson.sections.map((section) => section.id);

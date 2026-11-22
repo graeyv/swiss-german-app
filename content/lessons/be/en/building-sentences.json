@@ -1,6 +1,7 @@
 {
   "id": "building-sentences",
   "title": "Building sentences",
+  "titleIn": { "de": "Sätze bauen" },
   "subtitle": "From words to sentences",
   "icon": "puzzle",
   "description": "Personal pronouns, basic sentence structure, present tense, questions, negation and inversion.",
