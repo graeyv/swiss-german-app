@@ -271,11 +271,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   (secondary).
 - **Login** (`/login`, and `/login?new` to create an account): the logo at the top left, leading
   back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei Hoi
-  anmelden"), then "Weiter mit Google" as a secondary button, the same on both, then "oder" in
-  caption size and `teal-soft`, centred, without lines, then email and password, one primary
-  button, and below it a text button to the other ("Schon ein Konto? Anmelden", "Neu bei Hoi?
-  Konto erstellen"). Google's "G" keeps its own four colours, as Google requires: the one
-  exception to "teal is the only icon colour".
+  anmelden"), email and password, one primary button, and below it a text button to the other
+  ("Schon ein Konto? Anmelden", "Neu bei Hoi? Konto erstellen").
 - **Choosing the track** (onboarding's first question), all in one language: the one from the
   start page, which the start page's switch at the top right ("English" with a globe) changes,
   on this screen only. "Verstehst du Hochdeutsch gut?" in title size, and below it in body size
