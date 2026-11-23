@@ -177,6 +177,22 @@ topic in English); in the code and this guide they are lesson → section → ru
   each point on its own line with a small `teal-soft` dot, 12 px apart. A point with a term (such
   as "CH" or "Vowels") is a row on mist instead, the term bold and what it is below as a caption,
   so terms stand apart from the heading.
+- **Sounds** (a topic's letters and their words, as in the English pronunciation): a topic about
+  several letters, such as the vowels, gives each a mist card: the letter in title size beside
+  what it sounds like in body size ("Similar to e in bed", one English word), and below, each on
+  an ivory strip inside the card, the words in subtitle size with their meaning in `teal-soft`
+  and a round play button. A button shares its strip only with its word, so it's clear the word
+  is what plays. A topic about one letter, such as J, has no card: its text says what it sounds
+  like, and its words follow as a quiet list like the phrases. A section's first topic, when it
+  has no letters of its own, shows the letters to come in mist circles (pills for combinations
+  such as SCH), under each topic's title when topics have several letters. Previewed without
+  logging in at `/dev/lesson-en`.
+- **Marked letters**: in a topic's text, a tip or a sound's comparison, the letters that make a
+  sound are underlined in sage, as in the pronunciation exercises ("f<u>a</u>ther"). In the
+  content they're in brackets: "f[a]ther".
+- **Tip**: a topic can end on a tip, a way into the sound its text doesn't give, such as another
+  language's word ("If you know Spanish, CH is like the j in José"), in the takeaway's yellow card
+  labelled "TIP" ("TIPP"). It's the screen's one yellow, so a topic has a takeaway or a tip.
 - **Phrases** (a topic's example phrases): like the example list, without columns. Each phrase in
   the dialect in subtitle size, below it its meaning as a caption and, if given, "Standard German:
   Wie geht es dir?", and on the right a play button once it has a recording to come.
@@ -345,19 +361,6 @@ topic in English); in the code and this guide they are lesson → section → ru
 
 ## Not decided yet
 
-- **Sound list** (English Pronunciation, proposed): for topics that pair several letters with
-  their sounds, such as the vowels. A topic about one letter, such as J, uses the quiet list of the
-  phrases instead, its comparison in the text with the letters underlined. One
-  mist card per letter (or combination, such as SCH): the letter in title size beside what it
-  sounds like in body size ("Similar to e in bed", one English word, the letters making the sound
-  underlined in sage as in the pronunciation exercises), and below, each on an ivory strip inside
-  the card, one or more Swiss German words in subtitle size with their meaning in `teal-soft` and
-  a round play button on the right. A button shares its strip only with its word, so it's clear
-  the word is what plays. A lesson's first topic shows the letters to come in mist circles (pills
-  for combinations), under each topic's title when topics have several letters.
-  A topic can end on a tip, a way into the sound its text doesn't give (such as "If you know
-  French: Ü sounds like the u in tu"), in the takeaway's yellow card labelled "TIP".
-  Previewed at `/dev/lesson-en`.
 - **Emojis**: multicoloured emojis clash with "teal is the only icon colour". Flashcard subtopics
   now use icons, and topics their illustration. Onboarding and settings still show the topics'
   emojis; this guide will say how to replace them.

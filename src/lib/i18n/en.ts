@@ -108,6 +108,7 @@ export const en = {
     // Where a topic is in its section, such as "Consonants · 2 / 6".
     position: (section: string, position: number, count: number) => `${section} · ${position} / ${count}`,
     remember: "Remember",
+    tip: "Tip",
     // A play button beside a phrase.
     listen: "Listen",
     // Marks a word that sounds the same in Standard German and the dialect.

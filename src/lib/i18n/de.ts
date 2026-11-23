@@ -101,6 +101,7 @@ export const de: Dictionary = {
     done: "Fertig",
     position: (section, position, count) => `${section} · ${position} / ${count}`,
     remember: "Merke",
+    tip: "Tipp",
     listen: "Anhören",
     same: "gleich",
     onlyIn: (variety) => `nur ${variety}`,

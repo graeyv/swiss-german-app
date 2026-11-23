@@ -54,7 +54,7 @@ describe("lessons", () => {
   });
 
   it("builds pages only for sections that are ready", () => {
-    expect(sectionParams().map(({ section }) => section)).toEqual(["einstieg", "consonants", "vowels", "introduction", "learning-swiss-german", "vowels", "consonants"]);
+    expect(sectionParams().map(({ section }) => section)).toEqual(["einstieg", "consonants", "vowels", "introduction", "learning-swiss-german", "familiar", "different-letters", "new-sounds"]);
   });
 
   it("takes up to two exercises of each rule for a section's round, in order", () => {

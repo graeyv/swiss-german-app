@@ -1,246 +1,592 @@
 {
   "id": "sounds",
   "title": "Pronunciation",
-  "titleIn": { "de": "Aussprache" },
-  "subtitle": "How Swiss German sounds",
+  "titleIn": {
+    "de": "Aussprache"
+  },
+  "subtitle": "How Bärndütsch sounds",
   "icon": "speaking",
-  "description": "Learn the sounds of your dialect and discover how to pronounce words naturally.",
+  "description": "Start with the sounds you already know from English, then those written differently, and finally the ones that are new.",
   "expectations": [
     {
       "icon": "headphones",
-      "title": "Hear and recognise Swiss German sounds"
+      "title": "Hear the sounds of Bärndütsch"
     },
     {
-      "icon": "mic",
-      "title": "Say the sounds yourself"
+      "icon": "speaking",
+      "title": "Say them yourself"
     }
   ],
   "sections": [
     {
-      "id": "vowels",
-      "title": "Vowels",
-      "description": "A, E, I, O, U and the special vowels Ä, Ö and Ü.",
+      "id": "familiar",
+      "title": "Familiar letters, familiar sounds",
+      "description": "Vowels and consonants that sound as in English.",
       "rules": [
         {
-          "id": "aeiou",
-          "title": "A, E, I, O, U",
-          "theory": "Learn how the five basic vowels are pronounced in your dialect.",
-          "points": [
+          "id": "introduction",
+          "title": "Start with what you know",
+          "theory": "Many Bärndütsch sounds are ones you already know from English, and if you speak French, Spanish or Portuguese, from those too. We start with these, so you can recognise and say them in everyday words.",
+          "examples": []
+        },
+        {
+          "id": "vowels",
+          "title": "Vowels",
+          "theory": "Some basic vowel sounds are close to sounds you may already know.",
+          "sounds": [
             {
-              "items": [
+              "letter": "A",
+              "like": "Similar to a in f[a]ther",
+              "words": [
                 {
-                  "term": "A",
-                  "text": "Maa (man), Nacht (night)"
+                  "word": "Mami",
+                  "meaning": "Mum",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "E",
+              "like": "Similar to e in b[e]d",
+              "words": [
+                {
+                  "word": "Bett",
+                  "meaning": "Bed",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "I",
+              "like": "Similar to i in s[i]t",
+              "words": [
+                {
+                  "word": "Fisch",
+                  "meaning": "Fish",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "O",
+              "like": "Similar to o in n[o]",
+              "words": [
+                {
+                  "word": "Brot",
+                  "meaning": "Bread",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "U",
+              "like": "Similar to oo in f[oo]d",
+              "words": [
+                {
+                  "word": "Huus",
+                  "meaning": "House",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
+        },
+        {
+          "id": "consonants",
+          "title": "Consonants",
+          "theory": "These consonants are said as in English.",
+          "sounds": [
+            {
+              "letter": "B",
+              "like": "Like b in [b]ook",
+              "words": [
+                {
+                  "word": "Brot",
+                  "meaning": "Bread",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "D",
+              "like": "Like d in [d]ay",
+              "words": [
+                {
+                  "word": "Danke",
+                  "meaning": "Thank you",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "F",
+              "like": "Like f in [f]ish",
+              "words": [
+                {
+                  "word": "Fisch",
+                  "meaning": "Fish",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "G",
+              "like": "Like g in [g]o",
+              "words": [
+                {
+                  "word": "Guet",
+                  "meaning": "Good",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "H",
+              "like": "Like h in [h]ello",
+              "words": [
+                {
+                  "word": "Hundert",
+                  "meaning": "Hundred",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "L",
+              "like": "Like l in [l]ove",
+              "words": [
+                {
+                  "word": "Läbe",
+                  "meaning": "Life",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "M",
+              "like": "Like m in [m]other",
+              "words": [
+                {
+                  "word": "Mami",
+                  "meaning": "Mum",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "N",
+              "like": "Like n in [n]o",
+              "words": [
+                {
+                  "word": "Nei",
+                  "meaning": "No",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "P",
+              "like": "Like p in [p]ark",
+              "words": [
+                {
+                  "word": "Papi",
+                  "meaning": "Dad",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "S",
+              "like": "Like s in [s]un",
+              "words": [
+                {
+                  "word": "Sunne",
+                  "meaning": "Sun",
+                  "audio": null
+                }
+              ]
+            },
+            {
+              "letter": "T",
+              "like": "Like t in [t]able",
+              "words": [
+                {
+                  "word": "Tag",
+                  "meaning": "Day",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "different-letters",
+      "title": "Familiar sounds, different letters",
+      "description": "J, W, Z and SCH: familiar sounds, written with other letters.",
+      "rules": [
+        {
+          "id": "introduction",
+          "title": "Sounds you know, written differently",
+          "theory": "Some letters you know are said differently in Bärndütsch. The sounds themselves are familiar: only the letter that stands for them is new.",
+          "examples": []
+        },
+        {
+          "id": "j",
+          "title": "J",
+          "theory": "In Bärndütsch, J is pronounced like the English Y in [y]es.",
+          "sounds": [
+            {
+              "letter": "J",
+              "words": [
+                {
+                  "word": "Ja",
+                  "meaning": "Yes",
+                  "audio": null
                 },
                 {
-                  "term": "E",
-                  "text": "Bett (bed), ässe (to eat)"
+                  "word": "Jahr",
+                  "meaning": "Year",
+                  "audio": null
                 },
                 {
-                  "term": "I",
-                  "text": "Ziit (time), Chind (child)"
+                  "word": "Jede",
+                  "meaning": "Every",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
+        },
+        {
+          "id": "w",
+          "title": "W",
+          "theory": "In Bärndütsch, W is pronounced like the English V in [v]ery.",
+          "sounds": [
+            {
+              "letter": "W",
+              "words": [
+                {
+                  "word": "Wasser",
+                  "meaning": "Water",
+                  "audio": null
                 },
                 {
-                  "term": "O",
-                  "text": "Chopf (head), scho (already)"
+                  "word": "Wuche",
+                  "meaning": "Week",
+                  "audio": null
                 },
                 {
-                  "term": "U",
-                  "text": "Huus (house), Uur (clock)"
+                  "word": "Winter",
+                  "meaning": "Winter",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
+        },
+        {
+          "id": "z",
+          "title": "Z",
+          "theory": "In Bärndütsch, Z is pronounced like TS in the English words ca[ts] or [Ts]unami.",
+          "sounds": [
+            {
+              "letter": "Z",
+              "words": [
+                {
+                  "word": "Ziit",
+                  "meaning": "Time",
+                  "audio": null
+                },
+                {
+                  "word": "Znacht",
+                  "meaning": "Dinner",
+                  "audio": null
+                },
+                {
+                  "word": "Züri",
+                  "meaning": "Zurich",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
+        },
+        {
+          "id": "sch",
+          "title": "SCH",
+          "theory": "The combination SCH is pronounced like the English SH in [sh]oe.",
+          "sounds": [
+            {
+              "letter": "SCH",
+              "words": [
+                {
+                  "word": "Schoggi",
+                  "meaning": "Chocolate",
+                  "audio": null
+                },
+                {
+                  "word": "Schiff",
+                  "meaning": "Ship",
+                  "audio": null
+                },
+                {
+                  "word": "Schueh",
+                  "meaning": "Shoes",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "new-sounds",
+      "title": "New sounds or new letters",
+      "description": "R, Ä, Ö, Ü, CH, K, ST and SP: sounds or letters English doesn't have.",
+      "rules": [
+        {
+          "id": "introduction",
+          "title": "Something new",
+          "theory": "Now it gets new: sounds English doesn't have, such as CH and R, and letters it doesn't have, such as Ä, Ö and Ü. They take a little more practice.",
+          "examples": []
+        },
+        {
+          "id": "r",
+          "title": "R",
+          "theory": "In Bärndütsch, R is rolled with the tip of the tongue, quite unlike the English R.",
+          "sounds": [
+            {
+              "letter": "R",
+              "words": [
+                {
+                  "word": "Rot",
+                  "meaning": "Red",
+                  "audio": null
+                },
+                {
+                  "word": "Räge",
+                  "meaning": "Rain",
+                  "audio": null
+                },
+                {
+                  "word": "Richtig",
+                  "meaning": "Correct",
+                  "audio": null
                 }
               ]
             }
           ],
           "examples": [],
-          "note": "Listen to each recording and repeat.",
-          "takeaway": "Compare the sounds with a language you know. I is similar to the vowel in English “see”, French “si” or Spanish “sí”. U is similar to the vowel in English “boot” or Spanish “tú”. These are guides: follow the audio."
+          "tip": "If you speak Spanish or Italian, you can try the rolled R as a starting point, as in Italian [r]osso or Spanish pe[rr]o."
         },
         {
           "id": "ae",
           "title": "Ä",
-          "theory": "The letter Ä often has a sound similar to the vowel in the English word “bed”. It is different from a regular A sound.",
-          "phrases": [
+          "theory": "In Bärndütsch, Ä is a very open vowel, close to the a in c[a]t or b[a]t as said in British English.",
+          "sounds": [
             {
-              "dialect": "Chäs",
-              "meaning": "Cheese",
-              "audio": null
-            },
-            {
-              "dialect": "Wäg",
-              "meaning": "Way",
-              "audio": null
-            },
-            {
-              "dialect": "Chätzli",
-              "meaning": "Kitten",
-              "audio": null
+              "letter": "Ä",
+              "words": [
+                {
+                  "word": "Mässer",
+                  "meaning": "Knife",
+                  "audio": null
+                },
+                {
+                  "word": "Bär",
+                  "meaning": "Bear",
+                  "audio": null
+                },
+                {
+                  "word": "Stärn",
+                  "meaning": "Star",
+                  "audio": null
+                }
+              ]
             }
           ],
-          "examples": [],
-          "takeaway": "Ä is an open front vowel. “Bed” in many English accents is a good starting point; the vowel in French “mère” may be closer. Listen to the recording."
+          "examples": []
         },
         {
           "id": "oe",
           "title": "Ö",
-          "theory": "Learn how to pronounce Ö. This sound has no exact equivalent in most English accents.",
-          "phrases": [
+          "theory": "Ö doesn't exist in English, but it's close to the vowel in b[ir]d or h[er] in British English.",
+          "sounds": [
             {
-              "dialect": "schön",
-              "meaning": "Beautiful",
-              "audio": null
-            },
-            {
-              "dialect": "chöne",
-              "meaning": "Can, to be able to",
-              "audio": null
-            },
-            {
-              "dialect": "höre",
-              "meaning": "To hear",
-              "audio": null
+              "letter": "Ö",
+              "words": [
+                {
+                  "word": "Schön",
+                  "meaning": "Beautiful",
+                  "audio": null
+                },
+                {
+                  "word": "Löffu",
+                  "meaning": "Spoon",
+                  "audio": null
+                },
+                {
+                  "word": "Öffne",
+                  "meaning": "Open",
+                  "audio": null
+                }
+              ]
             }
           ],
-          "examples": [],
-          "takeaway": "Round your lips as if saying “oh”, but keep your tongue where it is for “eh”. The French vowel in “peu” or “deux” is a useful comparison."
+          "examples": []
         },
         {
           "id": "ue",
           "title": "Ü",
-          "theory": "Ü is a rounded vowel sound that is unfamiliar to most English speakers.",
-          "phrases": [
+          "theory": "Ü doesn't exist in English either. Say a long ee as in s[ee], and while you keep saying it, push your lips forward into a small circle, as if you were about to whistle.",
+          "sounds": [
             {
-              "dialect": "Lüt",
-              "meaning": "People",
-              "audio": null
-            },
-            {
-              "dialect": "müed",
-              "meaning": "Tired",
-              "audio": null
-            },
-            {
-              "dialect": "früeh",
-              "meaning": "Early",
-              "audio": null
+              "letter": "Ü",
+              "words": [
+                {
+                  "word": "Tür",
+                  "meaning": "Door",
+                  "audio": null
+                },
+                {
+                  "word": "Müed",
+                  "meaning": "Tired",
+                  "audio": null
+                },
+                {
+                  "word": "Nüt",
+                  "meaning": "Nothing",
+                  "audio": null
+                }
+              ]
             }
           ],
           "examples": [],
-          "takeaway": "Say “ee” while rounding your lips as if saying “oo”. The French U in “tu” is a particularly useful comparison."
+          "tip": "If you know French: Ü sounds like the u in t[u]."
         },
-        {
-          "id": "length",
-          "title": "Short and long vowels",
-          "theory": "Some vowels are pronounced briefly, while others are held for longer.",
-          "phrases": [
-            {
-              "dialect": "ofe",
-              "meaning": "Oven",
-              "audio": null
-            },
-            {
-              "dialect": "offe",
-              "meaning": "Open",
-              "audio": null
-            },
-            {
-              "dialect": "Maa",
-              "meaning": "Man",
-              "audio": null
-            }
-          ],
-          "examples": [],
-          "note": "Compare “ofe” with “offe” to hear the difference, and listen to the long vowel in “Maa”.",
-          "takeaway": "Listen for how long the vowel is held. The spelling often shows it, and the audio is the reference for the exact sound."
-        }
-      ]
-    },
-    {
-      "id": "consonants",
-      "title": "Consonants",
-      "description": "Sounds such as CH, SCH and R.",
-      "planned": [
-        "R",
-        "ST and SP"
-      ],
-      "rules": [
         {
           "id": "ch",
           "title": "CH",
-          "theory": "CH is one of the distinctive sounds of Swiss German. It is not pronounced like “ch” in “cheese”.",
-          "phrases": [
+          "theory": "CH is one of the most typical sounds of Bärndütsch: a strong, breathy sound made at the back of the mouth, a bit like gently clearing your throat.",
+          "sounds": [
             {
-              "dialect": "Chind",
-              "meaning": "Child",
-              "audio": null
-            },
-            {
-              "dialect": "Chuchichäschtli",
-              "meaning": "Kitchen cupboard",
-              "audio": null
-            },
-            {
-              "dialect": "Choche",
-              "meaning": "To cook",
-              "audio": null
-            },
-            {
-              "dialect": "Chäs",
-              "meaning": "Cheese",
-              "audio": null
+              "letter": "CH",
+              "words": [
+                {
+                  "word": "Chind",
+                  "meaning": "Child",
+                  "audio": null
+                },
+                {
+                  "word": "Dach",
+                  "meaning": "Roof",
+                  "audio": null
+                },
+                {
+                  "word": "Buech",
+                  "meaning": "Book",
+                  "audio": null
+                }
+              ]
             }
           ],
           "examples": [],
-          "note": "The Scottish “loch” is a good reference for the throaty CH. The French R and the Spanish J (as in “jamón”) may help too, but they vary by speaker and aren't exact equivalents.",
-          "takeaway": "Make the sound with friction at the back of your mouth. Start with the CH in Scottish “loch”, then listen carefully."
+          "tip": "If you know Spanish, CH is like the j in [J]osé. The French r in [r]ouge comes close too."
         },
         {
-          "id": "sch",
-          "title": "SCH",
-          "theory": "Learn how to pronounce SCH, a sound similar to “sh” in English “ship”.",
-          "phrases": [
+          "id": "k",
+          "title": "K",
+          "theory": "In Bärndütsch, K is followed by a short CH, the breathy sound from the topic before. So Kiosk sounds almost like “kchiosk”.",
+          "sounds": [
             {
-              "dialect": "Schwiiz",
-              "meaning": "Switzerland",
-              "audio": null
-            },
-            {
-              "dialect": "schön",
-              "meaning": "Beautiful",
-              "audio": null
-            },
-            {
-              "dialect": "d'Schuel",
-              "meaning": "The school",
-              "audio": null
+              "letter": "K",
+              "words": [
+                {
+                  "word": "Knapp",
+                  "meaning": "Close",
+                  "audio": null
+                },
+                {
+                  "word": "Karussell",
+                  "meaning": "Carousel",
+                  "audio": null
+                },
+                {
+                  "word": "Kiosk",
+                  "meaning": "Kiosk",
+                  "audio": null
+                }
+              ]
             }
           ],
-          "examples": [],
-          "note": "SCH is similar to “sh” in English “ship” and “ch” in French “chat”.",
-          "takeaway": "Keep the sound smooth and continuous, then match the audio."
+          "examples": []
+        },
+        {
+          "id": "st",
+          "title": "ST",
+          "theory": "In Bärndütsch, ST is said as SHT, at the start of a word and in the middle too: the sh in [sh]oe, followed by t. Strass sounds like “shtrass”.",
+          "sounds": [
+            {
+              "letter": "ST",
+              "words": [
+                {
+                  "word": "Strass",
+                  "meaning": "Street",
+                  "audio": null
+                },
+                {
+                  "word": "Stäge",
+                  "meaning": "Stairs",
+                  "audio": null
+                },
+                {
+                  "word": "Stadt",
+                  "meaning": "City",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
+        },
+        {
+          "id": "sp",
+          "title": "SP",
+          "theory": "In Bärndütsch, SP is said as SHP, at the start of a word and in the middle too: the sh in [sh]oe, followed by p. Sport sounds like “shport”.",
+          "sounds": [
+            {
+              "letter": "SP",
+              "words": [
+                {
+                  "word": "Sport",
+                  "meaning": "Sport",
+                  "audio": null
+                },
+                {
+                  "word": "Spiu",
+                  "meaning": "Game",
+                  "audio": null
+                },
+                {
+                  "word": "Spaghetti",
+                  "meaning": "Spaghetti",
+                  "audio": null
+                }
+              ]
+            }
+          ],
+          "examples": []
         }
       ]
-    },
-    {
-      "id": "sound-combinations",
-      "title": "Sound combinations",
-      "description": "Combinations such as EI, IE and AU.",
-      "planned": [
-        "EI and IE",
-        "AU",
-        "UE and ÜE"
-      ],
-      "rules": []
-    },
-    {
-      "id": "stress-and-rhythm",
-      "title": "Stress & rhythm",
-      "description": "How words and sentences flow naturally.",
-      "planned": [
-        "Word stress",
-        "Sentence rhythm and intonation",
-        "Connected speech"
-      ],
-      "rules": []
     }
   ]
 }

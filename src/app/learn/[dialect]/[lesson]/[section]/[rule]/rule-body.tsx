@@ -1,8 +1,10 @@
+import { MarkedWord } from "@/app/exercises/pronunciation/parts";
 import { Takeaway } from "@/app/ui/takeaway";
 import type { Dictionary } from "@/lib/i18n";
 import type { Phrase, PointList, Rule } from "@/lib/learn/lessons";
 import { ExampleList } from "./example-list";
 import { ListenButton } from "./listen-button";
+import { Sounds } from "./sound-list";
 
 type RuleBodyProps = {
   rule: Rule;
@@ -13,7 +15,8 @@ type RuleBodyProps = {
 };
 
 // What follows a topic's theory, each part only when the topic has it: its lists, its phrases,
-// its words to compare by their sound, a note on them, then what to remember. See DESIGN.md.
+// its words to compare by their sound, its letters and their words, a note on them, then what to
+// remember and a tip. See DESIGN.md.
 export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
   return (
     <>
@@ -27,17 +30,24 @@ export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
       {rule.examples.length > 0 && (
         <ExampleList examples={rule.examples} dialectName={dialectName} accent={accent} t={t} />
       )}
+      {rule.sounds && rule.sounds.length > 0 && <Sounds sounds={rule.sounds} t={t} />}
       {rule.note && <p className="text-caption text-teal-soft">{rule.note}</p>}
       {rule.takeaway && <Takeaway label={t.remember}>{rule.takeaway}</Takeaway>}
+      {rule.tip && (
+        <Takeaway label={t.tip}>
+          <MarkedWord word={rule.tip} small />
+        </Takeaway>
+      )}
     </>
   );
 }
 
-// A topic's text, one paragraph per part separated by an empty line.
+// A topic's text, one paragraph per part separated by an empty line, its bracketed letters
+// underlined in sage, such as the y in "[y]es".
 export function Theory({ text }: { text: string }) {
   return text.split(/\n\s*\n/).map((paragraph, index) => (
     <p key={index} className="text-body">
-      {paragraph}
+      <MarkedWord word={paragraph} small />
     </p>
   ));
 }
