@@ -41,7 +41,7 @@
                 {
                   "word": "Mami",
                   "meaning": "Mum",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/mami_be.mp3"
                 }
               ]
             },
@@ -52,7 +52,7 @@
                 {
                   "word": "Bett",
                   "meaning": "Bed",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/bett_be.mp3"
                 }
               ]
             },
@@ -63,7 +63,7 @@
                 {
                   "word": "Fisch",
                   "meaning": "Fish",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/fisch_be.mp3"
                 }
               ]
             },
@@ -74,7 +74,7 @@
                 {
                   "word": "Brot",
                   "meaning": "Bread",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/brot_be.mp3"
                 }
               ]
             },
@@ -85,7 +85,7 @@
                 {
                   "word": "Huus",
                   "meaning": "House",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/huus_be.mp3"
                 }
               ]
             }
@@ -104,7 +104,7 @@
                 {
                   "word": "Brot",
                   "meaning": "Bread",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/brot_be.mp3"
                 }
               ]
             },
@@ -115,7 +115,7 @@
                 {
                   "word": "Danke",
                   "meaning": "Thank you",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/danke_be.mp3"
                 }
               ]
             },
@@ -126,7 +126,7 @@
                 {
                   "word": "Fisch",
                   "meaning": "Fish",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/fisch_be.mp3"
                 }
               ]
             },
@@ -137,7 +137,7 @@
                 {
                   "word": "Guet",
                   "meaning": "Good",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/guet_be.mp3"
                 }
               ]
             },
@@ -148,7 +148,7 @@
                 {
                   "word": "Hundert",
                   "meaning": "Hundred",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/hundert_be.mp3"
                 }
               ]
             },
@@ -159,7 +159,7 @@
                 {
                   "word": "Läbe",
                   "meaning": "Life",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/laebe_be.mp3"
                 }
               ]
             },
@@ -170,7 +170,7 @@
                 {
                   "word": "Mami",
                   "meaning": "Mum",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/mami_be.mp3"
                 }
               ]
             },
@@ -181,7 +181,7 @@
                 {
                   "word": "Nei",
                   "meaning": "No",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/nei_be.mp3"
                 }
               ]
             },
@@ -192,7 +192,7 @@
                 {
                   "word": "Papi",
                   "meaning": "Dad",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/papi_be.mp3"
                 }
               ]
             },
@@ -203,7 +203,7 @@
                 {
                   "word": "Sunne",
                   "meaning": "Sun",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/sunne_be.mp3"
                 }
               ]
             },
@@ -214,7 +214,7 @@
                 {
                   "word": "Tag",
                   "meaning": "Day",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/tag_be.mp3"
                 }
               ]
             }
@@ -234,7 +234,7 @@
           "example": {
             "word": "Mami",
             "meaning": "Mum",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/mami_be.mp3"
           }
         },
         {
@@ -248,7 +248,7 @@
           "example": {
             "word": "Bett",
             "meaning": "Bed",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/bett_be.mp3"
           }
         },
         {
@@ -262,7 +262,7 @@
           "example": {
             "word": "Fisch",
             "meaning": "Fish",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/fisch_be.mp3"
           }
         },
         {
@@ -276,7 +276,7 @@
           "example": {
             "word": "Brot",
             "meaning": "Bread",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/brot_be.mp3"
           }
         },
         {
@@ -290,7 +290,7 @@
           "example": {
             "word": "Huus",
             "meaning": "House",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/huus_be.mp3"
           }
         },
         {
@@ -311,7 +311,7 @@
               "meaning": "Boss"
             }
           ],
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/bass_be.mp3"
         },
         {
           "id": "hear-mitti",
@@ -331,7 +331,7 @@
               "meaning": "Mat, as for yoga"
             }
           ],
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/mitti_be.mp3"
         },
         {
           "id": "hear-muus",
@@ -351,31 +351,31 @@
               "meaning": "Measurement"
             }
           ],
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/muus_be.mp3"
         },
         {
           "id": "say-mami",
           "type": "say",
           "word": "Mami",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/mami_be.mp3"
         },
         {
           "id": "say-huus",
           "type": "say",
           "word": "Huus",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/huus_be.mp3"
         },
         {
           "id": "say-lampe",
           "type": "say",
           "word": "Lampe",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/lampe_be.mp3"
         },
         {
           "id": "say-bad",
           "type": "say",
           "word": "Bad",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/bad_be.mp3"
         }
       ]
     },
