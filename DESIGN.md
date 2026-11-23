@@ -261,6 +261,16 @@ topic in English); in the code and this guide they are lesson → section → ru
   learner's dialect, in one quiet line in `teal-soft` under the Swiss German wherever it shows:
   large under the main form, small under it at the top of the back, and in the word list. Never on
   a front that would give the answer away.
+- **Profile** (Profil): the learner's initial in a sage circle, the address in heading size and
+  "Lernt seit November 2026" as a caption; then the progress numbers, then the settings in groups
+  ("SPRACHEN", "LERNEN", "KONTO", headed like "ALLE MODULE"). Each setting is a list row on mist:
+  its icon, its name in bold, what's chosen below as a caption, and the arrow; it opens a bottom
+  sheet with its title in heading size, a cross to close, a note in `teal-soft`, and choices as
+  cards on mist, sage with a teal check once chosen, as in the onboarding. "Abmelden" is a row on
+  mist in brick. No lines between rows.
+- **Progress numbers** (Profil): days in a row and cards learned, side by side, each on its own
+  mist card: its icon in `teal-soft` (a flame, cards), the number in title size, its words below
+  as a caption in `teal-soft` ("Tage in Folge"). No emoji, no border, no line between them.
 - **Today's goal** (Üben → Wortschatz): a card on mist every day, with a bar for new cards and
   one for reviews, on an ivory track. Once it's reached, a small yellow pill with a check says
   "Erreicht": the card's one yellow. No emoji.
@@ -361,9 +371,7 @@ topic in English); in the code and this guide they are lesson → section → ru
 
 ## Not decided yet
 
-- **Emojis**: multicoloured emojis clash with "teal is the only icon colour". Flashcard subtopics
-  now use icons, and topics their illustration. Onboarding and settings still show the topics'
-  emojis; this guide will say how to replace them.
+Nothing at the moment.
 
 ## Don'ts
 

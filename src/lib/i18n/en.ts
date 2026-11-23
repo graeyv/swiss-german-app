@@ -80,9 +80,6 @@ export const en = {
     audioNote:
       "Whether a word card plays the word by itself as soon as you see the Swiss German. You can also switch it at the top of a session.",
     audioModes: { auto: "Play automatically", tap: "Only when tapped" },
-    topics: "Topics",
-    topicsNote: "Your topics come first in Practice.",
-    topicsChosen: (count: number) => (count === 0 ? "None" : `${count} chosen`),
     save: "Save",
     saving: "Saving…",
     close: "Close",

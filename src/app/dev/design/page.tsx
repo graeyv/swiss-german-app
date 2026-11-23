@@ -19,6 +19,7 @@ import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";
 import { LogoPreview } from "./logo-preview";
 import { ModuleProgressPreview } from "./module-progress-preview";
+import { Stat } from "@/app/(tabs)/profile/stat";
 import { RatingTipPreview } from "./rating-tip-preview";
 import { ConversationsHeaderPreview, PracticeHeaderPreview } from "./tab-header-preview";
 
@@ -43,6 +44,13 @@ export default function DevDesignPage() {
         <ListRows>
           <ListRow href="/dev/lesson-en" icon="speaking" title="Pronunciation" caption="Modul, Lektionen und Themen" />
         </ListRows>
+      </Part>
+
+      <Part title="Profil: Fortschritt (iPhone-Breite)">
+        <div className="grid w-[342px] max-w-full grid-cols-2 gap-3">
+          <Stat icon="flame" value={12} label="Tage in Folge" />
+          <Stat icon="cards" value={248} label="Karten gelernt" />
+        </div>
       </Part>
 
       <Part title="Module in Lernen: wie weit gelesen (iPhone-Breite)">
@@ -326,6 +334,7 @@ const ICONS: IconName[] = [
   "box",
   "question",
   "calendar",
+  "flame",
   "cards",
   "learn",
   "practice",

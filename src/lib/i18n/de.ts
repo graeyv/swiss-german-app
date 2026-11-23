@@ -76,9 +76,6 @@ export const de: Dictionary = {
     audioNote:
       "Ob eine Wortkarte das Wort von selbst abspielt, sobald du das Schweizerdeutsch siehst. Du kannst es auch während einer Sitzung oben umschalten.",
     audioModes: { auto: "Automatisch abspielen", tap: "Nur auf Tippen" },
-    topics: "Themen",
-    topicsNote: "Deine Themen erscheinen beim Üben zuerst.",
-    topicsChosen: (count) => (count === 0 ? "Keine" : `${count} gewählt`),
     save: "Speichern",
     saving: "Wird gespeichert…",
     close: "Schliessen",
