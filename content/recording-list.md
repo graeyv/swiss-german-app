@@ -98,16 +98,16 @@ Ordner: `public/audio/lessons/be/pronunciation/`
 
 | ☐ | Nr | Wort oder Satz | Hochdeutsch | Berner Akzent |
 |---|---|---|---|---|
-| ☐ | 58 | Charakter | `charakter_de.mp3` | `charakter_be.mp3` |
-| ☐ | 59 | Wurst | `wurst_de.mp3` | `wurst_be.mp3` |
-| ☐ | 60 | Tätowieren | `taetowieren_de.mp3` | `taetowieren_be.mp3` |
-| ☐ | 61 | Türöl | `tueroel_de.mp3` | `tueroel_be.mp3` |
-| ☐ | 62 | Treppe | – | `treppe_be.mp3` |
-| ☐ | 63 | Kasper | – | `kasper_be.mp3` |
-| ☐ | 64 | Vögel | – | `voegel_be.mp3` |
-| ☐ | 65 | Zähne | – | `zaehne_be.mp3` |
-| ☐ | 66 | Das Mädchen kauft ein Stück Käse, fünf Brötchen und frisches Gemüse. | – | `satz-maedchen_be.mp3` |
-| ☐ | 67 | Die Gäste sitzen draussen, essen Äpfel und hören dem Musiker zu. | – | `satz-gaeste_be.mp3` |
+| ☑ | 58 | Charakter | `charakter_de.mp3` | `charakter_be.mp3` |
+| ☑ | 59 | Wurst | `wurst_de.mp3` | `wurst_be.mp3` |
+| ☑ | 60 | Tätowieren | `taetowieren_de.mp3` | `taetowieren_be.mp3` |
+| ☑ | 61 | Türöl | `tueroel_de.mp3` | `tueroel_be.mp3` |
+| ☑ | 62 | Treppe | – | `treppe_be.mp3` |
+| ☑ | 63 | Kasper | – | `kasper_be.mp3` |
+| ☑ | 64 | Vögel | – | `voegel_be.mp3` |
+| ☑ | 65 | Zähne | – | `zaehne_be.mp3` |
+| ☑ | 66 | Das Mädchen kauft ein Stück Käse, fünf Brötchen und frisches Gemüse. | – | `satz-maedchen_be.mp3` |
+| ☑ | 67 | Die Gäste sitzen draussen, essen Äpfel und hören dem Musiker zu. | – | `satz-gaeste_be.mp3` |
 
 ---
 
@@ -118,10 +118,10 @@ Ordner: `public/audio/lessons/phrases/`
 
 | ☐ | Nr | Satz | Gesprochen in | Datei |
 |---|---|---|---|---|
-| ☐ | 68 | Chunsch mit? | Bärndütsch | `chunsch-mit_be.mp3` |
-| ☐ | 69 | I bi müed. | Bärndütsch | `i-bi-mueed_be.mp3` |
-| ☐ | 70 | Was machsch? | Bärndütsch | `was-machsch_be.mp3` |
-| ☐ | 71 | I weiss es nid. | Bärndütsch | `i-weiss-es-nid_be.mp3` |
-| ☐ | 72 | Ich weiss es nöd. | Züritüütsch | `ich-weiss-es-noed_zh.mp3` |
-| ☐ | 73 | I weiss es nit. | Baseldytsch | `i-weiss-es-nit_bs.mp3` |
-| ☐ | 74 | Ich weiss es nicht. | Hochdeutsch | `ich-weiss-es-nicht_de.mp3` |
+| ☑ | 68 | Chunsch mit? | Bärndütsch | `chunsch-mit_be.mp3` |
+| ☑ | 69 | I bi müed. | Bärndütsch | `i-bi-mueed_be.mp3` |
+| ☑ | 70 | Was machsch? | Bärndütsch | `was-machsch_be.mp3` |
+| ☑ | 71 | I weiss es nid. | Bärndütsch | `i-weiss-es-nid_be.mp3` |
+| ☑ | 72 | Ich weiss es nöd. | Züritüütsch | `ich-weiss-es-noed_zh.mp3` |
+| ☑ | 73 | I weiss es nit. | Baseldytsch | `i-weiss-es-nit_bs.mp3` |
+| ☑ | 74 | Ich weiss es nicht. | Hochdeutsch | `ich-weiss-es-nicht_de.mp3` |

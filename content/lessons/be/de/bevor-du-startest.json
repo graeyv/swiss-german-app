@@ -35,17 +35,17 @@
             {
               "dialect": "Ich weiss es nöd.",
               "meaning": "Züritüütsch",
-              "audio": null
+              "audio": "/audio/lessons/phrases/ich-weiss-es-noed_zh.mp3"
             },
             {
               "dialect": "I weiss es nid.",
               "meaning": "Bärndütsch",
-              "audio": null
+              "audio": "/audio/lessons/phrases/i-weiss-es-nid_be.mp3"
             },
             {
               "dialect": "I weiss es nit.",
               "meaning": "Baseldytsch",
-              "audio": null
+              "audio": "/audio/lessons/phrases/i-weiss-es-nit_bs.mp3"
             }
           ],
           "examples": [],
