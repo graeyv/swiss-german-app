@@ -44,18 +44,18 @@ Ordner: `public/audio/lessons/be/sounds/`
 
 | ☐ | Nr | Wort | Bedeutung | Datei |
 |---|---|---|---|---|
-| ☐ | 19 | Ja | ja | `ja_be.mp3` |
-| ☐ | 20 | Jahr | Jahr | `jahr_be.mp3` |
-| ☐ | 21 | Jede | jede | `jede_be.mp3` |
-| ☐ | 22 | Wasser | Wasser | `wasser_be.mp3` |
-| ☐ | 23 | Wuche | Woche | `wuche_be.mp3` |
-| ☐ | 24 | Winter | Winter | `winter_be.mp3` |
-| ☐ | 25 | Ziit | Zeit | `ziit_be.mp3` |
-| ☐ | 26 | Znacht | Abendessen | `znacht_be.mp3` |
-| ☐ | 27 | Züri | Zürich | `zueri_be.mp3` |
-| ☐ | 28 | Schoggi | Schokolade | `schoggi_be.mp3` |
-| ☐ | 29 | Schiff | Schiff | `schiff_be.mp3` |
-| ☐ | 30 | Schueh | Schuhe | `schueh_be.mp3` |
+| ☑ | 19 | Ja | ja | `ja_be.mp3` |
+| ☑ | 20 | Jahr | Jahr | `jahr_be.mp3` |
+| ☑ | 21 | Jede | jede | `jede_be.mp3` |
+| ☑ | 22 | Wasser | Wasser | `wasser_be.mp3` |
+| ☑ | 23 | Wuche | Woche | `wuche_be.mp3` |
+| ☑ | 24 | Winter | Winter | `winter_be.mp3` |
+| ☑ | 25 | Ziit | Zeit | `ziit_be.mp3` |
+| ☑ | 26 | Znacht | Abendessen | `znacht_be.mp3` |
+| ☑ | 27 | Züri | Zürich | `zueri_be.mp3` |
+| ☑ | 28 | Schoggi | Schokolade | `schoggi_be.mp3` |
+| ☑ | 29 | Schiff | Schiff | `schiff_be.mp3` |
+| ☑ | 30 | Schueh | Schuhe | `schueh_be.mp3` |
 
 ### Lektion 3 · Neue Laute oder neue Buchstaben
 

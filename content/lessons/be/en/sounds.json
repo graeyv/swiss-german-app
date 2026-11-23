@@ -401,17 +401,17 @@
                 {
                   "word": "Ja",
                   "meaning": "Yes",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/ja_be.mp3"
                 },
                 {
                   "word": "Jahr",
                   "meaning": "Year",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/jahr_be.mp3"
                 },
                 {
                   "word": "Jede",
                   "meaning": "Every",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/jede_be.mp3"
                 }
               ]
             }
@@ -429,17 +429,17 @@
                 {
                   "word": "Wasser",
                   "meaning": "Water",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/wasser_be.mp3"
                 },
                 {
                   "word": "Wuche",
                   "meaning": "Week",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/wuche_be.mp3"
                 },
                 {
                   "word": "Winter",
                   "meaning": "Winter",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/winter_be.mp3"
                 }
               ]
             }
@@ -457,17 +457,17 @@
                 {
                   "word": "Ziit",
                   "meaning": "Time",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/ziit_be.mp3"
                 },
                 {
                   "word": "Znacht",
                   "meaning": "Dinner",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/znacht_be.mp3"
                 },
                 {
                   "word": "Züri",
                   "meaning": "Zurich",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/zueri_be.mp3"
                 }
               ]
             }
@@ -485,17 +485,17 @@
                 {
                   "word": "Schoggi",
                   "meaning": "Chocolate",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/schoggi_be.mp3"
                 },
                 {
                   "word": "Schiff",
                   "meaning": "Ship",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/schiff_be.mp3"
                 },
                 {
                   "word": "Schueh",
                   "meaning": "Shoes",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/schueh_be.mp3"
                 }
               ]
             }
@@ -515,7 +515,7 @@
           "example": {
             "word": "Jahr",
             "meaning": "Year",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/jahr_be.mp3"
           }
         },
         {
@@ -529,7 +529,7 @@
           "example": {
             "word": "Wasser",
             "meaning": "Water",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/wasser_be.mp3"
           }
         },
         {
@@ -543,7 +543,7 @@
           "example": {
             "word": "Ziit",
             "meaning": "Time",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/ziit_be.mp3"
           }
         },
         {
@@ -557,32 +557,32 @@
           "example": {
             "word": "Schoggi",
             "meaning": "Chocolate",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/schoggi_be.mp3"
           }
         },
         {
           "id": "say-jahr",
           "type": "say",
           "word": "[J]ahr",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/jahr_be.mp3"
         },
         {
           "id": "say-wasser",
           "type": "say",
           "word": "[W]asser",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/wasser_be.mp3"
         },
         {
           "id": "say-ziit",
           "type": "say",
           "word": "[Z]iit",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/ziit_be.mp3"
         },
         {
           "id": "say-schoggi",
           "type": "say",
           "word": "[Sch]oggi",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/schoggi_be.mp3"
         }
       ]
     },
