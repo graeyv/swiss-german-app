@@ -294,49 +294,61 @@
           }
         },
         {
-          "id": "hear-haas",
+          "id": "hear-bass",
           "type": "hear",
           "letter": "A",
           "options": [
             {
-              "word": "Haas",
-              "meaning": "Rabbit"
+              "word": "Bass",
+              "meaning": "Bass"
             },
             {
-              "word": "Huus",
-              "meaning": "House"
+              "word": "Biss",
+              "meaning": "Bite"
+            },
+            {
+              "word": "Boss",
+              "meaning": "Boss"
             }
           ],
           "audio": null
         },
         {
-          "id": "hear-bett",
-          "type": "hear",
-          "letter": "E",
-          "options": [
-            {
-              "word": "Bett",
-              "meaning": "Bed"
-            },
-            {
-              "word": "Bad",
-              "meaning": "Bath"
-            }
-          ],
-          "audio": null
-        },
-        {
-          "id": "hear-lift",
+          "id": "hear-mitti",
           "type": "hear",
           "letter": "I",
           "options": [
             {
-              "word": "Lift",
-              "meaning": "Lift"
+              "word": "Mitti",
+              "meaning": "Middle"
             },
             {
-              "word": "Luft",
-              "meaning": "Air"
+              "word": "Mieti",
+              "meaning": "Rent"
+            },
+            {
+              "word": "Matte",
+              "meaning": "Mat, as for yoga"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "hear-muus",
+          "type": "hear",
+          "letter": "U",
+          "options": [
+            {
+              "word": "Muus",
+              "meaning": "Mouse"
+            },
+            {
+              "word": "Moos",
+              "meaning": "Moss"
+            },
+            {
+              "word": "Mass",
+              "meaning": "Measurement"
             }
           ],
           "audio": null
@@ -871,33 +883,37 @@
           }
         },
         {
-          "id": "hear-haend",
+          "id": "hear-baer",
           "type": "hear",
           "letter": "Ä",
           "options": [
             {
-              "word": "Händ",
-              "meaning": "Hands"
+              "word": "Bär",
+              "meaning": "Bear"
             },
             {
-              "word": "Hand",
-              "meaning": "Hand"
+              "word": "Bar",
+              "meaning": "Bar"
+            },
+            {
+              "word": "Bier",
+              "meaning": "Beer"
             }
           ],
           "audio": null
         },
         {
-          "id": "hear-schon",
+          "id": "hear-schoner",
           "type": "hear",
           "letter": "Ö",
           "options": [
             {
-              "word": "schon",
-              "meaning": "Already"
+              "word": "Schoner",
+              "meaning": "Pad, as for the knee"
             },
             {
-              "word": "schön",
-              "meaning": "Beautiful"
+              "word": "schöner",
+              "meaning": "More beautiful"
             }
           ],
           "audio": null
@@ -912,8 +928,12 @@
               "meaning": "Today"
             },
             {
-              "word": "Hut",
+              "word": "Huet",
               "meaning": "Hat"
+            },
+            {
+              "word": "Hit",
+              "meaning": "Hit"
             }
           ],
           "audio": null
@@ -930,6 +950,10 @@
             {
               "word": "Tür",
               "meaning": "Door"
+            },
+            {
+              "word": "Tor",
+              "meaning": "Gate"
             }
           ],
           "audio": null

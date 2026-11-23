@@ -55,8 +55,8 @@ export default function DevDesignPage() {
         <EnglishExercisePreview section="new-sounds" id="st" />
       </Part>
 
-      <Part title="Englisch · Übung 2 (mittel): Which did you hear? · schon / schön">
-        <EnglishExercisePreview section="new-sounds" id="hear-schon" />
+      <Part title="Englisch · Übung 2 (mittel): Which did you hear? · hüt / Huet / Hit">
+        <EnglishExercisePreview section="new-sounds" id="hear-huet" />
       </Part>
 
       <Part title="Englisch · Übung 3 (schwer): Say the word · Schoggi">
