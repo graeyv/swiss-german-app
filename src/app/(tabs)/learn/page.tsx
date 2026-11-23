@@ -6,8 +6,8 @@ import { ListRow, ListRows } from "@/app/ui/list-row";
 import { TabHeader } from "@/app/ui/tab-header";
 import type { Dictionary } from "@/lib/i18n";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
-import { isReady, type Lesson, lessonHref, lessonNumber, lessonsFor, topicCount } from "@/lib/learn/lessons";
-import { type Continue, getReads, lastModule, readCount, whereToContinue } from "@/lib/learn/progress";
+import { type DialectLesson, isReady, type Lesson, lessonHref, lessonNumber, lessonsFor, topicCount } from "@/lib/learn/lessons";
+import { type Continue, getReads, moduleReadCount, readCount, whereToContinue } from "@/lib/learn/progress";
 import { createClient } from "@/lib/supabase/server";
 
 // The lessons of the learner's track: the one in their language. Every learner sees every
@@ -20,15 +20,14 @@ export default function LearnPage() {
   );
 }
 
-// A card to continue where the learner left off, then every module in order as an equal row. The
-// module read in last says so in its caption. A module still being written has the "Bald
-// verfügbar" pill, but still opens, so learners see what it will cover.
+// A card to continue where the learner left off, then every module in order as an equal row, its
+// caption saying how far it's read. A module still being written has the "Bald verfügbar" pill,
+// but still opens, so learners see what it will cover.
 async function Learn() {
   const [t, locale, supabase] = await Promise.all([getDictionary(), getLocale(), createClient()]);
   const lessons = lessonsFor(locale);
   const reads = await getReads(supabase);
   const next = whereToContinue(reads, lessons);
-  const last = lastModule(reads);
 
   return (
     <>
@@ -48,13 +47,24 @@ async function Learn() {
               icon={isIconName(entry.lesson.icon) ? entry.lesson.icon : undefined}
               eyebrow={t.lesson.number(lessonNumber(entry))}
               title={entry.lesson.title}
-              caption={`${entry.dialect}/${entry.lesson.id}` === last ? t.learn.lastRead : size(entry.lesson, t)}
+              {...progress(entry, reads.read, t)}
             />
           ))}
         </ListRows>
       </section>
     </>
   );
+}
+
+// Its size until anything in it is read, then how much is ("4 von 10 Themen gelesen"), and once
+// everything is, "Alles gelesen" with a check. Topics still planned count, so a module with more
+// to come isn't done.
+function progress(entry: DialectLesson, read: Set<string>, t: Dictionary): { caption: string; done?: boolean } {
+  const total = topicCount(entry.lesson);
+  const count = moduleReadCount(entry, read);
+  if (count === 0) return { caption: size(entry.lesson, t) };
+  if (count >= total) return { caption: t.learn.allRead, done: true };
+  return { caption: t.learn.topicsRead(count, total) };
 }
 
 // Such as "2 Lektionen · 10 Themen", or only the lessons while no topic is planned yet.

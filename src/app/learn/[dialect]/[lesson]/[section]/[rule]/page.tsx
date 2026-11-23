@@ -19,6 +19,7 @@ import { LessonLoading, LessonScreen } from "../../lesson-screen";
 import { LastResult } from "./last-result";
 import { MarkRead } from "./mark-read";
 import { RuleBody, Theory } from "./rule-body";
+import { SectionLetters } from "./sound-list";
 
 export function generateStaticParams() {
   return ruleParams();
@@ -137,6 +138,8 @@ async function RuleView({
         accent={lesson.accent ? (t.lesson.accents[dialect] ?? dialectName) : undefined}
         t={t.lesson}
       />
+      {/* A section's first topic without letters of its own shows the letters to come. */}
+      {rule === section.rules[0] && !rule.sounds && <SectionLetters rules={section.rules.slice(1)} />}
     </LessonScreen>
   );
 }

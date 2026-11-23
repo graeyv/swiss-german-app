@@ -272,6 +272,8 @@ function Exercise({
           task={exercise}
           texts={texts}
           accent={accent}
+          // Without the accent framing, the words are the dialect's own, as in the English track.
+          dialect={examplesWithAccent ? undefined : dialectName}
           first={first}
           ruleFor={(letters) => {
             const found = ruleForLetters(
@@ -464,6 +466,16 @@ function ReviewRow({ exercise, right, texts }: { exercise: LessonExercise; right
   } else if (exercise.type === "repeat") {
     title = <MarkedWord word={exercise.sentence} small />;
     caption = right ? t.soundedSame : t.notSameYet;
+  } else if (exercise.type === "sounds_like") {
+    // The letter, and what it sounds like.
+    title = (
+      <>
+        {exercise.letter}: <MarkedWord word={exercise.options[0]} small />
+      </>
+    );
+  } else if (exercise.type === "hear") {
+    title = exercise.options[0].word;
+    caption = exercise.options[0].meaning;
   } else {
     title = answerText(exercise);
     caption = right ? undefined : texts.session.correctAnswer;

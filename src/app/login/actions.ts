@@ -44,16 +44,3 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
 
   redirect("/learn");
 }
-
-// Sends the learner to Google, which returns them to /auth/callback. The same for logging in and
-// creating an account: Supabase creates the account on the first sign-in.
-export async function signInWithGoogle(): Promise<AuthState> {
-  const origin = (await headers()).get("origin");
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: `${origin}/auth/callback` },
-  });
-  if (error) return { error: error.message };
-  redirect(data.url);
-}

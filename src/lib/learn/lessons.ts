@@ -47,10 +47,19 @@ export type PointList = { heading?: string; items: Point[] };
 // its recording, null until recorded; without the field, the phrase has no play button.
 export type Phrase = { dialect: string; meaning: string; standardGerman?: string; audio?: string | null };
 
+// A word in the dialect with what it means. audio: its recording, null until recorded.
+export type SoundWord = { word: string; meaning: string; audio: string | null };
+
+// A letter, or letters said together such as "SCH", with words that have it. like: what it sounds
+// like, with the letters of a word the learner knows in brackets, such as "Similar to a in
+// f[a]ther", underlined in sage. A topic about one letter says that in its theory instead.
+export type Sound = { letter: string; like?: string; words: SoundWord[] };
+
 export type Rule = {
   id: string;
   title: string;
-  // One or more paragraphs, separated by an empty line.
+  // One or more paragraphs, separated by an empty line. Letters in brackets, such as the y in
+  // "[y]es", are underlined in sage, as in the pronunciation exercises.
   theory: string;
   // Lists after the theory, when it's easier to read in points.
   points?: PointList[];
@@ -60,11 +69,17 @@ export type Rule = {
   // A heading above the phrases, such as "Everyday examples".
   phrasesHeading?: string;
   examples: Example[];
+  // Letters and their words, as in the English pronunciation: a card for each when there are
+  // several, a quiet list of the words when there's one.
+  sounds?: Sound[];
   // A quiet line after the examples, such as how to listen to them or a sound to compare with.
   note?: string;
   // The rule in one sentence, to remember. A topic that only leads on, such as one saying what
   // comes next, has none.
   takeaway?: string;
+  // A way into the sound the text doesn't give, such as another language's word, in the takeaway's
+  // yellow card labelled "Tip". Its bracketed letters are underlined too.
+  tip?: string;
   // Practised together with the other rules of its section, at the end of the section.
   exercises?: LessonExercise[];
 };
@@ -105,6 +120,8 @@ export type Lesson = {
   // Whether its examples are Standard German words said with the dialect's accent, such as the
   // pronunciation's, so their side is named after the accent: "Berner Akzent".
   accent?: boolean;
+  // Only to read, never with exercises, such as Getting started: left out of the Practice tab.
+  readOnly?: boolean;
 };
 
 // A lesson, with the dialect it teaches and the language it's written in. The lesson's screens

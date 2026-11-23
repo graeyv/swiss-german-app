@@ -2,9 +2,9 @@
 // src/lib/exercises/tasks.ts, so a typo fails the tests (src/lib/learn/lessons.test.ts) instead of
 // breaking a round.
 
-// The task types the round can show. letters, say and repeat are the pronunciation exercises in
-// src/lib/exercises/pronunciation.ts.
-export const EXERCISE_TYPES = ["pick", "build", "spot_error", "letters", "say", "repeat"];
+// The task types the round can show. letters, say, repeat, sounds_like and hear are the
+// pronunciation exercises in src/lib/exercises/pronunciation.ts.
+export const EXERCISE_TYPES = ["pick", "build", "spot_error", "letters", "say", "repeat", "sounds_like", "hear"];
 
 // A High German word with the letters that sound different in square brackets, such as
 // "[Ch]a[r]a[k]te[r]": no empty or nested brackets, and no spaces.
@@ -51,6 +51,8 @@ const FIELDS = {
   letters: { required: ["word"], optional: ["audio"] },
   say: { required: ["word"], optional: ["audio"] },
   repeat: { required: ["sentence"], optional: ["audio"] },
+  sounds_like: { required: ["letter", "options", "example"], optional: [] },
+  hear: { required: ["letter", "options"], optional: ["audio"] },
 };
 
 // Returns what's wrong with the payload, or null if nothing is.
@@ -96,7 +98,8 @@ export function payloadProblem(type, payload) {
     if (typeof payload.word !== "string" || !MARKED_WORD.test(payload.word)) {
       return "word needs letters, with those that sound different in [brackets]";
     }
-    if (!/\[/.test(payload.word)) return "word needs letters that sound different in [brackets]";
+    // A word to say can have nothing to watch, as the English track's familiar letters.
+    if (type === "letters" && !/\[/.test(payload.word)) return "word needs letters that sound different in [brackets]";
     if (type === "letters" && "audio" in payload) {
       const { audio } = payload;
       const keys = audio && typeof audio === "object" ? Object.keys(audio).sort().join() : "";
@@ -105,6 +108,33 @@ export function payloadProblem(type, payload) {
       }
     }
     if (type === "say" && "audio" in payload && !isRecording(payload.audio)) return "audio is a path or null";
+    return null;
+  }
+
+  if (type === "sounds_like") {
+    if (!isText(payload.letter)) return "letter isn't text";
+    const { options, example } = payload;
+    if (!Array.isArray(options) || options.length < 2 || options.length > 3) return "options needs two or three comparisons";
+    if (!options.every((option) => typeof option === "string" && MARKED_SENTENCE.test(option) && /\[/.test(option))) {
+      return "each option needs its sound's letters in [brackets]";
+    }
+    if (new Set(options).size !== options.length) return "options repeat";
+    if (!example || typeof example !== "object" || !isText(example.word) || !isText(example.meaning)) {
+      return "example needs a word and its meaning";
+    }
+    if ("audio" in example && !isRecording(example.audio)) return "example's audio is a path or null";
+    return null;
+  }
+
+  if (type === "hear") {
+    if (!isText(payload.letter)) return "letter, the sound it tests, isn't text";
+    const { options } = payload;
+    if (!Array.isArray(options) || options.length < 2 || options.length > 3) return "options needs two or three words";
+    if (!options.every((option) => option && isText(option.word) && isText(option.meaning))) {
+      return "each option needs a word and its meaning";
+    }
+    if (new Set(options.map((option) => option.word)).size !== options.length) return "options repeat";
+    if ("audio" in payload && !isRecording(payload.audio)) return "audio is a path or null";
     return null;
   }
 

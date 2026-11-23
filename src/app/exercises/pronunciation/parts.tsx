@@ -22,24 +22,28 @@ export function MarkedWord({ word, underline = true, small = false }: { word: st
   ));
 }
 
-// What to do, under what the exercises are: "HOCHDEUTSCH MIT BERNER AKZENT". The round's first
-// exercise also says why, once.
+// What to do, under what the exercises are: "HOCHDEUTSCH MIT BERNER AKZENT", or the dialect's name,
+// "BÄRNDÜTSCH", when the words are its own, as in the English track. In the German track, the
+// round's first exercise also says once why the words stay Standard German.
 export function Instruction({
   accent,
+  dialect,
   first,
   t,
   children,
 }: {
   accent: string;
+  // The dialect's name, when the words are its own rather than Standard German with its accent.
+  dialect?: string;
   first: boolean;
   t: Dictionary["pronunciation"];
   children: ReactNode;
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <Eyebrow>{t.frame(accent)}</Eyebrow>
+      <Eyebrow>{dialect ?? t.frame(accent)}</Eyebrow>
       <p className="text-body">{children}</p>
-      {first && <p className="text-caption text-teal-soft">{t.why}</p>}
+      {first && !dialect && <p className="text-caption text-teal-soft">{t.why}</p>}
     </div>
   );
 }

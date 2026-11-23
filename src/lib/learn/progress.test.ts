@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LESSONS } from "./lessons";
-import { isRulePath, lastModule, readCount, rulePath, whereToContinue } from "./progress";
+import { isRulePath, lastModule, moduleReadCount, readCount, rulePath, whereToContinue } from "./progress";
 
 const pronunciation = LESSONS.find(({ lesson }) => lesson.id === "pronunciation")!;
 const consonants = pronunciation.lesson.sections.find(({ id }) => id === "consonants")!;
@@ -40,9 +40,11 @@ describe("where to continue in Learn", () => {
     expect(whereToContinue({ read, last: path("vowels", "ue") }, [pronunciation])).toBeUndefined();
   });
 
-  it("counts what's read in a lesson and names the module read last", () => {
+  it("counts what's read in a lesson and in its module", () => {
     const read = new Set([path("consonants", "ch"), path("vowels", "o")]);
     expect(readCount(pronunciation, consonants, read)).toBe(1);
+    expect(moduleReadCount(pronunciation, read)).toBe(2);
+    expect(moduleReadCount(pronunciation, new Set())).toBe(0);
     expect(lastModule({ read, last: path("vowels", "o") })).toBe("be/pronunciation");
     expect(lastModule({ read: new Set() })).toBeUndefined();
   });

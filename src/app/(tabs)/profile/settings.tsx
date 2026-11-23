@@ -8,17 +8,15 @@ import { dictionary, type Locale } from "@/lib/i18n";
 import { Icon } from "@/app/ui/icons";
 import type { CardFront } from "@/lib/types";
 import { BottomSheet } from "@/app/ui/bottom-sheet";
+import { Button } from "@/app/ui/button";
 import { DialectChoices } from "@/app/ui/dialect-choices";
 import { PaceOptions } from "../flashcards/pace-options";
 import { setLocale } from "../actions";
-import { updateDialect, updateInterests } from "./actions";
-import { AudioIcon, DialectIcon, DirectionIcon, LanguageIcon, PaceIcon, TopicsIcon } from "./icons";
+import { updateDialect } from "./actions";
+import { AudioIcon, DialectIcon, DirectionIcon, LanguageIcon, PaceIcon } from "./icons";
 
 // Settings are rows that slide up a sheet to change them. Each sheet saves through a server
 // action, which refreshes the page, so the rows always show what's saved.
-
-const primaryButton =
-  "min-h-12 w-full rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50";
 
 type Saving = { error: string | null; saving: boolean; save: (action: () => Promise<{ error?: string }>) => void };
 
@@ -42,18 +40,21 @@ function useSave(sheet: RefObject<HTMLDialogElement | null>): Saving {
 
 type RowProps = { icon: ReactNode; label: string; value: string; onOpen: () => void };
 
+// A setting as a list row on mist, like Learn's modules: its icon, its name in bold, what's chosen
+// below, and the arrow. The whole row opens its sheet. See DESIGN.md.
 function Row({ icon, label, value, onOpen }: RowProps) {
   return (
     <button
+      type="button"
       onClick={onOpen}
-      className="flex min-h-14 w-full items-center gap-3 text-left transition-opacity active:opacity-60"
+      className="flex min-h-18 w-full items-center gap-4 rounded-3xl bg-mist px-6 py-4 text-left transition-transform active:scale-[0.98]"
     >
-      <span className="text-muted">{icon}</span>
-      <span className="font-semibold">{label}</span>
-      <span className="min-w-0 flex-1 truncate text-right text-muted">{value}</span>
-      <span aria-hidden className="text-muted">
-        ›
+      {icon}
+      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span className="text-body font-bold">{label}</span>
+        <span className="truncate text-caption text-teal-soft">{value}</span>
       </span>
+      <Icon name="forward" />
     </button>
   );
 }
@@ -71,18 +72,19 @@ function Sheet({ sheet, title, locale, error, children }: SheetProps) {
   return (
     <BottomSheet ref={sheet} label={title}>
       <div className="flex items-start justify-between gap-4">
-        <h2 className="text-xl font-bold tracking-tight">{title}</h2>
+        <h2 className="text-heading font-bold">{title}</h2>
         <button
+          type="button"
           onClick={() => sheet.current?.close()}
           aria-label={t.close}
-          className="-mt-2 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-xl text-muted transition-colors hover:text-foreground"
+          className="-mt-2 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-full transition-transform active:scale-95"
         >
-          ✕
+          <Icon name="cross" />
         </button>
       </div>
       {children}
       {error && (
-        <p aria-live="polite" className="text-sm text-danger">
+        <p aria-live="polite" className="text-caption text-brick">
           {t.notSaved(error)}
         </p>
       )}
@@ -99,7 +101,8 @@ type ChoicesProps<Value extends string> = {
   onChoose: (value: Value) => void;
 };
 
-// One choice from a short list, marked with a check. Choosing one saves it.
+// One choice from a short list, as cards like the onboarding's: mist, or sage with a teal check
+// in its circle when chosen. Choosing one saves it.
 function Choices<Value extends string>({
   label,
   values,
@@ -109,26 +112,39 @@ function Choices<Value extends string>({
   onChoose,
 }: ChoicesProps<Value>) {
   return (
-    <div role="group" aria-label={label} className="flex flex-col gap-2">
-      {values.map((value) => (
-        <button
-          key={value}
-          aria-pressed={value === current}
-          disabled={disabled}
-          onClick={() => onChoose(value)}
-          className={`flex min-h-14 items-center justify-between rounded-2xl border-2 px-4 text-left font-semibold transition-colors disabled:opacity-50 ${
-            value === current ? "border-accent bg-accent/10" : "border-line hover:border-accent/50"
-          }`}
-        >
-          {name(value)}
-          {value === current && (
-            <span aria-hidden className="text-accent">
-              ✓
-            </span>
-          )}
-        </button>
-      ))}
+    <div role="group" aria-label={label} className="flex flex-col gap-3">
+      {values.map((value) => {
+        const selected = value === current;
+        return (
+          <button
+            key={value}
+            type="button"
+            aria-pressed={selected}
+            disabled={disabled}
+            onClick={() => onChoose(value)}
+            className={`flex min-h-16 items-center gap-4 rounded-3xl px-5 py-4 text-left transition-[background-color,transform] active:scale-[0.98] disabled:active:scale-100 ${
+              selected ? "bg-sage" : "bg-mist"
+            }`}
+          >
+            <span className="min-w-0 flex-1 text-body font-bold">{name(value)}</span>
+            <Check selected={selected} />
+          </button>
+        );
+      })}
     </div>
+  );
+}
+
+// The circle on a choice card: ivory, or teal with a check once chosen.
+function Check({ selected }: { selected: boolean }) {
+  return (
+    <span
+      className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
+        selected ? "bg-teal text-ivory" : "bg-ivory"
+      }`}
+    >
+      {selected && <Icon name="check" size={16} />}
+    </span>
   );
 }
 
@@ -169,13 +185,7 @@ export function TrackSetting({ locale, modules }: { locale: Locale; modules: Rec
                     {texts.onboarding.track.answers[option].what} {texts.onboarding.track.modules(modules[option])}.
                   </span>
                 </span>
-                <span
-                  className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
-                    selected ? "bg-teal text-ivory" : "bg-ivory"
-                  }`}
-                >
-                  {selected && <Icon name="check" size={16} />}
-                </span>
+                <Check selected={selected} />
               </button>
             );
           })}
@@ -213,7 +223,7 @@ export function DialectSetting({ dialects, current, locale }: DialectSettingProp
         onOpen={() => sheet.current?.showModal()}
       />
       <Sheet sheet={sheet} title={t.dialect} locale={locale} error={error}>
-        <p className="text-sm text-muted">{t.dialectNote}</p>
+        <p className="text-body text-teal-soft">{t.dialectNote}</p>
         {/* As in onboarding: dialects without content yet are shown, inactive, with when they come. */}
         <DialectChoices
           locale={locale}
@@ -248,14 +258,10 @@ export function PaceSetting({ newCardsPerDay, locale }: { newCardsPerDay: number
       />
       <Sheet sheet={sheet} title={texts.goal.sheetTitle} locale={locale} error={error}>
         <PaceOptions selected={selected} onSelect={setSelected} locale={locale} />
-        <p className="text-sm text-muted">{texts.goal.note}</p>
-        <button
-          onClick={() => selected !== null && save(() => updateDailyPlan(selected))}
-          disabled={selected === null || saving}
-          className={primaryButton}
-        >
+        <p className="text-body text-teal-soft">{texts.goal.note}</p>
+        <Button onClick={() => selected !== null && save(() => updateDailyPlan(selected))} disabled={selected === null || saving}>
           {saving ? t.saving : t.save}
-        </button>
+        </Button>
       </Sheet>
     </>
   );
@@ -277,7 +283,7 @@ export function DirectionSetting({ cardFront, locale }: { cardFront: CardFront; 
         onOpen={() => sheet.current?.showModal()}
       />
       <Sheet sheet={sheet} title={t.cardDirection} locale={locale} error={error}>
-        <p className="text-sm text-muted">{t.cardDirectionNote}</p>
+        <p className="text-body text-teal-soft">{t.cardDirectionNote}</p>
         <Choices
           label={t.cardDirection}
           values={DIRECTIONS}
@@ -304,7 +310,7 @@ export function AudioSetting({ autoplay, locale }: { autoplay: boolean; locale: 
     <>
       <Row icon={<AudioIcon />} label={t.audio} value={t.audioModes[mode]} onOpen={() => sheet.current?.showModal()} />
       <Sheet sheet={sheet} title={t.audio} locale={locale} error={error}>
-        <p className="text-sm text-muted">{t.audioNote}</p>
+        <p className="text-body text-teal-soft">{t.audioNote}</p>
         <Choices
           label={t.audio}
           values={[...AUDIO_MODES]}
@@ -313,71 +319,6 @@ export function AudioSetting({ autoplay, locale }: { autoplay: boolean; locale: 
           disabled={saving}
           onChoose={(value) => save(() => updateAutoplay(value === "auto"))}
         />
-      </Sheet>
-    </>
-  );
-}
-
-export type Topic = { code: string; title: string; emoji: string | null };
-
-type TopicsSettingProps = { topics: Topic[]; interests: string[]; locale: Locale };
-
-export function TopicsSetting({ topics, interests, locale }: TopicsSettingProps) {
-  const t = dictionary(locale).profile;
-  const sheet = useRef<HTMLDialogElement>(null);
-  const { error, saving, save } = useSave(sheet);
-  const [chosen, setChosen] = useState<ReadonlySet<string>>(new Set());
-  // Topics that no longer exist don't count.
-  const count = topics.filter((topic) => interests.includes(topic.code)).length;
-
-  function toggle(code: string) {
-    const next = new Set(chosen);
-    if (next.has(code)) next.delete(code);
-    else next.add(code);
-    setChosen(next);
-  }
-
-  return (
-    <>
-      <Row
-        icon={<TopicsIcon />}
-        label={t.topics}
-        value={t.topicsChosen(count)}
-        onOpen={() => {
-          setChosen(new Set(interests));
-          sheet.current?.showModal();
-        }}
-      />
-      <Sheet sheet={sheet} title={t.topics} locale={locale} error={error}>
-        <p className="text-sm text-muted">{t.topicsNote}</p>
-        <div className="grid max-h-[50dvh] grid-cols-2 gap-2 overflow-y-auto">
-          {topics.map((topic) => {
-            const selected = chosen.has(topic.code);
-            return (
-              <button
-                key={topic.code}
-                aria-pressed={selected}
-                onClick={() => toggle(topic.code)}
-                className={`flex min-h-14 items-center gap-2 rounded-2xl border-2 p-3 text-left transition-colors bg-mist ${
-                  selected ? "border-accent" : "border-transparent"
-                }`}
-              >
-                <span aria-hidden className="text-xl">
-                  {topic.emoji ?? "📚"}
-                </span>
-                <span className="min-w-0 flex-1 text-sm leading-snug font-semibold">{topic.title}</span>
-                {selected && (
-                  <span aria-hidden className="flex size-5 shrink-0 items-center justify-center rounded-full bg-accent text-xs text-accent-foreground">
-                    ✓
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-        <button onClick={() => save(() => updateInterests([...chosen]))} disabled={saving} className={primaryButton}>
-          {saving ? t.saving : t.save}
-        </button>
       </Sheet>
     </>
   );
