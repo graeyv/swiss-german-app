@@ -608,17 +608,17 @@
                 {
                   "word": "Rot",
                   "meaning": "Red",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/rot_be.mp3"
                 },
                 {
                   "word": "Räge",
                   "meaning": "Rain",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/raege_be.mp3"
                 },
                 {
                   "word": "Richtig",
                   "meaning": "Correct",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/richtig_be.mp3"
                 }
               ]
             }
@@ -637,17 +637,17 @@
                 {
                   "word": "Mässer",
                   "meaning": "Knife",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/maesser_be.mp3"
                 },
                 {
                   "word": "Bär",
                   "meaning": "Bear",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/baer_be.mp3"
                 },
                 {
                   "word": "Stärn",
                   "meaning": "Star",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/staern_be.mp3"
                 }
               ]
             }
@@ -665,17 +665,17 @@
                 {
                   "word": "Schön",
                   "meaning": "Beautiful",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/schoen_be.mp3"
                 },
                 {
                   "word": "Löffu",
                   "meaning": "Spoon",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/loeffu_be.mp3"
                 },
                 {
                   "word": "Öffne",
                   "meaning": "Open",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/oeffne_be.mp3"
                 }
               ]
             }
@@ -693,17 +693,17 @@
                 {
                   "word": "Tür",
                   "meaning": "Door",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/tuer_be.mp3"
                 },
                 {
                   "word": "Müed",
                   "meaning": "Tired",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/mueed_be.mp3"
                 },
                 {
                   "word": "Nüt",
                   "meaning": "Nothing",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/nuet_be.mp3"
                 }
               ]
             }
@@ -722,17 +722,17 @@
                 {
                   "word": "Chind",
                   "meaning": "Child",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/chind_be.mp3"
                 },
                 {
                   "word": "Dach",
                   "meaning": "Roof",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/dach_be.mp3"
                 },
                 {
                   "word": "Buech",
                   "meaning": "Book",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/buech_be.mp3"
                 }
               ]
             }
@@ -751,17 +751,17 @@
                 {
                   "word": "Knapp",
                   "meaning": "Close",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/knapp_be.mp3"
                 },
                 {
                   "word": "Karussell",
                   "meaning": "Carousel",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/karussell_be.mp3"
                 },
                 {
                   "word": "Kiosk",
                   "meaning": "Kiosk",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/kiosk_be.mp3"
                 }
               ]
             }
@@ -779,17 +779,17 @@
                 {
                   "word": "Strass",
                   "meaning": "Street",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/strass_be.mp3"
                 },
                 {
                   "word": "Stäge",
                   "meaning": "Stairs",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/staege_be.mp3"
                 },
                 {
                   "word": "Stadt",
                   "meaning": "City",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/stadt_be.mp3"
                 }
               ]
             }
@@ -807,17 +807,17 @@
                 {
                   "word": "Sport",
                   "meaning": "Sport",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/sport_be.mp3"
                 },
                 {
                   "word": "Spiu",
                   "meaning": "Game",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/spiu_be.mp3"
                 },
                 {
                   "word": "Spaghetti",
                   "meaning": "Spaghetti",
-                  "audio": null
+                  "audio": "/audio/lessons/be/sounds/spaghetti_be.mp3"
                 }
               ]
             }
@@ -837,7 +837,7 @@
           "example": {
             "word": "Bär",
             "meaning": "Bear",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/baer_be.mp3"
           }
         },
         {
@@ -851,7 +851,7 @@
           "example": {
             "word": "Schön",
             "meaning": "Beautiful",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/schoen_be.mp3"
           }
         },
         {
@@ -865,7 +865,7 @@
           "example": {
             "word": "Strass",
             "meaning": "Street",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/strass_be.mp3"
           }
         },
         {
@@ -879,7 +879,7 @@
           "example": {
             "word": "Sport",
             "meaning": "Sport",
-            "audio": null
+            "audio": "/audio/lessons/be/sounds/sport_be.mp3"
           }
         },
         {
@@ -900,7 +900,7 @@
               "meaning": "Beer"
             }
           ],
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/baer_be.mp3"
         },
         {
           "id": "hear-schoner",
@@ -916,7 +916,7 @@
               "meaning": "More beautiful"
             }
           ],
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/schoner_be.mp3"
         },
         {
           "id": "hear-huet",
@@ -936,7 +936,7 @@
               "meaning": "Hit"
             }
           ],
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/huet_be.mp3"
         },
         {
           "id": "hear-tier",
@@ -956,43 +956,43 @@
               "meaning": "Gate"
             }
           ],
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/tier_be.mp3"
         },
         {
           "id": "say-raege",
           "type": "say",
           "word": "[R]äge",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/raege_be.mp3"
         },
         {
           "id": "say-mueed",
           "type": "say",
           "word": "M[ü]ed",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/mueed_be.mp3"
         },
         {
           "id": "say-chind",
           "type": "say",
           "word": "[Ch]ind",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/chind_be.mp3"
         },
         {
           "id": "say-buech",
           "type": "say",
           "word": "Bue[ch]",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/buech_be.mp3"
         },
         {
           "id": "say-kiosk",
           "type": "say",
           "word": "[K]iosk",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/kiosk_be.mp3"
         },
         {
           "id": "say-loeffu",
           "type": "say",
           "word": "L[ö]ffu",
-          "audio": null
+          "audio": "/audio/lessons/be/sounds/loeffu_be.mp3"
         }
       ]
     }

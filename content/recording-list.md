@@ -61,33 +61,33 @@ Ordner: `public/audio/lessons/be/sounds/`
 
 | ☐ | Nr | Wort | Bedeutung | Datei |
 |---|---|---|---|---|
-| ☐ | 31 | Rot | rot | `rot_be.mp3` |
-| ☐ | 32 | Räge | Regen | `raege_be.mp3` |
-| ☐ | 33 | Richtig | richtig | `richtig_be.mp3` |
-| ☐ | 34 | Mässer | Messer | `maesser_be.mp3` |
-| ☐ | 35 | Bär | Bär | `baer_be.mp3` |
-| ☐ | 36 | Stärn | Stern | `staern_be.mp3` |
-| ☐ | 37 | Schön | schön | `schoen_be.mp3` |
-| ☐ | 38 | Löffu | Löffel | `loeffu_be.mp3` |
-| ☐ | 39 | Öffne | öffnen | `oeffne_be.mp3` |
-| ☐ | 40 | Tür | Tür | `tuer_be.mp3` |
-| ☐ | 41 | Müed | müde | `mueed_be.mp3` |
-| ☐ | 42 | Nüt | nichts | `nuet_be.mp3` |
-| ☐ | 43 | Chind | Kind | `chind_be.mp3` |
-| ☐ | 44 | Dach | Dach | `dach_be.mp3` |
-| ☐ | 45 | Buech | Buch | `buech_be.mp3` |
-| ☐ | 46 | Knapp | knapp | `knapp_be.mp3` |
-| ☐ | 47 | Karussell | Karussell | `karussell_be.mp3` |
-| ☐ | 48 | Kiosk | Kiosk | `kiosk_be.mp3` |
-| ☐ | 49 | Strass | Strasse | `strass_be.mp3` |
-| ☐ | 50 | Stäge | Treppe | `staege_be.mp3` |
-| ☐ | 51 | Stadt | Stadt | `stadt_be.mp3` |
-| ☐ | 52 | Sport | Sport | `sport_be.mp3` |
-| ☐ | 53 | Spiu | Spiel | `spiu_be.mp3` |
-| ☐ | 54 | Spaghetti | Spaghetti | `spaghetti_be.mp3` |
-| ☐ | 55 | Schoner | Schoner (z. B. fürs Knie) | `schoner_be.mp3` |
-| ☐ | 56 | hüt | heute | `huet_be.mp3` |
-| ☐ | 57 | Tier | Tier | `tier_be.mp3` |
+| ☑ | 31 | Rot | rot | `rot_be.mp3` |
+| ☑ | 32 | Räge | Regen | `raege_be.mp3` |
+| ☑ | 33 | Richtig | richtig | `richtig_be.mp3` |
+| ☑ | 34 | Mässer | Messer | `maesser_be.mp3` |
+| ☑ | 35 | Bär | Bär | `baer_be.mp3` |
+| ☑ | 36 | Stärn | Stern | `staern_be.mp3` |
+| ☑ | 37 | Schön | schön | `schoen_be.mp3` |
+| ☑ | 38 | Löffu | Löffel | `loeffu_be.mp3` |
+| ☑ | 39 | Öffne | öffnen | `oeffne_be.mp3` |
+| ☑ | 40 | Tür | Tür | `tuer_be.mp3` |
+| ☑ | 41 | Müed | müde | `mueed_be.mp3` |
+| ☑ | 42 | Nüt | nichts | `nuet_be.mp3` |
+| ☑ | 43 | Chind | Kind | `chind_be.mp3` |
+| ☑ | 44 | Dach | Dach | `dach_be.mp3` |
+| ☑ | 45 | Buech | Buch | `buech_be.mp3` |
+| ☑ | 46 | Knapp | knapp | `knapp_be.mp3` |
+| ☑ | 47 | Karussell | Karussell | `karussell_be.mp3` |
+| ☑ | 48 | Kiosk | Kiosk | `kiosk_be.mp3` |
+| ☑ | 49 | Strass | Strasse | `strass_be.mp3` |
+| ☑ | 50 | Stäge | Treppe | `staege_be.mp3` |
+| ☑ | 51 | Stadt | Stadt | `stadt_be.mp3` |
+| ☑ | 52 | Sport | Sport | `sport_be.mp3` |
+| ☑ | 53 | Spiu | Spiel | `spiu_be.mp3` |
+| ☑ | 54 | Spaghetti | Spaghetti | `spaghetti_be.mp3` |
+| ☑ | 55 | Schoner | Schoner (z. B. fürs Knie) | `schoner_be.mp3` |
+| ☑ | 56 | hüt | heute | `huet_be.mp3` |
+| ☑ | 57 | Tier | Tier | `tier_be.mp3` |
 
 ---
 
