@@ -116,7 +116,9 @@ export const en = {
     // The same as in Germany for the examples, so "Swiss" is only in brackets.
     standardGerman: "(Swiss) Standard German",
     // By dialect id. A dialect without a name here shows its id.
-    dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
+    // Inside lessons, after Getting started has introduced them: their own names, so learners get
+    // used to what they'll hear in Switzerland.
+    dialects: { be: "Bärndütsch", zh: "Züritüütsch" } as Record<string, string>,
     // The accent of each dialect, for pronouncing Standard German with it.
     accents: { be: "Bernese", zh: "Zürich" } as Record<string, string>,
     // A rule's examples said with the accent, named above their buttons.
@@ -252,6 +254,11 @@ export const en = {
     changed: (count: number, letters: string) => `${letters} ${count > 1 ? "sound" : "sounds"} different`,
     noMicrophone: "Without a microphone: say it out loud, then listen.",
     said: "Said it, listen",
+    // When the words are the dialect's own, as in the English track: what to do refers to English.
+    sayDialect: "Say the word. Then listen to it.",
+    soundsLike: (dialect: string, letter: string) => `In ${dialect}, ${letter} sounds like…`,
+    hear: "Listen. Which word did you hear?",
+    itWas: (word: string) => `Not quite: it was ${word}`,
   },
 
   flashcards: {

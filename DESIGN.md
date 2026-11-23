@@ -251,6 +251,23 @@ topic in English); in the code and this guide they are lesson → section → ru
     "Gesagt, anhören".
   - **Repeating a sentence**: the sentence in heading size, its letters to watch underlined in
     sage with a thinner line behind the same tip, "Anhören" first, then as above.
+  - **In the English track**, the words are Bärndütsch itself, so the eyebrow is the dialect's
+    name, "BÄRNDÜTSCH", and what to do refers to English, without a line on why. A word to say may
+    have no letters to watch, as in the first lesson, and then has no tip. A round goes from reading to hearing to saying:
+  - **Sounds like?** (English track): "In Bärndütsch, W sounds like…", the letter large in a mist
+    circle, and two or three English comparisons as choice cards ("v in very", its v underlined in
+    sage). Tapping one answers it: the right one turns sage with a check, a wrong pick rose with a
+    cross. Then a Bärndütsch word with the letter shows on mist with its play button. Only for
+    sounds English has something to compare with; R, CH and K are only said. A wrong answer is
+    never the right answer of an earlier exercise, such as "a in father" for Ä.
+  - **The rule behind a mistake**: once a letter is got wrong, in spotting letters, "Sounds like?"
+    or "Which did you hear?", a mist pill "Regel nachlesen: R" ("Read the rule: R") opens its
+    topic in a sheet, "Vowels" for a letter that's a card in it. Only for mistakes: a right
+    answer has none.
+  - **Which did you hear?** (English track): "Listen. Which word did you hear?", a play button,
+    then two or three words that differ in one sound as choice cards, each with its meaning.
+    Tapping one answers it as above, and the word plays again. The word with the new sound is the
+    answer only about half the time, so it can't be guessed without listening.
   - A recording still to come is an inactive play button with "Aufnahme folgt".
   - Until an exercise is answered, "Überspringen" under its main button goes on without it, as
     not right. This holds for every exercise in a round.

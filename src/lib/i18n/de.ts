@@ -216,6 +216,10 @@ export const de: Dictionary = {
     changed: (count, letters) => `${letters} ${count > 1 ? "klingen" : "klingt"} anders`,
     noMicrophone: "Ohne Mikrofon: sag es laut, dann hör es dir an.",
     said: "Gesagt, anhören",
+    sayDialect: "Sag das Wort. Dann hör es dir an.",
+    soundsLike: (dialect, letter) => `Auf ${dialect} klingt ${letter} wie …`,
+    hear: "Hör zu. Welches Wort hast du gehört?",
+    itWas: (word) => `Nicht ganz: Es war ${word}`,
   },
 
   flashcards: {

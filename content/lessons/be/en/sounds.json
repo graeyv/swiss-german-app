@@ -221,6 +221,150 @@
           ],
           "examples": []
         }
+      ],
+      "exercises": [
+        {
+          "id": "a",
+          "type": "sounds_like",
+          "letter": "A",
+          "options": [
+            "a in f[a]ther",
+            "a in c[a]t"
+          ],
+          "example": {
+            "word": "Mami",
+            "meaning": "Mum",
+            "audio": null
+          }
+        },
+        {
+          "id": "e",
+          "type": "sounds_like",
+          "letter": "E",
+          "options": [
+            "e in b[e]d",
+            "ee in s[ee]"
+          ],
+          "example": {
+            "word": "Bett",
+            "meaning": "Bed",
+            "audio": null
+          }
+        },
+        {
+          "id": "i",
+          "type": "sounds_like",
+          "letter": "I",
+          "options": [
+            "i in s[i]t",
+            "i in r[i]de"
+          ],
+          "example": {
+            "word": "Fisch",
+            "meaning": "Fish",
+            "audio": null
+          }
+        },
+        {
+          "id": "o",
+          "type": "sounds_like",
+          "letter": "O",
+          "options": [
+            "o in n[o]",
+            "o in h[o]t"
+          ],
+          "example": {
+            "word": "Brot",
+            "meaning": "Bread",
+            "audio": null
+          }
+        },
+        {
+          "id": "u",
+          "type": "sounds_like",
+          "letter": "U",
+          "options": [
+            "oo in f[oo]d",
+            "u in c[u]t"
+          ],
+          "example": {
+            "word": "Huus",
+            "meaning": "House",
+            "audio": null
+          }
+        },
+        {
+          "id": "hear-haas",
+          "type": "hear",
+          "letter": "A",
+          "options": [
+            {
+              "word": "Haas",
+              "meaning": "Rabbit"
+            },
+            {
+              "word": "Huus",
+              "meaning": "House"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "hear-bett",
+          "type": "hear",
+          "letter": "E",
+          "options": [
+            {
+              "word": "Bett",
+              "meaning": "Bed"
+            },
+            {
+              "word": "Bad",
+              "meaning": "Bath"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "hear-lift",
+          "type": "hear",
+          "letter": "I",
+          "options": [
+            {
+              "word": "Lift",
+              "meaning": "Lift"
+            },
+            {
+              "word": "Luft",
+              "meaning": "Air"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "say-mami",
+          "type": "say",
+          "word": "Mami",
+          "audio": null
+        },
+        {
+          "id": "say-huus",
+          "type": "say",
+          "word": "Huus",
+          "audio": null
+        },
+        {
+          "id": "say-lampe",
+          "type": "say",
+          "word": "Lampe",
+          "audio": null
+        },
+        {
+          "id": "say-bad",
+          "type": "say",
+          "word": "Bad",
+          "audio": null
+        }
       ]
     },
     {
@@ -345,6 +489,88 @@
             }
           ],
           "examples": []
+        }
+      ],
+      "exercises": [
+        {
+          "id": "j",
+          "type": "sounds_like",
+          "letter": "J",
+          "options": [
+            "y in [y]es",
+            "j in [j]am"
+          ],
+          "example": {
+            "word": "Jahr",
+            "meaning": "Year",
+            "audio": null
+          }
+        },
+        {
+          "id": "w",
+          "type": "sounds_like",
+          "letter": "W",
+          "options": [
+            "v in [v]ery",
+            "w in [w]ater"
+          ],
+          "example": {
+            "word": "Wasser",
+            "meaning": "Water",
+            "audio": null
+          }
+        },
+        {
+          "id": "z",
+          "type": "sounds_like",
+          "letter": "Z",
+          "options": [
+            "ts in ca[ts]",
+            "z in [z]oo"
+          ],
+          "example": {
+            "word": "Ziit",
+            "meaning": "Time",
+            "audio": null
+          }
+        },
+        {
+          "id": "sch",
+          "type": "sounds_like",
+          "letter": "SCH",
+          "options": [
+            "sh in [sh]oe",
+            "sch in [sch]ool"
+          ],
+          "example": {
+            "word": "Schoggi",
+            "meaning": "Chocolate",
+            "audio": null
+          }
+        },
+        {
+          "id": "say-jahr",
+          "type": "say",
+          "word": "[J]ahr",
+          "audio": null
+        },
+        {
+          "id": "say-wasser",
+          "type": "say",
+          "word": "[W]asser",
+          "audio": null
+        },
+        {
+          "id": "say-ziit",
+          "type": "say",
+          "word": "[Z]iit",
+          "audio": null
+        },
+        {
+          "id": "say-schoggi",
+          "type": "say",
+          "word": "[Sch]oggi",
+          "audio": null
         }
       ]
     },
@@ -585,6 +811,164 @@
             }
           ],
           "examples": []
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ae",
+          "type": "sounds_like",
+          "letter": "Ä",
+          "options": [
+            "a in c[a]t, as said in British English",
+            "ay in d[ay]"
+          ],
+          "example": {
+            "word": "Bär",
+            "meaning": "Bear",
+            "audio": null
+          }
+        },
+        {
+          "id": "oe",
+          "type": "sounds_like",
+          "letter": "Ö",
+          "options": [
+            "ir in b[ir]d, as said in British English",
+            "oy in b[oy]"
+          ],
+          "example": {
+            "word": "Schön",
+            "meaning": "Beautiful",
+            "audio": null
+          }
+        },
+        {
+          "id": "st",
+          "type": "sounds_like",
+          "letter": "ST",
+          "options": [
+            "sh in [sh]oe, then t",
+            "st in [st]op"
+          ],
+          "example": {
+            "word": "Strass",
+            "meaning": "Street",
+            "audio": null
+          }
+        },
+        {
+          "id": "sp",
+          "type": "sounds_like",
+          "letter": "SP",
+          "options": [
+            "sh in [sh]oe, then p",
+            "sp in [sp]ort"
+          ],
+          "example": {
+            "word": "Sport",
+            "meaning": "Sport",
+            "audio": null
+          }
+        },
+        {
+          "id": "hear-haend",
+          "type": "hear",
+          "letter": "Ä",
+          "options": [
+            {
+              "word": "Händ",
+              "meaning": "Hands"
+            },
+            {
+              "word": "Hand",
+              "meaning": "Hand"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "hear-schon",
+          "type": "hear",
+          "letter": "Ö",
+          "options": [
+            {
+              "word": "schon",
+              "meaning": "Already"
+            },
+            {
+              "word": "schön",
+              "meaning": "Beautiful"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "hear-huet",
+          "type": "hear",
+          "letter": "Ü",
+          "options": [
+            {
+              "word": "hüt",
+              "meaning": "Today"
+            },
+            {
+              "word": "Hut",
+              "meaning": "Hat"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "hear-tier",
+          "type": "hear",
+          "letter": "Ü",
+          "options": [
+            {
+              "word": "Tier",
+              "meaning": "Animal"
+            },
+            {
+              "word": "Tür",
+              "meaning": "Door"
+            }
+          ],
+          "audio": null
+        },
+        {
+          "id": "say-raege",
+          "type": "say",
+          "word": "[R]äge",
+          "audio": null
+        },
+        {
+          "id": "say-mueed",
+          "type": "say",
+          "word": "M[ü]ed",
+          "audio": null
+        },
+        {
+          "id": "say-chind",
+          "type": "say",
+          "word": "[Ch]ind",
+          "audio": null
+        },
+        {
+          "id": "say-buech",
+          "type": "say",
+          "word": "Bue[ch]",
+          "audio": null
+        },
+        {
+          "id": "say-kiosk",
+          "type": "say",
+          "word": "[K]iosk",
+          "audio": null
+        },
+        {
+          "id": "say-loeffu",
+          "type": "say",
+          "word": "L[ö]ffu",
+          "audio": null
         }
       ]
     }

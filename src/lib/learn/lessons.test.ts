@@ -111,7 +111,17 @@ describe("lessons", () => {
   it("practises pronunciation in one round over the whole module", () => {
     const { lesson } = LESSONS.find(({ lesson }) => lesson.id === "pronunciation")!;
     expect(practiceUnits(lesson).map(({ id }) => id)).toEqual(["mixed"]);
-    expect(practiceParams().map(({ section }) => section)).toEqual(["mixed"]);
+    expect(practiceParams().map(({ section }) => section)).toEqual(["mixed", "familiar", "different-letters", "new-sounds"]);
+  });
+
+  it("practises the English pronunciation in a round per lesson, from reading to hearing to saying", () => {
+    const { lesson } = LESSONS.find(({ lesson }) => lesson.id === "sounds")!;
+    const order = ["sounds_like", "hear", "say"];
+    for (const unit of practiceUnits(lesson)) {
+      const types = (unit.exercises ?? []).map(({ type }) => order.indexOf(type));
+      expect(types, unit.id).toEqual([...types].sort((a, b) => a - b));
+      expect(types.includes(-1), unit.id).toBe(false);
+    }
   });
 
   it("goes on to the next section that's ready", () => {
