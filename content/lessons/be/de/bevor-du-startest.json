@@ -4,6 +4,7 @@
   "titleIn": { "en": "Before you start" },
   "subtitle": "Was du über Schweizerdeutsch wissen solltest",
   "icon": "wave",
+  "readOnly": true,
   "description": "Drei Dinge, die dir den Einstieg leichter machen: wie sich die Dialekte unterscheiden, wie man sie schreibt und wann man sie spricht.",
   "expectations": [
     {
@@ -34,17 +35,17 @@
             {
               "dialect": "Ich weiss es nöd.",
               "meaning": "Züritüütsch",
-              "audio": null
+              "audio": "/audio/lessons/phrases/ich-weiss-es-noed_zh.mp3"
             },
             {
               "dialect": "I weiss es nid.",
               "meaning": "Bärndütsch",
-              "audio": null
+              "audio": "/audio/lessons/phrases/i-weiss-es-nid_be.mp3"
             },
             {
               "dialect": "I weiss es nit.",
               "meaning": "Baseldytsch",
-              "audio": null
+              "audio": "/audio/lessons/phrases/i-weiss-es-nit_bs.mp3"
             }
           ],
           "examples": [],

@@ -18,7 +18,7 @@ export const de: Dictionary = {
     bubbles: ["Grüessech!", "Wie geits?", "Merci viumau!", "Hoi zäme!"],
     headline: "Bald redest du mit.",
     intro: "Schweizerdeutsch für den Alltag.",
-    start: "Los geht's",
+    start: "Konto erstellen",
     haveAccount: "Ich habe schon ein Konto",
   },
 
@@ -33,8 +33,6 @@ export const de: Dictionary = {
     logIn: "Anmelden",
     createAccount: "Konto erstellen",
     confirmEmail: "Bestätige dein Konto über den Link in deiner E-Mail.",
-    google: "Weiter mit Google",
-    or: "oder",
   },
 
   learn: {
@@ -43,7 +41,7 @@ export const de: Dictionary = {
     startHere: "Hier beginnen",
     topicsRead: (read, count) => `${read} von ${many(count, "Thema", "Themen")} gelesen`,
     allModules: "Alle Module",
-    lastRead: "Zuletzt gelesen",
+    allRead: "Alles gelesen",
   },
 
   nav: {
@@ -78,9 +76,6 @@ export const de: Dictionary = {
     audioNote:
       "Ob eine Wortkarte das Wort von selbst abspielt, sobald du das Schweizerdeutsch siehst. Du kannst es auch während einer Sitzung oben umschalten.",
     audioModes: { auto: "Automatisch abspielen", tap: "Nur auf Tippen" },
-    topics: "Themen",
-    topicsNote: "Deine Themen erscheinen beim Üben zuerst.",
-    topicsChosen: (count) => (count === 0 ? "Keine" : `${count} gewählt`),
     save: "Speichern",
     saving: "Wird gespeichert…",
     close: "Schliessen",
@@ -103,6 +98,7 @@ export const de: Dictionary = {
     done: "Fertig",
     position: (section, position, count) => `${section} · ${position} / ${count}`,
     remember: "Merke",
+    tip: "Tipp",
     listen: "Anhören",
     same: "gleich",
     onlyIn: (variety) => `nur ${variety}`,
@@ -220,6 +216,10 @@ export const de: Dictionary = {
     changed: (count, letters) => `${letters} ${count > 1 ? "klingen" : "klingt"} anders`,
     noMicrophone: "Ohne Mikrofon: sag es laut, dann hör es dir an.",
     said: "Gesagt, anhören",
+    sayDialect: "Sag das Wort. Dann hör es dir an.",
+    soundsLike: (dialect, letter) => `Auf ${dialect} klingt ${letter} wie …`,
+    hear: "Hör zu. Welches Wort hast du gehört?",
+    itWas: (word) => `Nicht ganz: Es war ${word}`,
   },
 
   flashcards: {

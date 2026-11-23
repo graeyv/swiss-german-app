@@ -19,7 +19,7 @@ export const en = {
     bubbles: ["Grüessech!", "Wie geits?", "Merci viumau!", "Hoi zäme!"],
     headline: "Soon you'll join in.",
     intro: "Swiss German for everyday life.",
-    start: "Get started",
+    start: "Create account",
     haveAccount: "I already have an account",
   },
 
@@ -34,8 +34,6 @@ export const en = {
     logIn: "Log in",
     createAccount: "Create account",
     confirmEmail: "Check your email to confirm your account.",
-    google: "Continue with Google",
-    or: "or",
   },
 
   learn: {
@@ -47,7 +45,7 @@ export const en = {
     topicsRead: (read: number, count: number) => `${read} of ${many(count, "topic", "topics")} read`,
     allModules: "All modules",
     // In place of a module's size, on the one the learner read in last.
-    lastRead: "Read last",
+    allRead: "All read",
   },
 
   nav: {
@@ -82,9 +80,6 @@ export const en = {
     audioNote:
       "Whether a word card plays the word by itself as soon as you see the Swiss German. You can also switch it at the top of a session.",
     audioModes: { auto: "Play automatically", tap: "Only when tapped" },
-    topics: "Topics",
-    topicsNote: "Your topics come first in Practice.",
-    topicsChosen: (count: number) => (count === 0 ? "None" : `${count} chosen`),
     save: "Save",
     saving: "Saving…",
     close: "Close",
@@ -110,6 +105,7 @@ export const en = {
     // Where a topic is in its section, such as "Consonants · 2 / 6".
     position: (section: string, position: number, count: number) => `${section} · ${position} / ${count}`,
     remember: "Remember",
+    tip: "Tip",
     // A play button beside a phrase.
     listen: "Listen",
     // Marks a word that sounds the same in Standard German and the dialect.
@@ -120,7 +116,9 @@ export const en = {
     // The same as in Germany for the examples, so "Swiss" is only in brackets.
     standardGerman: "(Swiss) Standard German",
     // By dialect id. A dialect without a name here shows its id.
-    dialects: { be: "Bernese German", zh: "Zürich German" } as Record<string, string>,
+    // Inside lessons, after Getting started has introduced them: their own names, so learners get
+    // used to what they'll hear in Switzerland.
+    dialects: { be: "Bärndütsch", zh: "Züritüütsch" } as Record<string, string>,
     // The accent of each dialect, for pronouncing Standard German with it.
     accents: { be: "Bernese", zh: "Zürich" } as Record<string, string>,
     // A rule's examples said with the accent, named above their buttons.
@@ -256,6 +254,11 @@ export const en = {
     changed: (count: number, letters: string) => `${letters} ${count > 1 ? "sound" : "sounds"} different`,
     noMicrophone: "Without a microphone: say it out loud, then listen.",
     said: "Said it, listen",
+    // When the words are the dialect's own, as in the English track: what to do refers to English.
+    sayDialect: "Say the word. Then listen to it.",
+    soundsLike: (dialect: string, letter: string) => `In ${dialect}, ${letter} sounds like…`,
+    hear: "Listen. Which word did you hear?",
+    itWas: (word: string) => `Not quite: it was ${word}`,
   },
 
   flashcards: {

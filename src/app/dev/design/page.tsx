@@ -18,6 +18,9 @@ import { GradePreview } from "./grade-preview";
 import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";
 import { LogoPreview } from "./logo-preview";
+import { ModuleProgressPreview } from "./module-progress-preview";
+import { EnglishExercisePreview } from "./english-exercises-preview";
+import { Stat } from "@/app/(tabs)/profile/stat";
 import { RatingTipPreview } from "./rating-tip-preview";
 import { ConversationsHeaderPreview, PracticeHeaderPreview } from "./tab-header-preview";
 
@@ -36,6 +39,43 @@ export default function DevDesignPage() {
 
       <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
         <VariantPreview />
+      </Part>
+
+      <Part title="Englisch · Aussprache (in Arbeit)">
+        <ListRows>
+          <ListRow href="/dev/lesson-en" icon="speaking" title="Pronunciation" caption="Modul, Lektionen und Themen" />
+        </ListRows>
+      </Part>
+
+      <Part title="Englisch · Übung 1 (leicht): Sounds like? · W (erste Übung der Runde)">
+        <EnglishExercisePreview section="different-letters" id="w" first />
+      </Part>
+
+      <Part title="Englisch · Übung 1 (leicht): Sounds like? · ST">
+        <EnglishExercisePreview section="new-sounds" id="st" />
+      </Part>
+
+      <Part title="Englisch · Übung 2 (mittel): Which did you hear? · hüt / Huet / Hit">
+        <EnglishExercisePreview section="new-sounds" id="hear-huet" />
+      </Part>
+
+      <Part title="Englisch · Übung 3 (schwer): Say the word · Schoggi">
+        <EnglishExercisePreview section="different-letters" id="say-schoggi" />
+      </Part>
+
+      <Part title="Englisch · Übung 3 (schwer): Say the word · Mami (Lektion 1, ohne Tipp)">
+        <EnglishExercisePreview section="familiar" id="say-mami" />
+      </Part>
+
+      <Part title="Profil: Fortschritt (iPhone-Breite)">
+        <div className="grid w-[342px] max-w-full grid-cols-2 gap-3">
+          <Stat icon="flame" value={12} label="Tage in Folge" />
+          <Stat icon="cards" value={248} label="Karten gelernt" />
+        </div>
+      </Part>
+
+      <Part title="Module in Lernen: wie weit gelesen (iPhone-Breite)">
+        <ModuleProgressPreview />
       </Part>
 
       <Part title="Einmaliger Tipp beim Bewerten (iPhone-Breite)">
@@ -315,6 +355,7 @@ const ICONS: IconName[] = [
   "box",
   "question",
   "calendar",
+  "flame",
   "cards",
   "learn",
   "practice",

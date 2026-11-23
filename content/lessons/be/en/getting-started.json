@@ -4,6 +4,7 @@
   "titleIn": { "de": "Erste Schritte" },
   "subtitle": "Your first steps in Swiss German",
   "icon": "wave",
+  "readOnly": true,
   "description": "Find out what Swiss German is, how it's spoken and written, and how to approach learning it, before you learn your first words.",
   "expectations": [
     {
@@ -34,19 +35,19 @@
               "dialect": "Chunsch mit?",
               "meaning": "Are you coming along?",
               "standardGerman": "Kommst du mit?",
-              "audio": null
+              "audio": "/audio/lessons/phrases/chunsch-mit_be.mp3"
             },
             {
               "dialect": "I bi müed.",
               "meaning": "I'm tired.",
               "standardGerman": "Ich bin müde.",
-              "audio": null
+              "audio": "/audio/lessons/phrases/i-bi-mueed_be.mp3"
             },
             {
               "dialect": "Was machsch?",
               "meaning": "What are you doing?",
               "standardGerman": "Was machst du?",
-              "audio": null
+              "audio": "/audio/lessons/phrases/was-machsch_be.mp3"
             }
           ],
           "examples": [],
@@ -77,22 +78,22 @@
             {
               "dialect": "Ich weiss es nöd.",
               "meaning": "Zürich German (Züritüütsch)",
-              "audio": null
+              "audio": "/audio/lessons/phrases/ich-weiss-es-noed_zh.mp3"
             },
             {
               "dialect": "I weiss es nid.",
               "meaning": "Bernese German (Bärndütsch)",
-              "audio": null
+              "audio": "/audio/lessons/phrases/i-weiss-es-nid_be.mp3"
             },
             {
               "dialect": "I weiss es nit.",
               "meaning": "Basel German (Baseldytsch)",
-              "audio": null
+              "audio": "/audio/lessons/phrases/i-weiss-es-nit_bs.mp3"
             },
             {
               "dialect": "Ich weiss es nicht.",
               "meaning": "(Swiss) Standard German",
-              "audio": null
+              "audio": "/audio/lessons/phrases/ich-weiss-es-nicht_de.mp3"
             }
           ],
           "examples": [],

@@ -26,8 +26,8 @@ async function LessonExercises() {
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
   const [reads, rounds] = await Promise.all([getReads(supabase), getRounds(supabase, new Date())]);
-  // The learner's track, in their language, mirroring Learn.
-  const lessons = lessonsFor(locale);
+  // The learner's track, in their language, mirroring Learn, without the modules only to read.
+  const lessons = lessonsFor(locale).filter((entry) => !entry.lesson.readOnly);
   const suggestion = suggest(reads, rounds, lessons);
   const sections = practiceSections(lessons);
 

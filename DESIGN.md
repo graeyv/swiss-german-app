@@ -124,12 +124,15 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Practice switch** (Üben tab): "Wortschatz | Lektionen" at the top, a pill on mist with the open
   view in ivory. Each view is its own address. Below "Lektionen", the suggestion card and "ALLE
   ÜBUNGEN": every module as a list row ("1 von 2 Lektionen geübt"), opening its lessons to practise.
+  Modules only to read, such as "Bevor du startest", aren't listed.
 - **Module list** (Learn tab): under "ALLE MODULE", every module in order as an equal list row with
-  its icon, "MODUL N", title and "N Lektionen · N Themen". The module read in last says "Zuletzt
-  gelesen" instead of its size. A module still being written has the "Bald verfügbar" pill
-  (see Topic tile) in place of its size, but keeps its arrow and still opens, so learners see what
-  it will cover. Every module has its
-  own icon, never a colour.
+  its icon, "MODUL N", title and its size, "N Lektionen · N Themen", until anything in it is read.
+  Then it says how far: "4 von 10 Themen gelesen", and once every topic is read, "Alles gelesen"
+  in full teal, led by a small teal check like a read topic's. Topics still planned count, so a
+  module with more to come isn't done. No progress bar, no yellow, no dimming. A module still
+  being written has the "Bald verfügbar" pill (see Topic tile) in place of its size, but keeps its
+  arrow and still opens, so learners see what it will cover. Every module has its own icon, never
+  a colour.
 - **Topic tile** (`TopicTile`, Flashcards and Conversations): the topics in a two-column grid, each
   a tile on mist with the topic's illustration across the top on `sage-light` (3:2), its title and
   caption below, and, in Flashcards, today's counts at the bottom. Conversations uses the
@@ -151,7 +154,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   second line.
 - **List row** ("Konsonanten"): a rounded row on mist, optionally led by a filled icon in
   `teal-soft`, bold title, caption below, teal arrow (→) on the right. The whole row is the tap
-  target. Flashcard subtopics are list rows too, each with its own icon (`deck-icons.ts`).
+  target. Flashcard subtopics are list rows too, each with its own icon (`deck-icons.ts`). A row
+  whose content is all done (`done`) has its caption in full teal, led by a small teal check.
 - **Module page** (Learn): the lesson header, then under "Lektionen" each lesson as a card on
   mist with its title, "2 von 6 Themen gelesen" and an arrow pointing right (`down`, turned).
   Tapping it unfolds its topics inside the same card and turns the arrow down; several can be
@@ -173,6 +177,22 @@ topic in English); in the code and this guide they are lesson → section → ru
   each point on its own line with a small `teal-soft` dot, 12 px apart. A point with a term (such
   as "CH" or "Vowels") is a row on mist instead, the term bold and what it is below as a caption,
   so terms stand apart from the heading.
+- **Sounds** (a topic's letters and their words, as in the English pronunciation): a topic about
+  several letters, such as the vowels, gives each a mist card: the letter in title size beside
+  what it sounds like in body size ("Similar to e in bed", one English word), and below, each on
+  an ivory strip inside the card, the words in subtitle size with their meaning in `teal-soft`
+  and a round play button. A button shares its strip only with its word, so it's clear the word
+  is what plays. A topic about one letter, such as J, has no card: its text says what it sounds
+  like, and its words follow as a quiet list like the phrases. A section's first topic, when it
+  has no letters of its own, shows the letters to come in mist circles (pills for combinations
+  such as SCH), under each topic's title when topics have several letters. Previewed without
+  logging in at `/dev/lesson-en`.
+- **Marked letters**: in a topic's text, a tip or a sound's comparison, the letters that make a
+  sound are underlined in sage, as in the pronunciation exercises ("f<u>a</u>ther"). In the
+  content they're in brackets: "f[a]ther".
+- **Tip**: a topic can end on a tip, a way into the sound its text doesn't give, such as another
+  language's word ("If you know Spanish, CH is like the j in José"), in the takeaway's yellow card
+  labelled "TIP" ("TIPP"). It's the screen's one yellow, so a topic has a takeaway or a tip.
 - **Phrases** (a topic's example phrases): like the example list, without columns. Each phrase in
   the dialect in subtitle size, below it its meaning as a caption and, if given, "Standard German:
   Wie geht es dir?", and on the right a play button once it has a recording to come.
@@ -231,6 +251,23 @@ topic in English); in the code and this guide they are lesson → section → ru
     "Gesagt, anhören".
   - **Repeating a sentence**: the sentence in heading size, its letters to watch underlined in
     sage with a thinner line behind the same tip, "Anhören" first, then as above.
+  - **In the English track**, the words are Bärndütsch itself, so the eyebrow is the dialect's
+    name, "BÄRNDÜTSCH", and what to do refers to English, without a line on why. A word to say may
+    have no letters to watch, as in the first lesson, and then has no tip. A round goes from reading to hearing to saying:
+  - **Sounds like?** (English track): "In Bärndütsch, W sounds like…", the letter large in a mist
+    circle, and two or three English comparisons as choice cards ("v in very", its v underlined in
+    sage). Tapping one answers it: the right one turns sage with a check, a wrong pick rose with a
+    cross. Then a Bärndütsch word with the letter shows on mist with its play button. Only for
+    sounds English has something to compare with; R, CH and K are only said. A wrong answer is
+    never the right answer of an earlier exercise, such as "a in father" for Ä.
+  - **The rule behind a mistake**: once a letter is got wrong, in spotting letters, "Sounds like?"
+    or "Which did you hear?", a mist pill "Regel nachlesen: R" ("Read the rule: R") opens its
+    topic in a sheet, "Vowels" for a letter that's a card in it. Only for mistakes: a right
+    answer has none.
+  - **Which did you hear?** (English track): "Listen. Which word did you hear?", a play button,
+    then two or three words that differ in one sound as choice cards, each with its meaning.
+    Tapping one answers it as above, and the word plays again. The word with the new sound is the
+    answer only about half the time, so it can't be guessed without listening.
   - A recording still to come is an inactive play button with "Aufnahme folgt".
   - Until an exercise is answered, "Überspringen" under its main button goes on without it, as
     not right. This holds for every exercise in a round.
@@ -241,6 +278,16 @@ topic in English); in the code and this guide they are lesson → section → ru
   learner's dialect, in one quiet line in `teal-soft` under the Swiss German wherever it shows:
   large under the main form, small under it at the top of the back, and in the word list. Never on
   a front that would give the answer away.
+- **Profile** (Profil): the learner's initial in a sage circle, the address in heading size and
+  "Lernt seit November 2026" as a caption; then the progress numbers, then the settings in groups
+  ("SPRACHEN", "LERNEN", "KONTO", headed like "ALLE MODULE"). Each setting is a list row on mist:
+  its icon, its name in bold, what's chosen below as a caption, and the arrow; it opens a bottom
+  sheet with its title in heading size, a cross to close, a note in `teal-soft`, and choices as
+  cards on mist, sage with a teal check once chosen, as in the onboarding. "Abmelden" is a row on
+  mist in brick. No lines between rows.
+- **Progress numbers** (Profil): days in a row and cards learned, side by side, each on its own
+  mist card: its icon in `teal-soft` (a flame, cards), the number in title size, its words below
+  as a caption in `teal-soft` ("Tage in Folge"). No emoji, no border, no line between them.
 - **Today's goal** (Üben → Wortschatz): a card on mist every day, with a bar for new cards and
   one for reviews, on an ivory track. Once it's reached, a small yellow pill with a check says
   "Erreicht": the card's one yellow. No emoji.
@@ -267,15 +314,12 @@ topic in English); in the code and this guide they are lesson → section → ru
   bubbles pop in one after another, each from its tail; with reduced motion they're all there at
   once. They're only a picture: no tap, no translation. Under the card, the headline in title size
   ("Bald redest du mit.") and one line in `teal-soft` ("Schweizerdeutsch für den Alltag."). At
-  the bottom, "Los geht's" (primary, creates an account) and "Ich habe schon ein Konto"
+  the bottom, "Konto erstellen" (primary) and "Ich habe schon ein Konto"
   (secondary).
 - **Login** (`/login`, and `/login?new` to create an account): the logo at the top left, leading
   back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei Hoi
-  anmelden"), then "Weiter mit Google" as a secondary button, the same on both, then "oder" in
-  caption size and `teal-soft`, centred, without lines, then email and password, one primary
-  button, and below it a text button to the other ("Schon ein Konto? Anmelden", "Neu bei Hoi?
-  Konto erstellen"). Google's "G" keeps its own four colours, as Google requires: the one
-  exception to "teal is the only icon colour".
+  anmelden"), email and password, one primary button, and below it a text button to the other
+  ("Schon ein Konto? Anmelden", "Neu bei Hoi? Konto erstellen").
 - **Choosing the track** (onboarding's first question), all in one language: the one from the
   start page, which the start page's switch at the top right ("English" with a globe) changes,
   on this screen only. "Verstehst du Hochdeutsch gut?" in title size, and below it in body size
@@ -344,9 +388,7 @@ topic in English); in the code and this guide they are lesson → section → ru
 
 ## Not decided yet
 
-- **Emojis**: multicoloured emojis clash with "teal is the only icon colour". Flashcard subtopics
-  now use icons, and topics their illustration. Onboarding and settings still show the topics'
-  emojis; this guide will say how to replace them.
+Nothing at the moment.
 
 ## Don'ts
 

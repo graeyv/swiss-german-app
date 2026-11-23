@@ -6,25 +6,6 @@ import { createClient } from "@/lib/supabase/server";
 
 type Result = { error?: string };
 
-// The topics shown first in Practice: top-level vocabulary decks, as chosen in onboarding.
-export async function updateInterests(codes: string[]): Promise<Result> {
-  if (!Array.isArray(codes)) return { error: "Unknown topics" };
-
-  const supabase = await createClient();
-  // Only topics that exist count, so a stale or tampered list can't pile up.
-  const { data: topics, error } = await supabase
-    .from("decks")
-    .select("code")
-    .is("parent_id", null)
-    .eq("kind", "vocabulary")
-    .in("code", codes);
-  if (error) return { error: error.message };
-
-  const result = await updateProfile({ interests: topics.map((topic) => topic.code) });
-  if (!result.error) revalidatePath("/flashcards");
-  return result;
-}
-
 // The dialect whose words and grammar the learner practises.
 export async function updateDialect(dialectId: string): Promise<Result> {
   // Only dialects with content to learn, as in onboarding.

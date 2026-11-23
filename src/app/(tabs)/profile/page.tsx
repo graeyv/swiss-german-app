@@ -1,6 +1,5 @@
 import { type ReactNode, Suspense } from "react";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
-import { getToday } from "@/lib/flashcards/data";
 import { DEFAULT_NEW_CARDS } from "@/lib/flashcards/daily-plan";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
@@ -8,7 +7,8 @@ import { lessonsFor } from "@/lib/learn/lessons";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../actions";
 import { LogOutIcon } from "./icons";
-import { AudioSetting, DialectSetting, DirectionSetting, PaceSetting, TopicsSetting, TrackSetting } from "./settings";
+import { Stat } from "./stat";
+import { AudioSetting, DialectSetting, DirectionSetting, PaceSetting, TrackSetting } from "./settings";
 
 export default function ProfilePage() {
   return (
@@ -22,15 +22,14 @@ export default function ProfilePage() {
 async function Profile() {
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
-  const [claims, profile, dialects, stats, { tree }] = await Promise.all([
+  const [claims, profile, dialects, stats] = await Promise.all([
     supabase.auth.getClaims(),
     supabase
       .from("profiles")
-      .select("created_at, new_cards_per_day, card_front, autoplay_audio, interests, dialect_id")
+      .select("created_at, new_cards_per_day, card_front, autoplay_audio, dialect_id")
       .maybeSingle(),
     supabase.from("dialects").select("id, name").order("name"),
     supabase.rpc("profile_stats").single(),
-    getToday(supabase),
   ]);
   if (profile.error) throw new Error(profile.error.message);
   if (dialects.error) throw new Error(dialects.error.message);
@@ -43,33 +42,31 @@ async function Profile() {
         new Date(profile.data.created_at),
       )
     : null;
-  // Topics are the top-level word decks, as in onboarding.
-  const topics = tree
-    .filter((deck) => deck.kind === "vocabulary")
-    .map(({ code, title, emoji }) => ({ code, title, emoji }));
 
   return (
     <>
       <title>{t.title(t.profile.title)}</title>
 
+      {/* The learner's initial in a sage circle, like the logo's bubble, the address in heading
+          size, and since when they learn. */}
       <div className="flex items-center gap-4">
         <span
           aria-hidden
-          className="flex size-16 shrink-0 items-center justify-center rounded-full bg-accent text-2xl font-bold text-accent-foreground"
+          className="flex size-16 shrink-0 items-center justify-center rounded-full bg-sage text-title font-bold"
         >
           {(email ?? "?").charAt(0).toUpperCase()}
         </span>
-        <div className="min-w-0">
-          <h1 className="truncate text-xl font-bold tracking-tight">{email ?? t.profile.title}</h1>
-          {since && <p className="text-sm text-muted">{t.profile.learningSince(since)}</p>}
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <h1 className="truncate text-heading font-bold">{email ?? t.profile.title}</h1>
+          {since && <p className="text-caption text-teal-soft">{t.profile.learningSince(since)}</p>}
         </div>
       </div>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{t.profile.progress}</h2>
-        <div className="grid grid-cols-2 divide-x divide-line rounded-2xl border border-line bg-surface">
-          <Stat icon="🔥" value={stats.data.streak} label={t.profile.streak(stats.data.streak)} />
-          <Stat icon="📚" value={stats.data.words_learned} label={t.profile.wordsLearned(stats.data.words_learned)} />
+        <GroupTitle>{t.profile.progress}</GroupTitle>
+        <div className="grid grid-cols-2 gap-3">
+          <Stat icon="flame" value={stats.data.streak} label={t.profile.streak(stats.data.streak)} />
+          <Stat icon="cards" value={stats.data.words_learned} label={t.profile.wordsLearned(stats.data.words_learned)} />
         </div>
       </section>
 
@@ -85,12 +82,12 @@ async function Profile() {
           locale={locale}
         />
         <AudioSetting autoplay={profile.data?.autoplay_audio ?? true} locale={locale} />
-        <TopicsSetting topics={topics} interests={profile.data?.interests ?? []} locale={locale} />
       </Group>
 
       <Group title={t.profile.account}>
+        {/* In brick, as what ends something; a row on mist like the settings. */}
         <form action={signOut}>
-          <button className="flex min-h-14 w-full items-center gap-3 text-left font-semibold text-danger transition-opacity active:opacity-60">
+          <button className="flex min-h-18 w-full items-center gap-4 rounded-3xl bg-mist px-6 py-4 text-left text-body font-bold text-brick transition-transform active:scale-[0.98]">
             <LogOutIcon />
             {t.profile.logOut}
           </button>
@@ -100,24 +97,18 @@ async function Profile() {
   );
 }
 
-// A section of settings: flat rows under a heading, with thin lines between them.
+// A section of settings: rows on mist under a heading, with space between them, as Learn's
+// modules. No lines. Each setting also holds its sheet, so they're not a list. See DESIGN.md.
 function Group({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="flex flex-col gap-1">
-      <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">{title}</h2>
-      <div className="divide-y divide-line">{children}</div>
+    <section className="flex flex-col gap-3">
+      <GroupTitle>{title}</GroupTitle>
+      <div className="flex flex-col gap-3">{children}</div>
     </section>
   );
 }
 
-function Stat({ icon, value, label }: { icon: string; value: number; label: string }) {
-  return (
-    <div className="flex flex-col items-center gap-0.5 px-2 py-4 text-center">
-      <span aria-hidden className="text-xl">
-        {icon}
-      </span>
-      <span className="text-2xl font-bold tabular-nums">{value}</span>
-      <span className="text-xs leading-tight text-muted">{label}</span>
-    </div>
-  );
+// A section's heading, as "ALLE MODULE" in Learn.
+function GroupTitle({ children }: { children: ReactNode }) {
+  return <h2 className="text-caption font-semibold tracking-[0.08em] text-teal-soft uppercase">{children}</h2>;
 }
