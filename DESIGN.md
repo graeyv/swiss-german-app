@@ -212,7 +212,8 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Playing a recording** (`SoundBars`): every round play or speaker button is on mist, gives
   under the finger when tapped (scale 90–95 %), and while the recording plays turns teal with three
   bars bouncing in turn in place of its icon. Still with reduced motion.
-- **Pronunciation on a word card**: the speaker at the card's top right, as above. It plays by
+- **Pronunciation on a word card**: the speaker at the card's top right, as above, only while the
+  Swiss German side shows: turning the card to the translation hides it. It plays by
   itself the first time the Swiss German shows, unless the learner switched that off: a speaker in
   the session's top bar, crossed out while words only play on tap, and "Aussprache" in Profil.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in

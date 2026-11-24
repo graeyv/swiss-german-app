@@ -262,17 +262,18 @@ function CardStage({ card, front, autoplay, tip, locale, stacked, saving, saveEr
   const t = texts.session;
   const [revealed, setRevealed] = useState(false);
   const recording = useRecording(card.audio_url);
-  // The Swiss German shows on the front, or once the card is turned when the translation comes
-  // first: hearing it earlier would give the answer away.
-  const heard = front === "swiss_german" || revealed;
+  // Whether the side showing is the Swiss German one: the front when it comes first, else the back.
+  // Only that side has the speaker, so it goes when the card turns to the translation, and hearing
+  // the word can't give the answer away.
+  const swissGermanShowing = (front === "swiss_german") !== revealed;
   // Plays once per card, the first time its Swiss German shows, when the learner wants that.
   const played = useRef(false);
   const { play } = recording;
   useEffect(() => {
-    if (!autoplay || !heard || played.current) return;
+    if (!autoplay || !swissGermanShowing || played.current) return;
     played.current = true;
     play();
-  }, [autoplay, heard, play]);
+  }, [autoplay, swissGermanShowing, play]);
 
   // Space or Enter flips the card, and 1–4 grade it once it's revealed.
   useEffect(() => {
@@ -358,8 +359,7 @@ function CardStage({ card, front, autoplay, tip, locale, stacked, saving, saveEr
             </span>
           </button>
 
-          {/* Hearing the word first would give the answer away when the translation is the prompt. */}
-          {heard && <AudioButton recording={recording} hasAudio={!!card.audio_url} t={t} />}
+          {swissGermanShowing && <AudioButton recording={recording} hasAudio={!!card.audio_url} t={t} />}
         </div>
       </CardStack>
 
