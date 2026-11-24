@@ -82,7 +82,9 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 - Screen margin: 24 px left and right.
 - Rows and cards: corner radius 24 px, padding about 16 px vertically and 24 px horizontally,
   12 px between rows. No border, no shadow: the background colour sets them off.
-- Buttons: fully rounded (pill), at least 56 px high for the main action, full width.
+- Buttons: fully rounded (pill), at least 56 px high for the main action, full width. A button
+  says only what it does ("Weiter", "Üben", "Los geht's", "Nochmals lesen"), never the name of
+  the topic, lesson or module it leads to: the card or screen around it says that.
 - Space between sections: about 32 px. Space alone separates them: no divider lines.
 - Icons: Phosphor Icons (MIT licence), in `src/app/ui/icons.tsx`, without a box around them.
   Symbols (a topic, a lesson, the tabs, the ratings, Merke) are Phosphor's **fill** style; signs
@@ -95,7 +97,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`, `BottomSheet`, `TabHeader`, `Tip`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `AppName`, `TopicTile`, `TopicBanner`, `BottomSheet`, `TabHeader`, `Tip`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
 topic in English); in the code and this guide they are lesson → section → rule.
@@ -104,6 +106,11 @@ topic in English); in the code and this guide they are lesson → section → ru
   tail at the bottom left. At the top left of the tabs and on the welcome page. Never in another
   colour or without the bubble. The app icon and favicon are the same bubble on teal
   (`src/app/icon.png`, `apple-icon.png`, `public/icons/`).
+- **App name in text** (`AppName`, `withAppName`): wherever a text names the app, it's *hoi*:
+  lowercase, also at the start of a sentence, and in italics, so it reads as the name and not
+  as the greeting. In texts and lesson content, write the name as lowercase "hoi"; `withAppName`
+  sets it in italics. The greeting keeps its capital ("Hoi zäme!", "Grüessech, Hoi, Merci").
+  Where italics can't show, such as the browser tab and the home screen, it's lowercase "hoi".
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`). Where it skips a level, it names where it leads instead, in
   small semibold text: "‹ Aussprache" on a topic, which goes up to its module, and "‹ Lektionen"
@@ -114,7 +121,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   softer teal is too faint on sage) saying why, such as "WEITERMACHEN · AUSSPRACHE", the title in
   heading size, one short line, and the primary button. It's an action, not one of the items
   below, so nothing in the list behaves differently. In Learn it continues with the next topic not
-  read yet ("Konsonanten", "3 von 6 Themen gelesen", "Weiter: R"), or says "HIER BEGINNEN" and
+  read yet ("Konsonanten", "3 von 6 Themen gelesen", "Weiter"), or says "HIER BEGINNEN" and
   "Los geht's" before anything is read. It follows the topic read last, not the module looked at
   last. In Üben → Lektionen it suggests one thing to practise: a lesson read through but not
   practised ("Konsonanten üben"), else the one most worth refreshing ("Konsonanten auffrischen ·
@@ -185,8 +192,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   is what plays. A topic about one letter, such as J, has no card: its text says what it sounds
   like, and its words follow as a quiet list like the phrases. A section's first topic, when it
   has no letters of its own, shows the letters to come in mist circles (pills for combinations
-  such as SCH), under each topic's title when topics have several letters. Previewed without
-  logging in at `/dev/lesson-en`.
+  such as SCH), under each topic's title when topics have several letters.
 - **Marked letters**: in a topic's text, a tip or a sound's comparison, the letters that make a
   sound are underlined in sage, as in the pronunciation exercises ("f<u>a</u>ther"). In the
   content they're in brackets: "f[a]ther".
@@ -195,7 +201,11 @@ topic in English); in the code and this guide they are lesson → section → ru
   labelled "TIP" ("TIPP"). It's the screen's one yellow, so a topic has a takeaway or a tip.
 - **Phrases** (a topic's example phrases): like the example list, without columns. Each phrase in
   the dialect in subtitle size, below it its meaning as a caption and, if given, "Standard German:
-  Wie geht es dir?", and on the right a play button once it has a recording to come.
+  Wie geht es dir?", and on the right a play button once it has a recording to come. When the
+  Standard German is recorded too ("Two kinds of German" in Getting started), they compare like
+  the example list: two play buttons side by side on every phrase, the dialect's first, and the
+  sides named once above them ("Bärndütsch", "Standard German"), each on one line, its column as
+  wide as its name.
 - A topic's text can have several paragraphs, in body size, 12 px apart. Its phrases can have a
   heading above them, in body size, bold, like a list's.
 - A topic can end its examples with a note, one caption line in `teal-soft`, such as "Listen to
@@ -205,7 +215,16 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Playing a recording** (`SoundBars`): every round play or speaker button is on mist, gives
   under the finger when tapped (scale 90–95 %), and while the recording plays turns teal with three
   bars bouncing in turn in place of its icon. Still with reduced motion.
-- **Pronunciation on a word card**: the speaker at the card's top right, as above. It plays by
+- **Word card** (`WordCardSide`, for both the session and `/dev/design`): one side has the Swiss
+  German, large, its other ways of saying it ("Auch: …") below and, on the English track, the
+  Standard German ("Hochdeutsch: …"). On the German track, where many words are written the same
+  on both sides, the learner's dialect by its own name is above it as an eyebrow ("BÄRNDÜTSCH", as
+  in the onboarding); the Standard German side has no name. The other side has the
+  translation, large, with the word's note (yellow) if it has one, only on the English track. Each
+  side's lines go with it when the learner swaps which side comes first. The back shows only its
+  own side, without the front repeated on it.
+- **Pronunciation on a word card**: the speaker at the card's top right, as above, only while the
+  Swiss German side shows: turning the card to the translation hides it. It plays by
   itself the first time the Swiss German shows, unless the learner switched that off: a speaker in
   the session's top bar, crossed out while words only play on tap, and "Aussprache" in Profil.
 - **Takeaway** ("Merke"): a yellow card, a lightbulb and "MERKE" on top, the sentence below in
@@ -215,7 +234,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   whether it was right, with the right answer after a wrong one, and below it a mist pill
   "Regel nachlesen: CH". "Weiter" stays at the bottom. It ends on a yellow card: "Konsonanten
   geübt" and how many were right the first time. Under 60 %, a line suggests reading the section
-  again, and "Konsonanten nochmals lesen" is the primary button. Below, "DEINE ANTWORTEN": every
+  again, and "Nochmals lesen" is the primary button. Below, "DEINE ANTWORTEN": every
   exercise as a row on mist with a check or a brick cross, the solution in bold (a word with its
   letters that sound different underlined), and one caption line, such as "CH, R und K klingen
   anders" or "Klang noch nicht gleich". At the bottom, "3 Fehler üben" starts again with only the
@@ -223,10 +242,10 @@ topic in English); in the code and this guide they are lesson → section → ru
   secondary button beside "Fertig", or below it when "Fertig" is the main action. A round of
   mistakes ends on the whole round's new score, "Jetzt 9 von 10 richtig.", which is saved, and
   can be repeated until nothing is wrong. Leaving
-  the round's page always starts it afresh next time. Where a practised round starts, its last
-  result shows, so practice doesn't look lost: "Geübt heute · 9 von 10 richtig" in its row in
-  Üben, and "Zuletzt geübt heute · 9 von 10 richtig" in `teal-soft` under its button at the end
-  of the module's last topic. A tap still starts the round straight away.
+  the round's page always starts it afresh next time. In Üben, where a practised round starts, its
+  last result shows, so practice doesn't look lost: "Geübt heute · 9 von 10 richtig" in its row.
+  Not at the end of a lesson in Learn, which stays short on the phone: there, only "Üben".
+  A tap still starts the round straight away.
 - **Pronunciation exercises** (`src/app/exercises/pronunciation`), in a lesson round. They're
   Standard German words said with the dialect's accent, not Berndeutsch words, and say so: each
   starts with the eyebrow "HOCHDEUTSCH MIT BERNER AKZENT" and one line saying what to do ("Lies
@@ -241,7 +260,9 @@ topic in English); in the code and this guide they are lesson → section → ru
     sage or rose says "Nicht ganz: T, Ä und R klingen anders". Below, the word in Standard German
     and the dialect, played one after the other, and a "Regel nachlesen" pill per rule.
   - **Saying a word**: the word in title size, and a mist pill "Tipp: worauf achten?" that
-    underlines the letters to watch in sage. "Aufnehmen" at the bottom, then a bar filling up and
+    underlines the letters to watch in sage. Only on the German track, like all underlining in
+    this exercise: on the English track, a Swiss German word differs too much from English for a
+    few letters to be what to listen for, so the word is never underlined. "Aufnehmen" at the bottom, then a bar filling up and
     "Fertig". Then the learner's recording ("Du", a microphone) and the dialect's ("So klingt's", a
     speaker) play one after the other, as round play buttons, the letters now underlined. At the
     bottom, together so they read as one: "Klang es gleich?" in subtitle size, "Ja, klang gleich"
@@ -317,13 +338,13 @@ topic in English); in the code and this guide they are lesson → section → ru
   the bottom, "Konto erstellen" (primary) and "Ich habe schon ein Konto"
   (secondary).
 - **Login** (`/login`, and `/login?new` to create an account): the logo at the top left, leading
-  back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei Hoi
+  back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei *hoi*
   anmelden"), email and password, one primary button, and below it a text button to the other
-  ("Schon ein Konto? Anmelden", "Neu bei Hoi? Konto erstellen").
+  ("Schon ein Konto? Anmelden", "Neu bei *hoi*? Konto erstellen").
 - **Choosing the track** (onboarding's first question), all in one language: the one from the
   start page, which the start page's switch at the top right ("English" with a globe) changes,
   on this screen only. "Verstehst du Hochdeutsch gut?" in title size, and below it in body size
-  and `teal-soft`, "Hoi hat zwei Lernwege. Deine Antwort wählt den passenden." Two answer cards
+  and `teal-soft`, "*hoi* hat zwei Lernwege. Deine Antwort wählt den passenden." Two answer cards
   on mist: an icon on an ivory circle, the answer in bold ("Ja, ich verstehe Hochdeutsch gut",
   "Nein, ich lerne lieber auf Englisch"), one line on what it means (the German one first says
   "Auch als Fremdsprache."), and a check circle on the right. The chosen card turns sage with a
@@ -348,8 +369,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   its number of modules as a caption, and the check; the chosen one on sage. Below, centred in
   `teal-soft` caption, "Dein Fortschritt bleibt gespeichert." and "Your progress stays saved." on
   two lines, so whoever is about to switch can read it.
-- **How Hoi works** (onboarding's third screen, only informing, so only "Weiter"): "So
-  funktioniert Hoi", the three main tabs as an icon list (icon in `teal-soft`, name in bold, one
+- **How *hoi* works** (onboarding's third screen, only informing, so only "Weiter"): "So
+  funktioniert *hoi*", the three main tabs as an icon list (icon in `teal-soft`, name in bold, one
   line below, naming the chosen dialect by its own name, "Bärndütsch"), and "Wörter, die bleiben":
   one sentence and one word's reviews as small teal dots popping in one after another on a thin
   sage-light line (Heute, Morgen, 3 Tage, 1 Woche, 1 Monat), the gaps growing and the labels

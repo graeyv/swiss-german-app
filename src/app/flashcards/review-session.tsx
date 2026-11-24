@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useTransition } from "react";
 import { type Cheer, pickCheer } from "@/lib/flashcards/cheers";
 import { advanceQueue } from "@/lib/flashcards/queue";
-import { type Dictionary, dictionary, type Locale, translationOf } from "@/lib/i18n";
+import { type Dictionary, dictionary, type Locale } from "@/lib/i18n";
 import type { CardFront, Flashcard, WordCard } from "@/lib/types";
 import {
   getTodaysGoal,
@@ -18,7 +18,7 @@ import {
 import { CARD_FACE, CardStack } from "./card-stack";
 import { type Grade, GradeButtons } from "./grade-buttons";
 import { SessionEnd } from "./session-end";
-import { StatusBadge } from "./status-badge";
+import { WordCardSide } from "./word-card-side";
 import { Icon } from "@/app/ui/icons";
 import { SoundBars } from "@/app/ui/sound-bars";
 import { Tip } from "@/app/ui/tip";
@@ -33,6 +33,8 @@ type ReviewSessionProps = {
   // Whether lifting today's limit would bring more new cards of this topic, offered at the end.
   canLift: boolean;
   locale: Locale;
+  // The learner's dialect by its own name, such as "Bärndütsch", above the Swiss German on a card.
+  dialectName?: string;
   // Whether today's goal was already met when the session started, so only the session that
   // completes it celebrates.
   goalReachedBefore: boolean;
@@ -48,6 +50,7 @@ export function ReviewSession({
   ratingTip,
   canLift,
   locale,
+  dialectName,
   goalReachedBefore,
   emptyMessage,
   backHref,
@@ -233,6 +236,7 @@ export function ReviewSession({
         autoplay={autoplay}
         tip={showTip}
         locale={locale}
+        dialectName={dialectName}
         stacked={activeQueue.length > 1}
         saving={saving}
         saveError={saveError}
@@ -249,6 +253,7 @@ type CardStageProps = {
   // Whether the one-time tip shows above the rating buttons once the card is turned over.
   tip: boolean;
   locale: Locale;
+  dialectName?: string;
   // Whether more cards wait behind this one, shown as a stack.
   stacked: boolean;
   saving: boolean;
@@ -257,22 +262,33 @@ type CardStageProps = {
 };
 
 // A word. Keyed by the card's attempt, so each card starts face down.
-function CardStage({ card, front, autoplay, tip, locale, stacked, saving, saveError, onGrade }: CardStageProps) {
-  const texts = dictionary(locale);
-  const t = texts.session;
+function CardStage({
+  card,
+  front,
+  autoplay,
+  tip,
+  locale,
+  dialectName,
+  stacked,
+  saving,
+  saveError,
+  onGrade,
+}: CardStageProps) {
+  const t = dictionary(locale).session;
   const [revealed, setRevealed] = useState(false);
   const recording = useRecording(card.audio_url);
-  // The Swiss German shows on the front, or once the card is turned when the translation comes
-  // first: hearing it earlier would give the answer away.
-  const heard = front === "swiss_german" || revealed;
+  // Whether the side showing is the Swiss German one: the front when it comes first, else the back.
+  // Only that side has the speaker, so it goes when the card turns to the translation, and hearing
+  // the word can't give the answer away.
+  const swissGermanShowing = (front === "swiss_german") !== revealed;
   // Plays once per card, the first time its Swiss German shows, when the learner wants that.
   const played = useRef(false);
   const { play } = recording;
   useEffect(() => {
-    if (!autoplay || !heard || played.current) return;
+    if (!autoplay || !swissGermanShowing || played.current) return;
     played.current = true;
     play();
-  }, [autoplay, heard, play]);
+  }, [autoplay, swissGermanShowing, play]);
 
   // Space or Enter flips the card, and 1–4 grade it once it's revealed.
   useEffect(() => {
@@ -289,17 +305,7 @@ function CardStage({ card, front, autoplay, tip, locale, stacked, saving, saveEr
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [revealed, saving, onGrade]);
 
-  const swissGerman = { text: card.swiss_german, lang: "gsw" };
-  // Other ways of saying it, in a quiet line under the Swiss German wherever that shows.
-  const variants = (size: "large" | "small") =>
-    card.variants.length > 0 && (
-      <span lang="gsw" className={`text-teal-soft ${size === "large" ? "text-lg" : "text-base"}`}>
-        {t.also}: {card.variants.join(" · ")}
-      </span>
-    );
-  const translation = { text: translationOf(card, locale), lang: locale };
-  const [prompt, answer] =
-    front === "swiss_german" ? [swissGerman, translation] : [translation, swissGerman];
+  const back = front === "swiss_german" ? "translation" : "swiss_german";
 
   return (
     <>
@@ -318,48 +324,15 @@ function CardStage({ card, front, autoplay, tip, locale, stacked, saving, saveEr
             >
               {/* Screen readers only read the side that is showing. */}
               <span aria-hidden={revealed} className={CARD_FACE}>
-                <StatusBadge status={card.status} t={t} />
-                <span className="flex flex-1 flex-col items-center justify-center gap-2 px-2 text-center">
-                  <span lang={prompt.lang} className="text-5xl font-bold tracking-tight break-words">
-                    {prompt.text}
-                  </span>
-                  {front === "swiss_german" && variants("large")}
-                </span>
-                <span className="mx-auto flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
-                  <span aria-hidden>👆</span> {t.tapToReveal}
-                </span>
+                <WordCardSide card={card} side={front} place="front" dialectName={dialectName} locale={locale} />
               </span>
-
               <span aria-hidden={!revealed} className={`${CARD_FACE} rotate-y-180`}>
-                <span className="flex flex-col">
-                  <span lang={prompt.lang} className="text-lg font-semibold text-muted">
-                    {prompt.text}
-                  </span>
-                  {front === "swiss_german" && variants("small")}
-                </span>
-                <span className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-                  <span lang={answer.lang} className="text-4xl font-bold tracking-tight break-words">
-                    {answer.text}
-                  </span>
-                  {front === "translation" && variants("large")}
-                  {/* Unless the translation already is Standard German, that follows as a second one. */}
-                  {!texts.translationIsStandardGerman && (
-                    <span className="text-muted">
-                      {texts.standardGerman} <span lang="de">{card.high_german}</span>
-                    </span>
-                  )}
-                  {card.notes && (
-                    <span className="mt-2 max-w-sm rounded-xl bg-highlight px-4 py-3 text-sm">
-                      {card.notes}
-                    </span>
-                  )}
-                </span>
+                <WordCardSide card={card} side={back} place="back" dialectName={dialectName} locale={locale} />
               </span>
             </span>
           </button>
 
-          {/* Hearing the word first would give the answer away when the translation is the prompt. */}
-          {heard && <AudioButton recording={recording} hasAudio={!!card.audio_url} t={t} />}
+          {swissGermanShowing && <AudioButton recording={recording} hasAudio={!!card.audio_url} t={t} />}
         </div>
       </CardStack>
 

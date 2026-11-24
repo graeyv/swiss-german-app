@@ -32,8 +32,10 @@ type PracticeRoundProps = {
   rules: RuleRef[];
   // Each exercise with the rule it practises, if it practises one.
   round: { ruleId?: string; exercise: LessonExercise }[];
-  // Where leaving and "Fertig" lead.
+  // Where "Fertig" leads, and the ✕ once the round is over.
   back: string;
+  // Where the ✕ leads during the round: from Learn, the module's page.
+  leave: string;
   // The section's page, to read it again after a weak round.
   readAgain: string;
   // The next section, to go on to after a good round started in Learn.
@@ -78,6 +80,7 @@ function Round({
   rules,
   round,
   back,
+  leave,
   readAgain,
   next,
   before,
@@ -138,7 +141,13 @@ function Round({
   return (
     <main lang={lang} className="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-6">
       <div className="sticky top-0 z-30 -mx-6 flex min-h-14 items-center gap-3 bg-ivory px-6 pt-[env(safe-area-inset-top)]">
-        <Link href={back} aria-label={t.leave} className="-ml-2 flex size-11 items-center justify-center">
+        {/* Leaving a finished round replaces it, so going back doesn't land on it again. */}
+        <Link
+          href={done ? back : leave}
+          replace={done}
+          aria-label={t.leave}
+          className="-ml-2 flex size-11 items-center justify-center"
+        >
           <Icon name="cross" />
         </Link>
         <div
@@ -376,7 +385,7 @@ function Finished({
     </Button>
   );
   const finish = (
-    <ButtonLink href={back} variant="secondary" className="min-h-14">
+    <ButtonLink href={back} replace variant="secondary" className="min-h-14">
       {t.finish}
     </ButtonLink>
   );
@@ -422,7 +431,7 @@ function Finished({
             ) : weak ? (
               <ButtonLink href={readAgain}>
                 <Icon name="learn" size={20} />
-                {t.readAgain(sectionTitle)}
+                {t.readAgain}
               </ButtonLink>
             ) : (
               next && (
@@ -439,7 +448,9 @@ function Finished({
           </>
         ) : (
           <>
-            <ButtonLink href={back}>{t.finish}</ButtonLink>
+            <ButtonLink href={back} replace>
+              {t.finish}
+            </ButtonLink>
             {again}
           </>
         )}

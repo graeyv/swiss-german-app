@@ -5,8 +5,9 @@ import type { MetadataRoute } from "next";
 // it is, the maskable one with room around it for the shapes Android cuts icons into.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Hoi – Learn Swiss German",
-    short_name: "Hoi",
+    // Lowercase as in the logo; home screens can't show the italics.
+    name: "hoi – Learn Swiss German",
+    short_name: "hoi",
     description: "Short, practical modules in Swiss German.",
     start_url: "/",
     display: "standalone",

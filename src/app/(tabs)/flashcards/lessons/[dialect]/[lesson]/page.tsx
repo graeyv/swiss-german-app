@@ -1,15 +1,15 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ExerciseSets } from "@/app/learn/exercise-sets";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
 import { TopBar } from "@/app/top-bar";
 import { Icon, isIconName } from "@/app/ui/icons";
-import { ListRow, ListRows } from "@/app/ui/list-row";
 import { Eyebrow } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
-import { findLesson, lessonParams, MIXED, mixedSection, practiceHref, roundExercises } from "@/lib/learn/lessons";
-import { getReads, isReadThrough, readCount } from "@/lib/learn/progress";
-import { getRounds, roundOf } from "@/lib/learn/suggestion";
+import { findLesson, lessonParams, practiceHref } from "@/lib/learn/lessons";
+import { getReads } from "@/lib/learn/progress";
+import { getRounds } from "@/lib/learn/suggestion";
 import { createClient } from "@/lib/supabase/server";
 
 export function generateStaticParams() {
@@ -17,8 +17,7 @@ export function generateStaticParams() {
 }
 
 // A module's exercises, one round per lesson and a mixed one at the end, to practise as often as
-// the learner likes: from
-// "Alle Übungen" in the Practice tab, and from the module's page in Learn ("Zu den Übungen").
+// the learner likes, from "Alle Übungen" in the Practice tab. Learn has its own list, in the module.
 export default function ModuleExercisesPage({ params }: PageProps<"/flashcards/lessons/[dialect]/[lesson]">) {
   return (
     <Suspense fallback={<LoadingPlaceholder />}>
@@ -49,33 +48,13 @@ async function ModuleExercises({ params }: Pick<PageProps<"/flashcards/lessons/[
         </div>
       </div>
 
-      <ListRows>
-        {[...lesson.sections, ...[mixedSection(lesson)].filter((section) => section !== undefined)].map((section) => {
-          // A lesson without exercises yet shows what's coming, but doesn't open.
-          if (roundExercises(section).length === 0) {
-            return <ListRow key={section.id} title={section.title} comingSoon={t.lesson.comingSoon} />;
-          }
-          const round = roundOf(rounds, { entry: found, section });
-          const read = readCount(found, section, reads.read);
-          const caption = round
-            ? t.practice.practisedScore(t.practice.ago(round.daysAgo), round.correct, round.total)
-            : isReadThrough(found, section, reads.read)
-              ? t.practice.readNotPractised
-              : section.id === MIXED
-                ? t.practice.mixedAfter
-              : read > 0
-                ? t.learn.topicsRead(read, section.rules.length)
-                : t.practice.notRead(section.rules.length);
-          return (
-            <ListRow
-              key={section.id}
-              href={practiceHref(dialect, lesson, section)}
-              title={section.title}
-              caption={caption}
-            />
-          );
-        })}
-      </ListRows>
+      <ExerciseSets
+        entry={found}
+        read={reads.read}
+        rounds={rounds}
+        href={(section) => practiceHref(dialect, lesson, section)}
+        t={t}
+      />
     </>
   );
 }

@@ -89,7 +89,7 @@ function ContinueCard({ next, read, t }: { next: Continue; read: Set<string>; t:
         <span className="text-body">{t.learn.topicsRead(readCount(entry, section, read), section.rules.length)}</span>
       </span>
       <ButtonLink href={lessonHref(entry.dialect, entry.lesson, section, rule)}>
-        {started ? `${t.lesson.next}: ${rule.title}` : t.lesson.start}
+        {started ? t.lesson.next : t.lesson.start}
       </ButtonLink>
     </div>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { withAppName } from "@/app/ui/app-name";
 import { Logo } from "@/app/ui/logo";
 import { getLocale } from "@/lib/i18n/server";
 import { dictionary } from "@/lib/i18n";
@@ -30,7 +31,7 @@ async function Login({ searchParams }: Pick<PageProps<"/login">, "searchParams">
   return (
     <section className="flex flex-col gap-6 pt-4">
       <title>{t.title(signUp ? t.login.createAccount : t.login.title)}</title>
-      <h1 className="text-title leading-tight font-bold">{signUp ? t.login.signUpHeading : t.login.heading}</h1>
+      <h1 className="text-title leading-tight font-bold">{withAppName(signUp ? t.login.signUpHeading : t.login.heading)}</h1>
       <LoginForm locale={locale} signUp={signUp} />
     </section>
   );

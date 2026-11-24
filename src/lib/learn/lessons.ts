@@ -45,7 +45,15 @@ export type PointList = { heading?: string; items: Point[] };
 
 // A phrase in the dialect with what it means, and optionally how Standard German says it. audio:
 // its recording, null until recorded; without the field, the phrase has no play button.
-export type Phrase = { dialect: string; meaning: string; standardGerman?: string; audio?: string | null };
+// standardGermanAudio: the Standard German said aloud, to compare the two, as with a rule's
+// examples; once a topic's phrases have it, each gets a button for both sides.
+export type Phrase = {
+  dialect: string;
+  meaning: string;
+  standardGerman?: string;
+  audio?: string | null;
+  standardGermanAudio?: string | null;
+};
 
 // A word in the dialect with what it means. audio: its recording, null until recorded.
 export type SoundWord = { word: string; meaning: string; audio: string | null };
@@ -271,6 +279,15 @@ export function hasExercises(lesson: Lesson) {
 export function exercisesHref(dialect: string, lesson: Lesson) {
   const units = practiceUnits(lesson);
   return units.length === 1 ? practiceHref(dialect, lesson, units[0]) : exercisesListHref(dialect, lesson);
+}
+
+// A module's exercises from its page in Learn ("Zu den Übungen"), staying in Learn: its list of
+// rounds there, or with only one, that round. Either leads back to the module's page.
+export function learnExercisesHref(dialect: string, lesson: Lesson) {
+  const units = practiceUnits(lesson);
+  return units.length === 1
+    ? `${practiceHref(dialect, lesson, units[0])}?from=module`
+    : `${lessonHref(dialect, lesson)}/exercises`;
 }
 
 // The list of a module's rounds, in the Practice tab.

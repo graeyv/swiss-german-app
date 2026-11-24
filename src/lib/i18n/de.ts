@@ -6,7 +6,7 @@ import { plural, pluralForm } from "./plural";
 const many = (count: number, one: string, other: string) => plural("de", count, { one, other });
 
 export const de: Dictionary = {
-  title: (page) => `${page} – Hoi`,
+  title: (page) => `${page} – hoi`,
   languageName: "Deutsch",
   language: "Sprache",
   // The translation already is Standard German, so there's no second one.
@@ -24,9 +24,9 @@ export const de: Dictionary = {
 
   login: {
     title: "Anmelden",
-    heading: "Bei Hoi anmelden",
+    heading: "Bei hoi anmelden",
     signUpHeading: "Erstell dein Konto",
-    newHere: "Neu bei Hoi? Konto erstellen",
+    newHere: "Neu bei hoi? Konto erstellen",
     haveAccount: "Schon ein Konto? Anmelden",
     email: "E-Mail",
     password: "Passwort",
@@ -115,7 +115,6 @@ export const de: Dictionary = {
   },
 
   practice: {
-    practise: (section, count) => `${section} üben · ${many(count, "Übung", "Übungen")}`,
     later: "Später",
     toExercises: "Zu den Übungen",
     leave: "Übung verlassen",
@@ -127,7 +126,7 @@ export const de: Dictionary = {
     scoreNow: (correct, total) => `Jetzt ${correct} von ${total} richtig.`,
     score: (correct, total) => `${correct} von ${total} auf Anhieb richtig.`,
     weak: "Noch etwas wackelig. Lies die Lektion nochmals, dann sitzt es besser.",
-    readAgain: (section) => `${section} nochmals lesen`,
+    readAgain: "Nochmals lesen",
     finish: "Fertig",
     skip: "Überspringen",
     again: "Nochmals üben",
@@ -141,7 +140,6 @@ export const de: Dictionary = {
     ago: (days) => (days === 0 ? "heute" : days === 1 ? "gestern" : `vor ${days} Tagen`),
     practised: (ago) => `Geübt ${ago}`,
     practisedScore: (ago, correct, total) => `Geübt ${ago} · ${correct} von ${total} richtig`,
-    lastResult: (ago, correct, total) => `Zuletzt geübt ${ago} · ${correct} von ${total} richtig`,
     mixedAfter: "Am besten nach allen Lektionen",
     readNotPractised: "Gelesen, noch nicht geübt",
     notRead: (count) => `${many(count, "Thema", "Themen")}, noch nicht gelesen`,
@@ -319,7 +317,7 @@ export const de: Dictionary = {
     next: "Weiter",
     track: {
       question: "Verstehst du Hochdeutsch gut?",
-      intro: "Hoi hat zwei Lernwege. Deine Antwort wählt den passenden.",
+      intro: "hoi hat zwei Lernwege. Deine Antwort wählt den passenden.",
       answers: {
         de: {
           answer: "Ja, ich verstehe Hochdeutsch gut",
@@ -358,7 +356,7 @@ export const de: Dictionary = {
       },
     },
     pace: {
-      heading: "So funktioniert Hoi",
+      heading: "So funktioniert hoi",
       tabs: [
         { id: "learn", text: (dialect) => `Kurze Lektionen: wie ${dialect} klingt und funktioniert.` },
         { id: "practice", text: () => "Jeden Tag ein paar Wörter, dazu Übungen zu den Lektionen." },
@@ -366,7 +364,7 @@ export const de: Dictionary = {
       ],
       remember: {
         title: "Wörter, die bleiben",
-        text: "Hoi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest.",
+        text: "hoi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest.",
         reviews: ["Heute", "Morgen", "3 Tage", "1 Woche", "1 Monat"],
       },
       choose: "Wie viele neue Wörter am Tag?",
