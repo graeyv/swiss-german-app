@@ -5,7 +5,7 @@ import { plural, pluralForm } from "./plural";
 const many = (count: number, one: string, other: string) => plural("en", count, { one, other });
 
 export const en = {
-  title: (page: string) => `${page} – Hoi`,
+  title: (page: string) => `${page} – hoi`,
   // The language's own name, as listed in the language picker.
   languageName: "English",
   language: "Language",
@@ -25,9 +25,9 @@ export const en = {
 
   login: {
     title: "Log in",
-    heading: "Log in to Hoi",
+    heading: "Log in to hoi",
     signUpHeading: "Create your account",
-    newHere: "New to Hoi? Create an account",
+    newHere: "New to hoi? Create an account",
     haveAccount: "Already have an account? Log in",
     email: "Email",
     password: "Password",
@@ -114,7 +114,7 @@ export const en = {
     onlyIn: (variety: string) => `only in ${variety}`,
     becomes: "becomes",
     // The same as in Germany for the examples, so "Swiss" is only in brackets.
-    standardGerman: "(Swiss) Standard German",
+    standardGerman: "Standard German",
     // By dialect id. A dialect without a name here shows its id.
     // Inside lessons, after Getting started has introduced them: their own names, so learners get
     // used to what they'll hear in Switzerland.
@@ -133,7 +133,6 @@ export const en = {
 
   // A lesson's exercises, done at the end of a section such as the consonants.
   practice: {
-    practise: (section: string, count: number) => `Practise ${section} · ${many(count, "exercise", "exercises")}`,
     later: "Later",
     // On a module's page, as the second choice after reading on.
     toExercises: "Go to the exercises",
@@ -149,7 +148,7 @@ export const en = {
     score: (correct: number, total: number) => `${correct} of ${total} right the first time.`,
     // After a round with under 60 % right.
     weak: "Still a bit shaky. Read the lesson again and it'll stick better.",
-    readAgain: (section: string) => `Read ${section} again`,
+    readAgain: "Read again",
     finish: "Done",
     // Going on without answering an exercise.
     skip: "Skip",
@@ -167,8 +166,6 @@ export const en = {
     ago: (days: number) => (days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`),
     practised: (ago: string) => `Practised ${ago}`,
     practisedScore: (ago: string, correct: number, total: number) => `Practised ${ago} · ${correct} of ${total} right`,
-    // Under the button that starts a round practised before.
-    lastResult: (ago: string, correct: number, total: number) => `Last practised ${ago} · ${correct} of ${total} right`,
     mixedAfter: "Best after all the lessons",
     readNotPractised: "Read, not practised yet",
     notRead: (count: number) => `${many(count, "topic", "topics")}, not read yet`,
@@ -370,7 +367,7 @@ export const en = {
     // German and English together, and each answer in its own language.
     track: {
       question: "Do you understand German well?",
-      intro: "Hoi has two learning paths. Your answer picks the right one.",
+      intro: "hoi has two learning paths. Your answer picks the right one.",
       // The answer for each track, in this language, and what that track teaches. The German
       // track's note, only in onboarding, says German needn't be the learner's first language.
       answers: {
@@ -411,7 +408,7 @@ export const en = {
     },
     // The last screen: how Hoi works, then the pace.
     pace: {
-      heading: "How Hoi works",
+      heading: "How hoi works",
       // The three main tabs, named as in the tab bar.
       tabs: [
         { id: "learn", text: (dialect: string) => `Short lessons: how ${dialect} sounds and works.` },
@@ -420,7 +417,7 @@ export const en = {
       ] as { id: "learn" | "practice" | "talk"; text: (dialect: string) => string }[],
       remember: {
         title: "Words that stick",
-        text: "Hoi shows you each word again just before you'd forget it.",
+        text: "hoi shows you each word again just before you'd forget it.",
         // When one word comes back, as an example.
         reviews: ["Today", "Tomorrow", "3 days", "1 week", "1 month"],
       },

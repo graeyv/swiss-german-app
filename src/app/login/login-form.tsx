@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { withAppName } from "@/app/ui/app-name";
 import { Button } from "@/app/ui/button";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { authenticate, type AuthState } from "./actions";
@@ -52,7 +53,7 @@ export function LoginForm({ locale, signUp }: { locale: Locale; signUp: boolean 
         replace
         className="flex min-h-11 items-center self-center px-4 text-caption font-semibold text-teal-soft underline underline-offset-4"
       >
-        {signUp ? t.haveAccount : t.newHere}
+        {withAppName(signUp ? t.haveAccount : t.newHere)}
       </Link>
     </form>
   );

@@ -5,6 +5,7 @@ import { findDeck } from "@/lib/flashcards/decks";
 import { alternate, composeSession } from "@/lib/flashcards/session";
 import { hasWordsAndPhrases, typesOf, vocabularyFilter } from "@/lib/flashcards/vocabulary-filter";
 import { LoadingPlaceholder } from "@/app/loading-placeholder";
+import { DIALECT_OPTIONS, defaultDialect } from "@/lib/dialects";
 import { dictionary } from "@/lib/i18n";
 import { getLocale } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
@@ -35,7 +36,12 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
   const [supabase, locale] = await Promise.all([createClient(), getLocale()]);
   const t = dictionary(locale);
 
-  const [today, { cardFront, autoplay, ratingTipSeen }] = await Promise.all([getToday(supabase), getCardSettings(supabase)]);
+  const [today, { cardFront, autoplay, ratingTipSeen, dialect }] = await Promise.all([
+    getToday(supabase),
+    getCardSettings(supabase),
+  ]);
+  // The learner's dialect, named as in the onboarding, or the one ready while there's just one.
+  const dialectName = DIALECT_OPTIONS.find(({ id }) => id === (dialect ?? defaultDialect()))?.name;
   const { tree, limits } = today;
   const found = findDeck(tree, code);
   if (!found) notFound();
@@ -87,6 +93,7 @@ async function Session({ params, searchParams }: PageProps<"/flashcards/session/
         // The topic has more new cards than today's limit allows, so lifting it would bring them.
         canLift={!today.lifted && found.deck.new_count > newLeft}
         locale={locale}
+        dialectName={dialectName}
         goalReachedBefore={today.goalReached}
         emptyMessage={t.session.empty}
         backHref={`/flashcards/decks/${back.code}`}

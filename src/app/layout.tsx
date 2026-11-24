@@ -5,14 +5,15 @@ import { getLocale } from "@/lib/i18n/server";
 import { DocumentLanguage } from "./document-language";
 import "./globals.css";
 
-// The app's one font (DESIGN.md).
+// The app's one font (DESIGN.md), with its italic for the app's name in text ("hoi").
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
-  title: "Hoi – Learn Swiss German",
+  title: "hoi – Learn Swiss German",
   description: "Short, practical modules in Swiss German.",
 };
 

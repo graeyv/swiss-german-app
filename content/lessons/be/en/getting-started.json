@@ -35,19 +35,22 @@
               "dialect": "Chunsch mit?",
               "meaning": "Are you coming along?",
               "standardGerman": "Kommst du mit?",
-              "audio": "/audio/lessons/phrases/chunsch-mit_be.mp3"
+              "audio": "/audio/lessons/phrases/chunsch-mit_be.mp3",
+              "standardGermanAudio": "/audio/lessons/phrases/kommst-du-mit_de.mp3"
             },
             {
               "dialect": "I bi müed.",
               "meaning": "I'm tired.",
               "standardGerman": "Ich bin müde.",
-              "audio": "/audio/lessons/phrases/i-bi-mueed_be.mp3"
+              "audio": "/audio/lessons/phrases/i-bi-mueed_be.mp3",
+              "standardGermanAudio": "/audio/lessons/phrases/ich-bin-muede_de.mp3"
             },
             {
               "dialect": "Was machsch?",
               "meaning": "What are you doing?",
               "standardGerman": "Was machst du?",
-              "audio": "/audio/lessons/phrases/was-machsch_be.mp3"
+              "audio": "/audio/lessons/phrases/was-machsch_be.mp3",
+              "standardGermanAudio": "/audio/lessons/phrases/was-machst-du_de.mp3"
             }
           ],
           "examples": [],
@@ -131,25 +134,28 @@
           "theory": "Swiss German is mainly spoken. When people write it, they often spell words the way they pronounce them. Unlike Swiss Standard German, it has no official spelling rules, so the same word can be written in different ways.",
           "points": [
             {
-              "heading": "Three ways to write “I saw your father yesterday.”",
+              "heading": "“I saw your father yesterday.”",
               "items": [
                 {
+                  "term": "Ich habe gestern deinen Vater gesehen.",
+                  "text": "(Swiss) Standard German: one correct spelling"
+                },
+                {
                   "term": "I ha geschter dy fattr xee",
-                  "text": "Phonetic: written as it sounds"
+                  "text": "Swiss German, phonetic: written as it sounds"
                 },
                 {
                   "term": "I ha gester di Vater gseh",
-                  "text": "Close to Standard German spelling"
+                  "text": "Swiss German, close to Standard German spelling"
                 },
                 {
                   "term": "I ha geschter di Vater gsee",
-                  "text": "A mix of both"
+                  "text": "Swiss German, a mix of both"
                 }
               ]
             }
           ],
           "examples": [],
-          "note": "(Swiss) Standard German: Ich habe gestern deinen Vater gesehen.",
           "takeaway": "Don't let the different spellings confuse you. There's no single correct way to write Swiss German, and it's mostly spoken anyway. You'll get used to the variations as you learn."
         },
         {
@@ -167,7 +173,7 @@
             }
           ],
           "examples": [],
-          "takeaway": "Hoi focuses on Swiss German, the language you'll hear every day. Next to every word and phrase, you also see the Standard German, so you pick it up along the way."
+          "takeaway": "hoi focuses on Swiss German, the language you'll hear every day. Next to every word and phrase, you also see the Standard German, so you pick it up along the way."
         }
       ]
     }
