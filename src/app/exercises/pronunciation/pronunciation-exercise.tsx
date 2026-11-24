@@ -22,9 +22,10 @@ import {
 import { useRecorder, usePlayer } from "./audio";
 import { Compare, Footer, Instruction, MarkedWord, RecordButton, SelfCheck, Tip } from "./parts";
 
-// The longest a recording takes: a word, and a sentence.
+// The longest a recording takes: a word, and a sentence. A long sentence, such as "Das Mädchen
+// kauft ein Stück Käse, fünf Brötchen und frisches Gemüse.", needs the time to say it calmly.
 const WORD_MS = 4000;
-const SENTENCE_MS = 8000;
+const SENTENCE_MS = 13000;
 
 export type PronunciationProps<T = PronunciationTask> = {
   task: T;
