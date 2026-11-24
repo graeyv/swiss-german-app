@@ -114,7 +114,7 @@ export const en = {
     onlyIn: (variety: string) => `only in ${variety}`,
     becomes: "becomes",
     // The same as in Germany for the examples, so "Swiss" is only in brackets.
-    standardGerman: "(Swiss) Standard German",
+    standardGerman: "Standard German",
     // By dialect id. A dialect without a name here shows its id.
     // Inside lessons, after Getting started has introduced them: their own names, so learners get
     // used to what they'll hear in Switzerland.

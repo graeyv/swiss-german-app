@@ -25,7 +25,7 @@ export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
       {rule.phrases && rule.phrases.length > 0 && (
         <section className="flex flex-col gap-3">
           {rule.phrasesHeading && <h2 className="text-body font-bold">{rule.phrasesHeading}</h2>}
-          <Phrases phrases={rule.phrases} t={t} />
+          <Phrases phrases={rule.phrases} dialectName={dialectName} t={t} />
         </section>
       )}
       {rule.examples.length > 0 && (
@@ -80,13 +80,30 @@ function Points({ list }: { list: PointList }) {
 }
 
 // Phrases in the dialect, each with what it means and, if given, how Standard German says it, and
-// a play button when it has a recording to come or one.
-function Phrases({ phrases, t }: { phrases: Phrase[]; t: Dictionary["lesson"] }) {
+// a play button when it has a recording to come or one. When the phrases have the Standard German
+// recorded too, they compare like a rule's examples: a button for each side, the dialect first,
+// the sides named once above them. Each column is as wide as its name, kept on one line, so the
+// buttons line up under it.
+function Phrases({ phrases, dialectName, t }: { phrases: Phrase[]; dialectName: string; t: Dictionary["lesson"] }) {
+  const compare = phrases.some((phrase) => phrase.standardGermanAudio !== undefined);
   return (
-    <ul className="flex flex-col gap-6">
+    <ul
+      className={
+        compare
+          ? "grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-3 gap-y-6"
+          : "flex flex-col gap-6"
+      }
+    >
+      {compare && (
+        <li aria-hidden className="contents text-xs font-semibold whitespace-nowrap text-teal-soft">
+          <span />
+          <span className="-mb-3 text-center">{dialectName}</span>
+          <span className="-mb-3 text-center">{t.standardGerman}</span>
+        </li>
+      )}
       {/* The same phrase can appear twice, said in two regions. */}
       {phrases.map((phrase, index) => (
-        <li key={`${index}-${phrase.dialect}`} className="flex items-center gap-3">
+        <li key={`${index}-${phrase.dialect}`} className={compare ? "contents" : "flex items-center gap-3"}>
           <div className="flex min-w-0 flex-1 flex-col gap-0.5">
             <p lang="gsw" className="text-subtitle font-bold break-words">
               {phrase.dialect}
@@ -98,8 +115,32 @@ function Phrases({ phrases, t }: { phrases: Phrase[]; t: Dictionary["lesson"] })
               </p>
             )}
           </div>
-          {phrase.audio !== undefined && (
-            <ListenButton url={phrase.audio} label={`${t.listen}: ${phrase.dialect}`} noRecordingLabel={t.noRecording} />
+          {compare ? (
+            <>
+              {/* Each keeps its place when it has no recording, so the buttons line up. */}
+              <span className="flex justify-center">
+                {phrase.audio !== undefined && (
+                  <ListenButton
+                    url={phrase.audio}
+                    label={`${t.play(dialectName)}: ${phrase.dialect}`}
+                    noRecordingLabel={t.noRecording}
+                  />
+                )}
+              </span>
+              <span className="flex justify-center">
+                {phrase.standardGerman && phrase.standardGermanAudio !== undefined && (
+                  <ListenButton
+                    url={phrase.standardGermanAudio}
+                    label={`${t.play(t.standardGerman)}: ${phrase.standardGerman}`}
+                    noRecordingLabel={t.noRecording}
+                  />
+                )}
+              </span>
+            </>
+          ) : (
+            phrase.audio !== undefined && (
+              <ListenButton url={phrase.audio} label={`${t.listen}: ${phrase.dialect}`} noRecordingLabel={t.noRecording} />
+            )
           )}
         </li>
       ))}

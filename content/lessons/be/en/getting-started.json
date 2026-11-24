@@ -35,19 +35,22 @@
               "dialect": "Chunsch mit?",
               "meaning": "Are you coming along?",
               "standardGerman": "Kommst du mit?",
-              "audio": "/audio/lessons/phrases/chunsch-mit_be.mp3"
+              "audio": "/audio/lessons/phrases/chunsch-mit_be.mp3",
+              "standardGermanAudio": "/audio/lessons/phrases/kommst-du-mit_de.mp3"
             },
             {
               "dialect": "I bi müed.",
               "meaning": "I'm tired.",
               "standardGerman": "Ich bin müde.",
-              "audio": "/audio/lessons/phrases/i-bi-mueed_be.mp3"
+              "audio": "/audio/lessons/phrases/i-bi-mueed_be.mp3",
+              "standardGermanAudio": "/audio/lessons/phrases/ich-bin-muede_de.mp3"
             },
             {
               "dialect": "Was machsch?",
               "meaning": "What are you doing?",
               "standardGerman": "Was machst du?",
-              "audio": "/audio/lessons/phrases/was-machsch_be.mp3"
+              "audio": "/audio/lessons/phrases/was-machsch_be.mp3",
+              "standardGermanAudio": "/audio/lessons/phrases/was-machst-du_de.mp3"
             }
           ],
           "examples": [],

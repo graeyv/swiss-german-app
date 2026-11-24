@@ -192,8 +192,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   is what plays. A topic about one letter, such as J, has no card: its text says what it sounds
   like, and its words follow as a quiet list like the phrases. A section's first topic, when it
   has no letters of its own, shows the letters to come in mist circles (pills for combinations
-  such as SCH), under each topic's title when topics have several letters. Previewed without
-  logging in at `/dev/lesson-en`.
+  such as SCH), under each topic's title when topics have several letters.
 - **Marked letters**: in a topic's text, a tip or a sound's comparison, the letters that make a
   sound are underlined in sage, as in the pronunciation exercises ("f<u>a</u>ther"). In the
   content they're in brackets: "f[a]ther".
@@ -202,7 +201,11 @@ topic in English); in the code and this guide they are lesson → section → ru
   labelled "TIP" ("TIPP"). It's the screen's one yellow, so a topic has a takeaway or a tip.
 - **Phrases** (a topic's example phrases): like the example list, without columns. Each phrase in
   the dialect in subtitle size, below it its meaning as a caption and, if given, "Standard German:
-  Wie geht es dir?", and on the right a play button once it has a recording to come.
+  Wie geht es dir?", and on the right a play button once it has a recording to come. When the
+  Standard German is recorded too ("Two kinds of German" in Getting started), they compare like
+  the example list: two play buttons side by side on every phrase, the dialect's first, and the
+  sides named once above them ("Bärndütsch", "Standard German"), each on one line, its column as
+  wide as its name.
 - A topic's text can have several paragraphs, in body size, 12 px apart. Its phrases can have a
   heading above them, in body size, bold, like a list's.
 - A topic can end its examples with a note, one caption line in `teal-soft`, such as "Listen to
