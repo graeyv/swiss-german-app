@@ -133,7 +133,6 @@ export const en = {
 
   // A lesson's exercises, done at the end of a section such as the consonants.
   practice: {
-    practise: (section: string, count: number) => `Practise ${section} · ${many(count, "exercise", "exercises")}`,
     later: "Later",
     // On a module's page, as the second choice after reading on.
     toExercises: "Go to the exercises",
@@ -149,7 +148,7 @@ export const en = {
     score: (correct: number, total: number) => `${correct} of ${total} right the first time.`,
     // After a round with under 60 % right.
     weak: "Still a bit shaky. Read the lesson again and it'll stick better.",
-    readAgain: (section: string) => `Read ${section} again`,
+    readAgain: "Read again",
     finish: "Done",
     // Going on without answering an exercise.
     skip: "Skip",
@@ -167,8 +166,6 @@ export const en = {
     ago: (days: number) => (days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`),
     practised: (ago: string) => `Practised ${ago}`,
     practisedScore: (ago: string, correct: number, total: number) => `Practised ${ago} · ${correct} of ${total} right`,
-    // Under the button that starts a round practised before.
-    lastResult: (ago: string, correct: number, total: number) => `Last practised ${ago} · ${correct} of ${total} right`,
     mixedAfter: "Best after all the lessons",
     readNotPractised: "Read, not practised yet",
     notRead: (count: number) => `${many(count, "topic", "topics")}, not read yet`,

@@ -431,7 +431,7 @@ function Finished({
             ) : weak ? (
               <ButtonLink href={readAgain}>
                 <Icon name="learn" size={20} />
-                {t.readAgain(sectionTitle)}
+                {t.readAgain}
               </ButtonLink>
             ) : (
               next && (

@@ -12,11 +12,9 @@ import {
   practiceHref,
   roundExercises,
   ruleParams,
-  sectionPath,
 } from "@/lib/learn/lessons";
 import { rulePath } from "@/lib/learn/progress";
 import { LessonLoading, LessonScreen } from "../../lesson-screen";
-import { LastResult } from "./last-result";
 import { MarkRead } from "./mark-read";
 import { RuleBody, Theory } from "./rule-body";
 import { SectionLetters } from "./sound-list";
@@ -88,12 +86,8 @@ async function RuleView({
           <div className="flex w-full flex-col gap-3">
             <ButtonLink href={`${practiceHref(dialect, lesson, round)}?from=learn`}>
               <Icon name="puzzle" size={20} />
-              {t.practice.practise(round.title, exercises)}
+              {t.practice.start}
             </ButtonLink>
-            {/* The rest of the page is the same for everyone, so only this waits for the learner. */}
-            <Suspense fallback={null}>
-              <LastResult path={sectionPath(dialect, lesson.id, round.id)} t={t.practice} />
-            </Suspense>
             <div className={`grid gap-3 ${back ? "grid-cols-2" : ""}`}>
               {back}
               {/* The next topic, or after the module's last out to Lernen, which shows what's next. */}

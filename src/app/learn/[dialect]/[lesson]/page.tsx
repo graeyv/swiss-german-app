@@ -86,7 +86,7 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
           <div className="flex w-full flex-col gap-3">
             {resume ? (
               <ButtonLink href={lessonHref(dialect, lesson, resume.section, resume.rule)}>
-                {t.lesson.next}: {resume.rule.title}
+                {t.lesson.next}
               </ButtonLink>
             ) : (
               // Everything read: only starting over is left.

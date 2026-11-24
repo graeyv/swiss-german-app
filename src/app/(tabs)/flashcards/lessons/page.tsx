@@ -93,7 +93,7 @@ function SuggestionCard({ suggestion, reads, t }: { suggestion: Suggestion; read
     eyebrow = suggestion.practised ? t.practice.allPractised : t.practice.readFirst;
     title = t.practice.readOn(section.title);
     caption = t.practice.left(section.rules.length - readCount(entry, section, reads));
-    action = `${t.lesson.next}: ${rule.title}`;
+    action = t.lesson.next;
     href = lessonHref(entry.dialect, entry.lesson, section, rule);
   } else {
     const { entry, section } = suggestion;

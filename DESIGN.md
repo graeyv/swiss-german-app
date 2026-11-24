@@ -82,7 +82,9 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 - Screen margin: 24 px left and right.
 - Rows and cards: corner radius 24 px, padding about 16 px vertically and 24 px horizontally,
   12 px between rows. No border, no shadow: the background colour sets them off.
-- Buttons: fully rounded (pill), at least 56 px high for the main action, full width.
+- Buttons: fully rounded (pill), at least 56 px high for the main action, full width. A button
+  says only what it does ("Weiter", "Üben", "Los geht's", "Nochmals lesen"), never the name of
+  the topic, lesson or module it leads to: the card or screen around it says that.
 - Space between sections: about 32 px. Space alone separates them: no divider lines.
 - Icons: Phosphor Icons (MIT licence), in `src/app/ui/icons.tsx`, without a box around them.
   Symbols (a topic, a lesson, the tabs, the ratings, Merke) are Phosphor's **fill** style; signs
@@ -119,7 +121,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   softer teal is too faint on sage) saying why, such as "WEITERMACHEN · AUSSPRACHE", the title in
   heading size, one short line, and the primary button. It's an action, not one of the items
   below, so nothing in the list behaves differently. In Learn it continues with the next topic not
-  read yet ("Konsonanten", "3 von 6 Themen gelesen", "Weiter: R"), or says "HIER BEGINNEN" and
+  read yet ("Konsonanten", "3 von 6 Themen gelesen", "Weiter"), or says "HIER BEGINNEN" and
   "Los geht's" before anything is read. It follows the topic read last, not the module looked at
   last. In Üben → Lektionen it suggests one thing to practise: a lesson read through but not
   practised ("Konsonanten üben"), else the one most worth refreshing ("Konsonanten auffrischen ·
@@ -220,7 +222,7 @@ topic in English); in the code and this guide they are lesson → section → ru
   whether it was right, with the right answer after a wrong one, and below it a mist pill
   "Regel nachlesen: CH". "Weiter" stays at the bottom. It ends on a yellow card: "Konsonanten
   geübt" and how many were right the first time. Under 60 %, a line suggests reading the section
-  again, and "Konsonanten nochmals lesen" is the primary button. Below, "DEINE ANTWORTEN": every
+  again, and "Nochmals lesen" is the primary button. Below, "DEINE ANTWORTEN": every
   exercise as a row on mist with a check or a brick cross, the solution in bold (a word with its
   letters that sound different underlined), and one caption line, such as "CH, R und K klingen
   anders" or "Klang noch nicht gleich". At the bottom, "3 Fehler üben" starts again with only the
@@ -228,10 +230,10 @@ topic in English); in the code and this guide they are lesson → section → ru
   secondary button beside "Fertig", or below it when "Fertig" is the main action. A round of
   mistakes ends on the whole round's new score, "Jetzt 9 von 10 richtig.", which is saved, and
   can be repeated until nothing is wrong. Leaving
-  the round's page always starts it afresh next time. Where a practised round starts, its last
-  result shows, so practice doesn't look lost: "Geübt heute · 9 von 10 richtig" in its row in
-  Üben, and "Zuletzt geübt heute · 9 von 10 richtig" in `teal-soft` under its button at the end
-  of the module's last topic. A tap still starts the round straight away.
+  the round's page always starts it afresh next time. In Üben, where a practised round starts, its
+  last result shows, so practice doesn't look lost: "Geübt heute · 9 von 10 richtig" in its row.
+  Not at the end of a lesson in Learn, which stays short on the phone: there, only "Üben".
+  A tap still starts the round straight away.
 - **Pronunciation exercises** (`src/app/exercises/pronunciation`), in a lesson round. They're
   Standard German words said with the dialect's accent, not Berndeutsch words, and say so: each
   starts with the eyebrow "HOCHDEUTSCH MIT BERNER AKZENT" and one line saying what to do ("Lies
