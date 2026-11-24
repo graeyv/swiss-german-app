@@ -131,25 +131,28 @@
           "theory": "Swiss German is mainly spoken. When people write it, they often spell words the way they pronounce them. Unlike Swiss Standard German, it has no official spelling rules, so the same word can be written in different ways.",
           "points": [
             {
-              "heading": "Three ways to write “I saw your father yesterday.”",
+              "heading": "“I saw your father yesterday.”",
               "items": [
                 {
+                  "term": "Ich habe gestern deinen Vater gesehen.",
+                  "text": "(Swiss) Standard German: one correct spelling"
+                },
+                {
                   "term": "I ha geschter dy fattr xee",
-                  "text": "Phonetic: written as it sounds"
+                  "text": "Swiss German, phonetic: written as it sounds"
                 },
                 {
                   "term": "I ha gester di Vater gseh",
-                  "text": "Close to Standard German spelling"
+                  "text": "Swiss German, close to Standard German spelling"
                 },
                 {
                   "term": "I ha geschter di Vater gsee",
-                  "text": "A mix of both"
+                  "text": "Swiss German, a mix of both"
                 }
               ]
             }
           ],
           "examples": [],
-          "note": "(Swiss) Standard German: Ich habe gestern deinen Vater gesehen.",
           "takeaway": "Don't let the different spellings confuse you. There's no single correct way to write Swiss German, and it's mostly spoken anyway. You'll get used to the variations as you learn."
         },
         {
