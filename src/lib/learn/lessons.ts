@@ -273,6 +273,15 @@ export function exercisesHref(dialect: string, lesson: Lesson) {
   return units.length === 1 ? practiceHref(dialect, lesson, units[0]) : exercisesListHref(dialect, lesson);
 }
 
+// A module's exercises from its page in Learn ("Zu den Übungen"), staying in Learn: its list of
+// rounds there, or with only one, that round. Either leads back to the module's page.
+export function learnExercisesHref(dialect: string, lesson: Lesson) {
+  const units = practiceUnits(lesson);
+  return units.length === 1
+    ? `${practiceHref(dialect, lesson, units[0])}?from=module`
+    : `${lessonHref(dialect, lesson)}/exercises`;
+}
+
 // The list of a module's rounds, in the Practice tab.
 export function exercisesListHref(dialect: string, lesson: Lesson) {
   return `/flashcards/lessons/${dialect}/${lesson.id}`;

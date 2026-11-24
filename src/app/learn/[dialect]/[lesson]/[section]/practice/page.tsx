@@ -23,8 +23,9 @@ export function generateStaticParams() {
 }
 
 // A round of a section's exercises, such as the consonants, or of a module's mixed round: from the
-// end of a section's last topic in Learn (?from=learn), or from the Practice tab. Where it was
-// started decides where it leads afterwards.
+// end of a section's last topic in Learn (?from=learn), from the module's page in Learn
+// (?from=module), or from the Practice tab. Where it was started decides where it leads
+// afterwards: finishing goes back to that tab, leaving early from Learn to the module's page.
 export default function PracticePage({
   params,
   searchParams,
@@ -48,6 +49,8 @@ async function Practice({
   const { lesson, language } = found;
   const t = dictionary(language);
   const fromLearn = from === "learn";
+  // Opened with "Zu den Übungen" on the module's page in Learn.
+  const fromModule = from === "module";
   const mixed = section.id === MIXED;
   // After a section, from Learn: the next section to read, or after the last one the mixed round.
   const nextToRead = mixed ? undefined : nextSection(lesson, section);
@@ -61,6 +64,10 @@ async function Practice({
   const rules = [section, ...lesson.sections.filter((each) => each.id !== section.id)].flatMap((each) =>
     each.rules.map((rule) => ({ rule, section: each.title })),
   );
+  // Leaving or finishing from the Practice tab goes back there: the module's rounds, or Lektionen
+  // if it has only one.
+  const practiceTab =
+    practiceUnits(lesson).length === 1 ? "/flashcards/lessons" : exercisesListHref(dialect, lesson);
 
   return (
     <>
@@ -74,15 +81,12 @@ async function Practice({
         sectionTitle={section.title}
         rules={rules}
         round={round}
-        // Leaving or finishing goes back where the round was started: the module in Learn, or
-        // the module's rounds in the Practice tab, or Lektionen if it has only one.
-        back={
-          fromLearn
-            ? lessonHref(dialect, lesson)
-            : practiceUnits(lesson).length === 1
-              ? "/flashcards/lessons"
-              : exercisesListHref(dialect, lesson)
-        }
+        // "Fertig" goes back to the tab the round was started in: Lernen, which shows what's next,
+        // or the Practice tab.
+        back={fromLearn || fromModule ? "/learn" : practiceTab}
+        // Leaving early from Learn goes to the module's page, whether the round was started at a
+        // lesson's end or with "Zu den Übungen". From the Practice tab, back there.
+        leave={fromLearn || fromModule ? lessonHref(dialect, lesson) : practiceTab}
         // The mixed round covers the whole module, so reading again starts at its page.
         readAgain={mixed ? lessonHref(dialect, lesson) : lessonHref(dialect, lesson, section, section.rules[0])}
         // From Learn, a good round leads on.

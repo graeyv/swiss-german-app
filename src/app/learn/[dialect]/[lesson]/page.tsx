@@ -6,10 +6,10 @@ import { Pill } from "@/app/ui/surface";
 import { Eyebrow, Highlight } from "@/app/ui/text";
 import { dictionary } from "@/lib/i18n";
 import {
-  exercisesHref,
   findLesson,
   hasExercises,
   isReady,
+  learnExercisesHref,
   lessonHref,
   lessonNumber,
   lessonParams,
@@ -95,7 +95,8 @@ async function Overview({ params }: Pick<PageProps<"/learn/[dialect]/[lesson]">,
               </ButtonLink>
             )}
             {hasExercises(lesson) ? (
-              <ButtonLink href={exercisesHref(dialect, lesson)} variant="secondary" className="min-h-14">
+              // Stays in Learn: the module's sets, or its only one, both leading back to this page.
+              <ButtonLink href={learnExercisesHref(dialect, lesson)} variant="secondary" className="min-h-14">
                 <Icon name="puzzle" size={20} />
                 {t.practice.toExercises}
               </ButtonLink>

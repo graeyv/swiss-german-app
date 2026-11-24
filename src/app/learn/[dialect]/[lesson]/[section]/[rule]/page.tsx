@@ -96,12 +96,8 @@ async function RuleView({
             </Suspense>
             <div className={`grid gap-3 ${back ? "grid-cols-2" : ""}`}>
               {back}
-              <ButtonLink
-                href={nextHref ?? lessonHref(dialect, lesson)}
-                replace={Boolean(nextHref)}
-                variant="secondary"
-                className="min-h-14"
-              >
+              {/* The next topic, or after the module's last out to Lernen, which shows what's next. */}
+              <ButtonLink href={nextHref ?? "/learn"} replace variant="secondary" className="min-h-14">
                 {t.practice.later}
               </ButtonLink>
             </div>
@@ -116,7 +112,10 @@ async function RuleView({
                 {t.lesson.next}
               </ButtonLink>
             ) : (
-              <ButtonLink href={lessonHref(dialect, lesson)}>{t.lesson.done}</ButtonLink>
+              // The module's last topic: out to Lernen, which shows what's next.
+              <ButtonLink href="/learn" replace>
+                {t.lesson.done}
+              </ButtonLink>
             )}
           </div>
         )
