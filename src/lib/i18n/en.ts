@@ -5,7 +5,7 @@ import { plural, pluralForm } from "./plural";
 const many = (count: number, one: string, other: string) => plural("en", count, { one, other });
 
 export const en = {
-  title: (page: string) => `${page} – Hoi`,
+  title: (page: string) => `${page} – hoi`,
   // The language's own name, as listed in the language picker.
   languageName: "English",
   language: "Language",
@@ -25,9 +25,9 @@ export const en = {
 
   login: {
     title: "Log in",
-    heading: "Log in to Hoi",
+    heading: "Log in to hoi",
     signUpHeading: "Create your account",
-    newHere: "New to Hoi? Create an account",
+    newHere: "New to hoi? Create an account",
     haveAccount: "Already have an account? Log in",
     email: "Email",
     password: "Password",
@@ -370,7 +370,7 @@ export const en = {
     // German and English together, and each answer in its own language.
     track: {
       question: "Do you understand German well?",
-      intro: "Hoi has two learning paths. Your answer picks the right one.",
+      intro: "hoi has two learning paths. Your answer picks the right one.",
       // The answer for each track, in this language, and what that track teaches. The German
       // track's note, only in onboarding, says German needn't be the learner's first language.
       answers: {
@@ -411,7 +411,7 @@ export const en = {
     },
     // The last screen: how Hoi works, then the pace.
     pace: {
-      heading: "How Hoi works",
+      heading: "How hoi works",
       // The three main tabs, named as in the tab bar.
       tabs: [
         { id: "learn", text: (dialect: string) => `Short lessons: how ${dialect} sounds and works.` },
@@ -420,7 +420,7 @@ export const en = {
       ] as { id: "learn" | "practice" | "talk"; text: (dialect: string) => string }[],
       remember: {
         title: "Words that stick",
-        text: "Hoi shows you each word again just before you'd forget it.",
+        text: "hoi shows you each word again just before you'd forget it.",
         // When one word comes back, as an example.
         reviews: ["Today", "Tomorrow", "3 days", "1 week", "1 month"],
       },

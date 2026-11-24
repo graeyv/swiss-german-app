@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { withAppName } from "@/app/ui/app-name";
 import { BottomSheet } from "@/app/ui/bottom-sheet";
 import { Button } from "@/app/ui/button";
 import { Icon, type IconName, isIconName } from "@/app/ui/icons";
@@ -46,7 +47,7 @@ export function TrackStep({ locale, modules, chosen, recommended, pending, onCho
     <>
       <div className="flex flex-col gap-1">
         <h1 className="text-title leading-tight font-bold">{t.question}</h1>
-        <p className="text-body text-teal-soft">{t.intro}</p>
+        <p className="text-body text-teal-soft">{withAppName(t.intro)}</p>
       </div>
 
       <div className="flex flex-col gap-3">

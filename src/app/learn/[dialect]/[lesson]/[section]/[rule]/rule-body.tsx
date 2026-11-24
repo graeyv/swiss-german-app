@@ -1,4 +1,5 @@
 import { MarkedWord } from "@/app/exercises/pronunciation/parts";
+import { withAppName } from "@/app/ui/app-name";
 import { Takeaway } from "@/app/ui/takeaway";
 import type { Dictionary } from "@/lib/i18n";
 import type { Phrase, PointList, Rule } from "@/lib/learn/lessons";
@@ -32,7 +33,7 @@ export function RuleBody({ rule, dialectName, accent, t }: RuleBodyProps) {
       )}
       {rule.sounds && rule.sounds.length > 0 && <Sounds sounds={rule.sounds} t={t} />}
       {rule.note && <p className="text-caption text-teal-soft">{rule.note}</p>}
-      {rule.takeaway && <Takeaway label={t.remember}>{rule.takeaway}</Takeaway>}
+      {rule.takeaway && <Takeaway label={t.remember}>{withAppName(rule.takeaway)}</Takeaway>}
       {rule.tip && (
         <Takeaway label={t.tip}>
           <MarkedWord word={rule.tip} small />

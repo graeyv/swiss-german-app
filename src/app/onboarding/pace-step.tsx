@@ -1,5 +1,6 @@
 "use client";
 
+import { withAppName } from "@/app/ui/app-name";
 import { Icon, type IconName } from "@/app/ui/icons";
 import { PRESETS } from "@/lib/flashcards/daily-plan";
 import { dictionary, type Locale } from "@/lib/i18n";
@@ -22,7 +23,7 @@ export function HowStep({ locale, dialectName }: { locale: Locale; dialectName: 
 
   return (
     <>
-      <h1 className="text-title leading-tight font-bold">{t.heading}</h1>
+      <h1 className="text-title leading-tight font-bold">{withAppName(t.heading)}</h1>
 
       <ul className="flex flex-col gap-4">
         {t.tabs.map((tab) => (
@@ -41,7 +42,7 @@ export function HowStep({ locale, dialectName }: { locale: Locale; dialectName: 
           <Icon name="again" size={20} className="text-teal-soft" />
           {t.remember.title}
         </h2>
-        <p className="text-caption text-teal-soft">{t.remember.text}</p>
+        <p className="text-caption text-teal-soft">{withAppName(t.remember.text)}</p>
         <Timeline labels={t.remember.reviews} />
       </section>
     </>

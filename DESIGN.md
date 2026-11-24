@@ -95,7 +95,7 @@ Form inputs stay at least 16 px (iOS zooms in otherwise).
 
 These are the parts of the model screen. Every screen is built from them, and new ones are added
 here first. They live in `src/app/ui/` (`Button`, `ButtonLink`, `ListRow`, `Card`, `Pill`,
-`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `TopicTile`, `TopicBanner`, `BottomSheet`, `TabHeader`, `Tip`), the type sizes are the `text-title`,
+`Eyebrow`, `Highlight`, `Takeaway`, `ProgressBar`, `Icon`, `AnswerMark`, `Logo`, `AppName`, `TopicTile`, `TopicBanner`, `BottomSheet`, `TabHeader`, `Tip`), the type sizes are the `text-title`,
 `text-heading`, `text-subtitle`, `text-body` and `text-caption` classes, and all of it can be seen
 at `/dev/design`. In the app, the levels are Modul → Lektion → Thema (module → lesson →
 topic in English); in the code and this guide they are lesson → section → rule.
@@ -104,6 +104,11 @@ topic in English); in the code and this guide they are lesson → section → ru
   tail at the bottom left. At the top left of the tabs and on the welcome page. Never in another
   colour or without the bubble. The app icon and favicon are the same bubble on teal
   (`src/app/icon.png`, `apple-icon.png`, `public/icons/`).
+- **App name in text** (`AppName`, `withAppName`): wherever a text names the app, it's *hoi*:
+  lowercase, also at the start of a sentence, and in italics, so it reads as the name and not
+  as the greeting. In texts and lesson content, write the name as lowercase "hoi"; `withAppName`
+  sets it in italics. The greeting keeps its capital ("Hoi zäme!", "Grüessech, Hoi, Merci").
+  Where italics can't show, such as the browser tab and the home screen, it's lowercase "hoi".
 - **Back button**: a teal arrow (←) at the top left, no text, no bar colour. It stays at the top
   while the page scrolls (`TopBar`). Where it skips a level, it names where it leads instead, in
   small semibold text: "‹ Aussprache" on a topic, which goes up to its module, and "‹ Lektionen"
@@ -317,13 +322,13 @@ topic in English); in the code and this guide they are lesson → section → ru
   the bottom, "Konto erstellen" (primary) and "Ich habe schon ein Konto"
   (secondary).
 - **Login** (`/login`, and `/login?new` to create an account): the logo at the top left, leading
-  back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei Hoi
+  back to the welcome page, the heading in title size ("Erstell dein Konto" or "Bei *hoi*
   anmelden"), email and password, one primary button, and below it a text button to the other
-  ("Schon ein Konto? Anmelden", "Neu bei Hoi? Konto erstellen").
+  ("Schon ein Konto? Anmelden", "Neu bei *hoi*? Konto erstellen").
 - **Choosing the track** (onboarding's first question), all in one language: the one from the
   start page, which the start page's switch at the top right ("English" with a globe) changes,
   on this screen only. "Verstehst du Hochdeutsch gut?" in title size, and below it in body size
-  and `teal-soft`, "Hoi hat zwei Lernwege. Deine Antwort wählt den passenden." Two answer cards
+  and `teal-soft`, "*hoi* hat zwei Lernwege. Deine Antwort wählt den passenden." Two answer cards
   on mist: an icon on an ivory circle, the answer in bold ("Ja, ich verstehe Hochdeutsch gut",
   "Nein, ich lerne lieber auf Englisch"), one line on what it means (the German one first says
   "Auch als Fremdsprache."), and a check circle on the right. The chosen card turns sage with a
@@ -348,8 +353,8 @@ topic in English); in the code and this guide they are lesson → section → ru
   its number of modules as a caption, and the check; the chosen one on sage. Below, centred in
   `teal-soft` caption, "Dein Fortschritt bleibt gespeichert." and "Your progress stays saved." on
   two lines, so whoever is about to switch can read it.
-- **How Hoi works** (onboarding's third screen, only informing, so only "Weiter"): "So
-  funktioniert Hoi", the three main tabs as an icon list (icon in `teal-soft`, name in bold, one
+- **How *hoi* works** (onboarding's third screen, only informing, so only "Weiter"): "So
+  funktioniert *hoi*", the three main tabs as an icon list (icon in `teal-soft`, name in bold, one
   line below, naming the chosen dialect by its own name, "Bärndütsch"), and "Wörter, die bleiben":
   one sentence and one word's reviews as small teal dots popping in one after another on a thin
   sage-light line (Heute, Morgen, 3 Tage, 1 Woche, 1 Monat), the gaps growing and the labels

@@ -4,6 +4,7 @@ import atHome from "../../../../public/illustrations/topics/at-home.png";
 import socialLife from "../../../../public/illustrations/topics/social-life.png";
 import { ExampleList } from "@/app/learn/[dialect]/[lesson]/[section]/[rule]/example-list";
 import { answerClass, AnswerMark } from "@/app/ui/answer";
+import { withAppName } from "@/app/ui/app-name";
 import { Button } from "@/app/ui/button";
 import { Icon, type IconName } from "@/app/ui/icons";
 import { ListRow, ListRows } from "@/app/ui/list-row";
@@ -92,6 +93,14 @@ export default function DevDesignPage() {
 
       <Part title="Logo">
         <LogoPreview />
+      </Part>
+
+      <Part title="App-Name im Text (neben dem Gruss, der gross bleibt)">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-title leading-tight font-bold">{withAppName("So funktioniert hoi")}</h1>
+          <p className="text-body">{withAppName("hoi zeigt dir jedes Wort wieder, kurz bevor du es vergessen würdest.")}</p>
+          <p className="text-body">Hoi zäme!</p>
+        </div>
       </Part>
 
       <Part title="Themen-Kachel: bald verfügbar (iPhone-Breite)">
