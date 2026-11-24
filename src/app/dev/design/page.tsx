@@ -20,7 +20,6 @@ import { VariantPreview } from "./variant-preview";
 import { ComingSoonPreview } from "./coming-soon-preview";
 import { LogoPreview } from "./logo-preview";
 import { ModuleProgressPreview } from "./module-progress-preview";
-import { EnglishExercisePreview } from "./english-exercises-preview";
 import { Stat } from "@/app/(tabs)/profile/stat";
 import { RatingTipPreview } from "./rating-tip-preview";
 import { ConversationsHeaderPreview, PracticeHeaderPreview } from "./tab-header-preview";
@@ -38,34 +37,8 @@ export default function DevDesignPage() {
         <p className="text-body text-teal-soft">Alles aus DESIGN.md, so wie es auf den Screens aussieht.</p>
       </div>
 
-      <Part title="Karte mit Varianten (Tschou · Salü · Hallo)">
+      <Part title="Wortkarte: beide Lernwege, beide Richtungen">
         <VariantPreview />
-      </Part>
-
-      <Part title="Englisch · Aussprache (in Arbeit)">
-        <ListRows>
-          <ListRow href="/dev/lesson-en" icon="speaking" title="Pronunciation" caption="Modul, Lektionen und Themen" />
-        </ListRows>
-      </Part>
-
-      <Part title="Englisch · Übung 1 (leicht): Sounds like? · W (erste Übung der Runde)">
-        <EnglishExercisePreview section="different-letters" id="w" first />
-      </Part>
-
-      <Part title="Englisch · Übung 1 (leicht): Sounds like? · ST">
-        <EnglishExercisePreview section="new-sounds" id="st" />
-      </Part>
-
-      <Part title="Englisch · Übung 2 (mittel): Which did you hear? · hüt / Huet / Hit">
-        <EnglishExercisePreview section="new-sounds" id="hear-huet" />
-      </Part>
-
-      <Part title="Englisch · Übung 3 (schwer): Say the word · Schoggi">
-        <EnglishExercisePreview section="different-letters" id="say-schoggi" />
-      </Part>
-
-      <Part title="Englisch · Übung 3 (schwer): Say the word · Mami (Lektion 1, ohne Tipp)">
-        <EnglishExercisePreview section="familiar" id="say-mami" />
       </Part>
 
       <Part title="Profil: Fortschritt (iPhone-Breite)">

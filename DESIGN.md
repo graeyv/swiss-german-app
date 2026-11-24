@@ -212,6 +212,14 @@ topic in English); in the code and this guide they are lesson → section → ru
 - **Playing a recording** (`SoundBars`): every round play or speaker button is on mist, gives
   under the finger when tapped (scale 90–95 %), and while the recording plays turns teal with three
   bars bouncing in turn in place of its icon. Still with reduced motion.
+- **Word card** (`WordCardSide`, for both the session and `/dev/design`): one side has the Swiss
+  German, large, its other ways of saying it ("Auch: …") below and, on the English track, the
+  Standard German ("Hochdeutsch: …"). On the German track, where many words are written the same
+  on both sides, the learner's dialect by its own name is above it as an eyebrow ("BÄRNDÜTSCH", as
+  in the onboarding); the Standard German side has no name. The other side has the
+  translation, large, with the word's note (yellow) if it has one, only on the English track. Each
+  side's lines go with it when the learner swaps which side comes first. The back shows only its
+  own side, without the front repeated on it.
 - **Pronunciation on a word card**: the speaker at the card's top right, as above, only while the
   Swiss German side shows: turning the card to the translation hides it. It plays by
   itself the first time the Swiss German shows, unless the learner switched that off: a speaker in

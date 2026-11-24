@@ -62,19 +62,20 @@ export async function getToday(supabase: Supabase) {
 }
 
 // How the learner wants their cards: which side first, and whether a word's recording plays by
-// itself when its Swiss German shows.
+// itself when its Swiss German shows. Also their dialect, which names the Swiss German side.
 export async function getCardSettings(
   supabase: Supabase,
-): Promise<{ cardFront: CardFront; autoplay: boolean; ratingTipSeen: boolean }> {
+): Promise<{ cardFront: CardFront; autoplay: boolean; ratingTipSeen: boolean; dialect: string | null }> {
   const { data, error } = await supabase
     .from("profiles")
-    .select("card_front, autoplay_audio, rating_tip_seen")
+    .select("card_front, autoplay_audio, rating_tip_seen, dialect_id")
     .maybeSingle();
   if (error) throw new Error(error.message);
   return {
     cardFront: data?.card_front === "translation" ? "translation" : "swiss_german",
     autoplay: data?.autoplay_audio ?? true,
     ratingTipSeen: data?.rating_tip_seen ?? false,
+    dialect: data?.dialect_id ?? null,
   };
 }
 
