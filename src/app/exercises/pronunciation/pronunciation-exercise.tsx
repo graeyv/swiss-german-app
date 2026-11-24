@@ -344,8 +344,8 @@ function Letters({ task, texts, accent, dialect, first, ruleFor, onDone }: Pronu
 
 // Say the word first, then hear oneself and the recording back to back, and judge it: "Ja" goes
 // on, "Noch nicht" records again at once, as often as the learner likes, and "Trotzdem weiter"
-// goes on without it. A tip underlines the
-// letters to watch, and once the learner has said it they stay underlined.
+// goes on without it. On the German track, a tip underlines the letters to watch, and once the
+// learner has said it they stay underlined. The English track underlines nothing.
 function Say({ task, texts, accent, dialect, first, onDone }: PronunciationProps<SayTask>) {
   const t = texts.pronunciation;
   const [tip, setTip] = useState(false);
@@ -369,10 +369,12 @@ function Say({ task, texts, accent, dialect, first, onDone }: PronunciationProps
           {dialect ? t.sayDialect : t.say(accent)}
         </Instruction>
         <p className="flex min-h-16 items-center justify-center pt-4 text-title font-bold">
-          <MarkedWord word={task.word} underline={tip || comparing} />
+          <MarkedWord word={task.word} underline={!dialect && (tip || comparing)} />
         </p>
 
-        {!comparing && !tip && /\[/.test(task.word) && <Tip onTip={() => setTip(true)} t={t} />}
+        {/* Only for Standard German said with the accent: against English, a Swiss German word
+            differs too much for a few letters to be what to listen for. */}
+        {!dialect && !comparing && !tip && /\[/.test(task.word) && <Tip onTip={() => setTip(true)} t={t} />}
         {!comparing && recorder.state === "denied" && (
           <p className="text-center text-caption text-teal-soft">{t.noMicrophone}</p>
         )}
@@ -433,9 +435,9 @@ function Repeat({ task, texts, accent, dialect, first, onDone }: PronunciationPr
           {t.repeat(accent)}
         </Instruction>
         <p className="pt-4 text-center text-heading font-bold">
-          <MarkedWord word={task.sentence} underline={tip || comparing} small />
+          <MarkedWord word={task.sentence} underline={!dialect && (tip || comparing)} small />
         </p>
-        {!comparing && !tip && /\[/.test(task.sentence) && <Tip onTip={() => setTip(true)} t={t} />}
+        {!dialect && !comparing && !tip && /\[/.test(task.sentence) && <Tip onTip={() => setTip(true)} t={t} />}
         {listened && (
           <Compare
             player={player}

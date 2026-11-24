@@ -260,7 +260,9 @@ topic in English); in the code and this guide they are lesson → section → ru
     sage or rose says "Nicht ganz: T, Ä und R klingen anders". Below, the word in Standard German
     and the dialect, played one after the other, and a "Regel nachlesen" pill per rule.
   - **Saying a word**: the word in title size, and a mist pill "Tipp: worauf achten?" that
-    underlines the letters to watch in sage. "Aufnehmen" at the bottom, then a bar filling up and
+    underlines the letters to watch in sage. Only on the German track, like all underlining in
+    this exercise: on the English track, a Swiss German word differs too much from English for a
+    few letters to be what to listen for, so the word is never underlined. "Aufnehmen" at the bottom, then a bar filling up and
     "Fertig". Then the learner's recording ("Du", a microphone) and the dialect's ("So klingt's", a
     speaker) play one after the other, as round play buttons, the letters now underlined. At the
     bottom, together so they read as one: "Klang es gleich?" in subtitle size, "Ja, klang gleich"
